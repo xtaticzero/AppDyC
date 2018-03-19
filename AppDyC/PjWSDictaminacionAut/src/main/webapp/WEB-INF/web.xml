@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+            /WEB-INF/applicationContext.xml
+        </param-value>
+    </context-param>
+    <servlet>
+        <servlet-name>jaxws-servlet</servlet-name>
+        <servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+    </servlet>
+    <!-- Spring -->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    
+    <!-- Coherence -->
+<!--    <context-param>
+        <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+        <param-value>client</param-value>
+    </context-param>
+    <context-param>
+        <param-name>coherence-scopecontroller-class</param-name>
+        <param-value>com.tangosol.coherence.servlet.AbstractHttpSessionCollection$GlobalScopeController</param-value>
+    </context-param>
+    <context-param>
+        <param-name>coherence-session-strict-spec</param-name>
+        <param-value>false</param-value>
+    </context-param>
+    <context-param>
+        <param-name>coherence-session-member-locking</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    <context-param>
+        <param-name>coherence-sticky-sessions</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    <context-param>
+        <param-name>coherence-distributioncontroller-class</param-name>
+        <param-value> mx.gob.sat.siat.controlador.impl.CustomSessionDistributionController </param-value>
+    </context-param>
+    <mime-mapping>
+        <extension>jnlp</extension>
+        <mime-type>application/x-java-jnlp-file</mime-type>
+    </mime-mapping>-->
+</web-app>

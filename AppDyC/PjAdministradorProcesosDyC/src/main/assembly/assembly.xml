@@ -1,0 +1,121 @@
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2     http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+    <id>bin</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+    
+    <dependencySets>
+        <dependencySet>
+            <useProjectArtifact>false</useProjectArtifact>
+            <outputDirectory>lib</outputDirectory>
+            <unpack>false</unpack>
+        </dependencySet>
+    </dependencySets>
+    <fileSets>
+        <!-- incluye el jar que es ejecutable dentro del zip -->
+        <fileSet>
+            <directory>${project.build.directory}</directory>
+            <outputDirectory>lib</outputDirectory>
+            <includes>
+                <include>PjAdministradorProcesosDyC-1.0.jar</include>
+            </includes>
+        </fileSet>
+        <!-- incluye todos los archivos del wrapper -->
+        <fileSet>
+            <directory>${project.build.scriptSourceDirectory}</directory>
+            <outputDirectory></outputDirectory>
+        </fileSet>
+        
+        <!-- Incluye el proyecto de PjGestionPagoTESOFE -->
+        <fileSet>
+            <directory>../PjGestionPagoTESOFE/target</directory>
+            <outputDirectory>lib</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+        </fileSet>
+        
+        <!-- Incluye el proyecto de PjRetroalimentacionTESOFE -->
+        <fileSet>
+            <directory>../PjRetroalimentacionTESOFE/target</directory>
+            <outputDirectory>lib</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+        </fileSet>
+        
+        <!-- Incluye el proyecto de PjAdministradorProcesosDyC -->
+        <fileSet>
+            <directory>../PjAdministradorProcesosDyC/target</directory>
+            <outputDirectory>lib</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+        </fileSet>
+        
+        <!-- Incluye el proyecto de PjNotificacionesYVerificaciones -->
+        <fileSet>
+            <directory>../PjNotificacionesYVerificaciones/target</directory>
+            <outputDirectory>lib</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+        </fileSet>
+        
+        <!-- Incluye el proyecto de PjProcesoDYC -->
+        <fileSet>
+            <directory>../PjProcesoDYC/target</directory>
+            <outputDirectory>lib</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+        </fileSet>
+        
+        <!-- Incluye el proyecto de PjValidarReq -->
+        <fileSet>
+            <directory>../PjValidarReqs/target</directory>
+            <outputDirectory>lib</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+        </fileSet>
+        
+        <!-- Incluye el proyecto de PjEnvioNyV -->
+        <fileSet>
+            <directory>../PjEnvioNyV/target</directory>
+            <outputDirectory>lib</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+        </fileSet>
+        
+        <!-- Incluye el proyecto de PjEnvioNyV -->
+        <fileSet>
+            <directory>../PjComplementarias/target</directory>
+            <outputDirectory>lib</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+        </fileSet>
+        
+        <!-- Incluye el proyecto de PjExtractorDeAnexos-->
+        <fileSet>
+            <directory>../PjExtractorDeAnexos/target</directory>
+            <outputDirectory>lib</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+        </fileSet>
+        
+        <!-- Incluye el proyecto de PjAdminDocDYC-->
+        <fileSet>
+            <directory>../PjAdminDocDYC/target</directory>
+            <outputDirectory>lib</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+        </fileSet>
+    </fileSets>
+</assembly>

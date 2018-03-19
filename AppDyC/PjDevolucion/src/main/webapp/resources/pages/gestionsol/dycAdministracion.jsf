@@ -1,0 +1,770 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+        xmlns:ui="http://java.sun.com/jsf/facelets">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <title>
+                Consulta de tramites de devoluciones y compensaciones
+            </title>
+            <meta http-equiv="X-UA-Compatible" content="IE=8"/>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <meta http-equiv="pragma" content="no-cache"/>
+            <meta http-equiv="cache-control" content="no-cache"/>
+            <meta http-equiv="expires" content="0"/>
+            <h:outputScript library="js" name="general.js"/>
+            <h:outputScript library="js" name="calendar-localization.js"/>
+            <h:outputStylesheet library="css/" name="formato.css"/>
+            <style type="text/css">
+                .ui-paginator {
+                    font-size: 12px !important;
+                }
+
+                .ui-datatable tbody td {
+                    white-space: normal;
+                    font-size: 9px;
+                }
+
+                .ui-datatable thead th {
+                    white-space: normal;
+                    font-size: 10px;
+                }
+
+                .panelgridLine > .ui-panel-content {
+                    padding: 0px 0px 0px 0px;
+                }
+
+                .ui-column-filter {
+                    width: 10px;
+                }
+
+                .ui-selectcheckboxmenu {
+                    padding-right: 10px;
+                }
+
+                .myClass input {
+                    width: 180px;
+                }
+                
+                [id*=cmbEstado] .ui-widget-header.ui-corner-all.ui-selectcheckboxmenu-header.ui-helper-clearfix .ui-chkbox.ui-widget {
+                    display: none;
+                }
+
+                /*[id*=cmbEstado] a.ui-selectcheckboxmenu-label-container label.ui-selectcheckboxmenu-label.ui-corner-all {
+                    max-height: 28px;
+                }*/
+                
+                @media (max-height: 600px) {
+                
+                    [id='frmDyCAdmin:dlgSelecUnidadesAdmvas'] > div:last-child {
+                        height: 350px !important;
+                    }
+                    
+                    [id='frmDyCAdmin:tbUnidadesAdmvas'] > div:nth-child(2) {
+                        height: 230px !important;
+                    }
+                }
+
+            </style>
+          
+            <script type="text/javascript">
+              $.datepicker._generateMonthYearHeader_original = $.datepicker._generateMonthYearHeader;
+
+              $.datepicker._generateMonthYearHeader = function (inst, dm, dy, mnd, mxd, s, mn, mns) {
+                  var header = $($.datepicker._generateMonthYearHeader_original(inst, dm, dy, mnd, mxd, s, mn, mns)), years = header.find('.ui-datepicker-year');
+
+                  // reverse the years
+                  years.html(Array.prototype.reverse.apply(years.children()));
+
+                  // return our new html
+                  return $('&lt;div />').append(header).html();
+              }
+            </script>
+            
+            <script type="text/javascript">
+                var contFstActivo = 0;
+                function manejarToggle(invocador){
+                    contFstActivo ++;
+                    if(contFstActivo%2 == 1) {
+                        var fstInactivo = (invocador == 1) ? wfstBusqFiltros : wfstPalabraClave;
+                        if(fstInactivo.stateHolder[0].value === 'false'){ 
+                            fstInactivo.toggle();
+                        }
+                        else{
+                            contFstActivo ++;
+                        }
+                    }
+                }
+
+                function handlePollComplete(xhr, status, args, tipoReporte) {
+                    if(args.stop) {
+                        if(tipoReporte === 'isExcel'){
+                            btnDownloadExcel.jq.click();
+                        }else{
+                            btnDownloadPdf.jq.click();
+                        }
+                    }
+                }
+            </script>
+        </h:head>
+        <h:body>
+            <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+             
+            <p:dialog modal="true" widgetVar="statusDialog" header="Procesando..." draggable="false"
+                      closable="false">
+                <h:graphicImage library="images/" name="ajaxloadingbar.gif"/>
+            </p:dialog>
+            <p:dialog modal="true" widgetVar="statusDialogDownloadReporte" header="Procesando..." draggable="false"
+                      closable="false">
+                <h:graphicImage library="images/" name="ajaxloadingbar.gif"/>
+            </p:dialog>
+
+            <h:form id="frmDyCAdmin">
+                <ui:include src="/resources/pages/common/sessionPage.jsf"></ui:include>
+                <ui:include src="/resources/pages/common/inactividad.jsf"></ui:include>
+
+                <p:poll interval="10" listener="#{mbBusqTrams.monitorPoll}"
+                        widgetVar="pollDownloadExcel" autoStart="false" process="@this"
+                        update="growl" stop="#{mbBusqTrams.stopPolling}" oncomplete="handlePollComplete(xhr, status, args, 'isExcel')"/>
+
+                <p:poll interval="10" listener="#{mbBusqTrams.monitorPoll}"
+                        widgetVar="pollDownloadPdf" autoStart="false" process="@this"
+                        update="growl" stop="#{mbBusqTrams.stopPolling}" oncomplete="handlePollComplete(xhr, status, args, 'ispdf')"/>
+
+                
+                <p:growl id="growl" showDetail="true" sticky="true"  globalOnly="false"/>
+                <p:growl id="growl2" showDetail="true" sticky="true"  globalOnly="false" severity="info"/>
+                <p:panel id="pnlBusqueda" header="#{msgValidacion.titoCons}" style="width: 100%" toggleable="true"
+                         toggleSpeed="500" closeSpeed="500" widgetVar="panel">
+                    <p:messages id="msjsBusqueda" showDetail="true" autoUpdate="false" closable="true" globalOnly="true"/>
+
+                    <p:panelGrid styleClass="gmxNoborde">
+                        <p:row>
+                            <p:column style="text-align:left" colspan="2">
+                                <div style="text-align:left;width:100%;height:100%;">
+                                    <p:outputLabel value="#{msgValidacion.inpObligatorio}" styleClass="rojo"
+                                                   title=""/>
+                                </div>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="text-align:left" colspan="2">
+                                <div style="text-align:center;width:100%;height:100%;">
+                                    <p:outputLabel value="#{mbBusqTrams.infoSessionUnidadAdmva}" styleClass=""
+                                                   title="unidad administrativa a la que pertenece el usuario firmado"/>
+                                </div>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column colspan="4">
+                                <p:fieldset id="fstPalabraClave" legend="#{msgValidacion.consulDevComp_BusquedaRFCNCoFol}" toggleable="true"
+                                                         widgetVar="wfstPalabraClave" collapsed="#{mbBusqTrams.fieldsetActivo != 1}">
+                                    <p:ajax event="toggle" listener="#{mbBusqTrams.reset}" oncomplete="manejarToggle(1);" update="pnlBusqueda tblTramites"/>
+                                    <p:panelGrid> 
+                                        <p:row>
+                                            <p:column style="width: 25%;">
+                                                <p:outputLabel value="#{msgValidacion.consulDevComp_ParametroDeBusqueda}:" for="txtPalabraClave"/>
+                                            </p:column>
+                                            
+                                            <p:column style="width: 120px;">
+                                                <p:inputText id="txtPalabraClave" value="#{mbBusqTrams.palabraClave}"
+                                                             maxlength="14" styleClass="upperCase" style="width:200px !important">
+                                                </p:inputText>
+                                                 <p:outputLabel value=" *" styleClass="rojo"/>
+                                            </p:column>
+                                            
+                                            <p:column style="width: 45%;">
+                                                <p:commandButton    value="Buscar" update="msjsBusqueda tblTramites :frmDyCAdmin:btnLiberar"
+                                                                    process="txtPalabraClave @this" actionListener="#{mbBusqTrams.buscarXPalabraclave}"
+                                                                    icon="ui-icon-search"/>
+
+                                                <p:commandButton title="Limpiar formulario" actionListener="#{mbBusqTrams.reset}"
+                                                                 update="fstPalabraClave :frmDyCAdmin:btnLiberar :frmDyCAdmin:cmbEstado tblTramites modalDialog modalDialogPdf"
+                                                                icon="ui-icon-trash"/>
+                                            </p:column>
+                                        </p:row>
+                                    </p:panelGrid>
+                                </p:fieldset>
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column colspan="4">
+                                <p:fieldset id="fstBusqFiltros" legend="#{msgValidacion.consulDevComp_BusquedaFiltros}" toggleable="true" 
+                                                                 widgetVar="wfstBusqFiltros" collapsed="#{mbBusqTrams.fieldsetActivo != 2}">
+                                    <p:ajax event="toggle" listener="#{mbBusqTrams.reset}" oncomplete="manejarToggle(2);" update="pnlBusqueda tblTramites"/>
+                                    <!--p:ajax event="toggle" listener="#{mbBusqTrams.clean}" update="txtPalabraClave"/-->
+                                    <p:panelGrid id="pnlBusqFiltros" style="width:100%; display:block; text-align:left;">
+                                    
+                                        <p:row rendered="#{mbBusqTrams.mostrarFiltroUnidadesAdmvas}">
+                                            <p:column style="text-align:left">
+                                                <p:outputLabel value="Unidades administrativas:"/>
+                                            </p:column>
+                                            <p:column style="width:300px;">
+                                                <p:outputLabel id = "lblAdminsSelecs" value="#{mbBusqTrams.adminsSeleccionadas}"/>
+                                            </p:column>
+                                            <p:column>
+                                                <p:commandButton title="#{msgValidacion.consulDevComp_DefinirUnidades}" action="#{mbBusqTrams.mostrarDialogSelecAdmins}"
+                                                                 update="dlgSelecUnidadesAdmvas" process="@this"
+                                                                 icon="ui-icon-newwin" style="float: left;"></p:commandButton>
+                                            </p:column>
+                                        </p:row>
+
+                                        <p:row>
+                                            <p:column style="text-align:left">
+                                                <p:outputLabel value="#{msgValidacion.consulDevComp_Tramite}:"/>
+                                            </p:column>
+                                            <p:column>
+                                                <p:selectOneMenu id="cmbTipoServicio" value="#{mbBusqTrams.idTipoServicioSelec}" style="width:400px;">
+                                                    <f:selectItem itemLabel=" - Ver todos - " itemValue=""/>
+                                                    <f:selectItems var="tipoServicio" value="#{mbCatalogosEstaticos.tiposServVigentes}"
+                                                                   itemLabel="#{tipoServicio.descripcion}" itemValue="#{tipoServicio.id}"/>
+                                                    <p:ajax event="change" listener="#{mbBusqTrams.manejarChangeCmbTipoServicio}" update="fstBusqFiltros"/>
+                                                </p:selectOneMenu>
+                                                <br/>
+                                            </p:column>
+                                        </p:row>
+                                        
+                                        <p:row>
+                                            <p:column style="text-align:left">
+                                                <p:outputLabel value="Impuesto:"/>
+                                            </p:column>
+                                            <p:column>
+                                                <p:selectOneMenu id="cmbImpuesto" value="#{mbBusqTrams.idImpuestoSelec}" style="width:400px;">
+                                                    <f:selectItem itemLabel=" - Ver todos - " itemValue=""/>
+                                                    <f:selectItems var="impuesto" value="#{mbCatalogosEstaticos.impuestos}"
+                                                                   itemLabel="#{impuesto.descripcion}" itemValue="#{impuesto.id}"/>
+                                                    <p:ajax event="change" listener="#{mbBusqTrams.manejarChangeCmbImpuesto}" update="fstBusqFiltros"/>
+                                                </p:selectOneMenu>
+                                            </p:column>
+                                        </p:row>
+                                        
+                                        <p:row id="tramites">
+                                            <p:column style="text-align:left">
+                                                <p:outputLabel value="#{msgValidacion.adycTipo}:"/>
+                                            </p:column>
+                                            <p:column>
+                                                <p:selectOneMenu id="cmbTipoTramite" value="#{mbBusqTrams.idTipoTramite}"
+                                                                 style="width:400px;" panelStyle="width:600px;">
+                                                    <f:selectItem itemLabel=" - Ver todos - " itemValue=""/>
+                                                    <f:selectItems value="#{mbBusqTrams.tiposTramite}" var="dtm"
+                                                                   itemLabel="#{dtm.id} - #{dtm.descripcion}"
+                                                                   itemValue="#{dtm.id}"/>
+                                                </p:selectOneMenu>
+                                            </p:column>
+                                        </p:row>
+
+                                        <p:row id="estado">
+                                            <p:column style="text-align:left">
+                                                <p:outputLabel value="#{msgValidacion.adycEdo}:"/>
+                                            </p:column>
+                                            <p:column>
+                                               
+                                                <p:selectCheckboxMenu id="cmbEstado" value="#{mbBusqTrams.selectStatus}" 
+                                                        label="#{mbBusqTrams.mensajeEstadosTramites}"
+                                                        style="width:400px;" filter="true" filterMatchMode="startsWith">
+                                                    <f:selectItems value="#{mbBusqTrams.estadosTramite}" var="edo"
+                                                                   itemValue="#{edo.id}" itemLabel="#{edo.descripcion}"/>
+                                                    <!-- 
+                                                        No se utiliza este evento porque captura todos los elementos que cambian de estado
+                                                        <p:ajax event="toggleSelect" listener="#{mbBusqTrams.cambioEstadosTramites}" update="cmbEstado"/>
+                                                    -->
+                                                        <p:ajax event="change" listener="#{mbBusqTrams.cambioEstadosTramites}" update="cmbEstado"/>
+                                                </p:selectCheckboxMenu>
+                                            </p:column>
+                                        </p:row>
+
+                                        <p:row rendered="#{mbBusqTrams.mostrarFiltroDictaminadores}">
+                                            <p:column style="text-align:left">
+                                                <p:outputLabel value="#{msgValidacion.adycDictamina}:"/>
+                                            </p:column>
+                                            <p:column>
+                                                <p:selectOneMenu id="cmbDictaminador" value="#{mbBusqTrams.idDictaminadorSelec}" style="width:400px;">
+                                                    <f:selectItem itemLabel=" - Ver todos - " itemValue=""/>
+                                                    <f:selectItems value="#{mbBusqTrams.dictaminadores}" var="dtm"
+                                                                   itemLabel="#{dtm.descripcion}" itemValue="#{dtm.id}"/>
+                                                </p:selectOneMenu>
+                                            </p:column>
+                                        </p:row>
+                                        
+                                        <p:row>
+                                            <p:column style="text-align:left; width:25%;">
+                                                <p:outputLabel value="Fecha de inicio del tr&aacute;mite:"/>
+                                            </p:column>
+                                            <p:column colspan="2">
+                                                <h:panelGrid columns="4" cellspacing="0" width="60%">
+                                                    <p:calendar value="#{mbBusqTrams.fechaInicioPresTram}" locale="es"
+                                                                pattern="dd/MM/yyyy" id="popupButtonCalIni" yearRange="2000"
+                                                                navigator="true" maxdate="#{mbBusqTrams.fechaActual}"
+                                                                readonlyInput="true"
+                                                                styleClass="myClass">
+                                                        <p:ajax event="dateSelect" listener="#{mbBusqTrams.setFechas}"
+                                                                update="popupButtonCalFin"
+                                                                process="@this, popupButtonCalIni, popupButtonCalFin"/>
+                                                    </p:calendar>
+                                                    <p:outputLabel value="    a:   "/>
+                                                    <p:calendar value="#{mbBusqTrams.fechaFinPresTram}" locale="es"
+                                                                pattern="dd/MM/yyyy" id="popupButtonCalFin" yearRange="2000"
+                                                                navigator="true" maxdate="#{mbBusqTrams.fechaActual}"
+                                                                readonlyInput="true"
+                                                                styleClass="myClass" style="margin-left:10%">
+                                                        <p:ajax event="dateSelect" listener="#{mbBusqTrams.setFechas}"
+                                                                update="popupButtonCalFin"
+                                                                process="@this, popupButtonCalIni, popupButtonCalFin"/>
+                                                    </p:calendar>
+
+                                                </h:panelGrid>
+                                            </p:column>
+                                            </p:row>                    
+                                            <p:row>                    
+                                            <p:column style="text-align:left; width:25%;">
+                                                <p:outputLabel value="Fecha de resoluci&oacute;n:"/>
+                                            </p:column>
+                                            <p:column colspan="2">
+                                                <h:panelGrid columns="4" cellspacing="0" width="60%">
+                                                    <p:calendar value="#{mbBusqTrams.fechaIniResolucion}" locale="es"
+                                                                pattern="dd/MM/yyyy" id="popupButtonResIni" yearRange="2000"
+                                                                navigator="true" maxdate="#{mbBusqTrams.fechaActual}"
+                                                                readonlyInput="true"
+                                                                styleClass="myClass">
+                                                        <p:ajax event="dateSelect" listener="#{mbBusqTrams.setFechas}"
+                                                                update="popupButtonResFin"
+                                                                process="@this, popupButtonResIni, popupButtonResFin"/>
+                                                    </p:calendar>
+                                                    <p:outputLabel value="    a:   "/>
+                                                    <p:calendar value="#{mbBusqTrams.fechaFinResolucion}" locale="es"
+                                                                pattern="dd/MM/yyyy" id="popupButtonResFin" yearRange="2000"
+                                                                navigator="true" maxdate="#{mbBusqTrams.fechaActual}"
+                                                                readonlyInput="true"
+                                                                styleClass="myClass" style="margin-left:10%">
+                                                        <p:ajax event="dateSelect" listener="#{mbBusqTrams.setFechas}"
+                                                                update="popupButtonResFin"
+                                                                process="@this, popupButtonResIni, popupButtonResFin"/>
+                                                    </p:calendar>
+
+                                                </h:panelGrid>
+                                            </p:column>
+                                            </p:row>                    
+                                            <p:row>                     
+                                             <p:column style="text-align:left; width:25%;">
+                                                <p:outputLabel value="Fecha de pago:"/>
+                                            </p:column>
+                                            <p:column colspan="2">
+                                                <h:panelGrid columns="4" cellspacing="0" width="60%">
+                                                    <p:calendar value="#{mbBusqTrams.fechaIniPago}" locale="es"
+                                                                pattern="dd/MM/yyyy" id="popupButtonPagIni" yearRange="2000"
+                                                                navigator="true" maxdate="#{mbBusqTrams.fechaActual}"
+                                                                readonlyInput="true"
+                                                                styleClass="myClass">
+                                                        <p:ajax event="dateSelect" listener="#{mbBusqTrams.setFechas}"
+                                                                update="popupButtonPagFin"
+                                                                process="@this, popupButtonPagIni, popupButtonPagFin"/>
+                                                    </p:calendar>
+                                                    <p:outputLabel value="    a:   "/>
+                                                    <p:calendar value="#{mbBusqTrams.fechaFinPago}" locale="es"
+                                                                pattern="dd/MM/yyyy" id="popupButtonPagFin" yearRange="2000"
+                                                                navigator="true" maxdate="#{mbBusqTrams.fechaActual}"
+                                                                readonlyInput="true"
+                                                                styleClass="myClass" style="margin-left:10%">
+                                                        <p:ajax event="dateSelect" listener="#{mbBusqTrams.setFechas}"
+                                                                update="popupButtonPagFin"
+                                                                process="@this, popupButtonPagIni, popupButtonPagFin"/>
+                                                    </p:calendar>
+
+                                                </h:panelGrid>
+                                            </p:column>                    
+                                                                
+                                            <p:column style="width:300px; text-align: right">
+                                                <p:commandButton value="Buscar" update="tblTramites, pnlBusqueda, growl, panelBar"
+                                                                 process="pnlBusqueda" actionListener="#{mbBusqTrams.buscarXFiltros}"
+                                                                 ajax="true" icon="ui-icon-search" widgetVar="wBuscarXFiltro"
+                                                                 onclick="wvTblTramites.getPaginator().setPage(0);"/>
+
+                                                <p:commandButton title="Limpiar formulario" action="#{mbBusqTrams.reset}"
+                                                                 update="pnlBusqueda tblTramites :frmDyCAdmin:btnLiberar modalDialog modalDialogPdf"
+                                                                 onclick="wvTblTramites.getPaginator().setPage(0);" 
+                                                                 icon="ui-icon-trash"></p:commandButton>
+                                            </p:column>
+                                        </p:row>
+                                    </p:panelGrid>
+                                </p:fieldset>
+                        </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:panel>
+                <p:toolbar id="panelBar" style="width:100%">
+                    <!--<p:toolbarGroup align="left">
+                        <p:outputLabel value="#{mbBusqTrams.frmSolicitud.entidadFed} - #{mbBusqTrams.frmSolicitud.admNombre}"
+                                       rendered="#{mbBusqTrams.banderaListaAdmin}"/>
+                        <br/>
+                        <p:outputLabel value="#{msgValidacion.adycNumControl}: #{mbBusqTrams.frmSolicitud.numControl}   "
+                                       rendered="#{mbBusqTrams.frmSolicitud.numControl != ''}"/>
+                        <br/>
+                        <p:outputLabel value="#{msgValidacion.adycRfc}: #{mbBusqTrams.frmSolicitud.rfcContribuyente}"
+                                       rendered="#{mbBusqTrams.frmSolicitud.rfcContribuyente != ''}"/>
+                    </p:toolbarGroup>-->
+
+                    <p:toolbarGroup align="right">
+                        <p:commandButton icon="ui-icon-calculator" ajax="true" title="Imprimir formato Excel" update="pnlNota"
+                                         onclick="dlgExcel.show()">
+                            
+                        </p:commandButton>
+                    </p:toolbarGroup>
+                    <p:toolbarGroup align="right">
+                        <p:commandButton title="Imprimir formato PDF" ajax="true" icon="ui-icon-print" onclick="dlgPdf.show();"
+                                         update="pnlNotaPdf">
+                                         </p:commandButton>
+                    </p:toolbarGroup>
+                    <p:toolbarGroup align="left">
+                        <p:commandButton id="btnLiberar" value="Liberar a Dictaminador Asignado" title="Liberar" ajax="true"
+                                       disabled="#{mbBusqTrams.enabledBtnLiberar}"  
+                                       action="#{mbBusqTrams.liberarTramites}" icon="ui-icon-unlocked"
+                                       update="tblTramites @this btnLiberar growl2">
+                            
+                            </p:commandButton>
+                    </p:toolbarGroup>
+                    <p:toolbarGroup align="left">
+                        <p:commandButton id="btnGenerarReporte" title="Generar Reporte" onclick="dlgGenerarReporte.show();"
+                                         disabled="#{mbBusqTrams.desactivaBotonReporte}"
+                                         value ="#{msgValidacion.generarReporte}">
+                        </p:commandButton>
+                    </p:toolbarGroup>
+                </p:toolbar>
+
+                <!--Necesario para reportes PDF y EXCEL-->
+                <p:dialog id="modalDialog" header="#{msgValidacion.ce2ImprimirElExpediente}" widgetVar="dlgExcel" modal="true"
+                          width="450" resizable="false" closable="true">
+                    <p:panelGrid id="pnlNota" style="width:100%;">
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="Nota: #{msgValidacion.consulDevComp_ModificarBusqueda}." rendered="#{mbBusqTrams.totalRegs > 65535 }" />
+                                <p:outputLabel value="Nota: #{msgValidacion.consulDevComp_SeImprimiran} #{mbBusqTrams.totalRegs} registros." rendered="#{65535  >= mbBusqTrams.totalRegs}" />
+                                <!--
+                                <p:outputLabel value="Nota: El número de tramites sobrepasa los 65535 , por favor modifique su búsqueda." rendered="#{mbBusqTrams.totalRegs > 65535 }" />
+                                <p:outputLabel value="Nota: Se imprimirán #{mbBusqTrams.totalRegs} registros." rendered="#{65535  >= mbBusqTrams.totalRegs}" />
+                                -->
+                            </p:column>
+
+                            <p:column></p:column>
+
+                        </p:row>
+
+                        <p:row>
+                            <p:column colspan="2">
+                                <p:commandButton ajax="true" value="#{msgValidacion.Cancelar}" onclick="dlgExcel.hide();"/>
+                                <p:commandButton ajax="true" value="#{msgValidacion.Aceptar}" onclick="dlgExcel.hide(); pollDownloadExcel.start();"
+                                                 rendered="#{!(mbBusqTrams.totalRegs > 65535 )}" actionListener="#{mbBusqTrams.crearReporteExcel}" oncomplete="statusDialogDownloadReporte.show();">
+                                    <!--<p:dataExporter type="xls" target="tblTramites" fileName="Tramites" encoding="ISO-8859-1"/> -->
+                                </p:commandButton>
+                                <p:commandButton style="display: none"  widgetVar="btnDownloadExcel" onclick="statusDialogDownloadReporte.hide();PrimeFaces.monitorDownload(statusDialogDownloadReporte.show(), statusDialogDownloadReporte.hide());" value="#{msgValidacion.Aceptar}" ajax="false" rendered="#{!(mbBusqTrams.totalRegs > 65535 )}">
+                                    <p:fileDownload contentDisposition="attachment" value="#{mbBusqTrams.reporteXLS}" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+                </p:dialog>
+
+                <p:dialog id="modalDialogPdf" header="#{msgValidacion.ce2ImprimirElExpediente}" widgetVar="dlgPdf" modal="true"
+                          width="450" resizable="false" closable="true">
+                    <p:panelGrid id="pnlNotaPdf" style="width:100%;">
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="Nota: #{msgValidacion.consulDevComp_ModificarBusqueda}." rendered="#{mbBusqTrams.totalRegs > 65535 }" />
+                                <p:outputLabel value="#{msgValidacion.consulDevComp_SeImprimiran} #{mbBusqTrams.totalRegs} registros." rendered="#{65535  >= mbBusqTrams.totalRegs}" />
+
+                                <!--
+                                <p:outputLabel value="Nota: El número de tramites sobrepasa los 65535 , por favor modifique su búsqueda." rendered="#{mbBusqTrams.totalRegs > 65535 }" />
+                                                                <p:outputLabel value="Nota: Se imprimirán #{mbBusqTrams.totalRegs} registros." rendered="#{65535  >= mbBusqTrams.totalRegs}" />
+                                -->
+
+                            </p:column>
+
+                            <p:column></p:column>
+
+                        </p:row>
+
+                        <p:row>
+                            <p:column colspan="2">
+                                <p:commandButton ajax="true" value="#{msgValidacion.Cancelar}" onclick="dlgPdf.hide();"/>
+                                <p:commandButton ajax="true" value="#{msgValidacion.Aceptar}" onclick="dlgPdf.hide(); pollDownloadPdf.start();"
+                                                 rendered="#{!(mbBusqTrams.totalRegs > 65535 )}" actionListener="#{mbBusqTrams.crearReportePDF}" oncomplete="statusDialogDownloadReporte.show();">
+                                    <!--<p:dataExporter type="pdf" target="tblTramites" fileName="Tramites" encoding="ISO-8859-1" preProcessor="#{mbBusqTrams.preProcessPDF}"/> -->
+                                </p:commandButton>
+                                <p:commandButton style="display: none" widgetVar="btnDownloadPdf" onclick="statusDialogDownloadReporte.hide();PrimeFaces.monitorDownload(statusDialogDownloadReporte.show(), statusDialogDownloadReporte.hide());" value="#{msgValidacion.Aceptar}" ajax="false" rendered="#{!(mbBusqTrams.totalRegs > 65535 )}">
+                                    <p:fileDownload contentDisposition="attachment" value="#{mbBusqTrams.reportePDF}" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+                </p:dialog>
+
+                <p:scrollPanel id="pnlTblLista" style="width:100%; height:400px;" mode="native">
+                   <p:dataTable var="tramiteAux" value="#{mbBusqTrams.tramites}" paginator="true" rows="20"
+                                paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                rowsPerPageTemplate="10,20,50, 100"  selection="#{mbBusqTrams.lstDictaminados}" rowKey="#{tramiteAux.numControl}"
+                                id="tblTramites" lazy="#{mbBusqTrams.gridLazy}" paginatorAlwaysVisible="false" widgetVar="wvTblTramites" 
+                                emptyMessage="No se encontraron solicitudes de devolucion o casos de compensacion con los criterios ingresados" 
+                                scrollWidth="800px">
+
+                        <p:ajax event="rowSelectCheckbox" listener="#{mbBusqTrams.onRowSelect}" update=":frmDyCAdmin:btnLiberar"/>
+                        <p:ajax event="rowUnselectCheckbox" listener="#{mbBusqTrams.onRowUnselect}" update=":frmDyCAdmin:btnLiberar"/>
+                        <p:ajax event="toggleSelect" listener="#{mbBusqTrams.validaBotonValidar}" update=":frmDyCAdmin:btnLiberar"/>
+
+                        <p:column sortBy="#{tramiteAux.administracion}" rendered="#{mbBusqTrams.mostrarFiltroUnidadesAdmvas}" width="100%">
+                            <f:facet name="header">
+                                <h:outputText value="#{msgValidacion.adycAdmin}"/>
+                            </f:facet>
+                            <h:outputText value="#{tramiteAux.administracion}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{tramiteAux.dictaminador}" width="100%">
+                            <f:facet name="header">
+                                <h:outputText value="#{msgValidacion.adycDictamina}"/>
+                            </f:facet>
+                            <h:outputText value="#{tramiteAux.dictaminador}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{tramiteAux.numControl}" width="100%">
+                            <f:facet name="header">
+                                <h:outputText value="#{msgValidacion.adycNumControl}"/>
+                            </f:facet>
+                            <h:outputText value="#{tramiteAux.numControl}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{tramiteAux.rfc}" width="100%">
+                            <f:facet name="header">
+                                <h:outputText value="#{msgValidacion.adycRfc}"/>
+                            </f:facet>
+                            <h:outputText value="#{tramiteAux.rfc}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{tramiteAux.tramite}" width="100%">
+                            <f:facet name="header">
+                                <h:outputText value="#{msgValidacion.adycTram}"/>
+                            </f:facet>
+                            <h:outputText value="#{tramiteAux.tramite}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{tramiteAux.tipoTramite}" width="50%">
+                            <f:facet name="header">
+                                <h:outputText value="#{msgValidacion.adycTipo}"/>
+                            </f:facet>
+                            <h:outputText value="#{tramiteAux.tipoTramite}"/>
+                        </p:column>
+
+                        <p:column width="50%">
+                            <f:facet name="header">
+                                <h:outputText value="#{msgValidacion.adycFechaRecibido}"/>
+                            </f:facet>
+                                <h:outputText value="#{tramiteAux.fechaPresentacion}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                        </p:column>
+                        
+                        <p:column width="80%">
+                            <f:facet name="header">
+                                <h:outputText value="#{msgValidacion.adycPeriodo}"/>
+                            </f:facet>
+                            <h:outputText value="#{tramiteAux.periodo}"/>
+                        </p:column>
+                        
+                        <p:column width="80%">
+                            <f:facet name="header">
+                                <h:outputText value="#{msgValidacion.adycEjercicio}"/>
+                            </f:facet>
+                            <h:outputText value="#{tramiteAux.ejercicio}"/>
+                        </p:column>
+                        
+                        <p:column width="80%">
+                            <f:facet name="header">
+                                <h:outputText value="#{msgValidacion.adycEdo}"/>
+                            </f:facet>
+                            <h:outputText value="#{tramiteAux.estado}"/>
+                        </p:column>
+                        
+                        <p:column width="50%">
+                            <f:facet name="header">
+                                <h:outputText value="#{msgValidacion.adycFechaResolucion}"/>
+                            </f:facet>
+                            <h:outputText value="#{tramiteAux.fechaResolucion}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                        </p:column>
+                        
+                        <p:column sortBy="#{tramiteAux.importe}" style="text-align: right; white-space: nowrap;" width="80%">
+                            <f:facet name="header">
+                                <h:outputText value="#{msgValidacion.adycMonto}"/>
+                            </f:facet>
+                            <h:outputText value="#{tramiteAux.importe}">
+                                <f:convertNumber currencySymbol="$ " type="currency" locale="es_MX"/>
+                            </h:outputText>
+                        </p:column>
+                                
+                        <p:column width="80%" rendered="#{mbBusqTrams.selectTipoTramiteComp}">
+                            <f:facet name="header">
+                                <h:outputText value="#{msgValidacion.adycImporteAutorizado}"/>
+                            </f:facet>
+                            <h:outputText value="#{tramiteAux.importeAutorizado}">
+                                <f:convertNumber currencySymbol="$ " type="currency" locale="es_MX"/>
+                            </h:outputText>
+                        </p:column>
+                        
+                        <p:column width="50%" rendered="#{mbBusqTrams.selectEdoPagada}">
+                            <f:facet name="header">
+                                <h:outputText value="#{msgValidacion.adycFechaPago}"/>
+                            </f:facet>
+                            <h:outputText value="#{tramiteAux.fechaPago}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                        </p:column>
+                        
+                        <p:column width="80%;" rendered="#{mbBusqTrams.selectEdoPagada}">
+                            <f:facet name="header">
+                                <h:outputText value="#{msgValidacion.adycImportePagado}"/>
+                            </f:facet>
+                            <h:outputText value="#{tramiteAux.importePagado}">
+                                <f:convertNumber currencySymbol="$ " type="currency" locale="es_MX"/>
+                            </h:outputText>
+                        </p:column>
+                        
+                        <p:column width="100%">
+                            <f:facet name="header">
+                                <h:outputText value="#{msgValidacion.adycImpuestos}"/>
+                            </f:facet>
+                            <h:outputText value="#{tramiteAux.impuestos}"/>
+                        </p:column>
+                        
+                        <p:column width="100%">
+                            <f:facet name="header">
+                                <h:outputText value="#{msgValidacion.adycImpuestosConcepto}"/>
+                            </f:facet>
+                            <h:outputText value="#{tramiteAux.conceptoImpuestos}"/>
+                        </p:column>
+                         
+                        <p:column style="width:32px;text-align: center" exportable="false">
+                             <f:facet name="header">
+                                <h:outputText value="Ver Detalle"/>
+                            </f:facet>
+
+                            <p:commandButton   ajax="false"   action="#{mbBusqTrams.verDetalle}" icon="ui-icon-search  font-size: 1.2em" title="Consultar">
+                                <f:setPropertyActionListener value="#{tramiteAux}" target="#{mbBusqTrams.tramiteSelec}" />
+                            </p:commandButton>
+
+                        </p:column> 
+
+                        <p:column selectionMode="multiple" exportable="false" style="width:16px;text-align:center" >
+                            <f:facet name="header">
+                                <h:outputText value="Liberar a Dictaminador"/>
+                            </f:facet>
+                        </p:column>
+
+                        <f:facet name="footer">
+                            <p:outputLabel value="#{mbBusqTrams.lblTotalResultados}"/>
+                        </f:facet>
+
+                    </p:dataTable>
+                </p:scrollPanel>
+
+
+            <p:dialog   id="dlgSelecUnidadesAdmvas" header="#{msgValidacion.consulDevComp_SeleccioneUnidades} ... " widgetVar="wdlgSelecUnidadesAdmvas" modal="true"
+                width="700" height="480" resizable="false" closable="false" visible="#{mbBusqTrams.mostrarDlgUnidadesAdmvas}">
+
+                <p:dataTable id="tbUnidadesAdmvas" var="unidadAdmva" value="#{mbBusqTrams.unidadesAdmvas}" selection="#{mbBusqTrams.unidadesAdmvasSelec}" 
+                        rowKey="#{unidadAdmva.claveSir}" scrollHeight="350" scrollable="true" style="width:100%; padding:0;" rowIndexVar="rowIndex"
+                        rowStyleClass="#{(rowIndex mod 2) eq 0 ?'highlightA':'highlightB'}" emptyMessage="#{msgValidacion.tblEmpty}">
+
+                        <p:ajax event="rowSelect" listener="#{mbBusqTrams.manejarRowSelectAdmins}" process="@this" update=":frmDyCAdmin:lblUnidadesSelecs"/>
+                        <p:ajax event="rowSelectCheckbox" listener="#{mbBusqTrams.manejarRowSelectAdmins}" process="@this" update=":frmDyCAdmin:lblUnidadesSelecs"/>
+                        <p:ajax event="rowUnselectCheckbox" listener="#{mbBusqTrams.manejarRowSelectAdmins}" process="@this" update=":frmDyCAdmin:lblUnidadesSelecs"/>
+                        <p:ajax event="rowUnselect" listener="#{mbBusqTrams.manejarRowSelectAdmins}" process="@this" update=":frmDyCAdmin:lblUnidadesSelecs"/>
+                        <p:ajax event="toggleSelect" listener="#{mbBusqTrams.manejarRowSelectAdmins}" process="@this" update=":frmDyCAdmin:lblUnidadesSelecs"/>
+
+                        <p:column selectionMode="multiple" style="width:16px; text-align:center"/>
+                        
+                        <p:column headerText="Clave SIR" sortBy="#{unidadAdmva.claveSir}" width="70">
+                            <h:outputText value="#{unidadAdmva.claveSir}"  />
+                        </p:column>
+                        <p:column headerText="Nombre unidad administrativa" sortBy="#{unidadAdmva.nombre}" width="300">
+                            <h:outputText value="#{unidadAdmva.nombre}"/>
+                        </p:column>
+                        <p:column headerText="Entidad federativa" sortBy="#{unidadAdmva.entidadFederativa}" width="250">
+                            <h:outputText value="#{unidadAdmva.entidadFederativa}"/>
+                        </p:column>
+
+                    </p:dataTable>
+
+                <table border="0" width="100%">
+                    <tr>
+                        <td>
+                             <p:outputLabel id="lblUnidadesSelecs" value="unidades seleccionadas: #{mbBusqTrams.adminsSelecsDialog}" styleClass=""/>
+                        </td>
+                    </tr>
+                    <tr height="50px">
+
+                        <td align="center">
+                            <p:commandButton value="Cancelar" action="#{mbBusqTrams.cancelarSelecAdmins}" update="dlgSelecUnidadesAdmvas"/>
+                            <p:commandButton id="btnAceptar" value="Aceptar" action="#{mbBusqTrams.manejarAceptarSelectAdmins}"
+                                update="dlgSelecUnidadesAdmvas lblAdminsSelecs cmbDictaminador" process="@this"/>
+                        </td>
+                    </tr>
+                </table>
+            </p:dialog>
+
+        </h:form>
+            <p:dialog id="modalDialogGenerarReporte" header="#{msgValidacion.generarReporte}" widgetVar="dlgGenerarReporte" modal="true"
+                                      width="600" resizable="false" closable="true">
+                <h:form>
+                    <p:growl id="growlx" showDetail="true" sticky="true" />
+                    <p:panelGrid id="pnlBusqFiltros1" style="width:100%; display:block; text-align:left;">
+                        
+                        <p:row> 
+                            <p:column style="text-align:left; width:40%;">
+                                <p:outputLabel value="Fechas del reporte de: "/>
+                            </p:column>
+                            <p:column colspan="2" style="width:400%;">
+                                <h:panelGrid columns="4" cellspacing="0" width="100%">
+                                    <p:calendar value="#{generarReporteMB.fechaInicioGenerarReporte}" locale="es"
+                                                pattern="dd/MM/yyyy" id="popupButtonCalInix" yearRange="2000"
+                                                navigator="true" maxdate="#{generarReporteMB.fechaActual}"
+                                                readonlyInput="true"
+                                                styleClass="myClass" style="margin-left:-8%;" >
+                                    </p:calendar>
+                                    <p:outputLabel value="    a:   "/>
+                                    <p:calendar value="#{generarReporteMB.fechaFinGenerarReporte}" locale="es"
+                                                pattern="dd/MM/yyyy" id="popupButtonCalFinx" yearRange="2000"
+                                                navigator="true" maxdate="#{generarReporteMB.fechaActual}"
+                                                readonlyInput="true"
+                                                styleClass="myClass" style="margin-left:10%;">
+                                    </p:calendar>
+                                </h:panelGrid>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="Modelo: "/>
+                            </p:column>
+                            <p:column>
+                                <p:selectOneMenu id="modeloGenerarReporte" value="#{generarReporteMB.idSeleccionarModelo}" style="width:300px;">
+                                    <f:selectItem itemLabel="" itemValue=""/>
+                                    <f:selectItems value="#{generarReporteMB.modelos}" var="dtm"
+                                                   itemLabel="#{dtm.descripcion}" itemValue="#{dtm.idModelo}"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="2" align="right">
+                                <p:commandButton value="Buscar" icon="ui-icon-search" actionListener="#{generarReporteMB.redireccionar}" update="growlx"/>
+                                <p:commandButton title="Limpiar Formulario" icon="ui-icon-trash" action="#{generarReporteMB.reset}"
+                                                 update="pnlBusqFiltros1"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+        </h:body>
+    </html>
+</f:view>

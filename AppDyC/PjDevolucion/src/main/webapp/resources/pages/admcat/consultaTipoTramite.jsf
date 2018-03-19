@@ -1,0 +1,148 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <style type="text/css">
+                .negrita {
+                    font-weight: bold;
+                }
+            </style>
+        </h:head>
+        <h:body>
+            <p:panel id="panelPrincipal" visible="true" style="width:900px" styleClass="panelgrid">
+            
+                <f:facet name="header"  >
+                    <div align="center">#{consultaTipoTramite.titulo}</div>
+                </f:facet>
+                <h:panelGrid style="width:100%;" columns="2" id="panel1" cellpadding="10">
+                    <p:column width="400">
+                        <p:outputLabel value="Descripci&oacute;n" styleClass="negrita" />
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel value="#{consultaTipoTramite.datosDelTramite.guardadoTipoTramiteVO.tipoTramite.descripcion}" />
+                    </p:column>
+                    <p:column >
+                        <p:outputLabel value="ID del tr&aacute;mite" styleClass="negrita" />
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel value="#{consultaTipoTramite.datosDelTramite.guardadoTipoTramiteVO.tipoTramite.idTipoTramite}" />
+                    </p:column>
+                    <p:column >
+                        <p:outputLabel value="Tipo de servicio" styleClass="negrita" />
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel value="#{consultaTipoTramite.datosDelTramite.tipoServicio.descripcion}" />
+                    </p:column>
+                    <p:column >
+                        <p:outputLabel value="Origen del saldo" styleClass="negrita" />
+                    </p:column>
+                    <p:column >
+                        <p:outputLabel value="#{consultaTipoTramite.datosDelTramite.origenSaldo.descripcion}" />
+                    </p:column>
+                    <p:column >
+                        <p:outputLabel value="Impuesto" styleClass="negrita" />
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel value="#{consultaTipoTramite.datosDelTramite.impuesto.descripcion}" />
+                    </p:column>
+                    <p:column >
+                        <p:outputLabel value="Concepto" styleClass="negrita" />
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel value="#{consultaTipoTramite.datosDelTramite.concepto.descripcion}" />
+                    </p:column>
+                    <p:column >
+                        <p:outputLabel value="Clave Contable" styleClass="negrita" />
+                    </p:column>
+                    <p:column >
+                        <p:outputLabel value="#{consultaTipoTramite.datosDelTramite.guardadoTipoTramiteVO.tipoTramite.claveContable}" />
+                    </p:column>
+                    <p:column >
+                        <p:outputLabel value="Clave de c&oacute;mputo" styleClass="negrita" />
+                    </p:column>
+                    <p:column >
+                        <p:outputLabel value="#{consultaTipoTramite.datosDelTramite.guardadoTipoTramiteVO.tipoTramite.claveComputo}" />
+                    </p:column>
+                    <p:column >
+                        <p:outputLabel value="&iquest;Requiere CCI?" styleClass="negrita" />
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel value="#{consultaTipoTramite.datosDelTramite.requiereCCI}"/>
+                    </p:column>
+                    <p:column >
+                        <p:outputLabel value="&iquest;Resoluci&oacute;n autom&aacute;tica?" styleClass="negrita" />
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel value="#{consultaTipoTramite.datosDelTramite.resolucionAutomatica}" />
+                    </p:column>
+                    <p:column >
+                        <p:outputLabel value="Puntos de asigaci&oacute;n" styleClass="negrita" />
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel value="#{consultaTipoTramite.datosDelTramite.guardadoTipoTramiteVO.tipoTramite.puntosAsignacion}" />
+                    </p:column>
+                    <p:column >
+                        <br />
+                        <p:outputLabel value="Tipo de Unidades Administrativas" styleClass="negrita" />
+                    </p:column>
+                    <p:column id="columnaUnidadesAdmvasTipo">
+                    </p:column>                
+                    <p:column style="width:200px;" >
+                        <p:outputLabel value="Tipo de plazo" styleClass="negrita" />
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel value="#{consultaTipoTramite.datosDelTramite.tipoPlgazo.descripcion}" />
+                    </p:column>
+                    <p:column >
+                        <p:outputLabel value="N&uacute;mero de d&iacute;as" styleClass="negrita" />
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel value="#{consultaTipoTramite.datosDelTramite.guardadoTipoTramiteVO.tipoTramite.plazo}" />
+                    </p:column>
+                        <p:column >
+                        <br />
+                        <p:outputLabel value="Roles" styleClass="negrita" />
+                    </p:column>
+                    <p:column id="columnaRoles" >
+                    </p:column>
+                    <p:column >
+                        <br />
+                        <p:outputLabel value="Anexos" styleClass="negrita" />
+                    </p:column>
+                    <p:column id="columnaAnexos" >
+                    </p:column>
+                    <p:column >
+                        <br />
+                        <p:outputLabel value="Informaci&oacute;n a requerir" styleClass="negrita" />
+                    </p:column>
+                    <p:column id="panelInfoARequerir">
+                    </p:column>
+                    <p:column>
+                        <br />
+                        <p:outputLabel value="Subtr&aacute;mites" styleClass="negrita" />
+                    </p:column>
+                    <p:column id="columnaSubtramites">
+                    </p:column>
+                    <p:column >
+                        <br />
+                        <p:outputLabel value="Suborigen de saldo" styleClass="negrita" />
+                    </p:column>
+                    <p:column id="columnaSubOrigenSaldo" >
+                    </p:column>
+                    <p:column >
+                        <br />
+                        <p:outputLabel value="Tipos de periodo" styleClass="negrita" />
+                    </p:column>
+                    <p:column id="columnaTipoPeriodo" >
+                    </p:column>
+                </h:panelGrid>
+                <h:form>
+                    <p:panel style="height:43px">
+                        <p:commandButton value="Regresar" immediate="true" process="@this" action="#{consultaTipoTramite.redireccionar}" />
+                    </p:panel>
+                </h:form>
+            </p:panel>
+        </h:body>
+    </html>
+</f:view>

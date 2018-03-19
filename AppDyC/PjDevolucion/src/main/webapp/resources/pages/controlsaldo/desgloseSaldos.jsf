@@ -1,0 +1,176 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+        xmlns:pe="http://primefaces.org/ui/extensions" xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <h:outputStylesheet library="css/" name="cc.css"/>
+            <script type="text/javascript">
+                    // store original so we can call it inside our overriding method
+                $.datepicker._generateMonthYearHeader_original = $.datepicker._generateMonthYearHeader;
+                
+                  $.datepicker._generateMonthYearHeader = function (inst, dm, dy, mnd, mxd, s, mn, mns) {
+                      var header = $($.datepicker._generateMonthYearHeader_original(inst, dm, dy, mnd, mxd, s, mn, mns)), years = header.find('.ui-datepicker-year');
+                
+                      // reverse the years
+                      years.html(Array.prototype.reverse.apply(years.children()));
+                
+                      // return our new html
+                      return $('&lt;div />').append(header).html();
+                  }
+            </script>
+        </h:head>
+        <h:body>
+            <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+
+            <p:dialog modal="true" widgetVar="statusDialog" header="#{msgValidacion.ajaxLoading}" draggable="false"
+                      closable="false">
+                <p:graphicImage value="../../images/ajaxloadingbar.gif"/>
+            </p:dialog>
+
+            <h:form>
+                <p:panel header="#{labelscs.tituloDesglose}: #{sesionControlSaldos.idSaldoIcep}">
+                <p:panelGrid>
+               <p:row>
+                <p:column>
+                <c:forEach var="cuadro" items="#{mbDesgloseSaldos.cuadros}" varStatus="status">
+                    <p:panel header="Saldo a favor #{status.count} -----> #{cuadro.saldoAFavorStr}" style="width:60%; border:1px; text-align:left">
+                        <p:panelGrid>
+                            <p:row>
+                                <p:column style="width:35%; text-align:left;">
+                                    <h:outputLabel value="Origen:"/>
+                                </p:column>
+                                <p:column style="width:65%;text-align:left;">
+                                    <h:outputLabel value="#{cuadro.origen}">
+                                        <f:convertDateTime pattern="dd-MM-yyyy" type="date"/>
+                                    </h:outputLabel>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <h:outputLabel value="Fecha:"/>
+                                </p:column>
+                                <p:column>
+                                    <h:outputLabel value="#{cuadro.fecha}">
+                                        <f:convertDateTime pattern="dd-MM-yyyy" type="date"/>
+                                    </h:outputLabel>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <h:outputLabel value="INPC:"/>
+                                </p:column>
+                                <p:column>
+                                    <h:outputLabel value="#{cuadro.descrInpc}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column colspan="2">
+                                     <p:dataTable value="#{cuadro.cargos}" var="cargo"
+                                             style="text-align:center"
+                                             rowStyleClass="#{(rowIndex mod 2) eq 0 ?'highlightA':'highlightB'}"
+                                             emptyMessage="No hay cargos para este saldo a favor">
+                                    
+                                            <p:column headerText="Cargo origen" style="width:135px">
+                                                <h:outputText value="#{cargo.cargoOrigen}">
+                                                    <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                                                </h:outputText>
+                                            </p:column>
+                                            <p:column headerText="INPC" style="width:135px">
+                                                <h:outputText value="#{cargo.descrInpc}"/>
+                                            </p:column>
+                                            <p:column headerText="Factor act" style="width:135px">
+                                                <h:outputText value="#{cargo.factorAct}"/>
+                                            </p:column>
+                                            <p:column headerText="Fecha origen" style="width:135px">
+                                                <h:outputText value="#{cargo.fechaOrigen}">
+                                                    <f:convertDateTime pattern="dd-MM-yyyy" type="date"/>
+                                                </h:outputText>
+                                            </p:column>
+                                            <p:column headerText="Origen del cargo" style="width:100px">
+                                                <h:outputText value="#{cargo.origen}" title="#{cargo.descrOrigen}"/>
+                                            </p:column>
+                                            <p:column headerText="Cargo real" style="width:100px">
+                                                <h:outputText value="#{cargo.cargoReal}">
+                                                    <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                                                </h:outputText>
+                                            </p:column>
+                                        </p:dataTable>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <h:outputLabel value="Remanente:"/>
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{cuadro.remanente}">
+                                        <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                                    </h:outputText>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <h:outputLabel value="Remanente total al #{cuadro.fechaStr}:"/>
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{cuadro.remanenteTotal}" styleClass="#{cuadro.remanenteTotal lt 0 ? 'old' : ''}">
+                                        <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                                    </h:outputText>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                    </p:panel>    
+                    <br/>
+                </c:forEach>  
+            
+             <p:panel header="Saldos negativos" style="width:60%; border:1px; text-align:left">
+                <p:dataTable value="#{mbDesgloseSaldos.saldosNegativos}" var="saldoNegativo"
+                     style="text-align:center"
+                     rowStyleClass="#{(rowIndex mod 2) eq 0 ?'highlightA':'highlightB'}"
+                     emptyMessage="No existen saldos negativos para este saldo ICEP">
+            
+                    <p:column headerText="Origen" style="width:135px">
+                        <h:outputText value="#{saldoNegativo.origen}"/>
+                    </p:column>
+                    <p:column headerText="Importe" style="width:135px">
+                        <h:outputText value="#{saldoNegativo.importe}">
+                            <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="fecha" style="width:135px">
+                        <h:outputText value="#{saldoNegativo.fecha}">
+                            <f:convertDateTime pattern="dd-MM-yyyy" type="date"/>
+                        </h:outputText>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+
+            <h:outputLabel value="Remanente SIR: "/>
+            <h:outputText value="#{mbDesgloseSaldos.remanenteSIR}">
+                <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+            </h:outputText>
+                </p:column>
+            </p:row>
+            
+           <p:row>
+            <p:column>
+                    <p:commandButton value="#{msgValidacion.cbBotReg}" icon="ui-icon-arrowreturn-1-w"
+                                         id="btnIrDetalleIcep" action="#{mbDesgloseSaldos.regresar}"/>
+         
+                   <p:commandButton value="Calculadora"
+                                         actionListener="#{mbConvertidorSaldo.abrirDialog}"
+                                         icon="ui-icon-calculator" update=":frmDlgConvertidorSaldos" process="@this"/>
+             
+            </p:column>
+        </p:row>
+    </p:panelGrid>
+                </p:panel>
+            </h:form>
+
+            <ui:insert name="convertidoSaldos">
+                <ui:include src="convertidorSaldos.jsf"/>
+            </ui:insert>
+        </h:body>
+    </html>
+</f:view>

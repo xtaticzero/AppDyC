@@ -1,0 +1,204 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view contentType="text/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+    <html xmlns="http://www.w3.org/1999/xhtml" xmlns:p="http://primefaces.org/ui">
+        <h:head>
+            <title>#{msgValidacion.pvModPerVac}</title>
+            <h:outputStylesheet library="css/" name="formato.css"/>
+            <style type="text/css">
+                .ui-paginator {
+                    font-size: 12px !important;
+                }
+
+                .ui-datatable tbody td {
+                    white-space: normal;
+                    vertical-align: text-top;
+                }
+
+                .ui-datatable thead th {
+                    white-space: normal;
+                    vertical-align: text-top;
+                }
+            </style>
+            <script type="text/javascript">
+              function resetTabIndex() {
+                  dataTable.getPaginator().setPage(0);
+              }
+            </script>
+        </h:head>
+        <h:body>
+            <h:form id="modificarPeriodoVac">
+
+
+                    <p:panel header="#{msgValidacion.pvModPerVac}" >
+                    <div style="color:red;background: #f9f9f9; border: 1px solid #e2e2e2 !important;padding: 10px;" > 
+                        Los datos con * son obligatorios
+                    </div>
+                    <p:growl id="mess2" globalOnly="true"/>
+                    
+                     <h:panelGrid columns="2" style="margin: 0 auto" id="searchParams">
+                        
+                        
+                        
+                    </h:panelGrid>
+                     <p:panelGrid style="margin-top:20px">
+                                    <p:row>
+                                        <p:column  style="width:130px; font-weight: bold;">#{msgValidacion.pvFechIni}:<span style="color:red;">*</span></p:column>
+                                        <p:column  style="font-weight: bold;">
+                                            <p:calendar id="pvInicioPeriodo" value="#{periodoVacacionalMB.objetoPeriodoVacacional.inicioPeriodo}"
+                                                        showOn="button" yearRange="2000"  
+                                                        pattern="dd/MM/yyyy" locale="es_MX" timeZone="America/Mexico_City"
+                                                        disabledWeekends="true"
+                                                        required="true"
+                                                       
+                                                        readonlyInput="true"
+                                                        requiredMessage="El campo #{msgValidacion.pvFechIni} es obligatorio.">    
+
+                                            </p:calendar>
+                                        </p:column>
+                                        <p:column  style="width:130px; font-weight: bold;"></p:column>
+                                    </p:row>
+                                    
+                                    
+                                </p:panelGrid>
+                                <p:panelGrid style="margin-top:20px">
+                                    <p:row>
+                                        <p:column rowspan="2" style="width:130px; font-weight: bold;">#{msgValidacion.pvFechFin}:<span style="color:red;">*</span></p:column>
+                                        <p:column rowspan="2" style="font-weight: bold;">
+                                            <p:calendar id="pvFinPeriodo" value="#{periodoVacacionalMB.objetoPeriodoVacacional.finPeriodo}" 
+                                                        showOn="button" 
+                                                        pattern="dd/MM/yyyy" locale="es_MX" timeZone="America/Mexico_City"
+                                                        disabledWeekends="true"
+                                                        required="true"
+                                                     
+                                                        readonlyInput="true"
+                                                        requiredMessage="El campo #{msgValidacion.pvFechFin} es obligatorio.">
+                                            </p:calendar>
+                                        </p:column>
+                                        <p:column  style="width:130px; font-weight: bold;"></p:column>
+                                    </p:row>
+                                </p:panelGrid>
+                                <p:panelGrid style="margin-top:20px">
+                                    <p:row>
+                                        <p:column rowspan="2" style="width:130px; font-weight: bold;">#{msgValidacion.pvEstado}: <span style="color:red;">*</span></p:column>
+                                        <p:column rowspan="2" style="font-weight: bold;">
+                                            <p:selectOneMenu id="console" value="#{periodoVacacionalMB.objetoPeriodoVacacional.estado}" style="width:175px">
+                                                <f:selectItem itemLabel="Seleccionar" itemValue="" />
+                                                <f:selectItem itemLabel="Vigente" itemValue="true" />
+                                                <f:selectItem itemLabel="No Vigente" itemValue="false" />
+                                            </p:selectOneMenu>
+                                        </p:column>
+                                        <p:column  style="width:130px; font-weight: bold;"></p:column>
+                                    </p:row>
+                                </p:panelGrid>
+                                                
+                    <p:separator />              
+                        <p:outputLabel for="display" value="#{msgValidacion.pvMensaje}" />: <span style="color:red;">*</span><br />
+                        <p:inputTextarea rows="5" cols="20" counter="display" maxlength="300" 
+                                         counterTemplate="Quedan {0} caracteres." autoResize="false" 
+                                         style="width:350px !important;" value="#{periodoVacacionalMB.objetoPeriodoVacacional.mensaje}"
+                                         required="true"
+                                         requiredMessage="#{msgValidacion.hablilitarperiodo_m01}"/>
+                        <br />
+                        <h:outputText id="display" />
+                        <br />
+
+                                        
+                    <p:panel id="from" header="#{msgValidacion.pvInhaServ}: *" style="margin-top:20px;margin-bottom:20px">
+                            <p:panelGrid style="margin-top:20px">
+                                    <p:row>
+                                        <p:column rowspan="2" style="width:130px; font-weight: bold;">#{msgValidacion.pvApartirdel}: </p:column>
+                                        <p:column rowspan="2" style="width:260px; font-weight: bold;">
+                                            <p:calendar id="pvApartirdel" value="#{periodoVacacionalMB.objetoPeriodoVacacional.inicioHoraInhabServ}" 
+                                                        showOn="button" 
+                                                        pattern="dd/MM/yyyy" locale="es_MX" timeZone="America/Mexico_City" 
+                                                        disabledWeekends="true"
+                                                        required="true"
+                                                      
+                                                        readonlyInput="true"
+                                                        requiredMessage="El campo #{msgValidacion.pvApartirdel} es obligatorio."/>
+                                        </p:column>
+
+                                        <p:column rowspan="2" style="width:80px; font-weight: bold;">#{msgValidacion.pvAlas}: </p:column>
+                                        <p:column rowspan="2" style="font-weight: bold;">
+                                            
+                                            <p:selectOneMenu id="hoursFrom" value="#{periodoVacacionalMB.horaInicio}">
+                                                <f:selectItem itemLabel="Seleccionar hora" itemValue="" />
+                                                <f:selectItems value="#{periodoVacacionalMB.horasM}" var="entry"
+                                                               itemValue="#{entry.key}" itemLabel="#{entry.value}"/>
+                                            </p:selectOneMenu>    
+                                        </p:column>
+                                        <p:column  style="width:130px; font-weight: bold;">
+                                            
+                                            <p:selectOneMenu id="minutesFrom" value="#{periodoVacacionalMB.minutoInicio}">
+                                                <f:selectItem itemLabel="Seleccionar minutos" itemValue="" />
+                                                <f:selectItems value="#{periodoVacacionalMB.minutosM}" />
+                                            </p:selectOneMenu>
+                                        </p:column>
+                                        <p:column rowspan="2"  style="width:50px; font-weight: bold;">#{msgValidacion.pvHrs}</p:column>
+
+                                    </p:row>
+                                    
+
+                                </p:panelGrid>
+                                <p:panelGrid style="margin-top:20px">
+                                    <p:row>
+                                        <p:column rowspan="2" style="width:130px; font-weight: bold;">#{msgValidacion.pvHastael}: </p:column>
+                                        <p:column rowspan="2" style="width:260px; font-weight: bold;">
+                                            <p:calendar id="pvHastael" value="#{periodoVacacionalMB.objetoPeriodoVacacional.finHoraInhabServ}"
+                                                        showOn="button" 
+                                                        pattern="dd/MM/yyyy" locale="es_MX" timeZone="America/Mexico_City"
+                                                        disabledWeekends="true"
+                                                        required="true"
+                                                       
+                                                        readonlyInput="true"
+                                                        requiredMessage="El campo #{msgValidacion.pvHastael} es obligatorio."/>
+                                        </p:column>
+
+                                        <p:column rowspan="2" style="width:80px; font-weight: bold;">#{msgValidacion.pvAlas}: </p:column>
+                                        <p:column rowspan="2" style="font-weight: bold;">
+                                            
+                                            <p:selectOneMenu id="hoursUntil" value="#{periodoVacacionalMB.horaFin}">
+                                                <f:selectItem itemLabel="Seleccionar hora" itemValue="" />
+                                                <f:selectItems value="#{periodoVacacionalMB.horasM}" var="entry"
+                                                               itemValue="#{entry.key}" itemLabel="#{entry.value}"/>
+                                            </p:selectOneMenu>    
+                                        </p:column>
+                                        <p:column  style="width:130px; font-weight: bold;">
+                                            
+                                            
+                                            <p:selectOneMenu id="minutesUntil" value="#{periodoVacacionalMB.minutoFin}">
+                                                <f:selectItem itemLabel="Seleccionar minutos" itemValue="" />
+                                                <f:selectItems value="#{periodoVacacionalMB.minutosM}" />
+                                            </p:selectOneMenu>
+                                        </p:column>
+                                        <p:column rowspan="2"  style="width:50px; font-weight: bold;">#{msgValidacion.pvHrs}</p:column>
+                                         
+                                    </p:row>
+                                </p:panelGrid>
+                                <p:panelGrid style="margin-top:20px">
+                                    <p:row>
+                                        <p:column rowspan="2" style="font-weight: bold;">
+                                            <p:growl id="pvCancelar"/>
+                                            <p:commandButton value="#{msgValidacion.pvCancelar}" id="btnPVCancelar" update="pvCancelar"
+                                                               action="#{periodoVacacionalMB.btnPVCancelar}" 
+                                                               styleClass="ui-priority-primary" />
+                                            
+                                            <p:growl id="pvAceptar"/>
+                                            <p:commandButton value="#{msgValidacion.pvAceptar}" id="btnPVAceptar" update="pvAceptar" 
+                                                             action="#{periodoVacacionalMB.actualizarPeriodoVac}" 
+                                                              styleClass="ui-priority-primary" />
+                                            
+                                        </p:column>
+                                    </p:row>
+                                </p:panelGrid>
+                    </p:panel>
+                    <!-- 
+                    <p:scrollPanel id="scr1" style="height:600px" mode="native">
+                        aa
+                    </p:scrollPanel>-->
+                </p:panel>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" 
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:tx="http://www.springframework.org/schema/tx" 
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                           http://www.springframework.org/schema/beans/spring-beans-3.1.xsd   
+                           http://www.springframework.org/schema/tx     
+                           http://www.springframework.org/schema/tx/spring-tx-3.1.xsd    
+                           http://www.springframework.org/schema/context         
+                           http://www.springframework.org/schema/context/spring-context-3.1.xsd     
+                           http://www.springframework.org/schema/util         
+                           http://www.springframework.org/schema/util/spring-util-3.1.xsd">
+    <beans>
+        <util:properties id="conexionBD" location="file:///siat/dyc/configuracion/conexion.properties" />
+        <context:property-placeholder properties-ref="conexionBD" />
+
+        <bean id="dataSourceDYC" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+            <property name="driverClassName" value="#{conexionBD['driverClassNameD']}"/>
+            <property name="url" value="#{conexionBD['urlD']}"/>
+            <property name="username" value="#{conexionBD['usernameDA']}"/>
+            <property name="password" value="#{conexionBD['passwordDA']}"/>
+        </bean>
+
+	<bean id="dsAdmDesarrollo" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+            <property name="driverClassName" value="#{conexionBD['driverClassNameD']}"/>
+            <property name="url" value="jdbc:oracle:thin:@10.55.121.193:33400/STD_ADM"/>
+            <property name="username" value="SIAT_ADMCON_DYC"/>
+            <property name="password" value="d3y2c7c"/>
+        </bean>
+
+        <bean id="dataSourceDYCIntegracion" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+            <property name="driverClassName" value="#{conexionBD['driverClassNameDI']}"/>
+            <property name="url" value="#{conexionBD['urlDI']}"/>
+            <property name="username" value="#{conexionBD['usernameDI']}"/>
+            <property name="password" value="#{conexionBD['passwordDI']}"/>
+        </bean>
+
+        <bean id="dataSourceInformixDYC" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+            <property name="driverClassName" value='com.informix.jdbc.IfxDriver'/>
+            <property name="url" value='jdbc:informix-sqli://192.168.214.210:1532/satdgti:informixServer=etlhids_tcp'/>
+            <property name="username" value='siatuat'/>
+            <property name="password" value='siatuat1'/>
+        </bean>
+
+        <!--bean id="dataSourceDWHDB2Des" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+            <property name="driverClassName" value='com.ibm.db2.jcc.DB2Driver'/>
+            <property name="url" value='jdbc:db2://10.57.247.161:50001/dbd2'/>
+            <property name="username" value='udlps49'/>
+            <property name="password" value='y8s1S0Xa'/>
+        </bean-->
+
+        <bean id="jdbcTemplateOrigen" class="org.springframework.jdbc.core.JdbcTemplate">
+            <property name="dataSource" ref="dataSourceInformixDYC"></property>
+        </bean>
+
+	<bean id="jdbcTemplateDestino" class="org.springframework.jdbc.core.JdbcTemplate">
+            <property name="dataSource" ref="dataSourceDYC"></property>
+        </bean>
+        
+        <bean id="jdbcTemplateDYC" class="org.springframework.jdbc.core.JdbcTemplate">
+            <property name="dataSource" ref="dataSourceDYC"></property>
+        </bean>
+        
+        <bean   id="namedParameterJdbcTemplateDYC"
+                class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+                <constructor-arg ref="dataSourceDYC"></constructor-arg>
+        </bean>
+        
+        <bean id="jdbcTemplateInformix" class="org.springframework.jdbc.core.JdbcTemplate">
+            <property name="dataSource" ref="dataSourceInformixDYC"></property>
+        </bean>
+        
+        <bean id="jdbcTemplateDYCDB2" class="org.springframework.jdbc.core.JdbcTemplate">
+            <!--property name="dataSource" ref="dataSourceDWHDB2Des"/-->
+            <property name="dataSource" ref="dataSourceInformixDYC"/>
+        </bean>
+        
+        <bean id="jdbcTemplateDYCRFC" class="org.springframework.jdbc.core.JdbcTemplate">
+            <property name="dataSource" ref="dataSourceInformixDYC"></property>
+        </bean>
+     
+        <bean id="jdbcTemplateSIAT" class="org.springframework.jdbc.core.JdbcTemplate">
+            <property name="dataSource" ref="dataSourceDYC"></property>
+        </bean>
+
+        <bean id="jdbcTemplateDwhOra2" class="org.springframework.jdbc.core.JdbcTemplate">
+            <property name="dataSource" ref="dataSourceInformixDYC"></property>
+        </bean>
+    
+        <context:component-scan base-package="mx.gob.sat.siat.migradordyc"/>
+        <context:component-scan base-package="mx.gob.sat.mat.dyc.herramientas.analizador"/>
+        <context:component-scan base-package="mx.gob.sat.siat.dyc"/>
+    </beans>
+</beans>

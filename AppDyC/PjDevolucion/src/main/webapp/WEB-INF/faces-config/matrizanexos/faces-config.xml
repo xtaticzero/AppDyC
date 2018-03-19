@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config version="2.0" xmlns="http://java.sun.com/xml/ns/javaee">
+    <navigation-rule>
+        <from-view-id>/resources/pages/matrizanexos/listar.jsf</from-view-id>
+        <navigation-case>
+            <from-outcome>goAdicionar</from-outcome>
+            <to-view-id>/resources/pages/matrizanexos/adicionar.jsf</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>goModificar</from-outcome>
+            <to-view-id>/resources/pages/matrizanexos/modificar.jsf</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>goConsultar</from-outcome>
+            <to-view-id>/resources/pages/matrizanexos/consultar.jsf</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/resources/pages/matrizanexos/adicionar.jsf</from-view-id>
+        <navigation-case>
+            <from-outcome>backListar</from-outcome>
+            <to-view-id>/resources/pages/matrizanexos/listar.jsf</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/resources/pages/matrizanexos/modificar.jsf</from-view-id>
+        <navigation-case>
+            <from-outcome>backListar</from-outcome>
+            <to-view-id>/resources/pages/matrizanexos/listar.jsf</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/resources/pages/matrizanexos/consultar.jsf</from-view-id>
+        <navigation-case>
+            <from-outcome>backListar</from-outcome>
+            <to-view-id>/resources/pages/matrizanexos/listar.jsf</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+</faces-config>

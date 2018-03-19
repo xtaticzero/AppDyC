@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" 
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd">
+
+    <util:properties id="conexionBD" location="file:///siat/dyc/configuraciondyc/parametrosdyc.properties" />
+
+    <!-- HABILITADORES -->
+    <!-- Habilitar anotacion Autowired -->
+    <context:annotation-config/>
+    <!-- Habilitar anotacion Transactional -->
+    <tx:annotation-driven proxy-target-class="true" transaction-manager="transactionManagerDYC" />
+
+    <!-- DATASOURCE - Inicio -->
+    <context:property-placeholder properties-ref="conexionBD" />
+
+    <bean id="dataSourceDYC" class="oracle.jdbc.pool.OracleDataSource">
+        <property name="URL" value="#{conexionBD['urlD']}"/>
+        <property name="user" value="#{conexionBD['usernameD']}"/>
+        <property name="password" value="#{conexionBD['passwordD']}"/>
+    </bean>
+
+    <!-- Transaccionalidad -->
+    <bean id="transactionManagerDYC"
+        class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSourceDYC" />
+    </bean>
+    <!-- DATASOURCE - Fin -->
+    
+    <bean id="dycDictAutomaticasDel" class="mx.gob.sat.mat.batch.dictautomaticas.service.impl.DyctDictAutomaticasDelImpl" />
+    <bean id="dycDictAutomaticasService" class="mx.gob.sat.mat.batch.dictautomaticas.service.impl.DyctDictAutomaticasServiceImpl" />
+    
+    <!-- Procesar Declaracion -->
+    <!-- <import resource="classpath:applicationContext-DycService-ProcesarDeclaracion.xml"/>    -->
+<!-- $$$$$$$$$$$ -->
+    <!-- DATASOURCE -->
+    <bean id="jdbcTemplateDYC" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceDYC"></property>
+    </bean>
+
+    <!-- SPRING - Beans manejados - Inicio -->
+    <bean id="procesarDeclaracionCompBussinesDel" class="mx.gob.sat.mat.dyc.controlsaldos.service.impl.ProcesarDeclaracionCompBussinesDel" />
+    <!-- Saldo ICEP -->
+    <!-- <bean id="dyctSaldoIcepDAO" class="mx.gob.sat.siat.dyc.dao.impl.DyctSaldoIcepDAOImpl" /> -->
+    <!-- Declara ICEP -->
+    <!-- <bean id="dyctDeclaraIcepDAO" class="mx.gob.sat.siat.dyc.dao.impl.DyctDeclaraIcepDAOImpl" /> -->
+    <!-- Mov Saldo -->
+    <!-- <bean id="dyctMovSaldoDAO" class="mx.gob.sat.siat.dyc.dao.impl.DyctMovSaldoDAOImpl" /> -->
+    <!-- SPRING - Beans manejados - Fin -->
+<!-- $$$$$$$$$$$ -->
+
+
+
+
+    
+    <!-- Afectar Saldos x Devoluciones (Registrar Datos ICEP) -->
+    <!-- <import resource="classpath:applicationContext-DycService-AfectarSaldosXDevoluciones.xml"/> -->
+<!-- $$$$$$$$$$$ -->
+    <!-- DATASOURCE -->
+    <!-- <bean id="jdbcTemplateDYC" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceDYC"></property>
+    </bean> -->
+
+    <bean id="namedParameterJdbcTemplateDwhOra2"
+          class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+        <constructor-arg ref="dataSourceDYC"></constructor-arg>
+    </bean>
+    <bean id="namedParameterJdbcTemplateSIAT"
+          class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+        <constructor-arg ref="dataSourceDYC"></constructor-arg>
+    </bean>
+    
+    <bean id="jdbcTemplateDwhOra2" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceDYC"></property>
+    </bean>
+    <bean id="jdbcTemplateSIAT" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceDYC"></property>
+    </bean>
+    <!-- <bean id="jdbcTemplateInformix" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceDYC"></property>
+    </bean> -->
+    <!-- <bean id="jdbcTemplateInformixDyC" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceDYC"></property>
+    </bean> -->
+    <!-- <bean id="jdbcTemplateDYCRFC" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceDYC"></property>
+    </bean> -->
+    <bean id="jdbcTemplateDYCDB2" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceDYC"/>
+    </bean>
+    <!-- <bean id="jdbcTemplateADM" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceDYC"></property>
+    </bean> -->
+   
+    <!-- SPRING - Beans manejados - Inicio -->
+    
+    <bean id="afectarSaldosXDevolucionesService" class="mx.gob.sat.mat.dyc.controlsaldos.service.impl.AfectarSaldosXDevolucionesServiceImpl" />
+    
+    <!-- DAO -->
+    <!-- <bean id="dycpSolicitudDAO" class="mx.gob.sat.siat.dyc.dao.impl.DycpSolicitudDAOImpl"/> -->
+    <bean id="dyctDocumentoDAO" class="mx.gob.sat.siat.dyc.dao.documento.impl.DyctDocumentoDAOImpl"/>
+    <!-- <bean id="dyctMovSaldoDAO" class="mx.gob.sat.siat.dyc.dao.impl.DyctMovSaldoDAOImpl"/> -->
+    <bean id="dyctResolucionDAO" class="mx.gob.sat.siat.dyc.dao.resolucion.impl.DyctResolucionDAOImpl"/>
+    <!-- <bean id="dyctSaldoIcepDAO" class="mx.gob.sat.siat.dyc.dao.impl.DyctSaldoIcepDAOImpl"/> -->
+    <!-- <bean id="dyctDeclaraIcepDAO" class="mx.gob.sat.siat.dyc.dao.impl.DyctDeclaraIcepDAOImpl"/> -->
+    <bean id="icepDAO" class="mx.gob.sat.siat.dyc.dao.icep.impl.IcepDAOImpl"/>
+    <bean id="siosConsultaPagosStoredProcedure" class="mx.gob.sat.siat.dyc.dao.controlsaldos.icep.procedures.SiosConsultaPagosStoredProcedure"/>
+    <bean id="dyctDocumentoUtil" class="mx.gob.sat.siat.dyc.util.DyctDocumentoUtil"/>
+    <!-- <bean id="dycpCompensacionDAO" class="mx.gob.sat.siat.dyc.dao.impl.DycpCompensacionDAOImpl"/> -->
+    <!-- <bean id="dyctDeclaracionDAO" class="mx.gob.sat.siat.dyc.dao.impl.DyctDeclaracionDAOImpl"/> -->
+    
+    <!-- Service -->
+    <!-- <bean id="registrarDeclaracionesServiceImpl" class="mx.gob.sat.mat.dyc.controlsaldos.service.impl.RegistrarDeclaracionesServiceImpl"/> -->
+    <bean id="obtenerFechaHistoricaServiceImpl" class="mx.gob.sat.mat.dyc.controlsaldos.service.impl.ObtenerFechaHistoricaServiceImpl"/>
+    <bean id="serviceObtenerDeclaracionesDHW" class="mx.gob.sat.mat.dyc.controlsaldos.service.impl.ObtenerDeclaracionesDHWServiceImpl"/>
+    <bean id="icepService" class="mx.gob.sat.mat.dyc.integrarexpediente.service.impl.IcepServiceImpl"/>
+
+    <!-- Valida Tramites -->
+    <bean id="validaTramitesDAO" class="mx.gob.sat.siat.dyc.registro.util.validador.impl.ValidaTramitesDAOImpl"/>
+    <bean id="daoValidaTramite" class="mx.gob.sat.siat.dyc.dao.tipotramite.impl.DycaValidaTramiteDAOImpl"/>
+    <bean id="validaTramitesService" class="mx.gob.sat.mat.dyc.registro.util.validador.service.validatramites.impl.ValidaTramitesServiceImpl"/>
+    
+    <!-- SPRING - Beans manejados - Fin -->
+<!-- $$$$$$$$$$$ -->
+
+
+
+
+
+    <!-- Crear caso de devolucion -->
+    <!-- <import resource="classpath:applicationContext-DycService-CasoAutomaticasIva.xml"/> -->
+<!-- $$$$$$$$$$$ -->
+    <!-- DATASOURCE -->
+    <!-- <bean id="jdbcTemplateDYC" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceDYC"></property>
+    </bean> -->
+
+    <!-- SPRING - Beans manejados - Inicio -->
+    <bean id="crearCasoAutomaticasIvaService" class="mx.gob.sat.mat.dyc.automaticasiva.service.impl.CrearCasoAutomaticasIvaServiceImpl" />
+    <bean id="dycpServicioDAO" class="mx.gob.sat.siat.dyc.dao.tiposerv.impl.DycpServicioDAOImpl" />
+    <!-- <bean id="dycpSolicitudDAO" class="mx.gob.sat.siat.dyc.dao.impl.DycpSolicitudDAOImpl" /> -->
+    <bean id="contribuyenteDAO" class="mx.gob.sat.siat.dyc.registro.dao.contribuyente.impl.ContribuyenteDAOImpl" />
+    <!-- <bean id="dyctDeclaracionDAO" class="mx.gob.sat.siat.dyc.dao.impl.DyctDeclaracionDAOImpl" /> -->
+    <bean id="dyctArchivoDAO" class="mx.gob.sat.siat.dyc.dao.archivo.impl.DyctArchivoDAOImpl" />
+    <bean id="dyctCuentaBancoDAO" class="mx.gob.sat.siat.dyc.dao.banco.impl.DyctCuentaBancoDAOImpl" />
+    <!-- <bean id="dyctResolucionDAO" class="mx.gob.sat.siat.dyc.dao.impl.DyctResolucionDAOImpl" /> -->
+    <!-- SPRING - Beans manejados - Fin -->
+<!-- $$$$$$$$$$$ -->
+
+
+
+
+
+
+    <!-- Integrar expediente -->
+    <!-- <import resource="classpath:applicationContext-DycService-IntegrarExpediente.xml"/> -->
+<!-- $$$$$$$$$$$ -->
+    <!-- DATASOURCE - Inicio -->
+    <!-- <bean id="jdbcTemplateDYC" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceDYC"></property>
+    </bean> -->
+    
+    <!-- <bean id="namedParameterJdbcTemplateDwhOra2"
+          class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+        <constructor-arg ref="dataSourceDYC"></constructor-arg>
+    </bean> -->
+    <!-- <bean id="namedParameterJdbcTemplateSIAT"
+          class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+        <constructor-arg ref="dataSourceDYC"></constructor-arg>
+    </bean> -->
+    <bean id="jdbcTemplateInformixDyC" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceDYC"></property>
+    </bean>
+    <!-- DATASOURCE - Fin -->
+    
+   
+    <!-- SPRING - Beans manejados - Inicio -->
+    <bean id="integrarExpedienteService" class="mx.gob.sat.mat.dyc.integrarexpediente.service.impl.IntegrarExpedienteServiceImpl" />
+    <bean id="integrarExpedienteDAO" class="mx.gob.sat.siat.dyc.dao.expediente.impl.IntegrarExpedienteDAOImpl" />
+    
+    <!-- ICEP - Inicio -->
+    <!-- <bean id="icepService" class="mx.gob.sat.mat.dyc.integrarexpediente.service.impl.IcepServiceImpl" /> -->
+    <!-- <bean id="icepDAO" class="mx.gob.sat.siat.dyc.dao.icep.impl.IcepDAOImpl" /> -->
+    <!-- <bean id="jdbcTemplateDwhOra2" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceDYC"></property>
+    </bean> -->
+    <!-- <bean id="jdbcTemplateSIAT" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceDYC"></property>
+    </bean> -->
+    <bean id="jdbcTemplateInformix" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceDYC"></property>
+    </bean>
+    <!-- <bean id="jdbcTemplateDYCDB2" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceDYC"/>
+    </bean> -->
+    <!-- ICEP - Fin -->
+    
+    <!-- RFC ampliado - Store procedure -->
+    <bean id="personaIDCDAO" class="mx.gob.sat.siat.dyc.dao.contribuyente.impl.PersonaIDCDAOImpl" />
+    <!-- <bean id="jdbcTemplateDYCRFC" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceDYC"></property>
+    </bean> -->
+    
+    <!-- Tipo tramite -->
+    <!-- <bean id="tipoTramiteDAO" class="mx.gob.sat.siat.dyc.dao.impl.DyccTipoTramiteDAOImpl" /> -->
+    <!-- SPRING - Beans manejados - Fin -->
+<!-- $$$$$$$$$$$ -->
+
+
+
+    
+    <!-- <import resource="classpath:applicationContextDAODyCBatch.xml"/> -->
+<!-- $$$$$$$$$$$ -->
+	<context:property-placeholder location="file:/siat/dyc/configuraciondyc/parametrosdyc.properties"/>
+    
+    <context:component-scan base-package="mx.gob.sat.siat.modelo"/>
+    
+    <!-- ::::::::::::::::::::::::::: DYC ::::::::::::::::::::::::::: -->
+    <bean id="dataSourceDYCBatch" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value='${driverClassNameD}'/>
+        <property name="jdbcUrl" value='${urlD}'/>
+        <property name="user" value='${usernameD}'/>
+        <property name="password" value='${passwordD}'/>
+    </bean>
+    
+    <bean id="dataSourceDYCRFC" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value='${driverClassNameRFC}'/>
+        <property name="jdbcUrl" value='${urlRFC}'/>
+        <property name="user" value='${usernameRFC}'/>
+        <property name="password" value='${passwordRFC}'/>
+    </bean>
+    
+    <!-- ::::::::::::::::::::::::::: JDBC TEMPLATE ::::::::::::::::::::::::::: -->
+    <!-- <bean id="jdbcTemplateDYC" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceDYCBatch"></property>
+    </bean> -->
+    
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceDYCBatch"></property>
+    </bean>
+    
+    <!-- :::::::::::::::::::::: SEGMOVIMIENTOS :::::::::::::::::::::: -->
+    <bean id="jdbcTemplatePA" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceDYCBatch"></property>
+    </bean>
+    
+    <!-- :::::::::::::::::::::: ADM :::::::::::::::::::::::::::::::::: -->
+    <bean id="jdbcTemplateADM" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceDYCBatch"></property>
+    </bean>
+    
+    <!-- :::::::::::::::::::::: RFC :::::::::::::::::::::::::::::::::: -->
+    <bean id="jdbcTemplateDYCRFC" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceDYCRFC"></property>
+    </bean>
+    
+    <!-- ::::::::::::::::::::::::::: NAMED PARAMETER PARA JDBC TEMPLATE ::::::::::::::::::::::::::: -->
+    <bean id="namedParameterJdbcTemplateDYC"
+          class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+        <constructor-arg ref="dataSourceDYCBatch"/>
+    </bean>
+    
+    <!-- ::::::::::::::::::::::::::: TRANSACCION PARA CONTEXTO DAO BATCH ::::::::::::::::::::::::::: -->
+    <bean id="transactionManagerDAODYCBatch" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+          scope="singleton">
+        <property name="dataSource" ref="dataSourceDYCBatch"/>
+    </bean>
+    <tx:annotation-driven transaction-manager="transactionManagerDAODYCBatch" proxy-target-class="true"/>
+<!-- $$$$$$$$$$$ -->
+    
+    <context:component-scan base-package="mx.gob.sat.siat.dyc"/>
+    <!--context:component-scan base-package="mx.gob.sat.siat.mat"/-->
+    <context:component-scan base-package="mx.gob.sat.mat.dyc"/>
+
+            
+</beans>

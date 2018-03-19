@@ -1,0 +1,33 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:element name="consultarCompensacionesXML">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="compensacionesFechas"/>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="compensacionesInformacion"/>
+             </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="compensacionesFechas" >
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="n_dec_impidee1" type="xs:int"/>
+                <xs:element minOccurs="0" name="n_dec_impfdee1" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="compensacionesInformacion" >
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="ncuomne1" type="xs:string"/>
+                <xs:element minOccurs="0" name="fperceh1" type="xs:dateTime" nillable="true"/>
+                <xs:element minOccurs="0" name="ismoplo1" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="nruemse1" type="xs:string"/>
+                <xs:element minOccurs="0" name="freecsh1" type="xs:dateTime" nillable="true"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+</xs:schema> 

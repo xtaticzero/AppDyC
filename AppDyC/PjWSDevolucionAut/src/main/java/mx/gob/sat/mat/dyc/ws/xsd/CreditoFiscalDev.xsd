@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xs:schema xmlns:tns="http://ws.dyc.mat.sat.gob.mx/" 
+           xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+           xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+           version="1.0" 
+           targetNamespace="http://ws.dyc.mat.sat.gob.mx/">
+
+    <xsd:element name="verificaDevManual" >
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="RegistroDevolucionAut" type="tns:RegistroDevolucionAut" maxOccurs="1" minOccurs="1"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="verificaDevManualResponse">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="NotificacionVeriDevManual" type="tns:NotificacionVeriDevManual" maxOccurs="1" minOccurs="1"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>    
+
+    <xsd:complexType name="RegistroDevolucionAut">
+       <xsd:sequence>
+            <xsd:element name="DatosContribuyente" type="tns:DatosContribuyente"/>
+            <xsd:element name="DatosTramite" type="tns:DatosTramite"/>
+            <xsd:element name="DatosICEP" type="tns:DatosICEP"/>
+            <xsd:element name="DatosDeclaracion" type="tns:DatosDeclaracion"/>
+            <xsd:element name="InfoBanco" type="tns:InfoBanco"/>
+            <xsd:element name="DatosDevolucionAut" type="tns:DatosDevolucionAut"/>
+        </xsd:sequence>
+    </xsd:complexType>
+            
+    <xsd:complexType name="NotificacionVeriDevManual">
+        <xsd:sequence>
+            <xsd:element name="DatosRegistroMATDYC" type="tns:DatosRegistroMATDYC"/>
+            <xsd:element name="DatosSolicitud" type="tns:DatosSolicitud"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="DatosContribuyente">
+        <xsd:sequence>
+            <xsd:element name="RFC" type="xsd:string"/>
+            <xsd:element name="nombre" type="xsd:string"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="DatosTramite">
+        <xsd:sequence>
+            <xsd:element name="origenSaldo" type="xsd:integer"/>
+            <xsd:element name="tipoTramite" type="xsd:integer"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="DatosICEP">
+        <xsd:sequence>
+            <xsd:element name="impuesto" type="xsd:integer"/>
+            <xsd:element name="concepto" type="xsd:integer"/>
+            <xsd:element name="ejercicio" type="xsd:integer"/>
+            <xsd:element name="periodo" type="xsd:string"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="DatosDeclaracion">
+        <xsd:sequence>
+            <xsd:element name="tipoDeclaracion" type="xsd:integer"/>
+            <xsd:element name="fechaPresentacion" type="xsd:date"/>
+            <xsd:element name="numOperacion" type="xsd:integer"/>
+            <xsd:element name="importeSaldoAFavor" type="xsd:decimal"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="InfoBanco">
+        <xsd:sequence>
+            <xsd:element name="cuentaCLABE" type="xsd:string"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="DatosDevolucionAut">
+        <xsd:sequence>
+            <xsd:element name="montoAplicar" type="xsd:decimal"/>
+            <xsd:element name="accion" type="xsd:integer" nillable="true"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="DatosRegistroMATDYC">
+        <xsd:sequence>
+            <xsd:element name="folioMATDYC" type="xsd:string" nillable="true"/>
+            <xsd:element name="IDICEP" type="xsd:integer" nillable="true"/>
+            <xsd:element name="saldoICEP" type="xsd:decimal" nillable="true"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="DatosSolicitud">
+        <xsd:sequence>
+            <xsd:element name="estadoRegistro" type="xsd:integer"/>
+            <xsd:element name="motivo" type="xsd:integer" nillable="true"/>            
+        </xsd:sequence>
+    </xsd:complexType>
+</xs:schema>

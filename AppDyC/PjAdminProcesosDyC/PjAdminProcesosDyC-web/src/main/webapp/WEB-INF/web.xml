@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+    <!-- DECLARACIONES DE PARAMETROS DE CONTEXTO AQUI -->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/applicationContext.xml</param-value>
+    </context-param>
+    <context-param>
+        <param-name>spring.profiles.active</param-name>
+        <param-value>devlocal</param-value>
+    </context-param>
+    <context-param>
+        <param-name>primefaces.THEME</param-name>
+        <param-value>satgris</param-value>
+    </context-param>
+    <context-param>
+        <param-name>coherence-scopecontroller-class</param-name>
+        <param-value>com.tangosol.coherence.servlet.AbstractHttpSessionCollection$GlobalScopeController</param-value>
+    </context-param>
+    <context-param>
+        <param-name>coherence-session-strict-spec</param-name>
+        <param-value>false</param-value>
+    </context-param>
+    <context-param>
+        <param-name>coherence-session-member-locking</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    <context-param>
+        <param-name>coherence-sticky-sessions</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    <context-param>
+        <param-name>coherence-distributioncontroller-class</param-name>
+        <param-value>mx.gob.sat.siat.controlador.impl.CustomSessionDistributionController </param-value>
+    </context-param>
+    <!--para la carga de archivos de omisos, de varios centenares de MB-->
+    <context-param>
+        <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+        <param-value>client</param-value>
+    </context-param>
+    <!-- DECLARACIONES DE FILTROS AQUI -->
+    <filter>
+        <filter-name>PrimeFaces FileUpload Filter</filter-name>
+        <filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
+        <init-param>
+            <param-name>uploadDirectory</param-name>
+            <param-value>/tmp</param-value>
+        </init-param>
+    </filter>
+    <filter>
+        <filter-name>filtro</filter-name>
+        <filter-class>mx.gob.sat.siat.processmanageradmin.web.util.FiltroWeb</filter-class>
+    </filter>
+    <!-- MAPEOS DE FILTROS AQUI -->
+    <filter-mapping>
+        <filter-name>PrimeFaces FileUpload Filter</filter-name>
+        <servlet-name>Faces Servlet</servlet-name>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>filtro</filter-name>
+        <url-pattern>*</url-pattern>
+    </filter-mapping>
+    <!-- DECLARACION DE ESCUCHADORES AQUI -->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <listener>
+        <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+    </listener>
+    <!-- DECLARACION DE SERVLETS AQUI -->
+    <servlet>
+        <servlet-name>Faces Servlet</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet>
+        <servlet-name>redireccionador</servlet-name>
+        <servlet-class>mx.gob.sat.siat.processmanageradmin.web.util.PetNoValRedirectServlet</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>*.jsf</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>redireccionador</servlet-name>
+        <url-pattern>/redireccionador</url-pattern>
+    </servlet-mapping>
+    <!-- ALTA DE TIPOS MIME AQUI-->
+    <mime-mapping>
+        <extension>swf</extension>
+        <mime-type>application/x-shockwave-flash</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>png</extension>
+        <mime-type>image/png</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>conf</extension>
+        <mime-type>text/plain</mime-type>
+    </mime-mapping>
+    <!--PAGINAS DE ERRORES AQUI -->
+    <error-page>
+        <exception-type>java.lang.Exception</exception-type>
+        <location>/redireccionador</location>
+    </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/petnoval404.jsf</location>
+    </error-page>
+    <error-page>
+        <error-code>403</error-code>
+        <location>/petnoval403.jsf</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/petnoval500.jsf</location>
+    </error-page>
+    <!-- WELCOME FILELIST DECLARARLOS AQUI -->
+    <welcome-file-list>
+        <welcome-file>/pages/processManager.jsf</welcome-file>
+    </welcome-file-list>
+    <session-config>
+        <session-timeout>5</session-timeout>
+    </session-config>
+    <!-- RECURSOS PARA CONTENEDOR DECLARARLOS AQUI -->
+</web-app>

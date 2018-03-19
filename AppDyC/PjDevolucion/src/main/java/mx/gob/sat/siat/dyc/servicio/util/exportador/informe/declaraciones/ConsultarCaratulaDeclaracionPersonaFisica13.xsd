@@ -1,0 +1,40 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:element name="consultarCaratulaDeclaracionPersonaFisica13XML">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="consultarCaratulaDeclaracionPersonaFisica13"/>
+             </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="consultarCaratulaDeclaracionPersonaFisica13" >
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="n_numero_operacion" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_fecha_causacion" type="xs:string"/>
+                <xs:element minOccurs="0" name="tdiepco1" type="xs:int"/>
+                <xs:element minOccurs="0" name="fperceh1" type="xs:dateTime" nillable="true"/>
+                <xs:element minOccurs="0" name="importe_acargo" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="parte_act" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="recargos" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="multa_correc" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="tot_contribuc" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="n_numero_operacion" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="compensacion" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="credito_dis" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="diesel_auto" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="carretera_cuo" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="otros_estim" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="tot_aplica" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="i_imptepagant" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="can_acargo" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="imp_pri_par" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="imp_sin_par" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="canti_favor" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="can_pagar" type="xs:decimal"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema> 

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <!--Properties</comment>-->
+    <entry key="INFORMIX.CONNECTION.URL">jdbc:informix-sqli://192.168.214.210:1532/satdgti:INFORMIXSERVER=etlhids_tcp;user=dsoper;password=op00d11</entry>
+    <entry key="ORACLE.CONNECTION.URL">jdbc:oracle:thin:@192.168.214.210:34004:psatdw</entry>
+    <entry key="ORACLE.CONNECTION.PWD">siatuat</entry>
+    <entry key="ORACLE.CONNECTION.USER">siatuat</entry>
+
+    <!--Mensajes CU Registrar Solicitud de Devolucion en linea-->
+    <entry key="msjRSDL.01">El domicilio fiscal se encuentra como No Localizado, debe ingresar al Servicio de Identificación al Contribuyente para realizar las aclaraciones correspondientes.</entry>
+    <entry key="msjRSDL.02">El contribuyente se encuentra Inactivo durante el período y ejercicio solicitado en devolución, debe ingresar al Servicio de Identificación al Contribuyente para realizar las aclaraciones correspondientes.</entry>
+    <entry key="msjRSDL.03">El RFC del Retenedor Nacional ingresado no existe, verifique el dato e ingrese nuevamente.</entry>
+    <entry key="msjRSDL.04">Su solicitud de devolución se recibirá a insistencia.</entry>
+    <entry key="msjRSDL.05">Debe acudir a la Administración Desconcentrada de Servicios al Contribuyente para realizar la actualización de datos del domicilio fiscal.</entry>
+    <entry key="msjRSDL.06">El tipo de trámite requiere que exista una declaración presentada por el Retenedor Nacional para el impuesto, concepto, ejercicio y período solicitado. Verifique los datos e ingréselos nuevamente.</entry>
+    <entry key="msjRSDL.07">Para el tipo de trámite seleccionado, se requiere incluya como documento adjunto, la o las Constancias de Percepciones y/o Retenciones.</entry>
+    <entry key="msjRSDL.08">El tipo de trámite requiere que exista saldo o cantidad a favor registrado. Verifique los datos e ingréselos nuevamente o realice las aclaraciones correspondientes en la Administración Desconcentrada de Servicios al Contribuyente.</entry>
+    <entry key="msjRSDL.09">El importe solicitado en devolución supera el monto de presentación por ventanilla. El contribuyente debe presentarla directamente a través de Internet.</entry>
+    <entry key="msjRSDL.10">No es posible presentar la solicitud de devolución porque el importe solicitado se encuentra</entry>
+    <entry key="msjRSDL.11">No es posible presentar la solicitud de devolución, porque ya existe una solicitud de  devolución automática en proceso.</entry>
+    <entry key="msjRSDL.12">Para solicitar su devolución, es necesario que presente su Declaración Informativa de Operaciones con Terceros (DIOT), ingresando al Portal Público del SAT, en la liga “Oficina Virtual” y seleccionando la opción “Operaciones”.</entry>
+    <entry key="msjRSDL.13">La DIOT que ingresó aún no se encuentra registrada en el SAT. </entry>
+    <entry key="msjRSDL.14">El Contador Público Registrado que firmó la declaratoria para el período solicitado en devolución se encuentra . Puede continuar con la solicitud o iniciar uno nuevo con el tipo de trámite “IVA Altex Convencional” o “IVA Convencional” o “IVA IMMEX Convencional” o “IVA IMMEX Certificada Convencional” según sea el caso.</entry>
+    <entry key="msjRSDL.15">No existe un Contador Público Registrado con el número de registro y RFC ingresado.</entry>
+    <entry key="msjRSDL.16">No existe una constancia ALTEX asociada al número ingresado o no está vigente para el período solicitado en devolución.</entry>
+    <entry key="msjRSDL.17">Debe ingresar el banco y cuenta CLABE.</entry>
+    <entry key="msjRSDL.18">¿Desea guardar temporalmente la solicitud de devolución por un período de 72 horas?</entry>
+    <entry key="msjRSDL.19">Los datos ingresados de la solicitud de devolución, fueron guardados exitosamente y permanecerán por un período de 72 horas.</entry>
+    <entry key="msjRSDL.20">Los datos ingresados en la solicitud de devolución se perderán.</entry>
+    <entry key="msjRSDL.21">Para realizar las actualizaciones de datos generales y de las características fiscales; debe ingresar al servicio de Identificación al Contribuyente.</entry>
+    <entry key="msjRSDL.22">La contraseña es incorrecta o los archivos de su firma electrónica avanzada, pueden estar dañados o ser incorrectos.</entry>
+    <entry key="msjRSDL.23">El RFC no se encuentra registrado, debe ingresar al Servicio de Identificación al Contribuyente para realizar la búsqueda y/o registro correspondiente.</entry>
+    <entry key="msjRSDL.24">No es competencia de esta autoridad realizar el registro de una solicitud de devolución, para el tipo de contribuyente que intenta registrar. Para el Origen y Tipo de Trámite, el medio de presentación es Internet. </entry>
+    <entry key="msjRSDL.25">El archivo no existe o no está disponible. Verifique el archivo e intente de nuevo.</entry>
+    <entry key="msjRSDL.26.1">Se registra solicitud de devolución con Número de control , </entry>
+    <entry key="msjRSDL.26.2">por un importe de </entry>
+    <entry key="msjRSDL.26.3">, presentada por </entry>
+    <entry key="msjRSDL.26.4"> y registrada por </entry>
+    <entry key="msjRSDL.27">Usted no cuenta con la certificación IMMEX o su certificado no está vigente. Verifique su registro en el padrón de empresas certificadas IMMEX o presente su solicitud de devolución bajo la modalidad de IVA IMMEX convencional o IVA IMMEX con declaratoria, según corresponda.</entry>
+    <entry key="msjRSDL.28">El contribuyente asociado a esta solicitud se encuentra como No Localizado en los procesos de verificación de domicilio. Se requiere para poder continuar con este trámite, realice las aclaraciones pertinentes.</entry>
+    <entry key="msjRSDL.30">El saldo solicitado en devolución, es mayor al saldo a favor registrado en la declaración presentada, por la cual solicita la devolución. </entry>
+    <entry key="msjRSDL.31">Debe indicar también los datos de la declaración normal.</entry>
+    <entry key="msjRSDL.32">La declaración por la cual se solicita la devolución no se encuentra disponible en el sistema. ¿Desea capturar la información de la presentación?[Si/No]</entry>
+    <entry key="msjRSDL.33">Los datos ingresados de la solicitud de devolución fueron guardados exitosamente con número de control= </entry>
+    <entry key="msjRSDL.34">Para el tipo de trámite seleccionado, se requiere incluya como documento adjunto el archivo “F3241” en formato .zip, mismo que se encuentra disponible en el portal del SAT “www.sat.gob.mx”. </entry>
+    <entry key="msjRSDL.35">El archivo se guardó correctamente.</entry>
+    <entry key="msjRSDL.36">El archivo seleccionado debe tener una extensión ZIP.</entry>
+    <entry key="msjRSDL.37">Los datos ingresados son incorrectos.</entry>
+    <entry key="msjRSDL.38">La cuenta “CLABE” ya fue proporcionada por otro contribuyente.</entry>
+    <entry key="msjRSDL.39">El archivo seleccionado debe tener una extensión *.xls.</entry>
+    <entry key="msjRSDL.40">Los datos no coinciden para los campos “ejercicio” y “fecha de causación”. El ejercicio debe ser igual al año de la “fecha de causación”.</entry>
+    <entry key="msjRSDL.41">El período y ejercicio de la solicitud de devolución, no pueden ser posteriores al mes y año actual.</entry>
+    <entry key="msjRSDL.42">La fecha de presentación de la declaración normal debe ser igual o anterior a la fecha de presentación de la última declaración complementaria.</entry>
+    <entry key="msjRSDL.44">La fecha de presentación de la DIOT que ingresó, no corresponde al período solicitado en devolución, por favor verifique el Impuesto, Concepto, Ejercicio y Periodo capturado, o bien, la fecha que manifestó.</entry>
+    <entry key="msjRSDL.45">El RFC del CPR no corresponde al número de registro ingresado</entry>
+    <entry key="msjRSDL.46">Usted no cuenta con la Constancia IMMEX o no está vigente. Verifique su registro en el padrón de empresas IMMEX o presente su solicitud de devolución bajo la modalidad de IVA convencional o IVA con declaratoria, según corresponda.</entry>
+    
+</properties>

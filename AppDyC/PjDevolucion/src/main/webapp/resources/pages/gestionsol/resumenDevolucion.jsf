@@ -1,0 +1,292 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view contentType="text/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+    <html xmlns="http://www.w3.org/1999/xhtml" xmlns:p="http://primefaces.org/ui">
+        <h:head>
+            <title>Resumen de devoluci&oacute;n</title> 
+            <h:outputStylesheet library="css/" name="formato.css"/>
+        </h:head>
+        <h:body>
+            <h:form>
+                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
+                <p:panel header="Resumen documento de una solicitud de devolución"
+                         style="width:780px;border: 0;text-align: center;" id="resumenSolicitud"
+                         rendered="#{resumenDevMB.esResumenSolicitud}">
+                    <div align="left">
+                        <p:panelGrid columns="2">
+                            <p:outputLabel value="RFC">:</p:outputLabel>
+                            <p:outputLabel value="#{resumenDevMB.rfcContribuyente}"></p:outputLabel>
+                            <p:outputLabel value="Nombre o razón social">:</p:outputLabel>
+                            <p:outputLabel value="#{resumenDevMB.nombreOrazonSocial}"/>
+                            <p:outputLabel value="Tipo trámite">:</p:outputLabel>
+                            <p:outputLabel value="#{resumenDevMB.descTipoTramite}"/>
+                            <p:outputLabel value="Tipo de requerimiento">:</p:outputLabel>
+                            <p:outputLabel value="#{resumenDevMB.tipoRequerimiento}"/>
+                            <p:outputLabel value="Tipo de resolución">:</p:outputLabel>
+                            <p:outputLabel value="#{resumenDevMB.tipoResolucion}"/>
+                            <p:outputLabel value="Importe solicitado">:</p:outputLabel>
+                            <h:outputText value="#{resumenDevMB.importeSolicitado}">
+                                <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                            </h:outputText>
+                            <p:outputLabel value="Importe autorizado">:</p:outputLabel>
+                            <h:outputText value="#{resumenDevMB.importeAutorizado}">
+                                <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                            </h:outputText>
+                            <p:outputLabel value="Importe actualizado menos compensación de oficio">:</p:outputLabel>
+                            <h:outputText value="#{resumenDevMB.importeNeto}">
+                                <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                            </h:outputText>
+                            <p:outputLabel value="Saldo negado">:</p:outputLabel>
+                            <h:outputText value="#{resumenDevMB.importeNegado}">
+                                <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                            </h:outputText>
+                            <p:outputLabel value="Dictaminador">:</p:outputLabel>
+                            <h:outputText value="#{resumenDevMB.nombreDictaminador}" />
+                            <p:outputLabel value="No. empleado">:</p:outputLabel>
+                            <h:outputText value="#{resumenDevMB.numeroEmpleadoDictaminador}" />
+                        </p:panelGrid>
+                    </div>
+                    <div style="height:30px;">
+                        <p:commandButton id="btnConsultarExpediente1" value="Consultar expediente"
+                                         action="#{resumenDevMB.consultarExpediente}" immediate="true" ajax="false"/>
+                         
+                        <p:commandButton id="btnCancelar" value="Rechazar" action="#{resumenDevMB.rechazarDocumento}"
+                                         ajax="true" styleClass="gmxNegativo"/>
+                         
+                        <p:commandButton id="btnAceptar" value="Aprobar" action="#{resumenDevMB.irAComentario}"
+                                         ajax="true" rendered="#{!resumenDevMB.banderaAprobarORevisionCentral}"
+                                         styleClass="gmxPositivo"/>
+                         
+                        <p:commandButton id="btnRevisionCentral" value="Revisión central"
+                                         action="#{resumenDevMB.irARevisionCentral}" ajax="true"
+                                         rendered="#{resumenDevMB.banderaAprobarORevisionCentral and resumenDevMB.banderaComodin}"
+                                         styleClass="gmxPositivo"/>
+                         
+                        <p:commandButton actionListener="#{resumenDevMB.descargarDocumento}" ajax="false"
+                                         id="btnDescarga1" title="Descargar" value="Descargar" rendered="#{!resumenDevMB.esSinDocumento}">
+                            <p:fileDownload value="#{resumenDevMB.filePapeles}"/>
+                        </p:commandButton>
+                         
+                        <p:commandButton id="btnRegresar2" value="Regresar" action="#{resumenDevMB.cancelar}"
+                                         ajax="true"/>
+                    </div>
+                </p:panel>
+                <p:panel header="Resumen documento de un caso de compensación"
+                         style="width:780px;border: 1;text-align: center;" id="resumenCompensacion"
+                         rendered="#{resumenDevMB.esResumenCompensacion}">
+                    <div align="left">
+                        <p:panelGrid columns="2">
+                            <p:outputLabel value="RFC:"/>
+                            <p:outputLabel value="#{resumenDevMB.rfcContribuyente}"/>
+                            <p:outputLabel value="Nombre o razón social:"/>
+                            <p:outputLabel value="#{resumenDevMB.nombreOrazonSocial}"/>
+                            <p:outputLabel value="Tipo trámite:"/>
+                            <p:outputLabel value="#{resumenDevMB.descTipoTramite}"/>
+                            <p:outputLabel rendered="#{resumenDevMB.banderaTipoRequerimiento}"
+                                           value="Tipo de requerimiento:"/>
+                            <p:outputLabel rendered="#{resumenDevMB.banderaTipoRequerimiento}"
+                                           value="#{resumenDevMB.tipoRequerimiento}"/>
+                            <p:outputLabel value="ICEP del importe compensado:"/>
+                            <h:outputText value="#{resumenDevMB.cepDestino}">
+                                <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                            </h:outputText>
+                            <p:outputLabel value="ICEP origen del saldo:"/>
+                            <p:outputLabel value="#{resumenDevMB.cepOrigen}"/>
+                            <p:outputLabel value="Monto:"/>
+                            <h:outputText value="#{resumenDevMB.saldoAplicar}">
+                                <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                            </h:outputText>
+                        </p:panelGrid>
+                    </div>
+                    <div style="height:30px;">
+                        <p:commandButton id="btnConsultarExpediente2" value="Consultar Expediente"
+                                         action="#{resumenDevMB.consultarExpediente}" immediate="true" ajax="false"/>
+                         
+                        <p:commandButton id="btnCancelarDev" value="Rechazar" action="#{resumenDevMB.rechazarDocumento}"
+                                         ajax="true" styleClass="gmxNegativo"/>
+                         
+                        <p:commandButton id="btnAceptarDev" value="Aprobar" action="#{resumenDevMB.irAComentario}"
+                                         ajax="true" styleClass="gmxPositivo"/>
+                         
+                        <p:commandButton actionListener="#{resumenDevMB.descargarDocumento}" ajax="false"
+                                         id="btnDescarga2" title="Descargar" value="Descargar">
+                            <p:fileDownload value="#{resumenDevMB.filePapeles}"/>
+                        </p:commandButton>
+                         
+                        <p:commandButton id="btnRegresar3" value="Regresar" action="#{resumenDevMB.cancelar}"
+                                         ajax="true"/>
+                    </div>
+                </p:panel>
+                <p:panel header="Resumen documento de una devolución automatica" id="resumenFirma"
+                         style="width:780px;border: 1;margin-left:350px;text-align: center;"
+                         rendered="#{resumenDevMB.esResumenFirma}">
+                    <div align="left">
+                        <p:panelGrid columns="2">
+                            <p:outputLabel value="RFC">:</p:outputLabel>
+                            <p:outputLabel value="#{resumenDevMB.rfcContribuyente}"></p:outputLabel>
+                            <p:outputLabel value="Nombre o razón social">:</p:outputLabel>
+                            <p:outputLabel value="#{resumenDevMB.nombreOrazonSocial}"/>
+                            <p:outputLabel value="Tipo trámite">:</p:outputLabel>
+                            <p:outputLabel value="#{resumenDevMB.descTipoTramite}"/>
+                        </p:panelGrid>
+                    </div>
+                    <div style="height:30px;">
+                        <p:commandButton id="btnConsultarExpediente3" value="Consultar expediente"
+                                         action="#{resumenDevMB.consultarExpediente}" immediate="true" ajax="false"/>
+                         
+                        <p:commandButton id="btnFirmaAutografaAut" value="Firma autógrafa"
+                                         action="#{resumenDevMB.irAFirmaAutografa}" ajax="true" update="@form"/>
+                         
+                        <p:outputLabel style="color:white;"></p:outputLabel>
+                         
+                        <p:commandButton id="btnFirmaFIELAut" value="Firma FIEL del funcionario"
+                                         action="#{resumenDevMB.irAFirma}" ajax="true" update="@form"/>
+                         
+                        <p:outputLabel style="color:white;"></p:outputLabel>
+                         
+                        <p:commandButton id="btnCancelar2" value="Rechazar" action="#{resumenDevMB.rechazarDocumento}"
+                                         ajax="true"/>
+                         
+                        <p:outputLabel style="color:white;"></p:outputLabel>
+                         
+                        <p:commandButton actionListener="#{resumenDevMB.descargarDocumento}" ajax="false"
+                                         id="btnDescarga4" title="Descargar" value="Descargar">
+                            <p:fileDownload value="#{resumenDevMB.filePapeles}"/>
+                        </p:commandButton>
+                         
+                        <p:outputLabel style="color:white;"></p:outputLabel>
+                         
+                        <p:commandButton id="btnRegresar" value="Regresar" action="#{resumenDevMB.cancelar}"
+                                         ajax="true"/>
+                    </div>
+                </p:panel>
+                <p:panel header="Resumen documento de una solicitud de devolución sin inconsistencia"
+                         style="width:780px;border: 1;text-align: center;" id="resumenSolDevSinInc"
+                         rendered="#{resumenDevMB.esResumenSolDevSinInc}">
+                    <div align="left">
+                        <p:panelGrid columns="2">
+                            <p:outputLabel value="RFC">:</p:outputLabel>
+                            <p:outputLabel value="#{resumenDevMB.rfcContribuyente}"></p:outputLabel>
+                            <p:outputLabel value="Nombre o razón social">:</p:outputLabel>
+                            <p:outputLabel value="#{resumenDevMB.nombreOrazonSocial}"/>
+                            <p:outputLabel value="Tipo trámite">:</p:outputLabel>
+                            <p:outputLabel value="#{resumenDevMB.descTipoTramite}"/>
+                            <p:outputLabel value="Tipo de requerimiento">:</p:outputLabel>
+                            <p:outputLabel value="#{resumenDevMB.tipoRequerimiento}"/>
+                            <p:outputLabel value="Tipo de resolución">:</p:outputLabel>
+                            <p:outputLabel value="#{resumenDevMB.tipoResolucion}"/>
+                            <p:outputLabel value="Importe solicitado">:</p:outputLabel>
+                            <h:outputText value="#{resumenDevMB.importeSolicitado}">
+                                <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                            </h:outputText>
+                            <p:outputLabel value="Importe autorizado">:</p:outputLabel>
+                            <h:outputText value="#{resumenDevMB.importeAutorizado}">
+                                <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                            </h:outputText>
+                            <p:outputLabel value="Importe actualizado menos compensación de oficio">:</p:outputLabel>
+                            <h:outputText value="#{resumenDevMB.importeNeto}">
+                                <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                            </h:outputText>
+                            <p:outputLabel value="Saldo negado">:</p:outputLabel>
+                            <h:outputText value="#{resumenDevMB.importeNegado}">
+                                <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                            </h:outputText>
+                        </p:panelGrid>
+                    </div>
+                    <div style="height:30px;">
+                        <p:commandButton id="btnConsultarExpediente4" value="Consultar expediente"
+                                         action="#{resumenDevMB.consultarExpediente}" immediate="true" ajax="false"/>
+                         
+                        <p:commandButton id="btnFirmaAutoSolDevSinInc" value="Firma autógrafa"
+                                         action="#{resumenDevMB.irAFirmaAutografa}" ajax="true" update="@form"/>
+                         
+                        <p:outputLabel style="color:white;"></p:outputLabel>
+                         
+                        <p:commandButton id="btnFirmaFIELSolDevSinInc" value="Firma FIEL del funcionario"
+                                         action="#{resumenDevMB.irAFirma}" ajax="true" update="@form"/>
+                         
+                        <p:outputLabel style="color:white;"></p:outputLabel>
+                         
+                        <p:outputLabel style="color:white;"></p:outputLabel>
+                         
+                        <p:commandButton id="btnCancelar3" value="Rechazar" action="#{resumenDevMB.rechazarDocumento}"
+                                         ajax="true"/>
+                         
+                        <p:commandButton actionListener="#{resumenDevMB.descargarDocumento}" ajax="false"
+                                         id="btnDescarga5" title="Descargar" value="Descargar">
+                            <p:fileDownload value="#{resumenDevMB.filePapeles}"/>
+                        </p:commandButton>
+                         
+                        <p:outputLabel style="color:white;"></p:outputLabel>
+                         
+                        <p:commandButton id="btnAtras" value="Regresar" action="#{resumenDevMB.cancelar}" ajax="true"/>
+                    </div>
+                </p:panel>
+                <p:panel header="Resumen documento de una solicitud de devolución" id="resumenAbonoNoEfectuado"
+                         style="width:780px;/*border: 1;*/margin:0 auto;text-align: center;"
+                         rendered="#{resumenDevMB.esAbonoNoEfectuado}">
+                    <div align="left">
+                        <p:panelGrid columns="2">
+                            <p:outputLabel value="RFC">:</p:outputLabel>
+                            <p:outputLabel value="#{resumenDevMB.rfcContribuyente}"></p:outputLabel>
+                            <p:outputLabel value="Nombre o razón social">:</p:outputLabel>
+                            <p:outputLabel value="#{resumenDevMB.nombreOrazonSocial}"/>
+                            <p:outputLabel value="Tipo trámite">:</p:outputLabel>
+                            <p:outputLabel value="#{resumenDevMB.descTipoTramite}"/>
+                            <strike>
+                                <p:outputLabel value="Tipo de requerimiento">:</p:outputLabel>
+                                <p:outputLabel value="#{resumenDevMB.tipoRequerimiento}"/>
+                            </strike>
+                            <p:outputLabel value="Tipo de resolución">:</p:outputLabel>
+                            <p:outputLabel value="#{resumenDevMB.tipoResolucion}"/>
+                            <p:outputLabel value="Importe solicitado">:</p:outputLabel>
+                            <h:outputText value="#{resumenDevMB.importeSolicitado}">
+                                <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                            </h:outputText>
+                            <p:outputLabel value="Importe autorizado">:</p:outputLabel>
+                            <h:outputText value="#{resumenDevMB.importeAutorizado}">
+                                <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                            </h:outputText>
+                            <p:outputLabel value="Importe actualizado menos compensación de oficio">:</p:outputLabel>
+                            <h:outputText value="#{resumenDevMB.importeNeto}">
+                                <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                            </h:outputText>
+                            <p:outputLabel value="Saldo negado">:</p:outputLabel>
+                            <h:outputText value="#{resumenDevMB.importeNegado}">
+                                <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                            </h:outputText>
+                        </p:panelGrid>
+                    </div>
+                    <div style="height:30px;">
+                        <p:commandButton id="btnConsultarExpediente5" value="Consultar expediente"
+                                         action="#{resumenDevMB.consultarExpediente}" immediate="true" ajax="false"/>
+                         
+                        <p:outputLabel style="color:white;"></p:outputLabel>
+                         
+                        <p:commandButton id="btnAceptar2" value="Aprobar" action="#{resumenDevMB.irAComentario}"
+                                         ajax="true" 
+                                         style="color: #FFF !important; background-color: #2399FF !important; border-color: #2399FF !important;
+                                         "/>
+                         
+                        <p:outputLabel style="color:white;"></p:outputLabel>
+                         
+                        <p:commandButton actionListener="#{resumenDevMB.descargarDocumento}" ajax="false"
+                                         id="btnDescarga6" title="Descargar" value="Descargar">
+                            <p:fileDownload value="#{resumenDevMB.filePapeles}"/>
+                        </p:commandButton>
+                         
+                        <p:outputLabel style="color:white;"></p:outputLabel>
+                         
+                        <p:commandButton id="btnRegresar4" value="Regresar" action="#{resumenDevMB.listaAbonoNoEfectuado}"
+                                         ajax="true"/>
+                    </div>
+                </p:panel>
+                <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                <p:dialog id="statusBar" modal="true" widgetVar="statusDialog" header="#{msgValidacion.ajaxLoading}"
+                          draggable="false" width="250" closable="false" resizable="false">
+                    <p:graphicImage value="/resources/images/ajaxloadingbar.gif"/>
+                </p:dialog>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

@@ -1,0 +1,141 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+        >
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <title>Cargar y Descargar Papeles de Trabajo</title>
+            <meta http-equiv="X-UA-Compatible" content="IE=8"/>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <meta http-equiv="pragma" content="no-cache"/>
+            <meta http-equiv="cache-control" content="no-cache"/>
+            <meta http-equiv="expires" content="0"/>
+            <h:outputStylesheet library="css/" name="dyc.css"/>
+            <h:outputScript library="js" name="casosCompensacion.js"/>
+            <style type="text/css">
+                .fileupload-content {
+                    height: 0 !important;
+                    border: none !important;
+                }
+
+                .fileupload-buttonbar {
+                    border: none !important;
+                }
+            </style>
+        </h:head>
+        <h:body>
+            <h:form id="frmCargaPapeles">
+                <p:panel id="pnlCargaPapeles" header="#{msgValidacion.asPnlPapeles}" style="width:100%;">
+                    <p:outputLabel value="#{msgValidacion.acc00021} #{admCasosComp.numControl}"/>
+                    <p:messages autoUpdate="true" closable="true" showDetail="false"/>
+                    <p:toolbar>
+                        <p:toolbarGroup align="left" style="width:600px;">
+                            <p:outputLabel value="#{msgValidacion.asNota}" style="font-weight: normal;"/>
+                        </p:toolbarGroup>
+                        <p:toolbarGroup align="right" style="width:200px;">
+                            <p:commandButton id="btnCarga" icon="ui-icon-document" title="#{msgValidacion.asBtnNPapel}"
+                                             oncomplete="dlgCargaPapeles.show()" update=":frmDlgCarga:dlgPapeles"/>
+                            <p:commandButton id="btnDescarga" icon="ui-icon-disk"
+                                             disabled="#{mbPapelesTrabajo.deshabBtnsAccArchExtte}"
+                                             title="#{msgValidacion.asBtnDPapel}"
+                                             actionListener="#{mbPapelesTrabajo.descargarPapelTrabajo}" ajax="false">
+                                <p:fileDownload value="#{mbPapelesTrabajo.archivoADescargar}"/>
+                            </p:commandButton>
+                            <p:commandButton id="btnEliminar" icon="ui-icon-circle-close"
+                                             disabled="#{mbPapelesTrabajo.deshabBtnsAccArchExtte}"
+                                             title="#{msgValidacion.asBtnEPapel}"
+                                             onclick="dlgConfirmarElimPapelTrabajo.show();"/>
+                        </p:toolbarGroup>
+                    </p:toolbar>
+                    <p:dataTable id="papeles" var="pt" value="#{mbPapelesTrabajo.papelesTrabajo}" scrollHeight="455"
+                                 style="min-height:450px;" emptyMessage="No se encontraron resultados"
+                                 selectionMode="single" paginator="true" rows="10" rowsPerPageTemplate="5,10,15,20"
+                                 selection="#{mbPapelesTrabajo.papelTrabajoSelec}"
+                                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}">
+                        <p:ajax event="rowSelect" update=":frmCargaPapeles:btnDescarga, :frmCargaPapeles:btnEliminar"
+                                listener="#{mbPapelesTrabajo.onRowSelect}"/>
+                        <p:column headerText="Nombre documento">
+                            <h:outputText value="#{pt.nombreArchivo}"/>
+                        </p:column>
+                        <p:column headerText="Descripción">
+                            <h:outputText value="#{pt.descripcion}"/>
+                        </p:column>
+                    </p:dataTable>
+                    <p:toolbar>
+                        <p:toolbarGroup align="right" style="width:100%;">
+                            <p:button value="Regresar" outcome="dictaminar"/>
+                        </p:toolbarGroup>
+                    </p:toolbar>
+                </p:panel>
+                <p:confirmDialog message="El papel de trabajo ya existe, ¿Desea reemplazarlo para actualizar la versión?"
+                                 header="Confirmar reemplazo" width="400" height="50" severity="alert"
+                                 widgetVar="confirmation" visible="#{mbPapelesTrabajo.mostrarDlgReempArchivo}">
+                    <div align="center">
+                        <p:commandButton value="Reemplazar" actionListener="#{mbPapelesTrabajo.reemplazarArchivo}"
+                                         oncomplete="confirmation.hide()" update="papeles"/>
+                         
+                        <p:spacer style="width:20px"/>
+                         
+                        <p:commandButton value="No Reemplazar" actionListener="#{mbPapelesTrabajo.limpiarCarga}"
+                                         oncomplete="confirmation.hide();" update="papeles"/>
+                    </div>
+                </p:confirmDialog>
+                <p:dialog id="mddConfirmarElimPapelTrabajo" widgetVar="dlgConfirmarElimPapelTrabajo" modal="true"
+                          width="350" height="110" resizable="false" closable="false">
+                    <table border="0" width="100%">
+                        <tr>
+                            <td>
+                                <p:outputLabel value="¿Está seguro que desea eliminar el papel de trabajo?"/>
+                            </td>
+                        </tr>
+                        <tr height="50px">
+                            <td align="right">
+                                <p:commandButton value="Cancelar" oncomplete="dlgConfirmarElimPapelTrabajo.hide();"/>
+
+                                <p:commandButton id="btnAceptarElimPapelTrabajo" value="Aceptar"
+                                                 oncomplete="dlgConfirmarElimPapelTrabajo.hide();"
+                                                 action="#{mbPapelesTrabajo.eliminarPapelTrabajo}" update="papeles"/>
+                            </td>
+                        </tr>
+                    </table>
+                </p:dialog>
+            </h:form>
+             
+            <h:form id="frmDlgCarga" enctype="multipart/form-data">
+                <p:dialog id="dlgPapeles" modal="true" header="#{msgValidacion.asDialogCarga}" closable="false"
+                          width="670" resizable="false" widgetVar="dlgCargaPapeles">
+                    <p:panelGrid style="width:100%">
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.diCamposObligatorios}" style="color:red;"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <br/>
+                    <p:panelGrid columns="3" style="border-style:hidden;">
+                        <h:outputText value="#{msgValidacion.asEtiRuta}"/>
+                        <p:fileUpload id="fileCarga" value="#{mbPapelesTrabajo.archivoSubido}" mode="simple"
+                                      style="width:411px;" dragDropSupport="true" update="papeles"/>
+                        <p:outputLabel value="#{msgValidacion.asRequerido}" style="color:red"/>
+                        <h:outputText value="Descripción: "/>
+                        <p:inputText id="desc" value="#{mbPapelesTrabajo.descripcion}" required="true"
+                                     requiredMessage="Campo requerido (Nombre Documento)" style="width:400px;"
+                                     maxlength="100"/>
+                        <p:outputLabel value="#{msgValidacion.asRequerido}" style="color:red"/>
+                        <p:outputLabel/>
+                    </p:panelGrid>
+                    <p:panelGrid style="width:100%;text-align:center;">
+                        <p:row>
+                            <p:column>
+                                <p:commandButton value="#{msgValidacion.asBtnCancelar}" ajax="false" immediate="true"
+                                                 onclick="dlgCargaPapeles.hide();"/>
+                                <p:commandButton id="chartBtn" value="Enviar" action="#{mbPapelesTrabajo.subirArchivo}"
+                                                 update=":frmCargaPapeles" ajax="false"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:dialog>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

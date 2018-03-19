@@ -1,0 +1,496 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" locale="ES"
+        xmlns:f="http://java.sun.com/jsf/core" xmlns:pe="http://primefaces.org/ui/extensions"
+        xmlns:ui="http://java.sun.com/jsf/facelets">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <title>
+                #{mAprobadoresMB.frm.tituloPagina}
+            </title>
+            <meta http-equiv="X-UA-Compatible" content="IE=8"/>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <meta http-equiv="pragma" content="no-cache"/>
+            <meta http-equiv="cache-control" content="no-cache"/>
+            <meta http-equiv="expires" content="0"/>
+            <h:outputScript library="primefaces" name="primefaces.js"/>
+            <h:outputScript library="js" name="general.js"/>
+            <style type="text/css">
+                .ui-paginator {
+                    font-size: 12px !important;
+                }
+                
+                .ui-datatable tbody td {
+                    white-space: normal;
+                    font-size: 10px;
+                }
+
+                .ui-datatable thead th {
+                    white-space: normal;
+                    font-size: 11px;
+                    font-weight: bold;
+                }
+
+                @media (max-height: 580px) {
+
+                    [id="frmAprobadores:dlgDetalleMD"] >.ui-dialog-content.ui-widget-content {
+                        max-height: 370px !important;
+                    }
+
+                }
+
+            </style>
+            <script type="text/javascript">
+              function handleRequest(xhr, status, args) {
+                  $var = $("input[name*='frmAprobadores:vTblListaAprd_selection']").val();
+                  return $var != "" ? true : false;
+              }
+              
+              var CARACTER_ENTER = 13;
+              /*
+              $(document).ready( function (){
+
+                    $( 'body' ).on( 'keypress', function (evento){
+                        if ( evento.keyCode == CARACTER_ENTER ){
+                            console.log( 'cuerpo' );
+                            // return false;
+                            // evento.stopPropagation();
+                        }
+                    });
+
+                    
+              });
+              */
+            </script>
+        </h:head>
+        <h:body>
+            <p:dialog modal="true" widgetVar="statusDialog" header="#{msgValidacion.ajaxLoading}" draggable="false"
+                      resizable="false" closable="false">
+                <h:graphicImage library="images/" name="ajaxloadingbar.gif"/>
+            </p:dialog>
+             
+            <h:form id="frmAprobadores">
+                <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                <p:confirmDialog id="crfmBaja" message="#{mAprobadoresMB.frm.confMensaje}"
+                                 header="#{mAprobadoresMB.frm.confTitulo}" severity="alert" width="430" widgetVar="cfm">
+                    <p:commandButton value="#{msgValidacion.rsNo}" onclick="cfm.hide();" type="button" styleClass="gmxNegativo"/>
+                    <p:commandButton value="#{msgValidacion.rsSi}" actionListener="#{mAprobadoresMB.frmAccionBaja}"
+                                     process="@this, idTblLista, vTblListaAprd"
+                                     update="idTblLista,messages,vTblListaAprd" onsuccess="cfm.hide()" styleClass="gmxPositivo"/>
+                </p:confirmDialog>
+                <p:panel id="ListaAdministracion" header="#{mAprobadoresMB.frm.admCentral}"
+                         style="width:100%;">
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" globalOnly="true"/>
+                    <p:outputLabel id="texto" value="#{msgValidacion.msAProbador}" style="font-weight:bold; color:red;" rendered="#{mAprobadoresMB.banderamMsj}"/>
+                                   <p:toolbar rendered="#{mAprobadoresMB.frm.panelAprobador}">
+                        <p:toolbarGroup align="right">
+                            <p:commandButton id="btnEliminar"
+                                             oncomplete="if( handleRequest(xhr, status, args) ){ cfm.show() }"
+                                             process="@this, vTblListaAprd" action="#{mAprobadoresMB.mensajeBaja}"
+                                             ajax="true" title="#{msgValidacion.MA00004}" update="crfmBaja"
+                                             icon="ui-icon-close"></p:commandButton>
+                            <p:commandButton id="btnNuevo" oncomplete="dlgDetalleMD.show();" process="@this"
+                                             title="#{msgValidacion.MA00001}"
+                                             action="#{mAprobadoresMB.frmBuscarEmpleado}" update="dlgDetalleMD"
+                                             icon="ui-icon-document"></p:commandButton>
+                            <p:commandButton id="btnEditar"
+                                             oncomplete="if( handleRequest(xhr, status, args) ){ dlgDetalleMD.show() }"
+                                             process="@this, vTblListaAprd"
+                                             title="#{msgValidacion.MA00002}"
+                                             action="#{mAprobadoresMB.frmAccionEditar}" ajax="true"
+                                             update="dlgDetalleMD" icon="ui-icon-pencil"></p:commandButton>
+                            <p:commandButton id="btnConsulta" title="#{msgValidacion.MA00003}"
+                                             oncomplete="if( handleRequest(xhr, status, args) ){ dlgDetalleMD.show() }"
+                                             process="@this, vTblListaAprd"
+                                             action="#{mAprobadoresMB.frmAccionConsultar}" update="dlgDetalleMD"
+                                             icon="ui-icon-search"></p:commandButton>
+                        </p:toolbarGroup>
+                    </p:toolbar>
+                    <!-- :::::::::::::::::::::::::::::::::::: LISTA ADMINISTRACIONES :::::::::::::::::::::::::::::::::::: -->
+                    <p:dataTable id="idTblLista" var="vTblLista" value="#{mAprobadoresMB.tblListaAdmin}"
+                                 rowKey="#{vTblLista.claveSir}" scrollWidth="100%"
+                                 paginator="#{mAprobadoresMB.frm.paginador}"
+                                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                 rowsPerPageTemplate="10,15,20" rows="#{mAprobadoresMB.frm.rowsPaginador}"
+                                 style="width:100%;" resizableColumns="true" liveResize="true" rowIndexVar="rowIndex"
+                                 rowStyleClass="#{(rowIndex mod 2) eq 0 ?'highlightA':'highlightB'}"
+                                 selection="#{mAprobadoresMB.selectAdmin}" selectionMode="single"
+                                 rendered="#{mAprobadoresMB.frm.panelAdmin}">
+                        <p:ajax event="rowSelect" listener="#{mAprobadoresMB.vistaPanelAprobador}"
+                                update=":frmAprobadores :frmAprobadores:ListaAdministracion"/>
+                        <!-- <p:ajax event="rowUnselect" listener="#{tableBean.onRowUnselect}" update=":form:growl"/> -->
+                        <p:column headerText="#{msgValidacion.maColTblA1}">
+                            <h:outputText value="#{vTblLista.nombre}"/>
+                        </p:column>
+                        <f:facet name="footer">
+                            <p:outputLabel value="#{mAprobadoresMB.frm.numResultados} Resultados"
+                                           style="text-align:left"/>
+                        </f:facet>
+                    </p:dataTable>
+                    <!-- :::::::::::::::::::::::::::::::::::: LISTA APROBADORES :::::::::::::::::::::::::::::::::::: -->
+                    <p:dataTable id="vTblListaAprd" var="vTblListaAprd" value="#{mAprobadoresMB.listaAprobador}"
+                                 rowKey="#{vTblListaAprd.numEmpleado}" scrollWidth="100%"
+                                 paginator="#{mAprobadoresMB.frm.pagAprd}"
+                                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                 rowsPerPageTemplate="10,15,20" rows="#{mAprobadoresMB.frm.rowsPagAprd}"
+                                 style="width:100%;" resizableColumns="true" liveResize="true" rowIndexVar="rowIndex"
+                                 rowStyleClass="#{(rowIndex mod 2) eq 0 ?'highlightA':'highlightB'}"
+                                 selection="#{mAprobadoresMB.selectAprobador}" selectionMode="single"
+                                 emptyMessage="#{msgValidacion.tblEmpty}"
+                                 rendered="#{mAprobadoresMB.frm.panelAprobador}">
+                        <p:column sortBy="#{vTblListaAprd.numEmpleado}" headerText="#{msgValidacion.mdNEmpleado}"
+                                  width="90">
+                            <h:outputText value="#{vTblListaAprd.numEmpleado}"/>
+                        </p:column>
+                        <p:column sortBy="#{vTblListaAprd.nombreCompleto}" headerText="#{msgValidacion.maColTblB1}">
+                            <h:outputText value="#{vTblListaAprd.nombreCompleto}"/>
+                        </p:column>
+                        <p:column headerText="#{msgValidacion.mdTblCol2}">
+                            <h:outputText value="#{vTblListaAprd.descComision}"/>
+                        </p:column>
+                        <p:column headerText="#{msgValidacion.mdTblCol3}" width="90">
+                            <h:outputText value="#{vTblListaAprd.activo == 1 ? 'Activo' : 'Inactivo'}"/>
+                        </p:column>
+                        <p:column width="90">
+                            <f:facet name="header">
+                                <h:outputText value="#{msgValidacion.mdTblCol4}"/>
+                            </f:facet>
+                             <p:commandLink action="#{mAprobadoresMB.cargaInfoAGS}" oncomplete="dlgEmpAGS.show()"
+                                                 title="Situacion en AGS" process="@this"  update="@form">
+                                 <h:outputText value="Ver detalle" />
+                                    <f:setPropertyActionListener value="#{vTblListaAprd}"
+                                                                 target="#{mAprobadoresMB.selectAprobador}"/>
+                                </p:commandLink>
+                        </p:column>
+                        <f:facet name="footer">
+                            <p:outputLabel value="#{mAprobadoresMB.frm.numResulApd} Resultados"
+                                           style="text-align:left"/>
+                        </f:facet>
+                    </p:dataTable>
+                </p:panel>
+                <!-- :::::::::::::::::::::::::::::::::::: DIALOG DETALLE :::::::::::::::::::::::::::::::::::: -->
+                <p:dialog id="dlgDetalleMD" header="#{mAprobadoresMB.frm.dlgTitulo}" widgetVar="dlgDetalleMD"
+                          hideEffect="drop" width="50%" modal="false">
+                    <div style="text-align:left;width:100%;height:100%;">
+                        <p:outputLabel value="#{msgValidacion.inpObligatorio}" style="color:red;"
+                                       rendered="#{!mAprobadoresMB.frm.dlgVerConsultaAprd}"/>
+                    </div>
+                    <p:panel id="pnlDetalleMD">
+                        <p:panelGrid styleClass="gmxNoborde">
+                            <p:row>
+                                <p:column colspan="2">
+                                    <p:messages id="msgDialiog" showDetail="true" autoUpdate="true"
+                                                closable="true" showSummary="false"/>
+                                </p:column>
+                            </p:row>
+                            <p:row rendered="#{(!mAprobadoresMB.frm.dlgVerBusquedaEmp)}">
+                                <p:column style="text-align:left">
+                                    <p:outputLabel value="#{msgValidacion.mdAdmin}"/>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel value="#{mAprobadoresMB.frm.admCentral}"/>
+                                </p:column>
+                            </p:row>
+                             
+                            <p:row rendered="#{(!mAprobadoresMB.frm.dlgVerBusquedaEmp)}">
+                                <p:column style="text-align:left">
+                                    <p:outputLabel value="#{msgValidacion.mdCentroCostos}"/>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel value="#{mAprobadoresMB.admLocal.claveAgrs}"/>
+                                </p:column>
+                            </p:row>    
+                                
+                            <p:row rendered="#{mAprobadoresMB.frm.dlgVerBusquedaEmp}">
+                                <p:column colspan="3">
+                                    <p:selectOneRadio id="opcion" value="#{mAprobadoresMB.frm.empleado}">
+                                        <f:selectItem itemLabel="No. Empleado" itemValue="No. Empleado"/>
+                                        <f:selectItem itemLabel="RFC" itemValue="RFC Empleado"/>
+                                        <p:ajax update="pnlDetalleMD" listener="#{mAprobadoresMB.frmSelectBuscar}"/>
+                                    </p:selectOneRadio>
+                                </p:column>
+                            </p:row>
+
+                            <!-- Control de busqueda -->
+                            <p:row rendered="#{mAprobadoresMB.frm.dlgVerBusquedaEmp}">
+                                <p:column style="text-align:left">
+                                    <p:outputLabel id="lblEmpleado" value="#{mAprobadoresMB.frm.empleado}"/>
+                                    <p:outputLabel value=" *" style="color:red;"
+                                                   rendered="#{mAprobadoresMB.frm.dlgVerBusquedaEmp}"/>
+                                </p:column>
+                                <p:column id="colEmpleado">
+                                    <p:inputText id="txtNoEmpleado" required="true"
+                                                 value="#{mAprobadoresMB.empleado.numEmpleado}"
+                                                 requiredMessage="#{msgValidacion.mdRequerida}"
+                                                 validatorMessage="#{msgValidacion.mdValidaNoEm}" maxlength="11"
+                                                 rendered="#{mAprobadoresMB.frm.inpEmpleado}" size="15">
+                                        <f:validateRegex pattern="([0-9]{3,11})"/>
+                                    </p:inputText>
+                                    <p:inputText id="txtCapturaRFC" required="true"
+                                                 value="#{mAprobadoresMB.empleado.rfc}" maxlength="13"
+                                                 requiredMessage="#{msgValidacion.mdRequeridaRFC}"
+                                                 validatorMessage="#{msgValidacion.msjValRFC}"
+                                                 rendered="#{!mAprobadoresMB.frm.inpEmpleado}" size="15">
+                                        <f:validateRegex pattern="#{mAprobadoresMB.valRFC}"/>
+                                    </p:inputText>
+                                    <script>
+                                        $( '[id*="txtCapturaRFC"], [id*="txtNoEmpleado"]' )
+                                            .on( 'keypress', function (evento){
+                                                if ( evento.keyCode == CARACTER_ENTER ){
+                                                    console.log( 'cuadro buscar' );
+                                                    $( '[id*="botonBuscar"]' ).click();
+                                                    return false;
+                                                }
+                                            });
+                                    </script>
+                                </p:column>
+                            </p:row>
+                            <!--
+                            <p:row>
+                                <p:column colspan="2">
+                                    <p:message id="msgNoEmpleado" for="txtNoEmpleado" display="text"/>
+                                    <p:message id="msgCapturaRFC" for="txtCapturaRFC" display="text"/>
+                                </p:column>
+                            </p:row>
+                            -->
+                            <p:row rendered="#{!mAprobadoresMB.frm.dlgVerBusquedaEmp}">
+                                <p:column style="text-align:left">
+                                    <p:outputLabel value="#{msgValidacion.mdNEmpleado}"/>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel id="lblENoEmpleado" value="#{mAprobadoresMB.empleado.numEmpleado}"
+                                                   rendered="#{mAprobadoresMB.frm.dlgVerAgregaEmp}"/>
+                                    <p:outputLabel id="lblANoEmpleado" value="#{mAprobadoresMB.maprobador.numEmpleado}"
+                                                   rendered="#{mAprobadoresMB.frm.dlgVerConsultaAprd  or mAprobadoresMB.frm.dlgVerModificaAprd }"/>
+                                </p:column>
+                            </p:row>
+
+                            <p:row rendered="#{!mAprobadoresMB.frm.dlgVerBusquedaEmp}">
+                                <p:column style="text-align:left">
+                                    <p:outputLabel value="RFC"/>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel id="lblERfcEmpleado" value="#{mAprobadoresMB.empleado.rfc}"
+                                                   rendered="#{mAprobadoresMB.frm.dlgVerAgregaEmp}"/>
+                                    <p:outputLabel id="lblARfcEmpleado" value="#{mAprobadoresMB.maprobador.rfc}"
+                                                   rendered="#{mAprobadoresMB.frm.dlgVerConsultaAprd  or mAprobadoresMB.frm.dlgVerModificaAprd }"/>
+                                </p:column>
+                            </p:row>
+                            <p:row rendered="#{!mAprobadoresMB.frm.dlgVerBusquedaEmp}">
+                                <p:column style="text-align:left">
+                                    <p:outputLabel value="#{msgValidacion.mdNombreEmpl}"/>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel id="lblNombreEmpleadoAprd"
+                                                   value="#{mAprobadoresMB.maprobador.nombreCompleto}"
+                                                   rendered="#{!mAprobadoresMB.frm.dlgVerAgregaEmp}"/>
+                                    <p:outputLabel id="lblENombreEmpleado"
+                                                   value="#{mAprobadoresMB.empleado.nombreCompleto}"
+                                                   rendered="#{mAprobadoresMB.frm.dlgVerAgregaEmp}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row rendered="#{!mAprobadoresMB.frm.dlgVerBusquedaEmp}">
+                                <p:column style="text-align:left">
+                                    <p:outputLabel value="#{msgValidacion.maPuesto}"/>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel id="lblPuesto" value="#{mAprobadoresMB.maprobador.nombrePuesto}"
+                                                   rendered="#{!mAprobadoresMB.frm.dlgVerAgregaEmp}"/>
+                                    <p:selectOneMenu id="cmbENivel" value="#{mAprobadoresMB.empleado.claveNivel}"
+                                                     rendered="#{mAprobadoresMB.frm.dlgVerAgregaEmp}"
+                                                     requiredMessage="#{msgValidacion.mdRequerida}">
+                                        <f:selectItem itemLabel="#{msgValidacion.adycSelect}" itemValue="0"/>
+                                        <f:selectItems value="#{mAprobadoresMB.listaNivel}" var="nivel"
+                                                       itemLabel="#{nivel.descClaveNivel}"
+                                                       itemValue="#{nivel.claveNivel}"/>
+                                    </p:selectOneMenu>
+                                    <p:selectOneMenu id="cmbANivel" value="#{mAprobadoresMB.maprobador.claveNivel}"
+                                                     rendered="#{mAprobadoresMB.frm.dlgVerModificaAprd}"
+                                                     requiredMessage="#{msgValidacion.mdRequerida}">
+                                        <f:selectItem itemLabel="#{msgValidacion.adycSelect}" itemValue="0"/>
+                                        <f:selectItems value="#{mAprobadoresMB.listaNivel}" var="nivel"
+                                                       itemLabel="#{nivel.descClaveNivel}"
+                                                       itemValue="#{nivel.claveNivel}"/>
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="#{mAprobadoresMB.maprobador.descClaveNivel}"
+                                                   rendered="#{mAprobadoresMB.frm.dlgVerConsultaAprd}"/>
+                                    <p:outputLabel value=" *" style="color:red;"
+                                                   rendered="#{mAprobadoresMB.frm.dlgVerAgregaEmp or  mAprobadoresMB.frm.dlgVerModificaAprd}"/>
+                                    <p:message id="msgPuesto" for="cmbENivel" display="text"/>
+                                </p:column>
+                            </p:row>
+                            <!--
+                            <p:row rendered="#{!mAprobadoresMB.frm.dlgVerBusquedaEmp}">
+                                <p:column style="text-align:left">
+                                    <p:outputLabel value="#{msgValidacion.maJefeIn}"/>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel id="lblJefeIn" value="#{mAprobadoresMB.maprobador.numEmpleadoJefe}"
+                                                   rendered="#{!mAprobadoresMB.frm.dlgVerAgregaEmp}"/>
+                                    <p:inputText id="txtJefe" required="true"
+                                                 value="#{mAprobadoresMB.maprobador.numEmpleadoJefe}"
+                                                 requiredMessage="#{msgValidacion.mdRequerida}"
+                                                 rendered="#{mAprobadoresMB.frm.dlgVerAgregaEmp}" size="40">
+                                        <f:validateLength maximum="80" minimum="10"/>
+                                    </p:inputText>
+                                    <p:outputLabel value=" *" styleClass="rojo"
+                                                   rendered="#{mAprobadoresMB.frm.dlgVerAgregaEmp}"/>
+                                    <p:message id="msgJefe" for="txtJefe" display="text"/>
+                                </p:column>
+                            </p:row>
+                            -->
+                            <p:row rendered="#{mAprobadoresMB.frm.dlgVerConsultaAprd||mAprobadoresMB.frm.dlgVerModificaAprd}">
+                                <p:column style="text-align:left">
+                                    <p:outputLabel value="#{msgValidacion.mdEstado}"/>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel id="lblAEstado"
+                                                   value="#{mAprobadoresMB.maprobador.activo == 1 ? 'Activo' : 'Inactivo' }"/>
+                                </p:column>
+                            </p:row>
+                            <p:row rendered="#{(mAprobadoresMB.frm.dlgComisionado )}">
+                                <p:column style="text-align:left">
+                                    <p:outputLabel value="#{msgValidacion.mdComision}"/>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel id="lblComision" value="#{mAprobadoresMB.maprobador.descComision}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row rendered="#{(!mAprobadoresMB.frm.dlgVerBusquedaEmp )}">
+                                <p:column style="text-align:left">
+                                    <p:outputLabel value="#{msgValidacion.mdObserva}"/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputTextarea id="txtObserva"
+                                                     value="#{mAprobadoresMB.empleado.aprobador.observaciones}"
+                                                     rendered="#{mAprobadoresMB.frm.dlgVerAgregaEmp}" rows="5" cols="38"
+                                                     queryDelay="750" minQueryLength="5" style="width:98%"/>
+                                    <p:inputTextarea id="txtEObserva" value="#{mAprobadoresMB.maprobador.observaciones}"
+                                                     rendered="#{mAprobadoresMB.frm.dlgVerModificaAprd}" rows="5"
+                                                     cols="38" queryDelay="750" minQueryLength="5" style="width:98%"/>
+                                    <p:outputLabel id="lblObserva" value="#{mAprobadoresMB.maprobador.observaciones}"
+                                                   rendered="#{mAprobadoresMB.frm.dlgVerConsultaAprd}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column colspan="3">
+                                    <p:inputText id="hddAccionFrm" value="#{mAprobadoresMB.frm.ifrmAccion}"
+                                                 type="hidden"/>
+                                    <p:commandButton value="Cancelar" onclick="dlgDetalleMD.hide();" type="button"
+                                                     process="@this" update=":frmAprobadores"
+                                                     action="#{mAprobadoresMB.vistaPanelAprobador}"
+                                                     rendered="#{!mAprobadoresMB.frm.dlgVerConsultaAprd}"
+                                                     icon="ui-icon-close" style="margin:0" styleClass="gmxNegativo"/>
+                                    <p:commandButton value="Buscar" update="pnlDetalleMD,messages"
+                                                     id="botonBuscar"
+                                                     process="@this, pnlDetalleMD"
+                                                     action="#{mAprobadoresMB.ejecutaAccion}"
+                                                     rendered="#{mAprobadoresMB.frm.dlgVerBusquedaEmp}" ajax="true"
+                                                     icon="ui-icon-search" style="margin:0" styleClass="gmxNeutro"/>
+                                    <p:commandButton value="Aceptar" update="pnlDetalleMD,vTblListaAprd,messages"
+                                                     process="@this, pnlDetalleMD"
+                                                     action="#{mAprobadoresMB.ejecutaAccion}"
+                                                     rendered="#{!mAprobadoresMB.frm.dlgVerBusquedaEmp}"
+                                                     oncomplete="if(!args.validationFailed) dlgDetalleMD.hide()"
+                                                     icon="ui-icon-check" style="margin:0" styleClass="gmxPositivo"/>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                    </p:panel>
+                </p:dialog>
+                <!-- :::::::::::::::::::::::::::::::::::: DIALOG DETALLE :::::::::::::::::::::::::::::::::::: -->
+                <p:panel id="frmRegresa" styleClass="panelgrid" style="width:13%; height:100%; border-color: white;"
+                         rendered="#{mAprobadoresMB.frm.panelAprobador}">
+                    <p:row rendered="#{(!mAprobadoresMB.frm.dlgVerBusquedaEmp )}">
+                        <p:column>
+                            <p:commandButton value="Regresar" process="@this"
+                                             action="#{mAprobadoresMB.vistaPanelAdministracion}"
+                                             update=":frmAprobadores" icon="ui-icon-arrowthick-1-w" style="margin:0" styleClass="gmxNegativo"/>
+                        </p:column>
+                    </p:row>
+                </p:panel>
+                 
+                 <!-- ************************************ INICIA DIALOG EMPLEADO AGS ************************************  -->
+                     <p:dialog id="dlgEmpAGS" header="#{msgValidacion.mdConsDict}" widgetVar="dlgEmpAGS"  modal="true"
+                              hideEffect="drop" width="75%" rendered="#{!mAprobadoresMB.frm.dlgEmpAGS}">
+                        <p:panel id="pnlEmpAGS">
+                            <!--  *************************************************************************************** -->
+                            <p:panelGrid styleClass="gmxNoborde">
+                                
+                                <p:row>
+                                    <p:column style="text-align:left">
+                                        <p:outputLabel value="#{msgValidacion.mdNEmpleado}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel id="lblNEmpleado"
+                                                       value="#{mAprobadoresMB.empleadoAGS.noEmpleado}"/>
+                                    </p:column>
+                                </p:row>
+                                    
+                                <p:row>   
+                                    <p:column style="text-align:left">
+                                        <p:outputLabel value="#{msgValidacion.adycRfc}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel id="lblRfc"
+                                                       value="#{mAprobadoresMB.empleadoAGS.rfc}"/>
+                                    </p:column>
+                                </p:row>    
+                                    
+                                <p:row>   
+                                    <p:column style="text-align:left">
+                                        <p:outputLabel value="#{msgValidacion.mdNombreEmpl}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel id="lblNombre"
+                                                       value="#{mAprobadoresMB.empleadoAGS.nombreCompleto}"/>
+                                    </p:column>
+                                </p:row>   
+                                    
+                                 <p:row>
+                                    <p:column style="text-align:left">
+                                        <p:outputLabel value="#{msgValidacion.mdCveDept}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel id="lblCveDept"
+                                                       value="#{mAprobadoresMB.empleadoAGS.deptid}"/>
+                                    </p:column>
+                                </p:row>      
+                                                               
+                                <p:row>
+                                    <p:column style="text-align:left">
+                                        <p:outputLabel value="#{msgValidacion.mdCentroCostos}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel id="lblACentroCostosEmp"
+                                                       value="#{mAprobadoresMB.empleadoAGS.centroCosto}"/>
+                                    </p:column>
+                                </p:row>
+                                    
+                                <p:row>
+                                    <p:column style="text-align:left">
+                                        <p:outputLabel value="#{msgValidacion.mdEstado}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel id="lblANoEmpleadoEmp"
+                                                       value="#{mAprobadoresMB.empleadoAGS.estatus == 'A'? 'Activo': 'Inactivo'}"/>
+                                    </p:column>
+                                </p:row>    
+                                        
+                                <p:row>
+                                    <p:column colspan="2" style="text-align:center">
+                                        
+                                       
+                                        <p:commandButton value="Aceptar" update="messages"
+                                                         oncomplete="dlgEmpAGS.hide()"
+                                                         styleClass="gmxPositivo"/>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>                             
+                      </p:panel>
+                    </p:dialog>                         
+            </h:form>
+
+        </h:body>
+    </html>
+</f:view>

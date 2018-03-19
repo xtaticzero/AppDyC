@@ -1,0 +1,20 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="cprDTO">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="txtnumerocpr" type="xs:int"/>
+                <xs:element minOccurs="0" name="txtfeciniper" type="xs:dateTime"/>
+                <xs:element minOccurs="0" name="txtfecfinper" type="xs:dateTime"/>
+                <xs:element minOccurs="0" name="txtusr" type="xs:string"/>
+                <xs:element minOccurs="0" name="txtnumerocprRet" type="xs:int"/>
+                <xs:element minOccurs="0" name="vd_ncopmrb1_tmp" type="xs:string" nillable="true"/>
+                <xs:element minOccurs="0" name="vd_rfceeog1_tmp" type="xs:string"/>
+                <xs:element minOccurs="0" name="vd_dseistc1_tmp" type="xs:string"/>    
+                <xs:element minOccurs="0" name="vf_fasesic1_tmp" type="xs:dateTime"/>
+                <xs:element minOccurs="0" name="vd_dseasnc1" type="xs:string"/>
+                <xs:element minOccurs="0" name="idTipoPeriodo" type="xs:int"/>
+                <xs:element minOccurs="0" name="ejercicio" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema> 

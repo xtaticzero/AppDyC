@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:p="http://primefaces.org/ui">
+    <html>
+        <h:head>
+            <title>
+                #{msgValidacion.L0000023}
+            </title>
+            <style type="text/css">
+                 
+                     .ui-messages-error {
+          
+            border-radius: 3px 3px 3px 3px;
+            -moz-border-radius: 3px 3px 3px 3px;
+            -webkit-border-radius: 3px 3px 3px 3px;
+            border: 2px solid #D0021B ;
+            background-color: #F2DEDE;
+             text-align: center;
+             color:#545454 ;
+             margin-top:30px;
+            margin-bottom: 30px;
+            padding-top:30px;
+            padding-bottom: 30px;
+             position: initial !important;
+            left: 15%;
+            right: 15%;
+        }
+        .ui-selectoneradio
+                    {
+                     width: 10px!important;
+                    }
+                     .ui-selectoneradio td
+                     {
+                 
+                      padding: 0px!important;
+                      border-color:#FFFFFF;
+                    }  
+                    .ui-selectoneradio label 
+                    {
+                     padding-left: 5px!important;
+                     padding-right: 1px!important;
+                    }
+                    .gmxfhorizontal .ui-selectoneradio td {
+                        padding-left: 0px !important;
+                    }
+     			    .ui-dialog-content.ui-widget-content {
+						margin-left: 0px !important;
+					}
+            </style>
+            <h:outputStylesheet library="css/" name="gobcss.css"/>
+            <h:outputStylesheet library="css/" name="gob-datocont.css"/>
+            <META httpequiv="ContentType" content="text/html; charset=UTF-8"></META>
+        </h:head>
+        <h:body style="width:1100px;">
+            <h:form id="form">
+                <ui:include src="/resources/pages/common/sessionPage.jsf"></ui:include>
+                <ui:include src="/resources/pages/common/inactividad.jsf"></ui:include>
+                
+                <p:dialog modal="true" resizable="false" visible="#{datosContribuyenteMB.asPeriodo}"
+                          draggable="false" header="Aviso!..." width="450" closable="false">
+                    <table border="0">
+                        <tr align="justify">
+                            <td>#{datosContribuyenteMB.mensajeP}</td>
+                        </tr>
+                    </table>
+                    <br/><br/>
+                </p:dialog>                   
+                 <div class="gobmxContenedor8">
+                     
+                     <div class="gob-datos-cont">
+                         <h2 style="margin-top: -20px !important;">
+                            <p:outputLabel value="#{msgValidacion.L0000058}"/>
+                            
+                         </h2> <div class="08.03.2017"></div>
+                                          <hr class="red" />
+                        <p:messages globalOnly="true" 
+                                                closable="true" 
+                                                autoUpdate="true" 
+                                                id="msgDatos" 
+                                                showDetail="false"/>
+      
+                     </div>
+                        <div class="gob-datos-cont-table">
+                         <p:panelGrid id="pnlDatosContribuyente"  styleClass="gobmxContenedor8 gmxfhorizontal">
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.aclP2Campo1}" id="rfcVigente"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{datosContribuyenteMB.contribuyente.rfcVigente}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{datosContribuyenteMB.contribuyente.personaIdentificacion.tipoPersona == 'M' ? 'false' : 'true'}">
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.L0000056}"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{datosContribuyenteMB.contribuyente.personaIdentificacion.apPaterno}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{datosContribuyenteMB.contribuyente.personaIdentificacion.tipoPersona == 'M' ? 'false' : 'true'}">
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.L0000057}"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{datosContribuyenteMB.contribuyente.personaIdentificacion.apMaterno}"/>
+                            </p:column>
+                        </p:row>   
+                        <p:row rendered="#{datosContribuyenteMB.contribuyente.personaIdentificacion.tipoPersona == 'M' ? 'false' : 'true'}">
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.rsNombre}"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{datosContribuyenteMB.contribuyente.personaIdentificacion.nombre}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{datosContribuyenteMB.contribuyente.personaIdentificacion.tipoPersona == 'F' ? 'false' : 'true'}">
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.L0000008}"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{datosContribuyenteMB.contribuyente.personaIdentificacion.razonSocial} #{datosContribuyenteMB.contribuyente.personaIdentificacion.tipoSociedad}"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                     </div>
+                     
+                </div>
+                    <div class="gobmxContenedor8">
+                            <div class="gob-dom-fisc">
+                                <h2 style="margin-left: -3px !important;">
+
+                                    <p:outputLabel value="#{msgValidacion.L0000059}"/>
+                               </h2> 
+                               <hr class="red" />
+                            </div>
+                       <div class="gob-dom-fisc-table">
+                            <p:panelGrid id="pnlDomicilioFiscal" styleClass="gobmxContenedor8 gmxfhorizontal">
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.L0000065}"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{datosContribuyenteMB.contribuyente.domicilio.codigoPostal}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.L0000067}"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{datosContribuyenteMB.contribuyente.domicilio.entFed}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.L0000064}"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{datosContribuyenteMB.contribuyente.domicilio.municipio}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.L0000066}"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{datosContribuyenteMB.contribuyente.domicilio.localidad}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.L0000063}"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{datosContribuyenteMB.contribuyente.domicilio.colonia}"/>
+                            </p:column>
+                        </p:row>
+                         <p:row>
+                                <p:column>
+                                    <p:outputLabel value="#{msgValidacion.L0000060}"/>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel value="#{datosContribuyenteMB.contribuyente.domicilio.calle}"/>
+                                </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.L0000061}"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{datosContribuyenteMB.contribuyente.domicilio.numeroExt}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.L0000062}"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{datosContribuyenteMB.contribuyente.domicilio.numeroInt}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <div >
+                                #{msgValidacion.L0000068}
+                                </div>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{datosContribuyenteMB.contribuyente.domicilio.claveAdmonLocal}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <div >
+                                #{msgValidacion.L0000069}
+                                </div>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{datosContribuyenteMB.contribuyente.domicilio.admonLocal}"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    </div>
+                    
+                    </div>
+                     <div class="gobmxContenedor8">
+                         <div class="gob-dat-cont">
+                                <h2  style="margin-top: 40px!important;margin-bottom: 0px!important;">
+                                    <p:outputLabel value="#{msgValidacion.L0000003}"/>
+                                </h2> 
+                                <hr class="red" />
+                         </div>
+                         <div class="gob-dat-cont-table">
+                                <p:panelGrid id="pnlDatosContacto" styleClass="gobmxContenedor8 gmxfhorizontal" style="margin-top: -5px!important;">
+                        <p:row>
+                               <p:column>
+                                   <p:outputLabel value="#{msgValidacion.L0000000}"/>
+                               </p:column>
+                               <p:column>
+                                   <p:outputLabel value="#{datosContribuyenteMB.contribuyente.domicilio.telefono1}"/>
+                               </p:column>
+                           </p:row>
+                           <p:row>
+                               <p:column>
+                                   <p:outputLabel value="#{msgValidacion.L0000001}"/>
+                               </p:column>
+                               <p:column>
+                                   <p:outputLabel value="#{datosContribuyenteMB.contribuyente.domicilio.telefono2}"/>
+                               </p:column>
+                           </p:row>
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel value="#{msgValidacion.M0000011}"/>
+                                </p:column>
+                                <p:column>
+                                    <p:selectOneRadio id="options"
+                                                      value="#{datosContribuyenteMB.sonDatos}" required="true"
+                                                      requiredMessage="#{msgValidacion.msjCampoRequerido}">
+                                        <f:selectItem itemLabel="Si" itemValue="1"/>
+                                        <f:selectItem itemLabel="No" itemValue="2"/>
+                                        <p:ajax update="options" process="options"/>
+                                    </p:selectOneRadio>
+                                    <p:message id="msjOptions" for="options" display="text"/>
+                                </p:column>
+                            </p:row>
+                            
+                    </p:panelGrid>
+                         </div>
+                     </div>
+                     <div class="gobmxContenedor8">
+                        <div class="gob-next-step">
+                             <p:commandButton id="btnSiguiente" value="#{msgValidacion.B0000002}" ajax="false"
+                                         action="#{solicitudDevolicionUtilsMB.validaDatos}" styleClass="gmxPositivo" style="margin-bottom: 20px !important;"/>
+                        </div>
+                     </div>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>
+

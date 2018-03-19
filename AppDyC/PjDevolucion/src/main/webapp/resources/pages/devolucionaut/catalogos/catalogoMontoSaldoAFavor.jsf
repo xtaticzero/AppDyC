@@ -1,0 +1,268 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" 
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:pe="http://primefaces.org/ui/extensions">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <title>Administrar Monto de saldo a favor</title>
+            <style type="text/css">
+                .ui-datatable tbody td {
+                    white-space: normal;
+                }
+
+                .ui-datatable thead th {
+                    white-space: normal;
+                }
+            </style>
+
+        </h:head>
+        <h:body>
+            <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+             
+            <p:dialog modal="true" widgetVar="statusDialog" header="#{msgValidacion.ajaxLoading}" draggable="false"
+                      closable="false">
+                <h:graphicImage library="images/" name="ajaxloadingbar.gif"/>
+            </p:dialog>
+                      
+            <h:form id="formMontoSaldoAFavor">
+                <p:growl id="growl" showDetail="true" sticky="true" globalOnly="true"/>
+                <p:panel id="pnlListaMontoSAF" style="width: 100%" header="#{msgValidacion.DAC00001}">
+                <p:toolbar style="width:892px" id="barraBotones">
+                    <p:toolbarGroup align="rigth">
+                        <p:commandButton disabled="#{catalogoMontoSaldoAFavor.banderaBotones}"
+                                         icon="ui-icon-trash"
+                                         id="inactivar"
+                                         title="#{msgValidacion.DAC00002}"
+                                         onclick="deleteConfirmDlg.show()"
+                                         ajax="true" process="@this"
+                                         style="margin:0"/>
+                        
+                        <p:commandButton oncomplete="dlgMontoSAF.show();" actionListener="#{catalogoMontoSaldoAFavor.modifyMontoSaldoAFavorLitener}"
+                                         disabled="#{catalogoMontoSaldoAFavor.banderaBotones}"
+                                         icon="ui-icon-pencil"
+                                         id="modificar"
+                                         title="#{msgValidacion.DAC00003}"
+                                         ajax="true" process="@this"
+                                         update="dlgMontoSAF,msgDialiogMontoSAF" style="margin:0"/>
+                        
+                        <p:commandButton oncomplete="dlgMontoSAF.show();" action="#{catalogoMontoSaldoAFavor.addMontoSaldoAFavorListener}"
+                                         icon="ui-icon-document"
+                                         id="agregar"
+                                         title="#{msgValidacion.DAC00004}"
+                                         ajax="true" process="@this"
+                                         update="dlgMontoSAF" style="margin:0"/>
+                        
+                        <p:commandButton oncomplete="dlgMontoSAF.show();" actionListener="#{catalogoMontoSaldoAFavor.selectMontoSaldoAFavorLitener}"
+                                         icon="ui-icon-search"
+                                         id="buscar"
+                                         title="#{msgValidacion.DAC00005}" 
+                                         ajax="true" process="@this"
+                                         update="dlgMontoSAF" style="margin:0"/>
+                              
+                    </p:toolbarGroup>
+                </p:toolbar>
+                
+                <p:dataTable emptyMessage="#{msgValidacion.DAC00006}" 
+                             id="tabla"
+                             rowsPerPageTemplate="5,10,15,20"
+                             paginator="true"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rows="5" 
+                             rowKey="#{montoSaldoAFavor.idMontoSaldoFavor}" 
+                             selection="#{catalogoMontoSaldoAFavor.montoSaldoAFavorSeleccionado}"
+                             selectionMode="single"
+                             style="width:900px;"
+                             var="montoSaldoAFavor" 
+                             value="#{catalogoMontoSaldoAFavor.listaMontoSaldoAFavor}"
+                             filteredValue="#{catalogoMontoSaldoAFavor.listaMontoSaldoAFavor}"
+                             >
+                    <p:ajax event="rowSelect" update=":formMontoSaldoAFavor:inactivar, :formMontoSaldoAFavor:modificar" 
+                            listener="#{catalogoMontoSaldoAFavor.activarBotones}"/>
+                    
+                    <p:column headerText="#{msgValidacion.DAC00007}" style="display:none;">
+                        <h:outputText value="#{montoSaldoAFavor.idMontoSaldoFavor}" />
+                    </p:column>
+                 
+                    <p:column headerText="#{msgValidacion.DAC00008}">
+                        <h:outputText value="#{montoSaldoAFavor.origenDevolucion}" />
+                    </p:column>
+                 
+                    <p:column headerText="#{msgValidacion.DAC00011}">
+                        <h:outputText value="#{montoSaldoAFavor.tipoTramite}" />
+                    </p:column>
+                    <p:column headerText="#{msgValidacion.DAC00009}">
+                        <h:outputText value="#{montoSaldoAFavor.montoSaldoFavor}" />
+                    </p:column>
+                    <p:column headerText="#{msgValidacion.DAC00010}">
+                        <h:outputText value="#{montoSaldoAFavor.estado}" />
+                    </p:column>                    
+                </p:dataTable>
+                    </p:panel>
+                <p:confirmDialog closable="true" id="deleteConfirmDialog" message="#{msgValidacion.DAC00012}" severity="alert" widgetVar="deleteConfirmDlg" >
+                    <p:commandButton id="declineDelete" value="No" onclick="deleteConfirmDlg.hide()" type="button" styleClass="gmxNegativo"/>
+                    <p:commandButton actionListener="#{catalogoMontoSaldoAFavor.removeMontoSaldoAFavorLitener}" 
+                                     id="confirmDelete" 
+                                     update="@form"
+                                     value="Si" styleClass="gmxPositivo"/>
+                </p:confirmDialog>
+                                     
+                <p:confirmDialog closable="true" modal="true" id="notificaDialog"  
+                                     message="#{catalogoMontoSaldoAFavor.mensajeNotif}" severity="alert" widgetVar="notifDlgVar" 
+                                     visible="#{catalogoMontoSaldoAFavor.frmMontoSaldoAFavorDTO.banderaMsg}">
+                           <p:commandButton value="Aceptar" onclick="notifDlgVar.hide();" update="@form" type="button" styleClass="gmxPositivo"/>
+                </p:confirmDialog>
+                
+                    
+                <p:dialog id="dlgMontoSAF" header="#{catalogoMontoSaldoAFavor.frmMontoSaldoAFavorDTO.tituloDialog}"
+                          widgetVar="dlgMontoSAF" hideEffect="drop" modal="true" width="620px">
+                    <p:ajax event="close" listener="#{catalogoMontoSaldoAFavor.limpiarCombosOrigenTramite}" 
+                            update="cmbOrigenDevolucion cmbTipoTramite"/>
+                    <div style="text-align:left;">
+                        <p:outputLabel value="#{msgValidacion.inpObligatorio}" style="color:red;" rendered="true"/>
+                    </div>
+                    <p:panel id="pnlMontoSAF" visible="true">
+                        <p:row>
+                                    <p:column colspan="2">
+                                        <p:messages id="msgDialiogMontoSAF" showDetail="true" autoUpdate="true"
+                                                    closable="true" showSummary="false"  />
+                                    </p:column>
+                        </p:row>
+                        
+                        <table role="grid" border="0" cellspacing="5">
+                            <tbody>
+                                <tr role="row" class="ui-widget-content">
+                                    <td role="gridcell"  width="40%">
+                                        <p:outputLabel value="#{msgValidacion.DAC00008}"/>
+                                         
+                                        <p:outputLabel value=" *" style="color:red;"/>
+                                    </td>
+                                        <td role="gridcell" width="60%">
+                                        <h:panelGrid columns="3">
+                                           <p:inputText id="txtOrigenDev" required="true"
+                                                         requiredMessage="#{catalogoMontoSaldoAFavor.frmMontoSaldoAFavorDTO.strMsgOrigenDevolucion}"
+                                                         value="#{catalogoMontoSaldoAFavor.origenDevolucion}"
+                                                          rendered="#{catalogoMontoSaldoAFavor.frmMontoSaldoAFavorDTO.bandOrigenDevTxt}"
+                                                          disabled="true">
+                                            </p:inputText>
+                                            <p:selectOneMenu id="cmbOrigenDevolucion"
+                                                            required="true" style="width: 400px"
+                                                            value="#{catalogoMontoSaldoAFavor.origenDevolucion}"
+                                                            rendered="#{catalogoMontoSaldoAFavor.frmMontoSaldoAFavorDTO.bandOrigenDev}"
+                                                            requiredMessage="#{msgValidacion.DAC00028}"
+                                                            >
+                                               <f:selectItem itemValue="-1" itemLabel="" noSelectionOption="false" />
+                                               <f:selectItems value="#{catalogoMontoSaldoAFavor.listaOrigenSaldo}" var="origenSaldo"
+                                                    itemValue="#{origenSaldo.idOrigenSaldo}"
+                                                    itemLabel="#{origenSaldo.descripcion}"/>
+                                                    <p:ajax update="cmbTipoTramite" listener="#{catalogoMontoSaldoAFavor.actualizaTipoTramite}">  
+                                                    </p:ajax>
+                                             </p:selectOneMenu>
+                                        </h:panelGrid>
+                                    </td>
+                                </tr>
+                                <tr role="row" class="ui-widget-content">
+                                    <td role="gridcell"  width="40%">
+                                        <p:outputLabel value="#{msgValidacion.DAC00011}" />
+                                         
+                                        <p:outputLabel value=" *" style="color:red;"/>
+                                    </td>
+                                    <td role="gridcell"  width="60%">
+                                        <h:panelGrid columns="2">
+                                            <p:inputText id="txtTipoTramite" required="true"
+                                                         requiredMessage="#{catalogoMontoSaldoAFavor.frmMontoSaldoAFavorDTO.strMsgTipoTramite}"
+                                                         value="#{catalogoMontoSaldoAFavor.tipoTramite}"
+                                                         styleClass="upperCase"
+                                                         rendered="#{catalogoMontoSaldoAFavor.frmMontoSaldoAFavorDTO.bandTipoTramTxt}"
+                                                         disabled="true">
+                                            </p:inputText>
+                                            <p:selectOneMenu id="cmbTipoTramite" 
+                                                             style="width:400px" panelStyle="width:400px" height="300"
+                                                             required="true"
+                                                             value="#{catalogoMontoSaldoAFavor.tipoTramite}"
+                                                             rendered="#{catalogoMontoSaldoAFavor.frmMontoSaldoAFavorDTO.bandTipoTram}"
+                                                             requiredMessage="#{msgValidacion.DAC00038}">
+                                               <f:selectItem itemValue="" itemLabel=""  noSelectionOption="true"/>
+                                               <f:selectItems value="#{catalogoMontoSaldoAFavor.listaTipoTramite}" var="tipoTramite"
+                                                              itemValue="#{tipoTramite.dyccTipoTramiteDTO.idTipoTramite}"
+                                                              itemLabel="#{tipoTramite.dyccTipoTramiteDTO.descripcion}"/>
+                                                    <p:ajax update="cmbTipoTramite" event="valueChange">  
+                                                    </p:ajax>      
+                                            </p:selectOneMenu>
+                                        </h:panelGrid>
+                                    </td>
+                                </tr>
+                                <tr role="row" class="ui-widget-content">
+                                    <td role="gridcell"  width="40%">
+                                        <p:outputLabel value="#{msgValidacion.DAC00009}"
+                                                       rendered="#{catalogoMontoSaldoAFavor.frmMontoSaldoAFavorDTO.bandMontoSAF}"/>
+                                         
+                                        <p:outputLabel value=" *"
+                                                       rendered="#{catalogoMontoSaldoAFavor.frmMontoSaldoAFavorDTO.bandMontoSAF}"
+                                                       style="color:red;"/>
+                                    </td>
+                                    <td role="gridcell"  width="60%">
+                                        <h:panelGrid columns="2">
+                                            <pe:inputNumber id="txtMontoSAF" required="true"
+                                                         requiredMessage="#{msgValidacion.DAC00017}"
+                                                         value="#{catalogoMontoSaldoAFavor.montoSaldoAFavor}"
+                                                         rendered="#{catalogoMontoSaldoAFavor.frmMontoSaldoAFavorDTO.bandMontoSAF}"
+                                                         validatorMessage="#{msgValidacion.DAC00042}"
+                                                         maxlength="10"
+                                                         maxValue="9999999999"
+                                                         decimalPlaces="0">                             
+                                                <f:validateLongRange minimum="1"/>
+                                            </pe:inputNumber>                                            
+                                        </h:panelGrid>
+                                    </td>
+                                </tr>
+                                <tr role="row" class="ui-widget-content">
+                                    <td role="gridcell"  width="40%">
+                                        <p:outputLabel value="#{msgValidacion.DAC00010}"
+                                                       rendered="#{catalogoMontoSaldoAFavor.frmMontoSaldoAFavorDTO.bandEstado}"/>
+                                         
+                                        <p:outputLabel value=" *"
+                                                       rendered="#{catalogoMontoSaldoAFavor.frmMontoSaldoAFavorDTO.bandEstado}"
+                                                       style="color:red;"/>
+                                    </td>
+                                    <td role="gridcell"  width="60%">
+                                        <h:panelGrid columns="2">
+                                            <p:selectOneRadio id="oneRdoEstado" value="#{catalogoMontoSaldoAFavor.estado}" 
+                                                 required="true" requiredMessage="#{catalogoMontoSaldoAFavor.frmMontoSaldoAFavorDTO.strMsgEstado}"
+                                                 rendered="#{catalogoMontoSaldoAFavor.frmMontoSaldoAFavorDTO.bandEstado}"
+                                                 disabled="#{catalogoMontoSaldoAFavor.frmMontoSaldoAFavorDTO.bandActivo}">
+                                                <f:selectItem itemLabel="#{msgValidacion.DAC00014}" itemValue="1"/>  
+                                                <f:selectItem itemLabel="#{msgValidacion.DAC00015}" itemValue="0" />
+                                            </p:selectOneRadio>
+                                            <p:message id="msgEstado" for="oneRdoEstado" display="text"/>
+                                        </h:panelGrid>
+                                    </td>
+                                </tr>
+                                
+                                <tr role="row" class="ui-widget-content">
+                                    <td role="gridcell" colspan="2" align="center">
+                                        <p:commandButton value="Cancelar" onclick="dlgMontoSAF.hide();" type="button"
+                                                         styleClass="gmxNegativo"/>&nbsp; 
+                                        <p:commandButton value="Guardar" id="btnGuardar"
+                                                         rendered="#{catalogoMontoSaldoAFavor.frmMontoSaldoAFavorDTO.bandBtnGuardar}"
+                                                         update="pnlMontoSAF,msgDialiogMontoSAF,pnlListaMontoSAF,notificaDialog" 
+                                                         process="@this, pnlMontoSAF"
+                                                         actionListener="#{catalogoMontoSaldoAFavor.execGuardar}"
+                                                         styleClass="gmxPositivo"/>&nbsp;
+                                        <p:commandButton value="Buscar" id="btnBuscar"
+                                                         rendered="#{catalogoMontoSaldoAFavor.frmMontoSaldoAFavorDTO.bandBtnBuscar}"
+                                                         update="pnlMontoSAF,msgDialiogMontoSAF,pnlListaMontoSAF" process="@form"
+                                                         actionListener="#{catalogoMontoSaldoAFavor.execBuscar}"
+                                                         styleClass="gmxPositivo"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </p:panel>
+                </p:dialog>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

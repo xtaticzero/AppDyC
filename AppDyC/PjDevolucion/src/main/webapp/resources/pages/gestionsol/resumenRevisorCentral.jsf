@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view contentType="text/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+    <html xmlns="http://www.w3.org/1999/xhtml" xmlns:p="http://primefaces.org/ui">
+        <h:head>
+            <title>Resumen de devolucion</title>
+            <h:outputStylesheet library="css/" name="formato.css"/>
+        </h:head>
+        <h:body>
+            <h:form>
+                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
+                <p:panel header="Resumen documento de una solicitud de devolución"
+                         style="width:780px;border: 0;text-align: center;">
+                    <div align="left">
+                        <p:panelGrid columns="2">
+                            <p:outputLabel value="RFC">:</p:outputLabel>
+                            <p:outputLabel value="#{resumenRevisorCentralMB.resumenRevisionVO.rfcContribuyente}"></p:outputLabel>
+                            <p:outputLabel value="Nombre o razón social">:</p:outputLabel>
+                            <p:outputLabel value="#{resumenRevisorCentralMB.resumenRevisionVO.nombreORazonSocial}"/>
+                            <p:outputLabel value="Tipo trámite">:</p:outputLabel>
+                            <p:outputLabel value="#{resumenRevisorCentralMB.resumenRevisionVO.tipoTramite}"/>
+                            <p:outputLabel value="Tipo de resolución">:</p:outputLabel>
+                            <p:outputLabel value="#{resumenRevisorCentralMB.resumenRevisionVO.tipoResolucion}"/>
+                            <p:outputLabel value="Importe solicitado">:</p:outputLabel>
+                            <h:outputText value="#{resumenRevisorCentralMB.resumenRevisionVO.importeAutorizado}">
+                                <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                            </h:outputText>
+                            <p:outputLabel value="Importe autorizado">:</p:outputLabel>
+                            <h:outputText value="#{resumenRevisorCentralMB.resumenRevisionVO.importeAutorizado}">
+                                <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                            </h:outputText>
+                            <p:outputLabel value="Importe neto a devolver menos compensación de oficio">:</p:outputLabel>
+                            <h:outputText value="#{resumenRevisorCentralMB.resumenRevisionVO.importeNeto}">
+                                <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                            </h:outputText>
+                            <p:outputLabel value="Saldo negado">:</p:outputLabel>
+                            <h:outputText value="#{resumenRevisorCentralMB.resumenRevisionVO.importeNegado}">
+                                <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                            </h:outputText>
+                        </p:panelGrid>
+                    </div>
+                    <div style="height:30px;">
+                        <p:commandButton action="#{resumenRevisorCentralMB.consultarExpediente}" 
+                                         ajax="false" 
+                                         id="btnConsultarExpediente1" 
+                                         value="Consultar Expediente"
+                                          />
+                         
+                        <p:commandButton actionListener="#{resumenRevisorCentralMB.asignarRechazo}"
+                                         oncomplete="dlg.show();" 
+                                         styleClass="gmxNegativo" 
+                                         update=":idComentarios"
+                                         value="Rechazar" />
+                         
+                        <p:commandButton actionListener="#{resumenRevisorCentralMB.asignarAprobacipon}"
+                                         oncomplete="dlg.show();" 
+                                         styleClass="gmxPositivo" 
+                                         update=":idComentarios"
+                                         value="Aprobar"/>
+                         
+                        <p:commandButton actionListener="#{resumenRevisorCentralMB.descargarDocumento}" 
+                                         ajax="false"
+                                         id="btnDescarga1" 
+                                         title="Descargar" 
+                                         value="Descargar">
+                            <p:fileDownload value="#{resumenRevisorCentralMB.filePapeles}"/>
+                        </p:commandButton>
+                         
+                        <p:commandButton action="#{resumenRevisorCentralMB.regresarABandeja}" 
+                                         ajax="true"
+                                         id="btnRegresar" 
+                                         value="Regresar" 
+                                         />
+                    </div>
+                </p:panel>
+                <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                <p:dialog id="statusBar" modal="true" widgetVar="statusDialog" header="#{msgValidacion.ajaxLoading}"
+                          draggable="false" width="250" closable="false" resizable="false">
+                    <p:graphicImage value="/resources/images/ajaxloadingbar.gif"/>
+                </p:dialog>
+            </h:form>
+            <p:dialog header="Comentarios" id="idComentarios" widgetVar="dlg" rendered="true" appendToBody="true"
+                      resizable="true" modal="true" height="270px" width="450px">
+                <h:form id="addLpc">
+                     <p:panelGrid columns="1" style="width:100%" >
+                        <p:outputLabel style="color:red;">* Campo requerido</p:outputLabel>
+                        <p:inputTextarea id="txtComentarios" maxlength="450" 
+                                         required="true" 
+                                         requiredMessage="#{msgValidacion.diRequerido}"
+                                         style="width:350px !important; height:100px;" 
+                                         value="#{resumenRevisorCentralMB.comentarios}" />
+                    </p:panelGrid>
+                    <p:messages id="idComentarios2"  showDetail="false" autoUpdate="true" closable="true"/>
+                    <p:commandButton value="Guardar" action="#{resumenRevisorCentralMB.guardar}" ajax="true"  process="@form" />
+                </h:form>
+            </p:dialog>
+        </h:body>
+    </html>
+</f:view>

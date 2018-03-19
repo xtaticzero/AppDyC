@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" 
+        xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions" >
+        
+  
+
+     <h:form id="frmDlgConvertidorSaldos">
+        <p:dialog   id="dlgConvertidorSaldos" header="Calculadora de actualizaciones (INPC)" draggable="true" resizable="false"
+                widgetVar="wDlgConvertidorSaldos" modal="false" closable="true" width="700px" height="500px" visible="#{mbConvertidorSaldo.mostrarDlg}">
+           
+                <p:panelGrid id="pnlDevolucionManual" >
+                    <p:row>
+                        <p:column>
+                            Fecha origen:
+                        </p:column>
+                        <p:column>
+                            <p:calendar value="#{mbConvertidorSaldo.fechaOrigen}" 
+                                        id="calFechaOrigen" locale="es"
+                                        navigator="true" readonlyInput="true" showOn="button" pattern="dd/MM/yyyy" required="true"
+                                        requiredMessage="La fecha origen es requerida" yearRange="c-15:c+15" maxdate="#{now}"/>
+                            <p:message id="msgFechaOrigen" for="calFechaOrigen" display="text"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            Cantidad a convertir:
+                            </p:column>
+                        <p:column>
+                            <pe:inputNumber id="inumCantConvertir" style="width:190px;"
+                                    value="#{mbConvertidorSaldo.cantidadBase}" 
+                                    symbol="$ " maxValue="9999999999.99" required="true"
+                                    requiredMessage="La cantidad es requerida"
+                                    disabled="false"/>                                                
+
+                            <p:message id="msgCantidadConvertir" for="inumCantConvertir" display="text"/>                    
+                        </p:column>                              
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            Fecha destino:
+                        </p:column>
+                        <p:column>
+                            <p:calendar value="#{mbConvertidorSaldo.fechaDestino}" 
+                                        id="calFechaDestino" 
+                                        navigator="true" readonlyInput="true" showOn="button" pattern="dd/MM/yyyy" required="true"
+                                        requiredMessage="La fecha destino es requerida" yearRange="c-15:c+15" maxdate="#{now}"/>
+                            <p:message id="msgFechaDestino" for="calFechaDestino" display="text"/>
+                        </p:column>                 
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="2">
+                            <p:commandButton value="Convertir" action="#{mbConvertidorSaldo.convertir}" 
+                                            process="calFechaOrigen inumCantConvertir calFechaDestino @this" 
+                                            update="msgFechaOrigen msgCantidadConvertir msgFechaDestino tblConversiones "/>
+
+                            <p:commandButton value="Limpiar" action="#{mbConvertidorSaldo.limpiar}"
+                                            process="@this" 
+                                            update="frmDlgConvertidorSaldos"/>
+
+                            <p:commandButton value="Cerrar" action="#{mbConvertidorSaldo.cerrarDialog}" 
+                                            process="@this" 
+                                            update="frmDlgConvertidorSaldos"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+                
+                <p:dataTable id="tblConversiones" value="#{mbConvertidorSaldo.conversiones}" var="conversion"
+                                             rowIndexVar="rowIndex" 
+                                             rowStyleClass="#{(rowIndex mod 2) eq 0 ? 'highlightA' : 'highlightB'}"
+                                             emptyMessage="No se encontraron registros">
+                            
+                    <p:column headerText="Tipo conversión" style="width:50px">
+                        <h:outputText value="#{conversion.tipoConversion}"/>
+                    </p:column>
+                    <p:column headerText="Importe convertido">
+                        <h:outputLabel value="#{conversion.importeConvertido}">
+                            <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                        </h:outputLabel>
+                    </p:column>
+                    <p:column headerText="Fecha destino" style="width:180px">
+                        <h:outputText value="#{conversion.fechaDestino}">
+                            <f:convertDateTime pattern="dd-MM-yy" type="date"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Factor actualización">
+                        <h:outputText value="#{conversion.factorActualizacion}"/>
+                    </p:column>
+                    <p:column headerText="INPC origen" style="width:50px">
+                        <h:outputText value="#{conversion.inpcOrigen}"/>
+                    </p:column>
+                    <p:column headerText="Fecha publicación INPC Origen" >
+                        <h:outputText value="#{conversion.fechaPubInpcOrigen}">
+                            <f:convertDateTime pattern="dd-MM-yy" type="date"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="INPC destino" style="width:80px">
+                        <h:outputText value="#{conversion.inpcDestino}"/>
+                    </p:column>
+                    <p:column headerText="Fecha publicación INPC destino" >
+                        <h:outputText value="#{conversion.fechaPubInpcDestino}">
+                            <f:convertDateTime pattern="dd-MM-yy" type="date"/>
+                        </h:outputText>
+                    </p:column>
+                </p:dataTable>
+      </p:dialog>
+    </h:form>      
+</f:view>

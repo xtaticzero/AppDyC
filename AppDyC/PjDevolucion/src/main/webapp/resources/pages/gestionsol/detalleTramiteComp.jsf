@@ -1,0 +1,227 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view contentType="text/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+    <html xmlns="http://www.w3.org/1999/xhtml" xmlns:p="http://primefaces.org/ui">
+        <h:head>
+            <title>detalleTramiteComp</title>
+            <h:outputStylesheet library="css/" name="formato.css"/>
+        </h:head>
+        <h:body>
+            <h:form id="detalleTramite1">
+                <p:panel id="pnlDatosTramiteGen2" header="Datos generales del trámite" styleClass="gmxAutoAjustable">
+                    <p:panelGrid style="width:100%;text-align:left">
+                        <p:row>
+                            <p:column style="width:400px;text-align:left;font-weight:bold">
+                                <p:outputLabel value="Información del trámite"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:400px;text-align:left">
+                                <p:outputLabel value="Fecha de registro del trámite: "/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <h:outputLabel value="#{dyCConsultarExpedienteMB.dycpSolicitudDTO.fechaPresentacion}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputLabel>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:400px;text-align:left">
+                                <p:outputLabel value="Número de control: "/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="#{dyCConsultarExpedienteMB.dycpSolicitudDTO.numControl}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:400px;text-align:left">
+                                <p:outputLabel value="Tipo de trámite: "/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="#{dyCConsultarExpedienteMB.dycpSolicitudDTO.descTramite}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:400px;text-align:left">
+                                <p:outputLabel value="Estado del trámite: "/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="#{dyCConsultarExpedienteMB.dycpSolicitudDTO.estadoSolicitud}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:400px;text-align:left">
+                                <p:outputLabel value="Dictaminador asignado: "/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="#{dyCConsultarExpedienteMB.dycpSolicitudDTO.nombre}
+                                                       #{dyCConsultarExpedienteMB.dycpSolicitudDTO.apPaterno}
+                                                       #{dyCConsultarExpedienteMB.dycpSolicitudDTO.apMaterno}"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:panel>
+                <p:panel id="pnlDeclaracionCompensada"
+                         header="Declaración en la que se compensó" styleClass="gmxAutoAjustable">
+                    <p:panelGrid style="width:100%;text-align:left">
+                        <p:row>
+                            <p:column style="width:400px;text-align:left">
+                                <p:outputLabel value="RFC: "/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="#{dyCConsultarExpedienteMB.dycpSolicitudDTO.dycpServicioDTO.rfcContribuyente}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:400px;text-align:left">
+                                <p:outputLabel value="Impuesto: "/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="#{dyCConsultarExpedienteMB.dycpSolicitudDTO.descImpuesto}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:400px;text-align:left">
+                                <p:outputLabel value="Concepto: "/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="#{dyCConsultarExpedienteMB.dycpSolicitudDTO.descConcepto}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:400px;text-align:left">
+                                <p:outputLabel value="Periodo: "/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="#{dyCConsultarExpedienteMB.dycpSolicitudDTO.descPeriodo}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:400px;text-align:left">
+                                <p:outputLabel value="Ejercicio: "/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="#{dyCConsultarExpedienteMB.dycpSolicitudDTO.dyctSaldoIcepDTO.dyccEjercicioDTO.idEjercicio}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:400px;text-align:left">
+                                <p:outputLabel value="Tipo de declaración: "/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="#{dyCConsultarExpedienteMB.dycpSolicitudDTO.descDeclaracion}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:400px;text-align:left">
+                                <p:outputLabel value="Fecha de presentación: "/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <h:outputLabel value="#{dyCConsultarExpedienteMB.dycpSolicitudDTO.fechaPresentaDec}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputLabel>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:400px;text-align:left">
+                                <p:outputLabel value="Importe compensado: "/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <h:outputText value="#{dyCConsultarExpedienteMB.dycpSolicitudDTO.importeSolicitado}">
+                                    <f:convertNumber currencySymbol="$ " type="currency" locale="mx_es"/>
+                                </h:outputText>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:panel>
+                <p:panel id="pnlDeclaracionCompensada2" header="Origen del saldo a favor" styleClass="gmxAutoAjustable">
+                    <p:panelGrid style="width:100%;text-align:left">
+                        <p:row>
+                            <p:column style="width:400px;text-align:left">
+                                <p:outputLabel value="Tipo de origen del saldo:"/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="#{dyCConsultarExpedienteMB.consultarExpedienteDTO.origenSaldo}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:400px;text-align:left">
+                                <p:outputLabel value="Periodicidad:"/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="#{dyCConsultarExpedienteMB.consultarExpedienteDTO.periodicidad}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:400px;text-align:left">
+                                <p:outputLabel value="Periodo:"/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="#{dyCConsultarExpedienteMB.consultarExpedienteDTO.periodo}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:400px;text-align:left">
+                                <p:outputLabel value="Ejercicio:"/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="#{dyCConsultarExpedienteMB.consultarExpedienteDTO.ejercicio}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:400px;text-align:left">
+                                <p:outputLabel value="Concepto:"/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="#{dyCConsultarExpedienteMB.consultarExpedienteDTO.concepto}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:400px;text-align:left">
+                                <p:outputLabel value="Saldo a aplicar:"/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <h:outputText value="#{dyCConsultarExpedienteMB.consultarExpedienteDTO.saldoAplicar}">
+                                    <f:convertNumber currencySymbol="$ " type="currency" locale="mx_es"/>
+                                </h:outputText>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:400px;text-align:left">
+                                <p:outputLabel value="Fecha en que se presentó la declaración del saldo a favor:"/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <h:outputText value="#{dyCConsultarExpedienteMB.consultarExpedienteDTO.fechaPresDecl}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:400px;text-align:left">
+                                <p:outputLabel value="Monto del saldo a favor original:"/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <h:outputText value="#{dyCConsultarExpedienteMB.consultarExpedienteDTO.montoSaldoFavor}">
+                                    <f:convertNumber currencySymbol="$ " type="currency" locale="mx_es"/>
+                                </h:outputText>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:400px;text-align:left">
+                                <p:outputLabel value="Remanente histórico:"/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <h:outputText value="#{dyCConsultarExpedienteMB.remanenteHistorico}">
+                                    <f:convertNumber currencySymbol="$ " type="currency" locale="mx_es"/>
+                                </h:outputText>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <div align="right" style="height:30px">
+                        <p:commandButton value="Regresar" action="#{detalleTramiteMB.irConsultarExpediente2}" ajax="false" />
+                    </div>
+                </p:panel>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

@@ -1,0 +1,19 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:element name="spConsultarAltexDTO" >
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="txtnumalt" type="xs:int"/>
+                <xs:element minOccurs="0" name="txtrfc" type="xs:string"/>
+                <xs:element minOccurs="0" name="txtusr" type="xs:string"/>
+                <xs:element minOccurs="0" name="vd_numalt" type="xs:int"/>
+                <xs:element minOccurs="0" name="vd_nombre" type="xs:string"/>
+                <xs:element minOccurs="0" name="vd_rfceeog1" type="xs:string"/>
+                <xs:element minOccurs="0" name="vd_vigencia" type="xs:string"/>
+                <xs:element minOccurs="0" name="vd_anioreg" type="xs:int"/>
+                <xs:element minOccurs="0" name="vd_domreg" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+</xs:schema> 

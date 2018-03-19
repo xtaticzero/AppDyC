@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns="http://www.w3.org/1999/xhtml" 
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:h="http://java.sun.com/jsf/html" 
+        xmlns:f="http://java.sun.com/jsf/core" 
+        xmlns:p="http://primefaces.org/ui">
+    <html>
+        <h:head>
+            <meta http-equiv="X-UA-Compatible" content="IE=8" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta http-equiv="pragma" content="no-cache" />
+            <meta http-equiv="cache-control" content="no-cache" />
+            <meta http-equiv="expires" content="0" />
+        
+            <title>#{msgValidacion.aiaTituloPestana}</title>
+            <h:outputStylesheet library="css/" name="formato.css"/>
+            <h:outputScript library="js" name="adjuntarDoc.js"/>
+            <style type="">
+                .ui-paginator {
+                    font-size: 12px !important;
+                }
+            </style>
+            <script type="text/javascript">
+                function descargar(){
+                  document.getElementById("formAdjuntar:idTabla:0:descarga").click();
+                }
+            </script>
+        </h:head>
+        <h:body>
+            <h:form id="formAdjuntar">
+                <p:panel id="pnlListado" header="#{adjuntarDocumentoMB.tituloAdjuntar}" style="width:100%">
+                    <p:messages id="mensajeResultado" showDetail="true" autoUpdate="false" closable="true" 
+                            globalOnly="true"/>
+                    <p:panelGrid id="gridAdjuntarDoc" style="width:100%">
+                        <p:row>
+                            <p:column>
+                                <strong>#{msgValidacion.riaTipDocumento}</strong>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:dataTable id="dtDocAdjuntos" emptyMessage="#{msgValidacion.tblEmpty}"
+                                             var="anexos" value="#{adjuntarDocumentoMB.listaArchivos}" rows="5"
+                                             paginator="true" paginatorPosition="bottom"
+                                             rowStyleClass="#{anexos.estatus eq 'Enviado' ? 'documentoEnviado' : null}"
+                                             rowKey="#{anexos.idConsecutivoDoc}"
+                                             selection="#{adjuntarDocumentoMB.archivoSeleccionado}"
+                                             selectionMode="single"
+                                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                                             
+                                            <p:ajax event="rowSelect" update="dtDocAdjuntos,editaArchivo,eliminaArchivo" />  
+                                    <f:facet name="header">                              
+                                        <p:toolbar style="border:0px; padding:0px; margin:0px;">
+                                            <p:toolbarGroup align="right">
+                                                    <p:commandButton icon="ui-icon-circle-plus" title="#{msgValidacion.aiaAdjuntar}"
+                                                                     onclick="statusDialog.show();" update="statusDialog" 
+                                                                     type="button"
+                                                                     actionListener="#{adjuntarDocumentoMB.cambiarCampoARequerido}"/>
+                                                     
+                                                    <p:commandButton id="editaArchivo" icon="ui-icon-pencil" title="#{msgValidacion.aiaEditarDoc}"
+                                                                     onclick="editDoc.show();" 
+                                                                     update="dtDocAdjuntos" 
+                                                                     disabled="#{empty adjuntarDocumentoMB.archivoSeleccionado or adjuntarDocumentoMB.archivoSeleccionado.estatus eq 'Enviado'}"
+                                                                     type="button"/>
+                                                     
+                                                    <p:commandButton id="eliminaArchivo" icon="ui-icon-close" title="#{msgValidacion.aiaEliminarDoc}" ajax="false"
+                                                                     update="dtDocAdjuntos" onclick="confirmation.show();" 
+                                                                     disabled="#{empty adjuntarDocumentoMB.archivoSeleccionado or adjuntarDocumentoMB.archivoSeleccionado.estatus eq 'Enviado'}"
+                                                                     type="button"/>
+                                            </p:toolbarGroup>
+                                        </p:toolbar>
+                                    </f:facet>
+                                    
+                                    <p:column headerText="#{msgValidacion.aiaNombreArchivo}">
+                                        #{anexos.nombre}
+                                    </p:column>
+                                    <p:column headerText="#{msgValidacion.aiaNombreDocumento}">
+                                        #{anexos.descripcion}
+                                    </p:column>
+                                    <p:column headerText="#{msgValidacion.aiaEstatus}">
+                                        #{anexos.estatus}
+                                    </p:column>
+                                </p:dataTable>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <h5>#{msgValidacion.aiaNotasAclaratorias}</h5>
+                                <p:inputTextarea  value="#{adjuntarDocumentoMB.notasAclaratorias}"
+                                                 rows="5" cols="25" counter="counter"
+                                                 maxlength="3000" counterTemplate="Quedan {0} caracteres"
+                                                 style="width:760px;height:41px"/>  
+                                <h:outputText id="counter"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <f:facet name="footer">
+                            <p:row>
+                                <p:column colspan="2" style="text-align: center">
+                                    <p:commandButton value="#{msgValidacion.aiaRegresar}"
+                                                     ajax="false" 
+                                                     update="dtDocAdjuntos"
+                                                     action="#{adjuntarDocumentoMB.cancelar}"
+                                                     actionListener="#{adjuntarDocumentoMB.limpiarLista}"/>
+                                    <p:commandButton value="Enviar"
+                                                     ajax="false" 
+                                                     id="idEnviar"
+                                                     update="dtDocAdjuntos, idTabla, dtDocAdjuntos"
+                                                     action="#{adjuntarDocumentoMB.guardarDatos}"
+                                                     styleClass="gmxPositivo"
+                                                     disabled="#{!adjuntarDocumentoMB.banderaBoton}"/>
+                                </p:column>
+                            </p:row>
+                        </f:facet>
+                        
+                    </p:panelGrid>
+                    <p:panel style="width:100%;">
+                        <p:dataTable id="idTabla" 
+                                     emptyMessage="No se han registrado archivos adjuntos con anterioridad"
+                                     paginator="true"
+                                     rows="5"
+                                     rowsPerPageTemplate="5,10,15"
+                                     style="width:100%"
+                                     value="#{adjuntarDocumentoMB.listaDeArchivosDescargados}" 
+                                     var="archivo" 
+                                     >
+                            <p:ajax event="rowSelect" />  
+                            <f:facet name="header">
+                                Documentos anteriormente adjuntos
+                            </f:facet>
+                            <p:column headerText="Nombre de archivo">
+                                <h:outputText value="#{archivo.nombreArchivo}"/>
+                            </p:column>
+                            <p:column headerText="Descripción">
+                                <h:outputText value="#{archivo.descripcion}"/>
+                            </p:column>
+                            <p:column headerText="Fecha de registro">
+                                <h:outputText value="#{archivo.fechaRegistro}"/>
+                            </p:column>
+                            <p:column  headerText="Descargar" style="text-align: center !important;">
+                                <div align="center">
+                                    <p:commandButton icon="ui-icon-circle-arrow-s" id="preparardescarga" oncomplete="descargar();">
+                                        <f:setPropertyActionListener target="#{adjuntarDocumentoMB.dyctArchivoDTO}" value="#{archivo}"/>
+                                        <p:ajax partialSubmit="true" 
+                                                event="click" 
+                                                immediate="true" 
+                                                process="@this" 
+                                                />
+                                    </p:commandButton>
+                                    <p:commandButton id="descarga" 
+                                                     onclick="PrimeFaces.monitorDownload(start, stop)"
+                                                     style="display:none" 
+                                                     update="@form">
+                                        <p:fileDownload value="#{adjuntarDocumentoMB.archivoADescargar}" />
+                                    </p:commandButton>
+                                </div>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                </p:panel>
+                
+                <p:dialog id="statusBar" modal="true" widgetVar="statusDialog" header="#{msgValidacion.ajaxLoading}" draggable="false" width="250"
+                          closable="false" resizable="false">
+                    <p:graphicImage value="/resources/images/ajaxloadingbar.gif"/>
+                </p:dialog>
+                
+            </h:form>
+             
+            <p:dialog widgetVar="statusDialog" header="#{msgValidacion.aiaDialogHeader}" draggable="true" resizable="false" modal="false"
+                      closable="true" width="550">
+                <h:form enctype="multipart/form-data">
+                    <p style="color: Red;">#{msgValidacion.camposObligatorios}</p>
+                    <p:panelGrid columns="2">
+                        <h:outputLabel value="#{msgValidacion.aiaSeleccioneArchivo}"/>
+                        <p:fileUpload id="fileUp" value="#{adjuntarDocumentoMB.file}" style="width : 400px;"
+                                      dragDropSupport="true" mode="simple" label="Buscar" validator="ArchivoValidator" />
+                        <h:outputLabel value="#{msgValidacion.aiaNombreDelDocumento}"/>
+                        <p:inputText id="numControl" maxlength="30" style="width: 400px;text-transform: uppercase;"
+                                     value="#{adjuntarDocumentoMB.descripcion}"
+                                     required="#{adjuntarDocumentoMB.banderaMensaje}"
+                                     requiredMessage="#{msgValidacion.generalMsgRequerido}">
+                        <p:message id="msgControl" for="numControl" display="text"/>                            
+                        </p:inputText>
+
+                        <f:facet name="footer">
+                            <div align="center">
+                                <p:commandButton value="#{msgValidacion.aiaCancelar}" ajax="false" update=":formAdjuntar:dtDocAdjuntos"
+                                                 actionListener="#{adjuntarDocumentoMB.limpiaDescripcion}"/>
+                                                 
+                                <p:commandButton value="#{msgValidacion.aiaAgregar}" ajax="false"
+                                                 update=":formAdjuntar:dtDocAdjuntos,:formAdjuntar:msgAdjuntar,:formAdjuntar:idEnviar"
+                                                 actionListener="#{adjuntarDocumentoMB.agregarArchivo}"/>
+                            </div>
+                        </f:facet>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+             
+            <p:dialog id="editDocumento" header="#{msgValidacion.aiaDialogEditarHeader}" widgetVar="editDoc" resizable="false"
+                      width="550" modal="true">
+                <h:form>
+                    <p:panelGrid id="display" columns="2">
+                        <h:outputText value="#{msgValidacion.aiaEditarNombre}" width="400"/>
+                        <h:inputText value="#{adjuntarDocumentoMB.editarDescripcion}" width="400" maxlength="30" />
+                        <f:facet name="footer">
+                            <div align="center">
+                                <p:commandButton value="#{msgValidacion.aiaCancelar}" ajax="false"
+                                                 update=":formAdjuntar:gridAdjuntarDoc:dtDocAdjuntos"
+                                                 onclick="editDoc.close();"/>
+                                <p:commandButton styleClass="gmxPositivo"
+                                                 value="#{msgValidacion.aiaAceptar}" 
+                                                 ajax="false"
+                                                 update=":formAdjuntar:gridAdjuntarDoc:dtDocAdjuntos"
+                                                 actionListener="#{adjuntarDocumentoMB.editarArchivo}"
+                                                 />
+                            </div>
+                        </f:facet>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+             
+            <p:confirmDialog  message="#{msgValidacion.aiaConfirmacionEliminar}"
+                             header="#{msgValidacion.aiaTituloConfEliminacion}" severity="alert" widgetVar="confirmation">
+                <h:form>
+                    <p:commandButton value="#{msgValidacion.aiaCancelar}" onclick="confirmation.hide()" type="button"/>
+                    <p:commandButton value="#{msgValidacion.aiaAceptar}" oncomplete="confirmation.hide()"
+                                     update=":formAdjuntar:dtDocAdjuntos, :formAdjuntar:idEnviar, :formAdjuntar:mensajeResultado"
+                                     actionListener="#{adjuntarDocumentoMB.borrarArchivo}"/>
+                </h:form>
+            </p:confirmDialog>
+             
+            <p:confirmDialog message="#{msgValidacion.aiaConfirmacionEnvio}" header="#{msgValidacion.aiaTituloConfEnvio}"
+                             severity="alert" widgetVar="confirmationEnvio">
+                <h:form>
+                  <div align="center">
+                    <p:commandButton value="#{msgValidacion.aiaCancelar}" onclick="confirmationEnvio.hide()" type="button"/>
+                    <p:commandButton value="#{msgValidacion.aiaAceptar}" oncomplete="confirmationEnvio.hide()"
+                                     update=":formAdjuntar:dtDocAdjuntos"
+                                     actionListener="#{adjuntarDocumentoMB.copiarDocumento}"/>
+                    </div>
+                </h:form>
+            </p:confirmDialog>
+            
+            <p:confirmDialog id="idConfirmacion" message="#{adjuntarDocumentoMB.mensajeConfirmacion}"
+                             header="#{msgValidacion.aiaTituloConfirmacion}" severity="alert" widgetVar="confirmationSave" rendered="true">
+                <h:form>
+                    <p:commandButton value="#{msgValidacion.aiaAceptar}" onclick="confirmationSave.hide()" type="button"/>
+                </h:form>
+            </p:confirmDialog>            
+            
+        </h:body>
+    </html>
+</f:view>

@@ -1,0 +1,334 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" 
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:p="http://primefaces.org/ui">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <title>Administrar Tr&aacute;mites dictaminaci&oacute;n autom&aacute;tica</title>
+            <style type="text/css">
+                .ui-datatable tbody td {
+                    white-space: normal;
+                }
+
+                .ui-datatable thead th {
+                    white-space: normal;
+                }
+            </style>
+
+        </h:head>
+        <h:body>
+            <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+             
+            <p:dialog modal="true" widgetVar="statusDialog" header="#{msgValidacion.ajaxLoading}" draggable="false"
+                      closable="false">
+                <h:graphicImage library="images/" name="ajaxloadingbar.gif"/>
+            </p:dialog>
+                      
+            <h:form id="formTramiteDA">
+                <p:growl id="growl" showDetail="true" sticky="true" globalOnly="true"/>
+                <p:panel id="pnlListaTramiteDA" style="width: 100%" header="#{msgValidacion.DAC00019}">
+                <p:toolbar style="width:892px" id="barraBotones">
+                    <p:toolbarGroup align="rigth">
+                        <p:commandButton disabled="#{tramiteDictaminacionAutomatica.banderaBotones}"
+                                         icon="ui-icon-trash"
+                                         id="inactivar"
+                                         title="#{msgValidacion.DAC00020}"
+                                         onclick="deleteConfirmDlg.show()"
+                                         ajax="true" process="@this"
+                                         style="margin:0"/>
+                        
+                        <p:commandButton oncomplete="dlgTramiteDA.show();" actionListener="#{tramiteDictaminacionAutomatica.activateTramiteDALitener}"
+                                         disabled="#{tramiteDictaminacionAutomatica.banderaBotones}"
+                                         icon="ui-icon-pencil"
+                                         id="activar"
+                                         title="#{msgValidacion.DAC00021}"
+                                         ajax="true" process="@this"
+                                         update="dlgTramiteDA" style="margin:0"/>
+                        
+                        <p:commandButton oncomplete="dlgTramiteDA.show();" action="#{tramiteDictaminacionAutomatica.addTramiteDAListener}"
+                                         icon="ui-icon-document"
+                                         id="agregar"
+                                         title="#{msgValidacion.DAC00022}"
+                                         ajax="true" process="@this"
+                                         update="dlgTramiteDA,pnlTramiteDA,notificaDialog" style="margin:0"/>
+                        
+                        <p:commandButton oncomplete="dlgTramiteDA.show();" actionListener="#{tramiteDictaminacionAutomatica.selectTramiteDALitener}"
+                                         icon="ui-icon-search"
+                                         id="buscar"
+                                         title="#{msgValidacion.DAC00023}" 
+                                         ajax="true" process="@this"
+                                         update="dlgTramiteDA" style="margin:0"/>
+                              
+                    </p:toolbarGroup>
+                </p:toolbar>
+                
+                <p:dataTable emptyMessage="#{msgValidacion.DAC00006}" 
+                             id="tabla"
+                             rowsPerPageTemplate="5,10,15,20"
+                             paginator="true"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rows="5" 
+                             rowKey="#{tramiteDicAut.idTramiteDicAut}" 
+                             selection="#{tramiteDictaminacionAutomatica.tramiteDictaminacionAutomaticaSeleccionado}"
+                             selectionMode="single"
+                             style="width:900px;"
+                             var="tramiteDicAut" 
+                             value="#{tramiteDictaminacionAutomatica.listaDictaminacionAutomatica}"
+                             filteredValue="#{tramiteDictaminacionAutomatica.listaDictaminacionAutomatica}"
+                             >
+                    <p:ajax event="rowSelect" update=":formTramiteDA:inactivar, :formTramiteDA:activar" 
+                            listener="#{tramiteDictaminacionAutomatica.activarBotones}"/>
+                    
+                    <p:column headerText="#{msgValidacion.DAC00007}" style="display:none;">
+                        <h:outputText value="#{tramiteDicAut.idTramiteDicAut}" />
+                    </p:column>
+                 
+                    <p:column headerText="#{msgValidacion.DAC00008}">
+                        <h:outputText value="#{tramiteDicAut.origenSaldo}" />
+                    </p:column>
+                    
+                    <p:column headerText="#{msgValidacion.DAC00011}">
+                        <h:outputText value="#{tramiteDicAut.tipoTramite}" />
+                    </p:column>
+                    
+                    <p:column headerText="#{msgValidacion.DAC00027}">
+                        <h:outputText value="#{tramiteDicAut.modelo == '1' ? 'SIVAD' : 'MORSA'}" />
+                    </p:column>
+                    
+                    <p:column headerText="#{msgValidacion.DAC00024}">
+                        <h:outputText value="#{tramiteDicAut.concepto}" />
+                    </p:column>
+                    <p:column headerText="#{msgValidacion.DAC00025}">
+                        <h:outputText value="#{tramiteDicAut.impuesto}" />
+                    </p:column>
+                    <p:column headerText="#{msgValidacion.DAC00026}">
+                        <h:outputText value="#{tramiteDicAut.dictamenAutomatico}" />
+                    </p:column>                    
+                </p:dataTable>
+                    </p:panel>
+                <p:confirmDialog closable="true" id="deleteConfirmDialog" message="#{msgValidacion.DAC00012}" severity="alert" widgetVar="deleteConfirmDlg" >
+                    <p:commandButton id="declineDelete" value="No" onclick="deleteConfirmDlg.hide()" type="button" styleClass="gmxNegativo"/>
+                    <p:commandButton actionListener="#{tramiteDictaminacionAutomatica.removeTramiteDALitener}" 
+                                     id="confirmDelete" 
+                                     update="@form"
+                                     value="Si" styleClass="gmxPositivo"/>
+                </p:confirmDialog>
+                                     
+                <p:confirmDialog closable="true" modal="true" id="notificaDialog"  
+                                     message="#{tramiteDictaminacionAutomatica.mensajeNotif}" severity="alert" widgetVar="notifDlgVar" 
+                                     visible="#{tramiteDictaminacionAutomatica.frmDictaminacionAutomaticaDTO.banderaMsg}">
+                           <p:commandButton value="Aceptar" onclick="notifDlgVar.hide();" update="@form" type="button" styleClass="gmxPositivo"/>
+                </p:confirmDialog>
+                <p:dialog id="dlgTramiteDA" header="#{tramiteDictaminacionAutomatica.frmDictaminacionAutomaticaDTO.tituloDialog}"
+                  widgetVar="dlgTramiteDA" hideEffect="drop" modal="true" width="620px">
+                    <p:ajax event="close" listener="#{tramiteDictaminacionAutomatica.limpiarCombosOrigenTramite}" 
+                            update="cmbOrigenDevolucion cmbTipoTramite"/>
+                    <div style="text-align:left;">
+                        <p:outputLabel value="#{msgValidacion.inpObligatorio}" style="color:red;" rendered="true"/>
+                    </div>
+                    <p:panel id="pnlTramiteDA" visible="true">
+                        <p:row>
+                                    <p:column colspan="2">
+                                        <p:messages id="msgDialiogTramiteDA" showDetail="true" autoUpdate="true"
+                                                    closable="true" showSummary="false"/>
+                                    </p:column>
+                        </p:row>
+                        
+                        <table role="grid" border="0" cellspacing="5">
+                            <tbody>
+                                <tr role="row" class="ui-widget-content">
+                                    <td role="gridcell" width="40%">
+                                        <p:outputLabel value="#{msgValidacion.DAC00008}"/>
+                                         
+                                        <p:outputLabel value=" *" style="color:red"/>
+                                    </td>
+                                    <td role="gridcell" width="60%">
+                                        <h:panelGrid columns="2">
+                                           <p:inputText id="txtOrigenDev" 
+                                                style="width: 400px"
+                                                value="#{tramiteDictaminacionAutomatica.origenDevolucion}"
+                                                rendered="#{tramiteDictaminacionAutomatica.frmDictaminacionAutomaticaDTO.bandOrigenDevTxt}"
+                                                disabled="true">
+                                            </p:inputText>
+                                            
+                                            <p:selectOneMenu id="cmbOrigenDevolucion"
+                                                required="true"
+                                                style="width: 400px"
+                                                value="#{tramiteDictaminacionAutomatica.origenDevolucion}"
+                                                rendered="#{tramiteDictaminacionAutomatica.frmDictaminacionAutomaticaDTO.bandOrigenDev}"
+                                                requiredMessage="#{msgValidacion.DAC00028}">>
+                                                <f:selectItem itemValue="-1" itemLabel="" noSelectionOption="false"/>
+                                                <f:selectItems value="#{tramiteDictaminacionAutomatica.listaOrigenSaldo}" var="origenSaldo"
+                                                    itemValue="#{origenSaldo.idOrigenSaldo}"
+                                                    itemLabel="#{origenSaldo.descripcion}"/>
+                                                <p:ajax update="cmbTipoTramite" listener="#{tramiteDictaminacionAutomatica.actualizaTipoTramite}">  
+                                                    </p:ajax>                                                
+                                             </p:selectOneMenu>
+                                        </h:panelGrid>
+                                    </td>
+                                </tr>
+                                <tr role="row" class="ui-widget-content">
+                                    <td role="gridcell" width="40%">
+                                        <p:outputLabel value="#{msgValidacion.DAC00011}" />
+                                         
+                                        <p:outputLabel value=" *" style="color:red"/>
+                                    </td>
+                                    <td role="gridcell" width="60%">
+                                        <h:panelGrid columns="2">
+                                            <p:inputText id="txtTipoTramite"
+                                                         style="width:400px"
+                                                         value="#{tramiteDictaminacionAutomatica.tipoTramite}"
+                                                         styleClass="upperCase"
+                                                         rendered="#{tramiteDictaminacionAutomatica.frmDictaminacionAutomaticaDTO.bandTipoTramTxt}"
+                                                         disabled="true">
+                                            </p:inputText>
+                                            <p:selectOneMenu id="cmbTipoTramite"
+                                                             required="true"
+                                                             style="width:400px" panelStyle="width:400px" height="300"
+                                                             value="#{tramiteDictaminacionAutomatica.tipoTramite}"
+                                                             requiredMessage="#{msgValidacion.DAC00038}"
+                                                             rendered="#{tramiteDictaminacionAutomatica.frmDictaminacionAutomaticaDTO.bandTipoTram}">
+                                               <f:selectItem itemValue="" itemLabel=""  noSelectionOption="true"/>
+                                               <f:selectItems value="#{tramiteDictaminacionAutomatica.listaTipoTramite}" var="tipoTramite"
+                                                              itemValue="#{tipoTramite.dyccTipoTramiteDTO.idTipoTramite}"
+                                                              itemLabel="#{tipoTramite.dyccTipoTramiteDTO.descripcion}"/>
+                                                       <p:ajax update="cmbTipoTramite" event="valueChange">  
+                                                    </p:ajax>  
+                                            </p:selectOneMenu>
+                                        </h:panelGrid>
+                                    </td>
+                            </tr>
+                            <tr role="row" class="ui-widget-content">
+                                    <td role="gridcell" width="40%">
+                                        <p:outputLabel value="#{msgValidacion.DAC00027}"
+                                                       rendered="#{tramiteDictaminacionAutomatica.frmDictaminacionAutomaticaDTO.bandModelo}"/>
+                                         
+                                        <p:outputLabel value=" *"
+                                                       rendered="#{tramiteDictaminacionAutomatica.frmDictaminacionAutomaticaDTO.bandModelo}"
+                                                       style="color:red;"/>
+                                    </td>
+                                    <td role="gridcell" width="60%">
+                                        <h:panelGrid columns="2">
+                                            <p:selectOneMenu id="cmbModelo" 
+                                                style="width:400px" 
+                                                required="true"
+                                                requiredMessage="#{msgValidacion.DAC00037}"
+                                                value="#{tramiteDictaminacionAutomatica.modelo}"
+                                                rendered="#{tramiteDictaminacionAutomatica.frmDictaminacionAutomaticaDTO.bandModeloCbo}">
+                                              <f:selectItem itemValue="" itemLabel=""  noSelectionOption="true"/>
+                                              <f:selectItems value="#{tramiteDictaminacionAutomatica.listaModelo}" var="listaModelo"
+                                                             itemValue="#{listaModelo.idModelo}"
+                                                             itemLabel="#{listaModelo.descripcion}"/>
+                                              <p:ajax update="cmbModelo" event="valueChange">  
+                                                    </p:ajax>
+                                           </p:selectOneMenu>
+                                           <p:inputText id="txtModelo" required="true"
+                                                         value="#{tramiteDictaminacionAutomatica.modelo}"
+                                                         styleClass="upperCase"
+                                                         rendered="#{tramiteDictaminacionAutomatica.frmDictaminacionAutomaticaDTO.bandModeloTxt}"
+                                                         disabled="true">
+                                            </p:inputText>
+                                        </h:panelGrid>
+                                        
+                                    </td>
+                                </tr>
+                                <tr role="row" class="ui-widget-content">
+                                    <td role="gridcell" colspan="2" align="right">
+                                        <p:commandButton value="Consultar" id="btnConsultar"
+                                                         rendered="#{tramiteDictaminacionAutomatica.frmDictaminacionAutomaticaDTO.bandBtnConsultar}"
+                                                         update="pnlTramiteDA,notificaDialog" process="@form"
+                                                         actionListener="#{tramiteDictaminacionAutomatica.execConsultar}"                                                        
+                                                         styleClass="gmxPositivo"/>
+                                    </td>
+                                </tr>
+                                <tr role="row" class="ui-widget-content">
+                                    <td role="gridcell" width="40%">
+                                        <p:outputLabel value="#{msgValidacion.DAC00024}" 
+                                                       rendered="#{tramiteDictaminacionAutomatica.frmDictaminacionAutomaticaDTO.bandConceptoTxt}" />
+                                         
+                                        <p:outputLabel value=" *" style="color:red"
+                                                       rendered="#{tramiteDictaminacionAutomatica.frmDictaminacionAutomaticaDTO.bandConceptoTxt}"/>
+                                    </td>
+                                    <td role="gridcell" width="60%">
+                                        <h:panelGrid columns="2">
+                                            <p:inputText id="txtConcepto"
+                                                         value="#{tramiteDictaminacionAutomatica.concepto}"
+                                                         styleClass="upperCase"
+                                                         rendered="#{tramiteDictaminacionAutomatica.frmDictaminacionAutomaticaDTO.bandConceptoTxt}"
+                                                         disabled="true">
+                                            </p:inputText>
+                                        </h:panelGrid>
+                                    </td>
+                                </tr>
+                                                         
+                                                         
+                                <tr role="row" class="ui-widget-content">
+                                    <td role="gridcell" width="40%">
+                                        <p:outputLabel value="#{msgValidacion.DAC00025}" 
+                                                       rendered="#{tramiteDictaminacionAutomatica.frmDictaminacionAutomaticaDTO.bandImpuestoTxt}"/>
+                                         
+                                        <p:outputLabel value=" *" style="color:red;"
+                                                       rendered="#{tramiteDictaminacionAutomatica.frmDictaminacionAutomaticaDTO.bandImpuestoTxt}"/>
+                                    </td>
+                                    <td role="gridcell" width="60%">
+                                        <h:panelGrid columns="2">
+                                            <p:inputText id="txtImpuesto"
+                                                         value="#{tramiteDictaminacionAutomatica.impuesto}"
+                                                         styleClass="upperCase"
+                                                         rendered="#{tramiteDictaminacionAutomatica.frmDictaminacionAutomaticaDTO.bandImpuestoTxt}"
+                                                         disabled="true">
+                                            </p:inputText>
+                                        </h:panelGrid>
+                                    </td>
+                                </tr>
+                                <tr role="row" class="ui-widget-content">
+                                    <td role="gridcell" width="40%">
+                                        <p:outputLabel value="#{msgValidacion.DAC00026}"
+                                                       rendered="#{tramiteDictaminacionAutomatica.frmDictaminacionAutomaticaDTO.bandDictamenAut}"/>
+                                         
+                                        <p:outputLabel value=" *"
+                                                       rendered="#{tramiteDictaminacionAutomatica.frmDictaminacionAutomaticaDTO.bandDictamenAut}"
+                                                       style="color:red;"/>
+                                    </td>
+                                    <td role="gridcell" width="60%">
+                                        <h:panelGrid columns="2">
+                                            <p:selectOneRadio id="oneRdoEstado" value="#{tramiteDictaminacionAutomatica.dictamenAutomatico}" 
+                                                 required="true" 
+                                                 rendered="#{tramiteDictaminacionAutomatica.frmDictaminacionAutomaticaDTO.bandDictamenAut}"
+                                                 disabled="#{tramiteDictaminacionAutomatica.frmDictaminacionAutomaticaDTO.registroActivo}">
+                                                <f:selectItem itemLabel="#{msgValidacion.DAC00014}" itemValue="1"/>  
+                                                <f:selectItem itemLabel="#{msgValidacion.DAC00015}" itemValue="0" />
+                                            </p:selectOneRadio>
+                                        </h:panelGrid>
+                                    </td>
+                                </tr>
+                                <tr role="row" class="ui-widget-content">
+                                    <td role="gridcell" colspan="2" align="center">
+                                        <p:commandButton value="Cancelar"
+                                                         onclick="dlgTramiteDA.hide();" 
+                                                         type="button"
+                                                         styleClass="gmxNegativo"/>&nbsp;
+                                        <p:commandButton value="Guardar" id="btnGuardar"
+                                                         rendered="#{tramiteDictaminacionAutomatica.frmDictaminacionAutomaticaDTO.bandBtnGuardar}"
+                                                         update="pnlTramiteDA,msgDialiogTramiteDA,pnlListaTramiteDA,notificaDialog" 
+                                                         process="@this, pnlTramiteDA"
+                                                         actionListener="#{tramiteDictaminacionAutomatica.execGuardar}"
+                                                         styleClass="gmxPositivo"
+                                                         disabled="#{tramiteDictaminacionAutomatica.estadoBtnGuardar}"/>&nbsp;
+                                        <p:commandButton value="Buscar" id="btnBuscar"
+                                                         rendered="#{tramiteDictaminacionAutomatica.frmDictaminacionAutomaticaDTO.bandBtnBuscar}"
+                                                         update="pnlTramiteDA,msgDialiogTramiteDA,pnlListaTramiteDA" process="@form"
+                                                         actionListener="#{tramiteDictaminacionAutomatica.execBuscar}"
+                                                         styleClass="gmxPositivo"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </p:panel>
+                </p:dialog>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

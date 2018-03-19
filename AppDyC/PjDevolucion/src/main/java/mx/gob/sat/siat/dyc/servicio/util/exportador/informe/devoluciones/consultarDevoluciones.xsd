@@ -1,0 +1,24 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:element name="consultarDevolucionesXML">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="consultarDevoluciones"/>
+             </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="consultarDevoluciones" >
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="cilmapv1" type="xs:string"/>
+                <xs:element minOccurs="0" name="ncuomne1" type="xs:string"/>
+                <xs:element minOccurs="0" name="freecch1" type="xs:dateTime" nillable="true"/>
+                <xs:element minOccurs="0" name="ismoplo1" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="nruemse1" type="xs:string"/>
+                <xs:element minOccurs="0" name="iadmuep1" type="xs:decimal"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+</xs:schema> 

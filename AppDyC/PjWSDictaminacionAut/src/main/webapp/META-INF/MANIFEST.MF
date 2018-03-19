@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Extension-List: coherence active-cache
+coherence-Extension-Name: coherence
+active-cache-Extension-Name: active-cache

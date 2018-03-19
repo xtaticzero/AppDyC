@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>AppDyC</groupId>
+    <artifactId>ServiceDyC</artifactId>
+	<name>ServiceDyC</name>
+    <version>1.0</version>
+    <packaging>jar</packaging>
+    <description>Modulo comun para la capa SERVICE.</description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.6</maven.compiler.source>
+        <maven.compiler.target>1.6</maven.compiler.target>
+        <jdk.version>1.6</jdk.version>
+        <spring.version>3.2.2.RELEASE</spring.version>
+    </properties>
+
+    <dependencies>
+        <!-- LOG - Inicio -->
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+        <!-- LOG - Fin -->
+
+        <!-- TEST - Inicio -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.9</version>
+            <type>jar</type>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+            <type>jar</type>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>ojdbc6</artifactId>
+            <version>11.2.0.3</version>
+            <type>jar</type>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>3.1</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports</artifactId>
+            <version>5.6.1</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+        <!-- TEST - Fin -->
+
+        <!-- MAT - Inicio -->
+        <dependency>
+            <groupId>AppDyC</groupId>
+            <artifactId>PjRfcAmpl</artifactId>
+            <version>1.0</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>AppDyC</groupId>
+            <artifactId>DaoDyC</artifactId>
+            <version>1.0</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>mx.gob.sat</groupId>
+            <artifactId>rolproceso</artifactId>
+            <version>1.5.4</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>AppDyC</groupId>
+            <artifactId>DomainDyC</artifactId>
+            <version>1.0</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+        <!-- MAT - Fin -->
+        <!-- ::::::::::::::::::::: COBRANZA ::::::::::::::::::::: -->
+        <dependency>
+            <groupId>mx.gob.sat.siat.cobranza</groupId>
+            <artifactId>actualizador</artifactId>
+            <version>1.0.0</version>
+            <type>jar</type>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>xml-apis</artifactId>
+                    <groupId>xml-apis</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>mx.gob.sat.cobranza</groupId>
+            <artifactId>diaHabil</artifactId>
+            <version>2.1</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>${jdk.version}</source>
+                    <target>${jdk.version}</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

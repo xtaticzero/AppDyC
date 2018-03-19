@@ -1,0 +1,82 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 30/12/2016, 01:19:09 PM
+    Author     : Ing. Ismael Castillo
+    v2
+*/
+    .gob-dat-cont{
+            margin-bottom: 30px;
+        }
+.ui-panelgrid td {
+    padding-left: 0px !important;
+    padding-bottom:  0px   !important;
+    padding-top:   0px   !important;
+     padding-right: 30px !important;
+}
+.gobmxContenedor8 {
+    width: 100% !important;
+}
+.gmxfhorizontal .ui-outputlabel {
+  
+    padding-right: 0 !important;
+}
+.ui-selectonemenu label.ui-selectonemenu-label {
+        margin: 6px;
+    }
+    /*Informacion del tramite */
+    #dvBtnSalir{
+        left: -536px !important;
+    }
+
+ .ui-selectonemenu .ui-selectonemenu-trigger .ui-icon {
+    margin-top: 10px !important;
+    margin-left: 0px !important;
+}
+.ui-selectonemenu .ui-selectonemenu-trigger{
+    background-color: #fff !important;
+    border-left: 1px solid #E2E2E2 !important;
+}
+.ui-selectonemenu .ui-selectonemenu-trigger {
+    width: 25px !important;
+}
+
+
+hr.red {
+        border-top-color: #DCE0E0 !important;
+        position: relative !important;
+        margin-left: 11px !important;
+        margin-bottom: 50px !important; 
+    } 
+    
+ /**/
+
+.gmxfhorizontal .ui-outputlabel {
+    display: block;
+}
+.gmxfhorizontal td:nth-child(even) {
+        text-align: left !important;
+        padding-left: 15px !important;
+    }
+/**/
+.ui-dialog-content{
+    margin: 0 auto !important;
+}
+
+.ui-dialog .ui-dialog-title {
+    white-space: inherit !important;
+    overflow: inherit !important;
+    text-overflow:inherit !important;
+    font-size: 18px !important;
+    
+}
+.ui-icon.ui-icon-close{
+    display: none !important;
+}
+.ui-messages-info-summary, .ui-messages-warn-summary, .ui-messages-error-summary, .ui-messages-fatal-summary, .ui-message-info-summary, .ui-message-warn-summary, .ui-message-error-summary, .ui-message-fatal-summary{
+    font-weight: inherit !important;
+}
+

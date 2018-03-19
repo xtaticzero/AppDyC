@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:p="http://primefaces.org/ui">
+    <html>
+        <h:head> 
+            <title>
+                #{msgValidacion.L0000023}
+            </title>
+            <meta http-equiv="X-UA-Compatible" content="IE=8"/>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <h:outputStylesheet library="css/" name="formato.css"/>
+            <h:outputScript library="js" name="calendarioIdiomaEs.js"/>
+            <style type="text/css">
+                .fileupload-content {
+                    border: none !important;
+                    padding: 0px;
+                }
+
+                .fileupload-buttonbar {
+                    border: none !important;
+                    padding: 0px;
+                }
+             
+                .ui-paginator {
+                    font-size: 12px !important;
+                }
+
+                .ui-datatable tbody td {
+                    white-space: normal;
+                    font-size: 9px;
+                }
+
+                .ui-datatable thead th {
+                    white-space: normal;
+                    font-size: 10px;
+                }
+
+                .panelgridLine > .ui-panel-content {
+                    padding: 0px 0px 0px 0px;
+                }
+
+                .ui-column-filter {
+                    width: 10px;
+                }
+
+                .ui-selectcheckboxmenu {
+                    padding-right: 10px;
+                }
+
+            
+            </style>
+        </h:head>
+        <h:body>
+      
+                                    <h:form id="form2" enctype="multipart/form-data">
+                                        <p:messages id="messagesReportes" closable="true" autoUpdate="false" globalOnly="true" />
+                                        <p:fieldset id="confirmReportes">
+                                   
+                                            <br/>
+                                            <table>
+                                                <tr>
+                                                    <td>
+                                                        <strong>Fecha de Carga</strong>
+                                                         
+                                                        <a style="color:red">*</a>
+                                                    </td>
+                                                    <td>&nbsp; &nbsp;&nbsp; &nbsp;</td>
+                                                    
+                                                
+                                                    <td>
+                                                        <p:calendar id="fechCargaInicio"
+                                                                    style="width:10px;height:20px;"
+                                                                    value="#{generacionReporteMasivoAutMB.fechaPagoInicio}"
+                                                                    navigator="true" pattern="dd/MM/yyyy" locale="es"
+                                                                    readonlyInput="true" required="true"
+                                                                    title="Feha de Carga" mindate="#{now}"
+                                                                    requiredMessage="#{msgValidacion.msjCampoRequerido}"
+                                                                    disabledWeekends="true">
+                                                            <p:ajax event="dateSelect"
+                                                                    listener="#{generacionReporteMasivoAutMB.validaFecha}"
+                                                                    update="@form"/>
+                                                        </p:calendar>
+                                                         
+                                                        <p:message for="fechCargaInicio" display="text"
+                                                                   showDetail="true" id="msgfechCargaInicio"/>
+                                                         
+                                                        <p:watermark for="fechCargaInicio" value="dd/mm/aaaa"
+                                                                     id="wfechCargaInicio"/>
+                                                    </td>
+                                                    <td></td>
+                                                    <td>
+                                                        <strong>a</strong>
+                                                         
+                                                        <a style="color:red">*</a>
+                                                    </td>
+                                                    <td></td>
+                                                    <td>
+                                                        <p:calendar id="fechCargaFin" 
+                                                                    style="width:10px;height:20px;"
+                                                                    value="#{generacionReporteMasivoAutMB.fechaPagoFin}" 
+                                                                    navigator="true"
+                                                                    pattern="dd/MM/yyyy" 
+                                                                    locale="es"
+                                                                    readonlyInput="true" 
+                                                                    required="true"
+                                                                    mindate="#{now}" title="Fecha de carga"
+                                                                    requiredMessage="#{msgValidacion.msjCampoRequerido}"
+                                                                    disabled="true"
+                                                                    disabledWeekends="true">
+                                                            <p:ajax event="dateSelect"
+                                                                    listener="#{generacionReporteMasivoAutMB.validaFecha}"
+                                                                    update="@form"
+                                                                    />
+                                                        </p:calendar>
+                                                        <p:watermark for="fechCargaFin" value="dd/mm/aaaa" id="wfechCargaFin"/>
+                                                        <p:message id="msjfechCargaFin" for="fechCargaFin"/>
+                                                    </td>
+                                                    <td></td>
+                                                </tr>
+                                            </table>
+                                            <div>
+                                               <p:column style="width: 45%;">
+                                                <p:commandButton    value="Buscar"     update="@form"
+                                                                    actionListener=" " process="@this"
+                                                                       icon="ui-icon-search"/>
+
+                                                <p:commandButton title="Limpiar formulario" actionListener=" "
+                                                                 update="fechCargaInicio fechCargaFin"
+                                                                icon="ui-icon-trash"/>
+                                            </p:column>
+                                             
+                                            </div>
+                                        </p:fieldset>
+                                        <p:separator/>
+                                        <table width="100%">
+                                            <tr>
+                                                <td align="left" width="100%">
+                                                    <div align="left">
+                                                        <p:dataTable id="dtARchivos"  
+                                                                     paginator="false" rows="20"
+                                                                     emptyMessage="#{msgValidacion.tblEmpty}" var="arc"
+                                                                     value="#{generacionReporteMasivoAutMB.listaRegistros}">
+                                                            <f:facet name="header">
+                                                                <p:outputLabel value="Registros" />
+                                                            </f:facet>
+                                                            <p:column headerText="Fecha de Carga"  style="width:25px;">
+                                                                <h:outputText value="#{arc.fechaCarga}"/>
+                                                            </p:column>
+                                                            <p:column headerText="Responsable">
+                                                                <h:outputText value="#{arc.responsable}"/>
+                                                            </p:column>
+                                                            <p:column headerText="Fecha de inicio del Proceso">
+                                                                <h:outputText value="#{arc.fechaInicioProceso}"/>
+                                                            </p:column>
+                                                                  <p:column headerText="Fecha de termino del Proceso">
+                                                                      <h:outputText value="#{arc.fechaTerminoProceso}"/>
+                                                                 </p:column>
+                                                            <p:column headerText="Numero de solicitudes a procesar"  style="width:25px;">
+                                                                <h:outputText value="#{arc.numeroSolicitudesProcesar}"/>
+                                                                <p:commandButton ajax="false" rendered="true"
+                                                                                 style="height:30px"
+                                                                                 icon="ui-icon-circle-arrow-s"
+                                                                                 title="Descargar archivo">
+                                                                    <p:fileDownload value=""/>
+                                                                </p:commandButton>
+                                                                 <p:commandButton ajax="false" rendered="true"
+                                                                                 style="height:30px"
+                                                                                 icon="ui-icon-circle-arrow-s"
+                                                                                 title="Descargar archivo">
+                                                                    <p:fileDownload value=""/>
+                                                                </p:commandButton>
+                                                            </p:column>
+                                                             <p:column headerText="Numero de solicitudes procesadas exitosamente">
+                                                                 <h:outputText value="#{arc.numeroSolicitudesExitosas}"/>
+                                                             <p:commandButton ajax="false" rendered="true"
+                                                                                 style="height:30px"
+                                                                                 icon="ui-icon-circle-arrow-s"
+                                                                                 title="Descargar archivo">
+                                                                    <p:fileDownload value=""/>
+                                                                </p:commandButton>
+                                                              <p:commandButton ajax="false" rendered="true"
+                                                                                 style="height:30px"
+                                                                                 icon="ui-icon-circle-arrow-s"
+                                                                                 title="Descargar archivo">
+                                                                    <p:fileDownload value=""/>
+                                                                </p:commandButton>
+                                                            </p:column>
+                                                            <p:column headerText="Numero de solicitudes fallidas">
+                                                                <h:outputText value="#{arc.numeroSolicitudesFallidas}"/>
+                                                                <p:commandButton ajax="false" rendered="true"
+                                                                                 style="height:30px"
+                                                                                 icon="ui-icon-circle-arrow-s"
+                                                                                 title="Descargar archivo">
+                                                                    <p:fileDownload value=""/>
+                                                                </p:commandButton>
+                                                                 <p:commandButton ajax="false" rendered="true"
+                                                                                 style="height:30px"
+                                                                                 icon="ui-icon-circle-arrow-s"
+                                                                                 title="Descargar archivo">
+                                                                    <p:fileDownload value=""/>
+                                                                </p:commandButton>
+                                                            </p:column>
+                                                           
+    
+                                                        </p:dataTable>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </h:form>
+                               
+        </h:body>
+    </html>
+</f:view>

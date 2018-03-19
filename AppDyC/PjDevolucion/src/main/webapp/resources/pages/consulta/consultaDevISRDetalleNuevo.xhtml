@@ -1,0 +1,974 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:c="http://java.sun.com/jsp/jstl/core"
+        xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <meta http-equiv="X-UA-Compatible" content="IE=8"/>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <meta http-equiv="pragma" content="no-cache"/>
+            <meta http-equiv="cache-control" content="no-cache"/>
+            <meta http-equiv="expires" content="0"/>
+            <style type="text/css">
+                .ui-panelgrid { margin-left: 0px !important;}
+                hr.red:before {content: " "!important;width: 35px!important;height: 6px!important;background-color: #D0021B!important;display: block!important;position: absolute!important;} 
+                .gmxNoborde1 td{border-color:#FFFFFF;}
+                .ui-selectoneradio{width: 10px!important;}
+                .ui-selectoneradio td{padding: 0px!important;border-color:#FFFFFF;}
+                .ui-selectoneradio label {padding-left: 5px!important;padding-right: 1px!important;}
+                hr.red {margin: 0px 0 70px !important;border-top-color: #DCE0E0 !important;position: relative !important;margin-left: 11px !important;}
+                .gmxfhorizontal td:nth-child(odd) {text-align: right !important;width: 398px!important;}
+                .gmxfhorizontal td:nth-child(even) {text-align: left !important;width: 398px!important;}
+                .gmxfhorizontal .ui-outputlabel{font-weight: normal !important;}
+                body {font-family: 'Open Sans';}
+                hr.red {margin: 0px 0px 25px !important;border-top-color: #DCE0E0 !important;position: relative !important;margin-left: 2px !important;} 
+                h2 {font-size: 38px!important;margin-bottom: 0px!important;margin-left: -2px !important;}
+                .ui-selectoneradio{width: 10px!important;}
+                .ui-selectoneradio td{padding: 0px!important;border-color:#FFFFFF;}  
+                .ui-selectoneradio label {padding-left: 5px!important;padding-right: 1px!important;}
+                .gmxfhorizontal .ui-selectoneradio td {padding-left: 0px !important;}
+
+                .ui-panelgrid td {border-color: #FFFFFF;}
+
+                .ui-datatable-header .ui-widget-header .ui-corner-top {border: 0px!important;}
+                .ui-panelgrid .ui-widget-header{text-align: center;}
+
+                .ui-datatable tbody td {
+                    white-space: normal;
+                }
+
+                .ui-datatable thead th {
+                    white-space: normal;
+                }
+            </style>
+        </h:head>
+        <h:body>
+            <h:form id="idConsultaDevautisrdetalle"  enctype="multipart/form-data"> 
+                <div >
+
+                    <p:panelGrid id="pnlGridLetrero" style="border-color:#000000;margin-top: 0px!important;margin-bottom: 0px !important;" >
+                        <p:row rendered="#{consultaDevISRDetalleNuevoMB.impuestoSobreLaRenta}">
+                            <p:column>
+                                <h3><p:outputLabel id="lblSobreLaRenta" value="#{msgValidacion.consultaDevDetalleNuevo_ImpuestoSobreRenta}" /></h3>                                                      
+                            </p:column>
+                        </p:row>                       
+                        <p:row rendered="#{consultaDevISRDetalleNuevoMB.inconsDeduccion}">
+                            <p:column>
+                                <h3><p:outputLabel id="lblInconsDed" value="#{msgValidacion.consultaDevDetalleNuevo_InconsDeducciones}" /></h3>                                                      
+                            </p:column>
+                        </p:row>                       
+                        <p:row rendered="#{consultaDevISRDetalleNuevoMB.inconsIngreso}">
+                            <p:column>
+                                <h3><p:outputLabel id="lblInconsIngreso" value="#{msgValidacion.consultaDevDetalleNuevo_InconsIngresos}" /></h3>                                                      
+                            </p:column>
+                        </p:row>                       
+                        <p:row rendered="#{consultaDevISRDetalleNuevoMB.inconsRechazo}">
+                            <p:column>
+                                <h3><p:outputLabel id="lblInconsRechazo" value="#{msgValidacion.consultaDevDetalleNuevo_InconsRechazos}" /></h3>                                                      
+                            </p:column>
+                        </p:row>                       
+                    </p:panelGrid>
+
+                    <hr class="red" />
+                    <p:panel style="width:1150px !important;">
+                        <p:panelGrid style="border-color:#000000;margin-top: 25px!important;margin-bottom: 40px !important;" >
+                            <p:row>                       
+                                <p:column style="width: 200px !important;"    >
+                                    <p:outputLabel value="#{msgValidacion.rsNombre} "  style="float:left;"/>
+                                </p:column>
+
+                                <p:column style="width: 300px !important;">
+                                    <p:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.nombres} #{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.apellidoPaterno} #{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.apellidoMaterno}"  style="float:left"/>
+                                </p:column>
+                                <p:column style="width: 120px !important;">
+                                    <p:outputLabel value="#{msgValidacion.consulta_tooltop89}: " style="float:left" />
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.cuetaClabe}" style="float:left"/>
+                                </p:column>                        
+                            </p:row> 
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel value="#{msgValidacion.adycRfc} "/>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.rfc}"/>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel value="#{msgValidacion.aicBBanco}: "/>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.nombreBanco}"/>
+                                </p:column>                        
+                            </p:row>     
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel value="#{msgValidacion.cellDecTipoDeclaracion}: "/>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.tipoDeclaracionEnum.descripcion}"/>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel value="#{msgValidacion.consultaDevDetalleNuevo_CreditoFiscal}: "/>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.creditoFiscalEnum.descripcion}"/>
+                                </p:column>                        
+                            </p:row>  
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel value="#{msgValidacion.consultaDevDetalleNuevo_NoOperacion}: "/>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.folioDeclaracion}"/>
+                                </p:column>                        
+                                <p:column>
+                                    <p:spacer width="20"  />
+                                </p:column>                        
+                                <p:column>
+                                    <p:spacer width="20"  />
+                                </p:column>                                                                                
+                            </p:row>  
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel value="#{msgValidacion.adycFechaP}: "/>
+                                </p:column>
+                                <p:column>
+                                    <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.fechaPresentacion}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                    </h:outputLabel>
+                                </p:column>
+                                <p:column>
+                                    <p:spacer width="20"  />
+                                </p:column>                        
+                                <p:column>
+                                    <p:spacer width="20"  />
+                                </p:column>
+                            </p:row>                          
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel value="#{msgValidacion.consultaDevDetalleNuevo_MedioDeEnvio}: "/>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.tipoFirmaEnum.descripcion}"/>
+                                </p:column>
+                                <p:column>
+                                    <p:spacer width="20"  />
+                                </p:column>                        
+                                <p:column>
+                                    <p:spacer width="20"  />
+                                </p:column>
+                            </p:row> 
+                            <p:row>
+                                <p:column >
+                                    <p:outputLabel value="#{msgValidacion.consultaDevDetalleNuevo_AceptoPropuesta} "/>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.aceptarPropuestaEnum.descripcion}"/>
+                                </p:column>
+                                <p:column>
+                                    <p:spacer width="20"  />
+                                </p:column>                        
+                            </p:row> 
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel value="#{msgValidacion.consultaDevDetalleNuevo_SaldoFavor}: "/>
+                                </p:column>
+                                <p:column>
+                                    <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.declaracionContribuyente.isrAFavorDelEjercicio}">
+                                        <f:convertNumber minFractionDigits="2"
+                                                         currencySymbol="$ " type="currency"
+                                                         locale="es-MX" pattern="¤#,##0.00"/>
+                                    </h:outputLabel>    
+                                </p:column>
+                                <p:column>
+                                    <p:spacer width="20"  />
+                                </p:column>                        
+                                <p:column>
+                                    <p:spacer width="20"  />
+                                </p:column>
+                            </p:row>                         
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel value="#{msgValidacion.consultaDevDetalleNuevo_Resultado}: "/>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.descripcionResultado}"/>
+                                </p:column>
+                                <p:column>
+                                    <p:spacer width="20"  />
+                                </p:column>                        
+                                <p:column>
+                                    <p:spacer width="20"  />
+                                </p:column>
+                            </p:row>   
+                        </p:panelGrid>
+                    </p:panel>
+                    <p:panel style="width:1150px !important;" rendered="#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.btnSolventarinconsistencias or consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.esVisibleDeterminacionISR}">
+
+                        <p:tabView id="detalleDevISR" >
+                            <p:ajax event="tabChange" listener="#{consultaDevISRDetalleNuevoMB.onTabChange}" 
+                                    update=":idConsultaDevautisrdetalle:pnlGridLetrero"/>
+                            <p:tab id="tabImpuestoSobreRenta" title="#{msgValidacion.consultaDevDetalleNuevo_ImpuestoSobreRenta}" rendered="#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.esVisibleDeterminacionISR}">
+                                <p:panelGrid style="border-color:#000000;margin-top: 25px!important;margin-bottom: 40px !important;" >
+                                    <f:facet name="header">                                        
+                                        <p:row>
+                                            <p:column >#{msgValidacion.consultaDevDetalleNuevo_deterISRcampo}</p:column>
+                                            <p:column >#{msgValidacion.consultaDevDetalleNuevo_deterISRdeclaracionSat}</p:column>
+                                            <p:column >#{msgValidacion.consultaDevDetalleNuevo_deterISRdeclaracionCont}</p:column>
+                                            <p:column>#{msgValidacion.consultaDevDetalleNuevo_deterISRrevicionSAT}</p:column>
+                                        </p:row>                                        
+                                    </f:facet>
+                                    <p:row>
+                                        <p:column>#{msgValidacion.consultaDevDetalleNuevo_IngresosUtilidades}</p:column>
+                                        <p:column >
+                                            <div align="center">                                                
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.declaracionSAT.ingresosAcumulables}" 
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapDeclaracionSAT.ingresosAcumulables};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>                                                    
+                                                </h:outputLabel>    
+                                            </div>
+                                        </p:column>
+                                        <p:column >
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.declaracionContribuyente.ingresosAcumulables}" 
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapDeclaracionContribuyente.ingresosAcumulables};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>    
+                                            </div>
+                                        </p:column>
+                                        <p:column>
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.resultadoProceso.ingresosAcumulables}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapRevisionSAT.ingresosAcumulables};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>                                                    
+                                                </h:outputLabel>    
+                                            </div>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column>#{msgValidacion.consultaDevDetalleNuevo_Perdidas}</p:column>
+                                        <p:column >
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.declaracionSAT.perdidas}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapDeclaracionSAT.perdidas};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>                                                    
+                                                </h:outputLabel>    
+                                            </div>
+                                        </p:column>
+                                        <p:column >
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.declaracionContribuyente.perdidas}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapDeclaracionContribuyente.perdidas};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>                                                    
+                                                </h:outputLabel>
+                                            </div>
+                                        </p:column>
+                                        <p:column>
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.resultadoProceso.perdidas}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapRevisionSAT.perdidas};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>                                                    
+                                                </h:outputLabel>    
+                                            </div>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column >#{msgValidacion.consultaDevDetalleNuevo_IngresosAcumulables}</p:column>
+                                        <p:column >
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.declaracionSAT.totalIngresosAcumulables}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapDeclaracionSAT.totalIngresosAcumulables};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>    
+                                            </div>
+                                        </p:column>
+                                        <p:column >
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.declaracionContribuyente.totalIngresosAcumulables}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapDeclaracionContribuyente.totalIngresosAcumulables};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>    
+                                            </div>
+                                        </p:column>
+                                        <p:column>
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.resultadoProceso.totalIngresosAcumulables}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapRevisionSAT.totalIngresosAcumulables};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>    
+                                            </div>
+                                        </p:column>                                    
+                                    </p:row>
+                                    <p:row>
+                                        <p:column >#{msgValidacion.consultaDevDetalleNuevo_DeduccionesPersonales}</p:column>
+                                        <p:column >
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.declaracionSAT.deduccionesPersonales}" 
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapDeclaracionSAT.deduccionesPersonales};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>    
+                                            </div>
+                                        </p:column>
+                                        <p:column >
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.declaracionContribuyente.deduccionesPersonales}" 
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapDeclaracionContribuyente.deduccionesPersonales};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>                                                        
+                                            </div>
+                                        </p:column>
+                                        <p:column>
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.resultadoProceso.deduccionesPersonales}" 
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapRevisionSAT.deduccionesPersonales};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>                                                        
+                                            </div>
+                                        </p:column>                                    
+                                    </p:row>
+                                    <p:row>
+                                        <p:column >#{msgValidacion.consultaDevDetalleNuevo_BaseGravable}</p:column>
+                                        <p:column >
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.declaracionSAT.baseGravable}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapDeclaracionSAT.baseGravable};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>    
+                                            </div>
+                                        </p:column>
+                                        <p:column >
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.declaracionContribuyente.baseGravable}" 
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapDeclaracionContribuyente.baseGravable};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>    
+                                            </div>
+                                        </p:column>
+                                        <p:column>
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.resultadoProceso.baseGravable}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapRevisionSAT.baseGravable};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>    
+                                            </div>
+                                        </p:column>
+                                    </p:row>                                    
+                                    <p:row>
+                                        <p:column >#{msgValidacion.consultaDevDetalleNuevo_ISRTarifaAnual}</p:column>
+                                        <p:column >
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.declaracionSAT.isrConformeTarifaAnual}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapDeclaracionSAT.isrConformeTarifaAnual};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>  
+                                            </div>
+                                        </p:column>
+                                        <p:column >
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.declaracionContribuyente.isrConformeTarifaAnual}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapDeclaracionContribuyente.isrConformeTarifaAnual};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>  
+                                            </div>
+                                        </p:column>
+                                        <p:column>
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.resultadoProceso.isrConformeTarifaAnual}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapRevisionSAT.isrConformeTarifaAnual};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>  
+                                            </div>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column >#{msgValidacion.consultaDevDetalleNuevo_SubsidioEmpleo}</p:column>
+                                        <p:column >
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.declaracionSAT.subsidioEmpleo}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapDeclaracionSAT.subsidioEmpleo};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>  
+                                            </div>
+                                        </p:column>
+                                        <p:column >
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.declaracionContribuyente.subsidioEmpleo}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapDeclaracionContribuyente.subsidioEmpleo};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>  
+                                            </div>
+                                        </p:column>
+                                        <p:column>
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.resultadoProceso.subsidioEmpleo}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapRevisionSAT.subsidioEmpleo};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>  
+                                            </div>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column >#{msgValidacion.consultaDevDetalleNuevo_ImpuestoIngresoAcumulable}</p:column>
+                                        <p:column >
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.declaracionSAT.imptoSobreIngresosAcumulables}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapDeclaracionSAT.imptoSobreIngresosAcumulables};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>  
+                                            </div>
+                                        </p:column>
+                                        <p:column >
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.declaracionContribuyente.imptoSobreIngresosAcumulables}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapDeclaracionContribuyente.imptoSobreIngresosAcumulables};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>  
+                                            </div>
+                                        </p:column>
+                                        <p:column>
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.resultadoProceso.imptoSobreIngresosAcumulables}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapRevisionSAT.imptoSobreIngresosAcumulables};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>  
+                                            </div>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column >#{msgValidacion.consultaDevDetalleNuevo_ImpuestoIngresoNoAcumulable}</p:column>
+                                        <p:column >
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.declaracionSAT.imptoSobreIngresosNoAcumulables}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapDeclaracionSAT.imptoSobreIngresosNoAcumulables};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>  
+                                            </div>
+                                        </p:column>
+                                        <p:column >
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.declaracionContribuyente.imptoSobreIngresosNoAcumulables}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapDeclaracionContribuyente.imptoSobreIngresosNoAcumulables};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>  
+                                            </div>
+                                        </p:column>
+                                        <p:column>
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.resultadoProceso.imptoSobreIngresosNoAcumulables}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapRevisionSAT.imptoSobreIngresosNoAcumulables};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>  
+                                            </div>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column >#{msgValidacion.consultaDevDetalleNuevo_ReduccionesISR}</p:column>
+                                        <p:column >
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.declaracionSAT.reduccionesDeISR}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapDeclaracionSAT.reduccionesDeISR};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>  
+                                            </div>
+                                        </p:column>
+                                        <p:column >
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.declaracionContribuyente.reduccionesDeISR}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapDeclaracionContribuyente.reduccionesDeISR};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>  
+                                            </div>
+                                        </p:column>
+                                        <p:column>
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.resultadoProceso.reduccionesDeISR}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapRevisionSAT.reduccionesDeISR};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>  
+                                            </div>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column >#{msgValidacion.consultaDevDetalleNuevo_ISRCausado}</p:column>
+                                        <p:column >
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.declaracionSAT.imptoSobreLaRentaCausado}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapDeclaracionSAT.imptoSobreLaRentaCausado};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>  
+                                            </div>
+                                        </p:column>
+                                        <p:column >
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.declaracionContribuyente.imptoSobreLaRentaCausado}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapDeclaracionContribuyente.imptoSobreLaRentaCausado};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>  
+                                            </div>
+                                        </p:column>
+                                        <p:column>
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.resultadoProceso.imptoSobreLaRentaCausado}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapRevisionSAT.imptoSobreLaRentaCausado};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>  
+                                            </div>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column >#{msgValidacion.consultaDevDetalleNuevo_PagosProvisionales}</p:column>
+                                        <p:column >
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.declaracionSAT.pagosProvisionales}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapDeclaracionSAT.pagosProvisionales};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>  
+                                            </div>
+                                        </p:column>
+                                        <p:column >
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.declaracionContribuyente.pagosProvisionales}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapDeclaracionContribuyente.pagosProvisionales};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>  
+                                            </div>
+                                        </p:column>
+                                        <p:column>
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.resultadoProceso.pagosProvisionales}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapRevisionSAT.pagosProvisionales};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>  
+                                            </div>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column >#{msgValidacion.consultaDevDetalleNuevo_ImpuestoRetenido}</p:column>
+                                        <p:column >
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.declaracionSAT.imptoRetenidoAlcontribuyente}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapDeclaracionSAT.imptoRetenidoAlcontribuyente};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>  
+                                            </div>
+                                        </p:column>
+                                        <p:column >
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.declaracionContribuyente.imptoRetenidoAlcontribuyente}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapDeclaracionContribuyente.imptoRetenidoAlcontribuyente};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>  
+                                            </div>
+                                        </p:column>
+                                        <p:column>
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.resultadoProceso.imptoRetenidoAlcontribuyente}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapRevisionSAT.imptoRetenidoAlcontribuyente};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>  
+                                            </div>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column >#{msgValidacion.consultaDevDetalleNuevo_ImpuestoAcreditable}</p:column>
+                                        <p:column >
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.declaracionSAT.imptoAcreditablePagadoEnExtranjero}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapDeclaracionSAT.imptoAcreditablePagadoEnExtranjero};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>  
+                                            </div>
+                                        </p:column>
+                                        <p:column >
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.declaracionContribuyente.imptoAcreditablePagadoEnExtranjero}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapDeclaracionContribuyente.imptoAcreditablePagadoEnExtranjero};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>  
+                                            </div>
+                                        </p:column>
+                                        <p:column>
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.resultadoProceso.imptoAcreditablePagadoEnExtranjero}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapRevisionSAT.imptoAcreditablePagadoEnExtranjero};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>  
+                                            </div>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column >#{msgValidacion.consultaDevDetalleNuevo_SectorPrimario}</p:column>
+                                        <p:column >
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.declaracionSAT.sectorPrimario}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapDeclaracionSAT.sectorPrimario};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>  
+                                            </div>
+                                        </p:column>
+                                        <p:column >
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.declaracionContribuyente.sectorPrimario}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapDeclaracionContribuyente.sectorPrimario};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>  
+                                            </div>
+                                        </p:column>
+                                        <p:column>
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.resultadoProceso.sectorPrimario}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapRevisionSAT.sectorPrimario};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>  
+                                            </div>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column >#{msgValidacion.consultaDevDetalleNuevo_ImpuestoInteresReal}</p:column>
+                                        <p:column >
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.declaracionSAT.imptoSobreInteresRealPorRetirosParciales}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapDeclaracionSAT.imptoSobreInteresRealXRetirosParciales};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>  
+                                            </div>
+                                        </p:column>
+                                        <p:column >
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.declaracionContribuyente.imptoSobreInteresRealPorRetirosParciales}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapDeclaracionContribuyente.imptoSobreInteresRealXRetirosParciales};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>  
+                                            </div>
+                                        </p:column>
+                                        <p:column>
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.resultadoProceso.imptoSobreInteresRealPorRetirosParciales}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapRevisionSAT.imptoSobreInteresRealXRetirosParciales};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>  
+                                            </div>
+                                        </p:column>
+                                    </p:row>                                   
+                                    <p:row>
+                                        <p:column >#{msgValidacion.consultaDevDetalleNuevo_ImpuestoFavor}</p:column>
+                                        <p:column >
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.declaracionSAT.isrAFavorDelEjercicio}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapDeclaracionSAT.isrAFavorDelEjercicio};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>  
+                                            </div>
+                                        </p:column>
+                                        <p:column >
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.declaracionContribuyente.isrAFavorDelEjercicio}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapDeclaracionContribuyente.isrAFavorDelEjercicio};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>  
+                                            </div>
+                                        </p:column>
+                                        <p:column>
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.resultadoProceso.isrAFavorDelEjercicio}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapRevisionSAT.isrAFavorDelEjercicio};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>  
+                                            </div>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column >#{msgValidacion.consultaDevDetalleNuevo_ImpuestoCargo}</p:column>
+                                        <p:column >
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.declaracionSAT.isrACargoDelEjercicio}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapDeclaracionSAT.isrACargoDelEjercicio};">                                                               
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>  
+                                            </div>
+                                        </p:column>
+                                        <p:column >
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.declaracionContribuyente.isrACargoDelEjercicio}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapDeclaracionContribuyente.isrACargoDelEjercicio};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>  
+                                            </div>
+                                        </p:column>
+                                        <p:column>
+                                            <div align="center">
+                                                <h:outputLabel value="#{consultaDevISRDetalleNuevoMB.consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs.resultadoProceso.isrACargoDelEjercicio}"
+                                                               style="color:#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.mapRevisionSAT.isrACargoDelEjercicio};">
+                                                    <f:convertNumber minFractionDigits="2"
+                                                                     currencySymbol="$ " type="currency"
+                                                                     locale="es-MX" pattern="¤#,##0.00"/>
+                                                </h:outputLabel>  
+                                            </div>
+                                        </p:column>
+                                    </p:row>
+                                </p:panelGrid>
+                            </p:tab>
+                            <p:tab id="tabInconsDeducciones" title="#{msgValidacion.consultaDevDetalleNuevo_InconsDeducciones}" rendered="#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.esVisibleDeducciones}">
+                                <p:panelGrid style="border-color:#000000;margin-top: 25px!important;margin-bottom: 40px !important;" >
+                                    <p:row>
+                                        <p:column >
+                                            <p:dataTable id="tableInconsDeducciones" var="deduccion" 
+                                                         value="#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.datosTramiteISRseleccionado.deduccionInconsistencias}"                                                  
+                                                         paginator="true"
+                                                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                                         rowsPerPageTemplate="5,10,15" rows="10"
+                                                         style="text-align:left;width:100%;" 
+                                                         rowStyleClass="#{(rowIndex mod 2) eq 0 ?'highlightA':'highlightB'}"
+                                                         emptyMessage="No se encontraron registros.">
+
+                                                <p:column headerText="Tipo de deducción">
+                                                    <p:outputLabel value="#{deduccion.tipoDeduccion}" />
+                                                </p:column>
+                                                <p:column headerText="RFC">
+                                                    <p:outputLabel value="#{deduccion.rfcEmisorCFDI}" />
+                                                </p:column>
+                                                <p:column headerText="Nombre o Razón Social">
+                                                    <p:outputLabel value="#{deduccion.nombreEmisorCFDI}" />
+                                                </p:column>
+                                                <p:column headerText="Declaración SAT">
+                                                    <h:outputLabel value="#{deduccion.importeDeclaracionSAT}" >
+                                                        <f:convertNumber minFractionDigits="2"
+                                                                         currencySymbol="$ " type="currency"
+                                                                         locale="es-MX" pattern="¤#,##0.00"/>
+                                                    </h:outputLabel>
+                                                </p:column>
+                                                <p:column headerText="Declaración Contribuyente">
+                                                    <h:outputLabel value="#{deduccion.importeDeclaracionContribuyente}" >
+                                                        <f:convertNumber minFractionDigits="2"
+                                                                         currencySymbol="$ " type="currency"
+                                                                         locale="es-MX" pattern="¤#,##0.00"/>
+                                                    </h:outputLabel>
+                                                </p:column>
+                                                <p:column headerText="Inconsistencia">
+                                                    <p:outputLabel value="#{deduccion.descripcion}" />
+                                                </p:column>
+                                            </p:dataTable>
+                                        </p:column>
+                                    </p:row>
+                                </p:panelGrid>
+                                <p:panelGrid style="border-color:#0000FF;display:block">
+                                    <p:row>
+                                        <p:column style="text-align:left">
+                                            <h:outputText escape="false" value="#{consultaDevISRDetalleNuevoMB.contenidoDetalleDeduccion}"/>
+                                        </p:column>
+                                    </p:row>
+                                </p:panelGrid>
+                            </p:tab>
+                            <p:tab id="tabInconsIngresos" title="#{msgValidacion.consultaDevDetalleNuevo_InconsIngresos}" rendered="#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.esVisibleIngresos}">
+                                <p:panelGrid style="border-color:#000000;margin-top: 25px!important;margin-bottom: 40px !important;" >
+                                    <p:row>
+                                        <p:column >
+                                            <p:dataTable id="tableInconsIngresos" var="ingreso" 
+                                                         value="#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.datosTramiteISRseleccionado.retencionInconsistencias}"                                                  
+                                                         paginator="true"
+                                                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                                         rowsPerPageTemplate="5,10,15" rows="10"
+                                                         style="text-align:left;width:100%;" 
+                                                         rowStyleClass="#{(rowIndex mod 2) eq 0 ?'highlightA':'highlightB'}"
+                                                         emptyMessage="No se encontraron registros.">
+
+                                                <p:columnGroup type="header">
+                                                    <p:row>
+                                                        <p:column rowspan="2" headerText="Tipo de ingreso"/>
+                                                        <p:column rowspan="2" headerText="RFC retenedor"/>
+                                                        <p:column rowspan="2" headerText="Nombre o Razón Social"/>
+                                                        <p:column colspan="2" headerText="Declaración SAT"/>
+                                                        <p:column colspan="2" headerText="Declaración Contribuyente"/>
+                                                        <p:column rowspan="2" headerText="Inconsistencia"/>
+                                                    </p:row>
+                                                    <p:row>
+                                                        <p:column headerText="Total Ingreso"/>
+                                                        <p:column headerText="Impuesto Retenido"/>
+                                                        <p:column headerText="Total Ingreso"/>
+                                                        <p:column headerText="Impuesto Retenido"/>
+                                                    </p:row>
+                                                </p:columnGroup>
+
+                                                <p:column >
+                                                    <p:outputLabel value="#{ingreso.tipoIngreso}" />
+                                                </p:column>
+                                                <p:column >
+                                                    <p:outputLabel value="#{ingreso.rfcRetenedor}" />
+                                                </p:column>
+                                                <p:column >
+                                                    <p:outputLabel value="#{ingreso.razonSocial}" />
+                                                </p:column>
+                                                <p:column >
+                                                    <h:outputLabel value="#{ingreso.totalIngresoSat}" >
+                                                        <f:convertNumber minFractionDigits="2"
+                                                                         currencySymbol="$ " type="currency"
+                                                                         locale="es-MX" pattern="¤#,##0.00"/>
+                                                    </h:outputLabel>
+                                                </p:column>
+                                                <p:column >
+                                                    <h:outputLabel value="#{ingreso.imptoRetenidoSat}" >
+                                                        <f:convertNumber minFractionDigits="2"
+                                                                         currencySymbol="$ " type="currency"
+                                                                         locale="es-MX" pattern="¤#,##0.00"/>
+                                                    </h:outputLabel>
+                                                </p:column>
+                                                <p:column >
+                                                    <h:outputLabel value="#{ingreso.totalIngresoContribuyente}" >
+                                                        <f:convertNumber minFractionDigits="2"
+                                                                         currencySymbol="$ " type="currency"
+                                                                         locale="es-MX" pattern="¤#,##0.00"/>
+                                                    </h:outputLabel>
+                                                </p:column>
+                                                <p:column >
+                                                    <h:outputLabel value="#{ingreso.imptoRetenidoContribuyente}" >
+                                                        <f:convertNumber minFractionDigits="2"
+                                                                         currencySymbol="$ " type="currency"
+                                                                         locale="es-MX" pattern="¤#,##0.00"/>
+                                                    </h:outputLabel>
+                                                </p:column>
+                                                <p:column >
+                                                    <p:outputLabel value="#{ingreso.descripcion}" />
+                                                </p:column>
+                                            </p:dataTable>
+                                        </p:column>
+                                    </p:row>
+                                </p:panelGrid>
+
+                                <p:panelGrid style="border-color:#0000FF;display:block">
+                                    <p:row>
+                                        <p:column style="text-align:left">
+                                            <h:outputText escape="false" value="#{consultaDevISRDetalleNuevoMB.contenidoDetalleIngreso}"/>
+                                        </p:column>
+                                    </p:row>
+                                </p:panelGrid>
+                            </p:tab>
+                            <p:tab id="tabInconsRechazos" title="#{msgValidacion.consultaDevDetalleNuevo_InconsRechazos}" rendered="#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.esVisibledRechazos}">
+                                <p:panelGrid style="border-color:#0000FF;display:block">
+                                    <p:row>
+                                        <p:column style="text-align:left">
+                                            <h:outputText escape="false" value="#{consultaDevISRDetalleNuevoMB.contenidoDetalleRechazo}"/>
+                                        </p:column>
+                                    </p:row>
+                                </p:panelGrid>
+                            </p:tab>
+                        </p:tabView>
+                    </p:panel>
+                </div>
+                <p:commandButton id="btnDatosregresar" value="Regresar"  styleClass="gmxNegativo" ajax="false" 
+                                 action="#{consultaDevISRDetalleNuevoMB.goToConsultaDevAutISR}" />
+                <p:commandButton id="btnDatossiguiente" value="Solventar inconsistencias" styleClass="gmxPositivo" ajax="false" rendered="#{consultaDevISRDetalleNuevoMB.tramiteDevAutISRBO.btnSolventarinconsistencias}" 
+                                 actionListener="#{consultaDevISRDetalleNuevoMB.verPantallaAdjuntarDocumentos}" update="@form" />
+            </h:form> 
+
+        </h:body>
+    </html>
+</f:view>  

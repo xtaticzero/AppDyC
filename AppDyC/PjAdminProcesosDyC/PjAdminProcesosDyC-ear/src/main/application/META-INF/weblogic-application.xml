@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<weblogic-application xmlns="http://xmlns.oracle.com/weblogic/weblogic-application"
+                      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                      xsi:schemaLocation="http://xmlns.oracle.com/weblogic/weblogic-application 
+                        http://xmlns.oracle.com/weblogic/weblogic-application/1.0/weblogic-application.xsd">
+
+    <singleton-service>
+        <name>SingletonServiceMain-dyc</name>
+        <class-name>mx.gob.sat.siat.dyc.pjadminprocesosdyc.ejb.main.SingletonServiceMain</class-name>
+    </singleton-service>
+
+</weblogic-application>

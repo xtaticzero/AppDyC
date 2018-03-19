@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" 
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans          
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd          
+        http://www.springframework.org/schema/tx             
+        http://www.springframework.org/schema/tx/spring-tx-2.5.xsd          
+        http://www.springframework.org/schema/context              
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+    <!-- DATASOURCE - Inicio -->
+    <bean id="jdbcTemplateDYC" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceDYC"></property>
+    </bean>
+    
+    <bean id="namedParameterJdbcTemplateDwhOra2"
+          class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+        <constructor-arg ref="dataSourceDYC"></constructor-arg>
+    </bean>
+    <bean id="namedParameterJdbcTemplateSIAT"
+          class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+        <constructor-arg ref="dataSourceDYC"></constructor-arg>
+    </bean>
+    <bean id="jdbcTemplateInformixDyC" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceDYC"></property>
+    </bean>
+    <!-- DATASOURCE - Fin -->
+    
+   
+    <!-- SPRING - Beans manejados - Inicio -->
+    <bean id="integrarExpedienteService" class="mx.gob.sat.mat.dyc.integrarexpediente.service.impl.IntegrarExpedienteServiceImpl" />
+    <bean id="integrarExpedienteDAO" class="mx.gob.sat.siat.dyc.dao.expediente.impl.IntegrarExpedienteDAOImpl" />
+    
+    <!-- ICEP - Inicio -->
+    <bean id="icepService" class="mx.gob.sat.mat.dyc.integrarexpediente.service.impl.IcepServiceImpl" />
+    <bean id="icepDAO" class="mx.gob.sat.siat.dyc.dao.icep.impl.IcepDAOImpl" />
+    <bean id="jdbcTemplateDwhOra2" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceDYC"></property>
+    </bean>
+    <bean id="jdbcTemplateSIAT" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceDYC"></property>
+    </bean>
+    <bean id="jdbcTemplateInformix" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceDYC"></property>
+    </bean>
+    <bean id="jdbcTemplateDYCDB2" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceDYC"/>
+    </bean>
+    <!-- ICEP - Fin -->
+    
+    <!-- RFC ampliado - Store procedure -->
+    <bean id="personaIDCDAO" class="mx.gob.sat.siat.dyc.dao.contribuyente.impl.PersonaIDCDAOImpl" />
+    <bean id="jdbcTemplateDYCRFC" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceDYC"></property>
+    </bean>
+    
+    <!-- Tipo tramite -->
+    <bean id="tipoTramiteDAO" class="mx.gob.sat.siat.dyc.dao.tipotramite.impl.DyccTipoTramiteDAOImpl" />
+    <!-- SPRING - Beans manejados - Fin -->
+</beans>

@@ -1,0 +1,449 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" locale="ES"
+        xmlns:f="http://java.sun.com/jsf/core" xmlns:pe="http://primefaces.org/ui/extensions">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+            
+            <title>
+                <h:outputText value="ADMINISTRADOR DE PROCESOS"/>
+            </title>
+
+            <style type="text/css">
+                .admin-proc .panel-resultados .ui-panel-content {
+                    padding: 0.5em 0em 0em 0em;
+                }
+
+                .admin-proc .tabla-resultados {
+                    font-size: 0.8em;
+                    margin-top: 2px;
+                }
+                .admin-proc .tabla-resultados th,
+                .admin-proc .tabla-resultados td{
+                    padding: 4px 6px;
+                }
+            </style>
+        </h:head>
+        <h:body styleClass="admin-proc">
+            <h:form id="formTabla">
+                <p:panel id="panelPrincipal" header="Administrador de procesos" styleClass="panel-resultados">
+                
+                    <div align="center">
+                        <br />
+                        <p:outputLabel  value="Última ejecución: " />
+                        <p:outputLabel  value="#{administrarProcesos.fechaEjecucion}" />
+                        <br />
+                        <br />
+                    </div>
+                
+                    <p:dataTable id="idTabla" var="proceso" value="#{administrarProcesos.listaProcesos}" 
+                                 emptyMessage="No hay procesos disponibles o no se han cargado de la BD"
+                                 styleClass="tabla-resultados">
+                        <p:column headerText="PROCESO">#{proceso.dyctSegProcesoDTO.dyctProcesosDTO.nombre}</p:column>
+                        <p:column headerText="STATUS">
+                            <div align="center">
+                                <p:graphicImage url="#{proceso.ruta}" />
+                            </div>
+                        </p:column>
+                        <p:column headerText="EJECUCIÓN">#{proceso.ejecucion}</p:column>
+                        <p:column headerText="ÚLTIMA EJECUCIÓN" style="white-space: normal">#{proceso.dyctSegProcesoDTO.horaEjecucion}</p:column>
+                        <p:column headerText="HORARIO PROGRAMADO" style="white-space: normal">#{proceso.descripcionHorarioEjecucion}</p:column>
+                        <p:column headerText="EDITAR">
+                            <div align="center">
+                                <p:commandButton action="#{administrarProcesos.seleccionarProceso}" 
+                                                 update=":idFormPrincipal:idTab:dialogCRON" 
+                                                 icon="ui-icon-pencil">
+                                    <f:setPropertyActionListener target="#{administrarProcesos.proceso}" value="#{proceso}"/>
+                                </p:commandButton>
+                            </div>
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+                                <h:button id="btnAdminNotificaciones" value = "Ir a Administraci&oacute;n Notificaciones" outcome="administrarNotificaciones.jsf"></h:button>
+            </h:form>
+             
+            <p:dialog header="#{administrarProcesos.proceso.dyctSegProcesoDTO.dyctProcesosDTO.nombre}" widgetVar="dialogo" modal="true" resizable="false" fixedCenter="true" id="dialogCRON" 
+                      closable="true" width="auto" height="auto"  visible="#{administrarProcesos.banderaDialog}">
+                <div style="width:auto;">
+                    <p:tabView style="height:500px;">
+                        <p:tab title="Minutos">
+                            <h:form id="formulario0">
+                                <h3>Calendarizaci&oacute;n por minuto</h3>
+                                <p:outputPanel>
+                                    <h:panelGrid columns="4">
+                                        <h:outputText value="Cada"/>
+                                        <pe:inputNumber decimalPlaces="0"  
+                                                        id="campoNumerico1" 
+                                                        maxlength="2"
+                                                        maxValue="59" 
+                                                        validator="validadorNumerico"
+                                                        value="#{administrarProcesos.camposNumericos[0]}"
+                                                        required="#{administrarProcesos.listaBanderas[0]}"
+                                                        requiredMessage="Se debe introducir un valor"
+                                                        style="width: 50px;">
+                                            <p:ajax event="blur" update="mensaje1"/>
+                                        </pe:inputNumber>
+                                        <h:outputText value="Minuto(s)"/>
+                                        <p:message id="mensaje1" for="campoNumerico1" showDetail="true"/>
+                                    </h:panelGrid>
+                                </p:outputPanel>
+                                <div align="right">
+                                    <p:commandButton actionListener="#{administrarProcesos.guardarCalendarizacion}"
+                                                     id="minuto"
+                                                     value="GUARDAR"
+                                                     />
+                                </div>
+                            </h:form>
+                        </p:tab>
+                        <p:tab title="Hora">
+                            <h:form id="formulario1">
+                                <h3>Calendarizaci&oacute;n por hora</h3>
+                                <p:outputPanel>
+                                    <p:selectOneRadio id="customRadio1" layout="custom" required="true"
+                                                      requiredMessage="Seleccione una opción">
+                                        <f:selectItem itemValue="1"/>
+                                        <f:selectItem itemValue="2"/>
+                                        <p:ajax update="campoNumerico2, mensaje2, mensajeRadio1" event="valueChange"
+                                                listener="#{administrarProcesos.actualizar1}"/>
+                                    </p:selectOneRadio>
+                                    <h:panelGrid columns="5">
+                                        <p:radioButton for="customRadio1" itemIndex="0"/>
+                                        <h:outputLabel value="Cada"/>
+                                        <pe:inputNumber decimalPlaces="0" id="campoNumerico2" maxlength="2" 
+                                                        maxValue="720" 
+                                                        required="#{administrarProcesos.listaBanderas[1]}"
+                                                        requiredMessage="Se debe introducir un valor"
+                                                        style="width: 41px;" validator="validadorNumerico"
+                                                        value="#{administrarProcesos.camposNumericos[1]}">
+                                            <p:ajax event="blur" update="mensaje2"/>
+                                        </pe:inputNumber>
+                                        <h:outputLabel value="hora(s)"/>
+                                        <p:message id="mensaje2" for="campoNumerico2" showDetail="true"/>
+                                    </h:panelGrid>    
+                                    <h:panelGrid columns="6">    
+                                        <p:radioButton for="customRadio1" itemIndex="1"/>
+                                        <h:outputLabel value="A las "/>
+                                        
+                                        <p:selectOneMenu id="hora1" value="#{administrarProcesos.horas[0]}" style="width:160px" required="#{!administrarProcesos.listaBanderas[1]}" requiredMessage="Seleccione una hora">
+                                            <f:selectItem itemLabel="Seleccione..." itemValue="" />                
+                                            <f:selectItems value="#{administrarProcesos.listaHoras}"/>
+                                        </p:selectOneMenu>
+                                         <p:message for="hora1" id="mensajeHorario1" showDetail="true"/>
+                                        <p:selectOneMenu id="minuto1" value="#{administrarProcesos.minutos[0]}" style="width:160px" required="#{!administrarProcesos.listaBanderas[1]}" requiredMessage="Seleccione los minutos"
+                                                        >
+                                            <f:selectItem itemLabel="Seleccione..." itemValue="" />                
+                                            <f:selectItems value="#{administrarProcesos.listaMinutos}"/>
+                                        </p:selectOneMenu>
+                                        <p:message for="minuto1" id="mensajeMinutos1" showDetail="true"/>
+                                    </h:panelGrid>
+                                </p:outputPanel>
+                                <p:message id="mensajeRadio1" for="customRadio1" showDetail="true"/>
+                                <div align="right">
+                                    <p:commandButton actionListener="#{administrarProcesos.guardarCalendarizacion}"
+                                                     id="hora"
+                                                     update="campoNumerico2, mensaje2, mensajeRadio1,mensajeHorario1,mensajeMinutos1"
+                                                     value="GUARDAR" 
+                                                     />
+                                </div>
+                            </h:form>
+                        </p:tab>
+                        <p:tab title="Diariamente">
+                            <h:form id="formulario2">
+                                <h3>Calendarizaci&oacute;n por d&iacute;a</h3>
+                                <p:outputPanel>
+                                    <p:selectOneRadio id="customRadio2" layout="custom" required="true"
+                                                      requiredMessage="Seleccione una opción">
+                                        <f:selectItem itemValue="1"/>
+                                        <f:selectItem itemValue="2"/>
+                                        <p:ajax update="campoNumerico3, mensaje3, mensajeRadio2" event="valueChange"
+                                                listener="#{administrarProcesos.actualizar2}"/>
+                                    </p:selectOneRadio>
+                                    <h:panelGrid columns="5">
+                                        <p:radioButton for="customRadio2" itemIndex="0"/>
+                                        <h:outputLabel value="Cada"/>
+                                        <pe:inputNumber decimalPlaces="0" id="campoNumerico3" maxlength="2"
+                                                        maxValue="720"
+                                                        required="#{administrarProcesos.listaBanderas[2]}"
+                                                        requiredMessage="Se debe introducir un valor"
+                                                        style="width: 41px;" validator="validadorNumerico"
+                                                        value="#{administrarProcesos.camposNumericos[2]}">
+                                            <p:ajax event="blur" update="mensaje3"/>
+                                        </pe:inputNumber>
+                                        <h:outputLabel value="dìa(s)"/>
+                                        <p:message id="mensaje3" for="campoNumerico3" showDetail="true"/>
+                                        <p:radioButton id="opt22" for="customRadio2" itemIndex="1"/>
+                                        <h:outputLabel value="Diario"/>
+                                    </h:panelGrid>
+                                    <h:panelGrid columns="5">
+                                        <h:outputLabel value="Empezando"/>
+                                        <p:selectOneMenu id="hora2" value="#{administrarProcesos.horas[1]}" style="width:160px"
+                                                          required="true" requiredMessage="Seleccione una hora">
+                                            <f:selectItem itemLabel="Seleccione..." itemValue="" />
+                                            <f:selectItems value="#{administrarProcesos.listaHoras}"/>
+                                        </p:selectOneMenu>
+                                        <p:message for="hora2" id="mensajeHorario2" showDetail="true"/>
+                                         <p:selectOneMenu id="minutos2" value="#{administrarProcesos.minutos[1]}" style="width:160px"
+                                                         required="true" requiredMessage="Seleccione los minutos">
+                                            <f:selectItem itemLabel="Seleccione..." itemValue="" />
+                                            <f:selectItems value="#{administrarProcesos.listaMinutos}"/>
+                                         </p:selectOneMenu>
+                                         <p:message for="minutos2" id="mensajeMinutos2" showDetail="true"/>
+                                          
+                                    </h:panelGrid>
+                                      
+                                     
+                                </p:outputPanel>
+                                <p:message id="mensajeRadio2" for="customRadio2" showDetail="true"/>
+                                <div align="right">
+                                    <p:commandButton actionListener="#{administrarProcesos.guardarCalendarizacion}"
+                                                     id="dia"
+                                                     update="campoNumerico3, mensaje3, mensajeRadio2, mensajeHorario2,mensajeMinutos2"
+                                                     value="GUARDAR" 
+                                                     />
+                                </div>
+                            </h:form>
+                        </p:tab>
+                        <p:tab title="Semanalmente">
+                            <h:form id="formulario3">
+                                <h3>Calendarizaci&oacute;n por semana</h3>
+                                <p:outputPanel>
+                                    <p:selectManyCheckbox id="checkBox1" required="true" value="#{administrarProcesos.valorDias}"
+                                                          requiredMessage="Seleccione una opción">
+                                        <f:selectItem itemLabel="#{administrarProcesos.listaDias[0].nombreDia}"
+                                                      itemValue="#{administrarProcesos.listaDias[0].valorDia}"/>
+                                        <f:selectItem itemLabel="#{administrarProcesos.listaDias[1].nombreDia}"
+                                                      itemValue="#{administrarProcesos.listaDias[1].valorDia}"/>
+                                        <f:selectItem itemLabel="#{administrarProcesos.listaDias[2].nombreDia}"
+                                                      itemValue="#{administrarProcesos.listaDias[2].valorDia}"/>
+                                        <f:selectItem itemLabel="#{administrarProcesos.listaDias[3].nombreDia}"
+                                                      itemValue="#{administrarProcesos.listaDias[3].valorDia}"/>
+                                        <f:selectItem itemLabel="#{administrarProcesos.listaDias[4].nombreDia}"
+                                                      itemValue="#{administrarProcesos.listaDias[4].valorDia}"/>
+                                        <f:selectItem itemLabel="#{administrarProcesos.listaDias[5].nombreDia}"
+                                                      itemValue="#{administrarProcesos.listaDias[5].valorDia}"/>
+                                        <f:selectItem itemLabel="#{administrarProcesos.listaDias[6].nombreDia}"
+                                                      itemValue="#{administrarProcesos.listaDias[6].valorDia}"/>
+                                        <p:ajax update="mensajeCheckBox" event="valueChange"/>
+                                    </p:selectManyCheckbox>
+                                    <h:panelGrid columns="5">
+                                        <h:outputLabel value="Empezando"/>
+                                        <p:selectOneMenu id="hora3" value="#{administrarProcesos.horas[2]}" style="width:160px"
+                                                            required="true" requiredMessage="Seleccione una hora">
+                                            <f:selectItem itemLabel="Seleccione..." itemValue="" />
+                                            <f:selectItems value="#{administrarProcesos.listaHoras}"/>
+                                        </p:selectOneMenu>
+                                         <p:message for="hora3" id="mensajeHorario3" showDetail="true"/>
+                                        <p:selectOneMenu id="minuto3" value="#{administrarProcesos.minutos[2]}" style="width:160px"
+                                         required="true" requiredMessage="Seleccione los minutos">
+                                            <f:selectItem itemLabel="Seleccione..." itemValue="" />
+                                            <f:selectItems value="#{administrarProcesos.listaMinutos}"/>
+                                        </p:selectOneMenu>
+                                         <p:message for="minuto3" id="mensajeMinutos3" showDetail="true"/>
+                                    </h:panelGrid>
+                                </p:outputPanel>
+                                <p:message id="mensajeCheckBox" for="checkBox1" showDetail="true"/>
+                                <div align="right">
+                                    <p:commandButton actionListener="#{administrarProcesos.guardarCalendarizacion}" 
+                                                     id="semana" 
+                                                     update="mensajeCheckBox,mensajeHorario3,mensajeMinutos3" 
+                                                     value="GUARDAR" 
+                                                     />
+                                </div>
+                            </h:form>
+                        </p:tab>
+                        <p:tab title="Mensualmente">
+                            <h:form id="formulario4">
+                                <h3>Calendarizaci&oacute;n por mes</h3>
+                                <p:outputPanel id="panelMes">
+                                    <p:selectOneRadio id="customRadio4" 
+                                                      layout="custom" 
+                                                      required="true"
+                                                      requiredMessage="Seleccione una opción">
+                                        <f:selectItem itemValue="1"/>
+                                        <f:selectItem itemValue="2"/>
+                                        <p:ajax process="@this" 
+                                                event="valueChange"
+                                                listener="#{administrarProcesos.actualizar3}"
+                                                update="campoNumerico4, campoNumerico5, campoNumerico6, mensaje4, mensaje5, mensaje6"
+                                                />
+                                    </p:selectOneRadio>
+                                    <h:panelGrid columns="8">
+                                        <p:radioButton for="customRadio4" itemIndex="0"/>
+                                        <h:outputLabel value="Dìa"/>
+                                        <pe:inputNumber decimalPlaces="0" id="campoNumerico4" maxlength="2"
+                                                        maxValue="31" required="#{administrarProcesos.listaBanderas[3]}"
+                                                        style="width: 41px;" validator="validadorNumerico"
+                                                        value="#{administrarProcesos.camposNumericos[3]}"
+                                                        requiredMessage="Se debe introducir un valor">
+                                            <p:ajax event="blur" update="mensaje4"/>
+                                        </pe:inputNumber>
+                                        <p:message id="mensaje4" for="campoNumerico4" showDetail="true"/>
+                                        <h:outputLabel value="de cada"/>
+                                        <pe:inputNumber decimalPlaces="0" id="campoNumerico5" maxlength="2"
+                                                        maxValue="12" required="#{administrarProcesos.listaBanderas[4]}"
+                                                        style="width: 41px;" validator="validadorNumerico"
+                                                        value="#{administrarProcesos.camposNumericos[4]}"
+                                                        requiredMessage="Se debe introducir un valor">
+                                            <p:ajax event="blur" update="mensaje5"/>
+                                        </pe:inputNumber>
+                                        <p:message id="mensaje5" for="campoNumerico5" showDetail="true"/>
+                                        <h:outputLabel value="mes(es)"/>
+                                        
+                                    </h:panelGrid>
+                                    <h:panelGrid columns="7">
+                                        <p:radioButton id="opt4" for="customRadio4" itemIndex="1"/>
+                                        <p:selectOneMenu id="posicion1" value="#{administrarProcesos.posiciones[0]}" 
+                                                         style="width: 84px;">
+                                            <f:selectItems value="#{administrarProcesos.listaLugares}" var="posicionVar"
+                                                           itemLabel="#{posicionVar.nombre}" 
+                                                           itemValue="#{posicionVar.valor}"/>
+                                        </p:selectOneMenu>
+                                        <p:selectOneMenu id="listaDias1" value="#{administrarProcesos.dias[0]}"
+                                                         style="width: 84px;">
+                                            <f:selectItems value="#{administrarProcesos.listaDias}" var="variableDia1"
+                                                           itemLabel="#{variableDia1.nombreDia}" 
+                                                           itemValue="#{variableDia1.valorDia}"/>
+                                        </p:selectOneMenu>
+                                        <pe:inputNumber decimalPlaces="0" id="campoNumerico6" maxlength="2"
+                                                        maxValue="720"
+                                                        required="#{administrarProcesos.listaBanderas[5]}"
+                                                        requiredMessage="Se debe introducir un valor"
+                                                        style="width: 41px;" validator="validadorNumerico"
+                                                        value="#{administrarProcesos.camposNumericos[5]}">
+                                            <p:ajax event="blur" update="mensaje6"/>
+                                        </pe:inputNumber>
+                                        <h:outputLabel value="mes(es)"/>
+                                        <p:message id="mensaje6" for="campoNumerico6" showDetail="true"/>
+                                    </h:panelGrid>
+                                    
+                                    <h:panelGrid columns="5">
+                                        <h:outputLabel value="Empezando"/>
+                                        <p:selectOneMenu id="hora4" value="#{administrarProcesos.horas[3]}" style="width:160px"
+                                                        required="true" requiredMessage="Seleccione una hora">
+                                            <f:selectItem itemLabel="Seleccione..." itemValue="" />
+                                            <f:selectItems value="#{administrarProcesos.listaHoras}"/>
+                                        </p:selectOneMenu>
+                                        <p:message for="hora4" id="mensajeHorario4" showDetail="true"/>
+                                        <p:selectOneMenu id="minuto4" value="#{administrarProcesos.minutos[3]}" style="width:160px"
+                                                                        required="true" requiredMessage="Seleccione los minutos">
+                                            <f:selectItem itemLabel="Seleccione..." itemValue="" />
+                                            <f:selectItems value="#{administrarProcesos.listaMinutos}"/>
+                                        </p:selectOneMenu>
+                                        <p:message for="minuto4" id="mensajeMinutos4" showDetail="true"/>
+                                    </h:panelGrid>
+                                </p:outputPanel>
+                                <p:message id="mensajeRadio4" for="customRadio4" showDetail="true"/>
+                                <div align="right">
+                                    <p:commandButton actionListener="#{administrarProcesos.guardarCalendarizacion}"
+                                                     id="mes"
+                                                     update="mensaje4, mensaje5, mensaje6, mensajeRadio4,mensajeHorario4,mensajeMinutos4"
+                                                     value="GUARDAR"/>
+                                </div>
+                            </h:form>
+                        </p:tab>
+                        <p:tab title="Anualmente">
+                            <h:form id="formulario5">
+                                <h3>Calendarizaci&oacute;n por a&ntilde;o</h3>
+                                <p:outputPanel>
+                                    <p:selectOneRadio id="customRadio5" 
+                                                      layout="custom" required="true"
+                                                      requiredMessage="Seleccione una opción">
+                                        <f:selectItem itemValue="1"/>
+                                        <f:selectItem itemValue="2"/>
+                                        <p:ajax update="campoNumerico7, mensaje7, mensajeRadio5" event="valueChange"
+                                                listener="#{administrarProcesos.actualizar4}"/>
+                                    </p:selectOneRadio>
+                                    <h:panelGrid columns="6">
+                                        <p:radioButton for="customRadio5" itemIndex="0"/>
+                                        <h:outputLabel value="Cada"/>
+                                        <pe:inputNumber decimalPlaces="0" id="campoNumerico7" maxlength="2"
+                                                        maxValue="31" required="#{administrarProcesos.listaBanderas[6]}"
+                                                        requiredMessage="Se debe introducir un valor"
+                                                        style="width: 41px;" validator="validadorNumerico"
+                                                        value="#{administrarProcesos.camposNumericos[6]}">
+                                            <p:ajax event="blur" update="mensaje7"/>
+                                        </pe:inputNumber>
+                                        <h:outputLabel value="de"/>
+                                        <p:selectOneMenu id="mes" value="#{administrarProcesos.meses[0]}"
+                                                         style="width:100px;">
+                                            <f:selectItems value="#{administrarProcesos.listaMeses}" var="mes1"
+                                                           itemLabel="#{mes1.nombre}" itemValue="#{mes1.numeroMes}"/>
+                                        </p:selectOneMenu>
+                                        <p:message id="mensaje7" for="campoNumerico7" showDetail="true"/>
+                                    </h:panelGrid>
+                                    <h:panelGrid columns="6">
+                                        <p:radioButton for="customRadio5" itemIndex="1"/>
+                                        <h:outputLabel value="El"/>
+                                        <p:selectOneMenu value="#{administrarProcesos.posiciones[1]}" style="width: 84px;">
+                                            <f:selectItems value="#{administrarProcesos.listaLugares}" var="posicion2"
+                                                           itemLabel="#{posicion2.nombre}"
+                                                           itemValue="#{posicion2.valor}"/>
+                                        </p:selectOneMenu>
+                                        <p:selectOneMenu id="dia2" value="#{administrarProcesos.dias[1]}"
+                                                         style="width: 84px;">
+                                            <f:selectItems value="#{administrarProcesos.listaDias}" var="dia2"
+                                                           itemLabel="#{dia2.nombreDia}" itemValue="#{dia2.valorDia}"/>
+                                        </p:selectOneMenu>
+                                        <h:outputLabel value="de"/>
+                                        <p:selectOneMenu value="#{administrarProcesos.meses[1]}" style="width:100px;">
+                                            <f:selectItems value="#{administrarProcesos.listaMeses}" var="mes2"
+                                                           itemLabel="#{mes2.nombre}" itemValue="#{mes2.numeroMes}"/>
+                                        </p:selectOneMenu>
+                                    </h:panelGrid>
+                                    <h:panelGrid columns="5">
+                                        <h:outputLabel value="Empezando"/>
+                                        <p:selectOneMenu  id="hora5" value="#{administrarProcesos.horas[4]}" style="width:160px"
+                                         required="true" requiredMessage="Seleccione una hora">
+                                            <f:selectItem itemLabel="Seleccione..." itemValue="" />
+                                            <f:selectItems value="#{administrarProcesos.listaHoras}"/>
+                                        </p:selectOneMenu>
+                                        <p:message for="hora5" id="mensajeHorario5" showDetail="true"/>
+                                        <p:selectOneMenu  id="minuto5" value="#{administrarProcesos.minutos[4]}" style="width:160px"
+                                         required="true" requiredMessage="Seleccione los minutos">
+                                            <f:selectItem itemLabel="Seleccione..." itemValue="" />
+                                            <f:selectItems value="#{administrarProcesos.listaMinutos}"/>
+                                        </p:selectOneMenu>
+                                        <p:message for="minuto5" id="mensajeMinutos5" showDetail="true"/>
+                                    </h:panelGrid>
+                                </p:outputPanel>
+                                <p:message id="mensajeRadio5" for="customRadio5" showDetail="true"/>
+                                <div align="right"> 
+                                    <p:commandButton actionListener="#{administrarProcesos.guardarCalendarizacion}"
+                                                     id="anio" 
+                                                     update="mensaje7, mensajeRadio5,mensajeHorario5,mensajeMinutos5"
+                                                     value="GUARDAR" />
+                                </div>
+                            </h:form>
+                        </p:tab>
+                        <p:tab title="Modificar Proceso">
+                            <h:form>
+                                <h:panelGrid columns="2">
+                                    <p:outputLabel value="Estatus del proceso: " />
+                                    <p:selectOneMenu id="idListaStatusProceso" 
+                                                     required="true" 
+                                                     requiredMessage="Seleccione una opción" 
+                                                     value="#{administrarProcesos.statusProceso}"
+                                                     style = "width: 160px;"
+                                                     >
+                                        <f:selectItems var="statusProceso"
+                                                       value="#{administrarProcesos.listaStatusProceso}"
+                                                       itemValue="#{statusProceso.idStatusProceso}"
+                                                       itemLabel="#{statusProceso.nombre}"/>
+                                    </p:selectOneMenu>
+                                    <p:message id="mensajeStatusProceso" for="idListaStatusProceso" showDetail="true"/>
+                                </h:panelGrid>
+                                <div align="right"> 
+                                    <p:commandButton actionListener="#{administrarProcesos.guardarCalendarizacion}"
+                                                     id="statusProceso" 
+                                                     update="mensajeStatusProceso"
+                                                     value="GUARDAR" />
+                                </div>
+                            </h:form>
+                        </p:tab>
+                    </p:tabView>                  
+                </div>
+            </p:dialog>
+        </h:body>
+    </html>
+</f:view>

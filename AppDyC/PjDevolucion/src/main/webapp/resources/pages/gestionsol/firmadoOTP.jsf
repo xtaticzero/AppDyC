@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui"
+        >
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <h:outputStylesheet library="css/" name="botones.css"/>
+            <h:outputScript library="primefaces" name="jquery/jquery.js" />
+            <script type="text/javascript" src="https://ptscdev.siat.sat.gob.mx/PTSC/OTPCentralServer/restServices/otp.sat-1.0.js"></script>
+            <script type="text/javascript">
+                function btnEnviarOTPOnClick() {
+                    var cadena_original = '#{ejecutaFIELMB.cadenaOriginal}'
+    
+                    validaOTP(cadena_original, function(resultado) {
+    
+                        if (resultado.error === 0) {
+                            if (resultado.otpValido) {
+                                document.getElementById("a11").value=resultado.cadenaValidacion;    
+                                document.getElementById("a12").value=resultado.cadenaValidacion;
+                                document.getElementById("j_idt4:formFirma:openView").click();   
+    
+                            } else {
+                                alert("OTP Incorrecto");
+                            }
+                        } else {
+                            alert("El servicio OTP no se encuentra disponible")
+                        }
+                    });
+                }
+            </script>
+        </h:head>
+        <h:body>
+            <p:panel id="a1" style="margin-bottom:0px; border: 1px solid #FFFFFF !important; width:800px;" >
+                <p:messages id="a2" showDetail="true" globalOnly="true" autoUpdate="true" closable="true"/>
+                <h:form id="a3">
+                    <div id="a4" align="left" >
+                        <p:panel id="a5" style="width:500px;border:1;text-align: center; border: 1px solid #FFFFFF !important;">
+                            <div id="otp-widget-container" data-rfc="#{ejecutaFIELMB.usuarioFirmado.accesoUsr.usuario}" >
+                                <p:dialog id="a6" widgetVar="statusDialog2" header="Procesando..." draggable="false"
+                                          width="250" closable="false" resizable="false" visible="true" dynamic="true" >
+                                    <p:graphicImage value="/resources/images/ajaxloadingbar.gif"/>
+                                </p:dialog>
+                            </div>
+                        </p:panel>
+                    </div>
+                    <p:panel id="a7" style="margin-bottom:0px; border: 1px solid #FFFFFF !important; width:634px;" >
+                        <p:commandButton action="#{ejecutaFIELMB.regrersar}" 
+                                         id="a9" 
+                                         immediate="true" 
+                                         style="width:100px;" 
+                                         styleClass="blanco" 
+                                         value="Regresar" />
+                        <p:commandButton style="display:none" value="Generar" id="openView"
+                                         action="#{ejecutaFIELMB.openView}" ajax="false"/>
+                        <p:commandButton style="display:none" id="a10" onclick="statusDialog.hide();"
+                                         type="button" ajax="false"/>
+                    </p:panel>
+                                     
+                                     
+                    <input type="hidden" id="a11" name="firmaDigital" value="#{ejecutaFIELMB.usuarioFirmado.selloDigital}"/>
+                    <input type="hidden" id="a12" name="cadenaOriginal" value="#{ejecutaFIELMB.usuarioFirmado.cadenaOriginal}"/>
+                    <input type="hidden" id="a13" name="rfcSession" value="#{ejecutaFIELMB.usuarioFirmado.accesoUsr.usuario}"/>
+                    <input type="hidden" id="a14" name="mode" value="#{ejecutaFIELMB.ambiente}"/>
+                </h:form>
+            </p:panel>
+        </h:body>
+    </html>
+</f:view>

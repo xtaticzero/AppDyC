@@ -1,0 +1,133 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view contentType="text/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+    <html xmlns="http://www.w3.org/1999/xhtml" xmlns:p="http://primefaces.org/ui">
+        <h:head>
+            <title>administrarSolicitudesDevoluciones</title>
+            <meta http-equiv="X-UA-Compatible" content="IE=8"/>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <h:outputStylesheet library="css/" name="formato.css"/>
+            <style type="text/css">
+                .ui-paginator {
+                    font-size: 12px !important;
+                }
+            </style>
+        </h:head>
+        <h:body>
+            <h:form id="administrarSolicitudesDevolucion1">
+                <p:panelGrid style="width:100%;text-align:left">
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.asdCamposRequeridos}" style="color:red;"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+                <p:panel style="text-align:center" styleClass="gmxAutoAjustable">
+                    <table align="center" style="width:500px;">
+                        <tr>
+                            <td>
+                                <p:messages id="idRfcEstado" closable="true"/>
+                            </td>
+                        </tr>
+                         
+                        <tr>
+                            <td>
+                                <table align="center">
+                                    <tr>
+                                        <td style="text-align:left">
+                                            <p:outputLabel value="#{msgValidacion.asdRfc}"/>
+                                             
+                                            <p:outputLabel value=" #{msgValidacion.generalRequerido}"
+                                                           style="color:red;"/>
+                                        </td>
+                                        <td align="left">
+                                            <p:inputText maxlength="13" id="idRfc"
+                                                         value="#{administrarSolicitudesDevolucionesMB.rfc}"
+                                                         style="width:110px; text-transform:uppercase" required="true"
+                                                         disabled="#{administrarSolicitudesDevolucionesMB.varBotonRFC}"
+                                                         requiredMessage="#{msgValidacion.diRequerido}"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                    <div align="right" style="height:40px">
+                        <p:commandButton process="@this" id="cancelar" value="#{msgValidacion.asdBtnCancelar}"
+                                         action="#{administrarSolicitudesDevolucionesMB.cancelar}"
+                                         update="idRfc,idRfcEstado,:administrarSolicitudesDevoluciones2:facturas"
+                                         immediate="true"/>
+                         
+                        <p:commandButton id="buscarF" value="#{msgValidacion.asdBtnBuscar}"
+                                         action="#{administrarSolicitudesDevolucionesMB.buscarFacturas}"
+                                         update=":administrarSolicitudesDevoluciones2:facturas:, 
+                                         :administrarSolicitudesDevoluciones2:facturas:btnNuevaFactura, idRfcEstado,cancelar,idRfc"/>
+                    </div>
+                </p:panel>
+            </h:form>
+             
+            <h:form id="administrarSolicitudesDevoluciones2">
+                <p:panel styleClass="gmxAutoAjustable">
+                    <p:scrollPanel style="height:200px" mode="native">
+                        <p:dataTable id="facturas" var="fac" value="#{administrarSolicitudesDevolucionesMB.dataModel}"
+                                     paginator="#{administrarSolicitudesDevolucionesMB.paginador}" rows="10"
+                                     rowsPerPageTemplate="5,10,15,20" emptyMessage="No se encontraron facturas"
+                                     selectionMode="single"
+                                     selection="#{administrarSolicitudesDevolucionesMB.dyctFacturaReqSelected}"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                            <p:ajax event="rowSelect"
+                                    listener="#{administrarSolicitudesDevolucionesMB.onRowSelectFactura}"/>
+                            <f:facet name="header">
+                                <div align="right" style="height:45px">
+                                    <p:commandButton id="btnNuevaFactura" icon="ui-icon-document"
+                                                     title="#{msgValidacion.asdBtnNuevaFactura}"
+                                                     disabled="#{administrarSolicitudesDevolucionesMB.varBotonNuevaFactura}"
+                                                     action="#{administrarSolicitudesDevolucionesMB.irAAgregarFactura}"
+                                                     ajax="false">
+                                        <f:param name="rfcProveedor"
+                                                 value="#{administrarSolicitudesDevolucionesMB.rfc}"/>
+                                    </p:commandButton>
+                                </div>
+                            </f:facet>
+                            <p:column headerText="#{msgValidacion.asdNumDeFactura}">
+                                <p:outputLabel value="#{fac.numeroFactura}"/>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asdFecha}">
+                                <h:outputLabel value="#{fac.fechaEmision}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asdConcepto}">
+                                <p:outputLabel value="#{fac.concepto}"/>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asdImporte}">
+                                <h:outputText value="#{fac.importe}">
+                                    <f:convertNumber type="currency" currencySymbol="$" groupingUsed="true" locale="MX"
+                                                     maxFractionDigits="2"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asdIvaTrasladado}">
+                                <h:outputText value="#{fac.ivaTrasladado}">
+                                    <f:convertNumber type="currency" currencySymbol="$" groupingUsed="true" locale="MX"
+                                                     maxFractionDigits="2"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asdTotal}">
+                                <h:outputText value="#{fac.total}">
+                                    <f:convertNumber type="currency" currencySymbol="$" groupingUsed="true" locale="MX"
+                                                     maxFractionDigits="2"/>
+                                </h:outputText>
+                            </p:column>
+                        </p:dataTable>
+                    </p:scrollPanel>
+                    <div align="center">
+                        <p:spacer style="width:30px"/>
+                         
+                        <p:commandButton id="cancelar" value="#{msgValidacion.asdCerrar}" ajax="false"
+                                         action="#{administrarSolicitudesDevolucionesMB.regresarDictaminar}"/>
+                    </div>
+                </p:panel>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

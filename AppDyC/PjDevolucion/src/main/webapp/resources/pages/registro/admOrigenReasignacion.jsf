@@ -1,0 +1,27 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core">
+                    
+                    <h:outputText value="#{msgValidacion.rsSeleccionAdmOrigen}" style="font-weight:bold; color:red;"/>
+                    
+                    <br/>
+                    <br/>
+                    <p:dataTable id="admOrigen" var="vTblLista" value="#{reasignarManSolicDevolucionyCasosCompMB.tblListaAdmin}"
+                                 rowKey="#{vTblLista.claveSir}" scrollWidth="100%"
+                                 paginator="#{reasignarManSolicDevolucionyCasosCompMB.frm.paginador}"
+                                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                 rowsPerPageTemplate="10,15,20" rows="#{reasignarManSolicDevolucionyCasosCompMB.frm.rowsPaginador}"
+                                 style="width:100%;" resizableColumns="true" liveResize="true" rowIndexVar="rowIndex"
+                                 rowStyleClass="#{(rowIndex mod 2) eq 0 ?'highlightA':'highlightB'}"
+                                 selection="#{reasignarManSolicDevolucionyCasosCompMB.selectAdmin}" selectionMode="single">
+                        <p:ajax event="rowSelect" listener="#{reasignarManSolicDevolucionyCasosCompMB.verPanelBusqueda}"
+                                update=":subOrigenDeSaldos :subOrigenDeSaldos:panelAdmOrigen"/>
+                        <p:column headerText="#{msgValidacion.maColTblA1}">
+                            <h:outputText value="#{vTblLista.nombre}"/>
+                        </p:column>
+                        <f:facet name="footer">
+                            <p:outputLabel value="#{reasignarManSolicDevolucionyCasosCompMB.frm.numResultados} Resultados"
+                                           style="text-align:left"/>
+                        </f:facet>
+                    </p:dataTable>
+</ui:composition>

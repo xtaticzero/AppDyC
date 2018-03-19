@@ -1,0 +1,64 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:element name="declaracionProvisionalODefinitivaDeImpuestosFederalesIVAXML">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="declaracionProvisionalODefinitivaDeImpuestosFederalesIVA"/>
+             </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="declaracionProvisionalODefinitivaDeImpuestosFederalesIVA" >
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="v_n_dec_noupmee1" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_f_dec_fcieamc1" type="xs:dateTime" nillable="true"/>
+                <xs:element minOccurs="0" name="v_i_dec_taapt1i1" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_dec_taapt1i2" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_dec_taapibs1" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_dec_taapibs2" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_dec_tdaapt01" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_dec_taapqsp1" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_dec_tiaapt11" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_dec_tiaapt12" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_dec_tiaapib1" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_dec_tiaapib2" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_dec_titacep1" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_dec_itabdia1" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_dec_ipiabdi1" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_dec_itaider1" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_dec_ipiider1" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_dec_ticaago1" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_dec_itpiabd1" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_dec_itpiide1" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_dec_pucaa5l1" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_dec_pucaa5l2" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_dec_iabuira1" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_dec_iavcare1" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_dec_maaidao1" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_dec_tiapovc1" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_dec_vaagt1a1" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_dec_vaagt1a2" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_dec_vaagt0e1" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_dec_vaagt0o1" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_dec_saagucc1" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_dec_vaaqsdp1" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_dec_icmapuu1" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_dec_cardaac1" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_dec_iracvel1" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_dec_tiaovct1" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_dec_occctaa1" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_dec_ocfctaa1" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_dec_ccaanrt1" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_dec_sfaalvd1" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_dec_dioenbv1" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_dec_sfpaael1" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_dec_asfpa_e1" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_dec_iaaadmi1" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_dec_icmapru1" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_dec_rsfiaaa1" type="xs:decimal"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema> 

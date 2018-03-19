@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans          http://www.springframework.org/schema/beans/spring-beans-3.2.xsd           http://www.springframework.org/schema/tx                               http://www.springframework.org/schema/tx/spring-tx-3.2.xsd               http://www.springframework.org/schema/context                   http://www.springframework.org/schema/context/spring-context-3.2.xsd           http://www.springframework.org/schema/util                                http://www.springframework.org/schema/util/spring-util-3.2.xsd              http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd">
+   
+    <import resource="classpath*:applicationContext-RfcAmpl.xml"/>
+
+    <bean id="dataSourceADM" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName" value="jdbc/DyC_app"/>
+    </bean>
+
+    <bean id="jdbcTemplateADM" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceADM"></property>
+    </bean>
+    
+    <bean id="transactionManagerADM" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSourceADM"/>
+    </bean>
+    
+    <tx:annotation-driven transaction-manager="transactionManagerADM" proxy-target-class="true" />
+    
+    <context:annotation-config/>
+
+    <bean id="placeholderConfig" class="org.jasypt.spring.properties.EncryptablePropertyPlaceholderConfigurer">
+        <constructor-arg ref="configurationEncryptor"/>
+        <property name="ignoreUnresolvablePlaceholders" value="false"/>
+        <property name="location">
+            <value>file:/mat/dyc/configuraciondyc/automaticasdyc.properties</value>
+        </property>
+    </bean>
+
+    <context:component-scan base-package="mx.gob.sat.siat.dyc"/>
+    <context:component-scan base-package="mx.gob.sat.mat.dyc"/>
+    <context:component-scan base-package="mx.gob.sat.siat.modelo"/>
+    <!--<context:component-scan base-package="mx.gob.sat.mat.rfcampl"/>
+    <context:component-scan base-package="mx.gob.sat.siat.modelo"/> -->
+    
+    <!--context:component-scan base-package="mx.gob.sat.siat"/>
+    <context:component-scan base-package="mx.gob.sat.mat"/-->
+
+    <context:component-scan base-package="org.springframework.ws"/>
+</beans>

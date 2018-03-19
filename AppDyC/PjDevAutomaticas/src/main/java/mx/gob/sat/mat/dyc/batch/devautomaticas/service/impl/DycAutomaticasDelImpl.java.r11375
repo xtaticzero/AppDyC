@@ -1,0 +1,83 @@
+package mx.gob.sat.mat.dyc.batch.devautomaticas.service.impl;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import mx.gob.sat.mat.dyc.batch.devautomaticas.dto.TramiteDTO;
+import mx.gob.sat.mat.dyc.batch.devautomaticas.exception.DevAutomaticasException;
+import mx.gob.sat.mat.dyc.batch.devautomaticas.service.DycAutomaticasDel;
+import mx.gob.sat.mat.dyc.batch.devautomaticas.service.DycAutomaticasService;
+import mx.gob.sat.mat.dyc.batch.devautomaticas.util.FechaUtil;
+import mx.gob.sat.mat.dyc.batch.devautomaticas.util.FileUtil;
+import mx.gob.sat.mat.dyc.batch.devautomaticas.util.constante.EstatusEnum;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+/**
+ *
+ * @author Ing. Gregorio Serapio Ramírez
+ */
+@Component(value = "dycAutomaticasDel")
+public class DycAutomaticasDelImpl implements DycAutomaticasDel {
+
+    private static final Logger LOGGER = Logger.getLogger(DycAutomaticasDelImpl.class);
+
+    @Value("${pathFile}")
+    private String path;
+
+    @Value("${fileName}")
+    private String fileName;
+
+    @Autowired
+    private DycAutomaticasService dycAutomaticasService;
+
+    @Override
+    public void exec() {
+        try {
+            List<TramiteDTO> tramitesSuccess = new ArrayList<TramiteDTO>();
+            List<TramiteDTO> tramitesError = new ArrayList<TramiteDTO>();
+
+            File archivoProcesar = new File(path, fileName);
+            List<TramiteDTO> tramites = FileUtil.procesarArchivo(archivoProcesar);
+
+            for (TramiteDTO tramite : tramites) {
+                try {
+                    if (tramite.getEstatus() == EstatusEnum.WAIT) {
+                        dycAutomaticasService.procesarTramite(tramite);
+
+                        tramite.setEstatus(EstatusEnum.SUCCESS);
+                        tramitesSuccess.add(tramite);
+                    } else {
+
+                        tramite.setEstatus(EstatusEnum.ERROR);
+                        tramitesError.add(tramite);
+                    }
+                } catch (DevAutomaticasException ex) {
+                    tramite.setEstatus(EstatusEnum.ERROR);
+                    tramitesError.add(tramite);
+                    LOGGER.error(ex.getMessage(), ex);
+                }
+
+            }
+
+            escribirSalida(tramitesSuccess, tramitesError);
+        } catch (Exception ex) {
+            LOGGER.error("Error en la lectura o escritura del archivo:: ", ex);
+        }
+
+    }
+
+    private void escribirSalida(List<TramiteDTO> tramitesSuccess, List<TramiteDTO> tramitesError) throws IOException {
+        File pathOut = new File(path, FechaUtil.getFechaHoraSinFormato());
+
+        FileUtil.escribirArchivoSalida(new File(pathOut, EstatusEnum.SUCCESS.getValue() + ".txt"), tramitesSuccess);
+        FileUtil.escribirArchivoSalida(new File(pathOut, EstatusEnum.ERROR.getValue() + ".txt"), tramitesError);
+
+        FileUtil.renombrarArchivoProcesado(new File(path, fileName), new File(pathOut, fileName));
+
+    }
+
+}

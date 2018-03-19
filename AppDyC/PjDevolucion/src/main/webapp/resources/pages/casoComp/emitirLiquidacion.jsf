@@ -1,0 +1,456 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:h="http://java.sun.com/jsf/html" locale="ES" xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+        xmlns:pe="http://primefaces.org/ui/extensions">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <title>
+                #{msgValidacion.acc00000}
+            </title>
+            <meta http-equiv="X-UA-Compatible" content="IE=8"/>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <meta http-equiv="pragma" content="no-cache"/>
+            <meta http-equiv="cache-control" content="no-cache"/>
+            <meta http-equiv="expires" content="0"/>
+            <h:outputStylesheet library="css/" name="dyc.css"/>
+            <h:outputScript library="js" name="calendar-localization.js"/>
+            <h:outputScript library="js" name="casosCompensacion.js"/>
+            <style type="text/css">
+                .fileupload-content {
+                    height: 0 !important;
+                    border: none !important;
+                }
+
+                .fileupload-buttonbar {
+                    border: none !important;
+                }
+
+                .ui-outputlabel-rfi {
+                    color: red;
+                }
+                /*.ui-inputfield {
+                    width: 100% !important;
+                }*/
+            </style>
+            <script type="text/javascript">
+              function iniDescarga() {
+                  statusDialog.show();
+              }
+
+              function finDescarga() {
+                  statusDialog.hide();
+                  $("button[id*='frmLiquida:btnAcepEmitirLiq']").attr('disabled', true).addClass('ui-state-disabled');
+                  $("button[id*='frmLiquida:btnEnviarAprob']").attr("disabled", false).removeClass('ui-state-disabled');
+                  $(".ui-liquida-inp > input").attr("disabled", true);
+                  $(".ui-liquida-inp").attr("disabled", true);
+              }
+              jQuery(document).ready(function () {
+                  // updateForm();
+              });
+            </script>
+        </h:head>
+        <h:body>
+            <p:dialog modal="true" widgetVar="statusDialog" header="#{msgValidacion.ajaxLoading}" draggable="false"
+                      resizable="false" closable="false">
+                <h:graphicImage library="images/" name="ajaxloadingbar.gif"/>
+            </p:dialog>
+             
+            <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+             
+            <h:form id="frmLiquida">
+                <p:growl id="messages" showDetail="false" life="10000" globalOnly="true" autoUpdate="true"/>
+                <p:remoteCommand name="updateForm" update=":frmLiquida:formulario1" immediate="true"/>
+                <p:panel id="formulario1" header="#{msgValidacion.acc00020}" style="width:100%;">
+                    <div style="text-align:left;width:360px;height:20px;font-size:11px;">
+                        <p:outputLabel value="#{msgValidacion.asdCamposRequeridos}" style="color:red;"/>
+                    </div>
+                    <p:panelGrid id="pnlDatLiquida" style="text-align:center; width: 80%;" styleClass="">
+<!--
+                        <p:row>
+                            <p:column colspan="2">
+                                <p:messages id="messages" globalOnly="true" autoUpdate="true" closable="true"/>
+                            </p:column>
+                        </p:row>
+-->
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="#{msgValidacion.acc00021}"/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="#{admCasosComp.numControl}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="#{msgValidacion.acc00023}"/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="#{emitirLiquidacionMB.rfcContribuyente}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="#{msgValidacion.acc00024}"/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="#{emitirLiquidacionMB.tipoTramite}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{emitirLiquidacionMB.mbSession.tipoLiquidacion=='S'? true : false}">
+                            <p:column style="text-align:left">
+                                <!-- ::::::::::::: SALDO A FAVOR IMPROCEDENTE ::::::::::::::: -->
+                                <p:outputLabel for="SaldoFavor" value="#{msgValidacion.acc00022}"/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <pe:inputNumber id="SaldoFavor" value="#{emitirLiquidacionMB.importeImprocedente}"
+                                                disabled="#{emitirLiquidacionMB.edoInputs == 'A'}" maxlength="12"
+                                                symbol="$" decimalSeparator="." thousandSeparator="," required="true"
+                                                validator="#{emitirLiquidacionMB.validaImporte}"
+                                                styleClass="ui-liquida-inp #{emitirLiquidacionMB.style}">
+                                    <!--  -->
+                                    <p:ajax listener="#{emitirLiquidacionMB.validaImporte}" process="SaldoFavor"
+                                            update="SaldoFavor, btnAcepEmitirLiq, msgSaldoFavbor "/>
+                                </pe:inputNumber>
+                                <p:message for="SaldoFavor" id="msgSaldoFavbor" display="text"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{emitirLiquidacionMB.mbSession.tipoLiquidacion=='C'? true : false}">
+                            <p:column style="text-align:left">
+                                <!-- ::::::::::::: COMPENSACION IMPROCEDENTE ::::::::::::::: -->
+                                <p:outputLabel for="CompImpro" value="#{msgValidacion.acc00063}"/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <h:outputText  id="CompImpro" value="#{emitirLiquidacionMB.icepOrigen.importeCompensado}">
+                                    <f:convertNumber pattern="¤#,##0.00" currencySymbol="$" type="currency"
+                                                     locale="es-MX"/>
+                                </h:outputText>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel for="importeActualizar" value="#{msgValidacion.acc00025}"/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <pe:inputNumber id="importeActualizar" value="#{emitirLiquidacionMB.importeActualizarD}"
+                                                maxlength="18" symbol="$" decimalSeparator="." thousandSeparator=","
+                                                required="true" styleClass="ui-liquida-inp"/>
+                                <p:message for="importeActualizar" display="text"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel for="importeRecargo" value="#{msgValidacion.acc00026}"/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <pe:inputNumber id="importeRecargo" value="#{emitirLiquidacionMB.importeRecargoD}"
+                                                disabled="#{emitirLiquidacionMB.edoInputs == 'A'}" maxlength="18"
+                                                symbol="$" decimalSeparator="." thousandSeparator="," required="true"
+                                                styleClass="ui-liquida-inp"/>
+                                <p:message for="importeRecargo" display="text"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel for="importeMulta" value="#{msgValidacion.acc00027}"/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <pe:inputNumber id="importeMulta" value="#{emitirLiquidacionMB.importeMultaD}"
+                                                disabled="#{emitirLiquidacionMB.edoInputs == 'A'}" maxlength="18"
+                                                symbol="$" decimalSeparator="." thousandSeparator="," required="true"
+                                                styleClass="ui-liquida-inp"/>
+                                <p:message for="importeMulta" display="text"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel for="nuDeDocumento" value="#{msgValidacion.acc00028}"/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <p:inputText maxlength="30" id="nuDeDocumento" styleClass="ui-liquida-inp"
+                                             required="true" disabled="#{emitirLiquidacionMB.edoInputs == 'A'}"
+                                             style="width:110px; text-transform:uppercase"
+                                             value="#{emitirLiquidacionMB.nuDeDocumentoL}"/>
+                                <p:message for="nuDeDocumento" display="text"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel for="inicioINPC" value="#{msgValidacion.acc00029}"/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <p:selectOneMenu id="inicioINPC"
+                                                 styleClass="ui-liquida-inp #{emitirLiquidacionMB.style}"
+                                                 required="true" 
+                                                 disabled="#{emitirLiquidacionMB.edoInputs == 'A' and emitirLiquidacionMB.edoInputs != 'F' }"
+                                                 value="#{emitirLiquidacionMB.intMesINPC}">
+                                    <f:selectItem itemLabel="-- Seleccione --" itemValue=""/>
+                                    <f:selectItems value="#{emitirLiquidacionMB.meses}" var="mes" itemValue="#{mes.id}"
+                                                   itemLabel="#{mes.descripcion}"/>
+                                    <p:ajax listener="#{emitirLiquidacionMB.validaFechas}"
+                                            process="@this, cmbAnioInicialINPC, cmbMesFinalINPC, cmbAnioFinalINPC"
+                                            update="@this, cmbAnioInicialINPC, cmbMesFinalINPC, cmbAnioFinalINPC, btnAcepEmitirLiq, messages"/>
+                                </p:selectOneMenu>
+                                <p:message for="inicioINPC" display="text"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel for="cmbAnioInicialINPC" value="#{msgValidacion.acc00030}"/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <p:selectOneMenu id="cmbAnioInicialINPC"
+                                                 styleClass="ui-liquida-inp #{emitirLiquidacionMB.style}"
+                                                 required="true"
+                                                 disabled="#{emitirLiquidacionMB.edoInputs == 'A' and emitirLiquidacionMB.edoInputs != 'F' }"
+                                                 value="#{emitirLiquidacionMB.anioInicialINPC}">
+                                    <f:selectItem itemLabel="-- Seleccione --" itemValue=""/>
+                                    <f:selectItems value="#{emitirLiquidacionMB.anios}" var="anio" itemValue="#{anio}"
+                                                   itemLabel="#{anio}"/>
+                                    <p:ajax listener="#{emitirLiquidacionMB.validaFechas}"
+                                            process="@this, inicioINPC, cmbMesFinalINPC, cmbAnioFinalINPC"
+                                            update="@this, inicioINPC, cmbMesFinalINPC, cmbAnioFinalINPC, btnAcepEmitirLiq, messages"/>
+                                </p:selectOneMenu>
+                                <p:message for="cmbAnioInicialINPC" display="text"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel for="cmbMesFinalINPC" value="#{msgValidacion.acc00031}"/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <p:selectOneMenu id="cmbMesFinalINPC"
+                                                 styleClass="ui-liquida-inp #{emitirLiquidacionMB.style}"
+                                                 required="true"
+                                                 disabled="#{emitirLiquidacionMB.edoInputs == 'A' and emitirLiquidacionMB.edoInputs != 'F' }"
+                                                 value="#{emitirLiquidacionMB.mesFinalINPC}">
+                                    <f:selectItem itemLabel="-- Seleccione --" itemValue=""/>
+                                    <f:selectItems value="#{emitirLiquidacionMB.meses}" var="mes" itemValue="#{mes.id}"
+                                                   itemLabel="#{mes.descripcion}"/>
+                                    <p:ajax listener="#{emitirLiquidacionMB.validaFechas}"
+                                            process="@this, inicioINPC, cmbAnioInicialINPC, cmbAnioFinalINPC"
+                                            update="@this, inicioINPC, cmbAnioInicialINPC, cmbAnioFinalINPC, btnAcepEmitirLiq, messages"/>
+                                </p:selectOneMenu>
+                                <p:message for="cmbMesFinalINPC" display="text"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel for="cmbAnioFinalINPC" value="#{msgValidacion.acc00032}"/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <p:selectOneMenu id="cmbAnioFinalINPC"
+                                                 styleClass="ui-liquida-inp #{emitirLiquidacionMB.style}"
+                                                 required="true"
+                                                 disabled="#{emitirLiquidacionMB.edoInputs == 'A' and emitirLiquidacionMB.edoInputs != 'F'}"
+                                                 value="#{emitirLiquidacionMB.anioFinalINPC}">
+                                    <f:selectItem itemLabel="-- Seleccione --" itemValue=""/>
+                                    <f:selectItems value="#{emitirLiquidacionMB.anios}" var="anio" itemValue="#{anio}"
+                                                   itemLabel="#{anio}"/>
+                                    <p:ajax listener="#{emitirLiquidacionMB.validaFechas}"
+                                            process="@this, inicioINPC, cmbAnioInicialINPC, cmbMesFinalINPC"
+                                            update="@this, inicioINPC, cmbAnioInicialINPC, cmbMesFinalINPC, btnAcepEmitirLiq, messages"/>
+                                </p:selectOneMenu>
+                                <p:message for="cmbAnioFinalINPC" display="text"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel for="cmbMesInicialTasaRec" value="#{msgValidacion.acc00033}"/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <p:selectOneMenu id="cmbMesInicialTasaRec"
+                                                 styleClass="ui-liquida-inp #{emitirLiquidacionMB.style}"
+                                                 required="true"
+                                                 disabled="#{emitirLiquidacionMB.edoInputs == 'A' and emitirLiquidacionMB.edoInputs != 'F'}"
+                                                 value="#{emitirLiquidacionMB.mesInicialTasaRec}">
+                                    <f:selectItem itemLabel="-- Seleccione --" itemValue=""/>
+                                    <f:selectItems value="#{emitirLiquidacionMB.meses}" var="mes"
+                                                   itemLabel="#{mes.descripcion}" itemValue="#{mes.id}"/>
+                                    <p:ajax listener="#{emitirLiquidacionMB.validaFechas}"
+                                            process="@this, cmbAnioInicialTasaRec, cmbMesFinalTasaRec, cmbAnioFinalTasaRec"
+                                            update="@this, cmbAnioInicialTasaRec, cmbMesFinalTasaRec, cmbAnioFinalTasaRec, btnAcepEmitirLiq, messages"/>
+                                </p:selectOneMenu>
+                                <p:message for="cmbMesInicialTasaRec" display="text"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel for="cmbAnioInicialTasaRec" value="#{msgValidacion.acc00034}"/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <p:selectOneMenu id="cmbAnioInicialTasaRec"
+                                                 styleClass="ui-liquida-inp #{emitirLiquidacionMB.style}"
+                                                 required="true"
+                                                 disabled="#{emitirLiquidacionMB.edoInputs == 'A' and emitirLiquidacionMB.edoInputs != 'F'}"
+                                                 value="#{emitirLiquidacionMB.anioInicialTasaRec}">
+                                    <f:selectItem itemLabel="-- Seleccione --" itemValue=""/>
+                                    <f:selectItems value="#{emitirLiquidacionMB.anios}" var="anio" itemValue="#{anio}"
+                                                   itemLabel="#{anio}"/>
+                                    <p:ajax listener="#{emitirLiquidacionMB.validaFechas}"
+                                            process="@this, cmbMesInicialTasaRec, cmbMesFinalTasaRec, cmbAnioFinalTasaRec"
+                                            update="@this, cmbMesInicialTasaRec, cmbMesFinalTasaRec, cmbAnioFinalTasaRec, btnAcepEmitirLiq, messages"/>
+                                </p:selectOneMenu>
+                                <p:message for="cmbAnioInicialTasaRec" display="text"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel for="cmbMesFinalTasaRec" value="#{msgValidacion.acc00035}"/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <p:selectOneMenu id="cmbMesFinalTasaRec"
+                                                 styleClass="ui-liquida-inp #{emitirLiquidacionMB.style}"
+                                                 required="true"
+                                                 disabled="#{emitirLiquidacionMB.edoInputs == 'A' and emitirLiquidacionMB.edoInputs != 'F'}"
+                                                 value="#{emitirLiquidacionMB.mesFinalTasaRec}">
+                                    <f:selectItem itemLabel="-- Seleccione --" itemValue=""/>
+                                    <f:selectItems value="#{emitirLiquidacionMB.meses}" var="mes" itemValue="#{mes.id}"
+                                                   itemLabel="#{mes.descripcion}"/>
+                                    <p:ajax listener="#{emitirLiquidacionMB.validaFechas}"
+                                            process="@this, cmbMesInicialTasaRec, cmbAnioInicialTasaRec, cmbAnioFinalTasaRec"
+                                            update="@this, cmbMesInicialTasaRec, cmbAnioInicialTasaRec, cmbAnioFinalTasaRec, btnAcepEmitirLiq, messages"/>
+                                </p:selectOneMenu>
+                                <p:message for="cmbMesFinalTasaRec" display="text"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel for="cmbAnioFinalTasaRec" value="#{msgValidacion.acc00036}"/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <p:selectOneMenu id="cmbAnioFinalTasaRec"
+                                                 styleClass="ui-liquida-inp #{emitirLiquidacionMB.style}"
+                                                 required="true"
+                                                 disabled="#{emitirLiquidacionMB.edoInputs == 'A' and emitirLiquidacionMB.edoInputs != 'F'}"
+                                                 value="#{emitirLiquidacionMB.anioFinalTasaRec}">
+                                    <f:selectItem itemLabel="-- Seleccione --" itemValue=""/>
+                                    <f:selectItems value="#{emitirLiquidacionMB.anios}" var="anio" itemValue="#{anio}"
+                                                   itemLabel="#{anio}"/>
+                                    <p:ajax listener="#{emitirLiquidacionMB.validaFechas}"
+                                            process="@this, cmbMesInicialTasaRec, cmbAnioInicialTasaRec, cmbMesFinalTasaRec"
+                                            update="@this, cmbMesInicialTasaRec, cmbAnioInicialTasaRec, cmbMesFinalTasaRec, btnAcepEmitirLiq, messages"/>
+                                </p:selectOneMenu>
+                                <p:message for="cmbAnioFinalTasaRec" display="text"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel for="funResol" value="#{msgValidacion.acc00037}"/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <!--  -->
+                                <p:inputTextarea id="funResol" styleClass="ui-liquida-inp" style="widht: 350px"
+                                                 disabled="#{emitirLiquidacionMB.edoInputs == 'A' and emitirLiquidacionMB.edoInputs != 'F'}"
+                                                 required="true" value="#{emitirLiquidacionMB.funResol}" rows="3"
+                                                 cols="50" maxlength="3000" counter="counterM"
+                                                 counterTemplate="Quedan {0} caracteres" autoResize="false"/>
+                                <br/>
+                                <p:spacer style="width:6px"/>
+                                <h:outputText id="counterM"/>
+                                <p:message for="funResol" display="text"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <br></br>
+                    <p:fieldset legend="#{msgValidacion.acc00038}" style="margin-bottom:20px" id="fstIcepCompensado">
+                        <h:panelGrid columns="3" cellpadding="5">
+                            <h:outputText value="#{msgValidacion.acc00039}"/>
+                            <h:outputText value="#{emitirLiquidacionMB.icepCompensado.impuesto}"/>
+                            <p:spacer/>
+                            <h:outputText value="#{msgValidacion.acc00040}"/>
+                            <h:outputText value="#{emitirLiquidacionMB.icepCompensado.concepto}"/>
+                            <p:spacer/>
+                            <h:outputText value="#{msgValidacion.acc00041}"/>
+                            <h:outputText value="#{emitirLiquidacionMB.icepCompensado.ejercicio}"/>
+                            <p:spacer/>
+                            <h:outputText value="#{msgValidacion.acc00042}"/>
+                            <h:outputText value="#{emitirLiquidacionMB.icepCompensado.periodo}"/>
+                            <p:spacer/>
+                            <h:outputText value="#{msgValidacion.acc00043}"/>
+                            <h:outputText value="#{emitirLiquidacionMB.icepCompensado.fechaPresDeclara}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                            <p:spacer/>
+                            <h:outputText value="#{msgValidacion.acc00044}"/>
+                            <h:outputText value="#{emitirLiquidacionMB.icepCompensado.importeCompensado}">
+                                <f:convertNumber pattern="¤#,##0.00" currencySymbol="$" type="currency" locale="es-MX"/>
+                            </h:outputText>
+                            <p:spacer/>
+                        </h:panelGrid>
+                    </p:fieldset>
+                    <p:fieldset legend="#{msgValidacion.acc00047}" style="margin-bottom:20px" id="icepOrigenFS">
+                        <h:panelGrid columns="3" cellpadding="5">
+                            <h:outputText value="#{msgValidacion.acc00039}"/>
+                            <h:outputText value="#{emitirLiquidacionMB.icepOrigen.impuesto}"/>
+                            <p:spacer/>
+                            <h:outputText value="#{msgValidacion.acc00040}"/>
+                            <h:outputText value="#{emitirLiquidacionMB.icepOrigen.concepto}"/>
+                            <p:spacer/>
+                            <h:outputText value="#{msgValidacion.acc00041}"/>
+                            <h:outputText value="#{emitirLiquidacionMB.icepOrigen.ejercicio}"/>
+                            <p:spacer/>
+                            <h:outputText value="#{msgValidacion.acc00042}"/>
+                            <h:outputText value="#{emitirLiquidacionMB.icepOrigen.periodo}"/>
+                            <p:spacer/>
+                            <h:outputText value="#{msgValidacion.acc00046}"/>
+                            <h:outputText value="#{emitirLiquidacionMB.icepOrigen.importeCompensado}">
+                                <f:convertNumber pattern="¤#,##0.00" currencySymbol="$" type="currency" locale="es-MX"/>
+                            </h:outputText>
+                            <p:spacer/>
+                            <h:outputText style="#{emitirLiquidacionMB.tipoResol == 1 ? 'display:disabled':'display:none;'}"
+                                          value="#{msgValidacion.acc00046}"/>
+                            <h:outputText style="#{emitirLiquidacionMB.tipoResol == 1 ? 'display:disabled':'display:none;'}"
+                                          value="#{emitirLiquidacionMB.icepOrigen.impCompImprocedente}">
+                                <f:convertNumber pattern="¤#,##0.00" currencySymbol="$" type="currency" locale="es-MX"/>
+                            </h:outputText>
+                            <p:spacer/>
+                            <h:outputText style="#{emitirLiquidacionMB.tipoResol == 1 ? 'display:disabled':'display:none;'}"
+                                          value="#{msgValidacion.acc00022}"/>
+                            <h:outputText style="#{emitirLiquidacionMB.tipoResol == 1 ? 'display:disabled':'display:none;'}"
+                                          value="#{emitirLiquidacionMB.icepOrigen.saldoFavorImp}">
+                                <f:convertNumber pattern="¤#,##0.00" currencySymbol="$" type="currency" locale="es-MX"/>
+                            </h:outputText>
+                            <p:spacer/>
+                        </h:panelGrid>
+                    </p:fieldset>
+                    <br/>
+                    <table align="center" style="width: 100%;" border="0">
+                        <tr>
+                            <td align="left">
+                                <b>
+                                    #{msgValidacion.acc00048}</b>
+                            </td>
+                        </tr>
+                         
+                        <tr>
+                            <td align="left">
+                                <p:button value="Cancelar" style="width:100px" outcome="bandejaCompensaciones"
+                                          disabled="#{emitirLiquidacionMB.edoInputs == 'V'}"
+                                          styleClass="btn btn-danger"/>
+                                 
+                                <p:commandButton id="btnAcepEmitirLiq" value="#{msgValidacion.acc00059}"
+                                                 actionListener="#{emitirLiquidacionMB.emitirLiquidacion}"
+                                                 disabled="#{emitirLiquidacionMB.edoInputs == 'A' or emitirLiquidacionMB.edoInputs == 'F'}"
+                                                 ajax="false"
+                                                 onclick="PrimeFaces.monitorDownload(iniDescarga, finDescarga)"
+                                                 styleClass="btn btn-primary">
+                                    <p:fileDownload value="#{emitirLiquidacionMB.streamedContArchGen}"/>
+                                </p:commandButton>
+                                 
+                                <p:commandButton id="btnEnviarAprob" value="#{msgValidacion.asBtnAprobar}"
+                                                 onclick="dlgEnviarAprob.show();"
+                                                 disabled="#{emitirLiquidacionMB.edoInputs == 'C' or emitirLiquidacionMB.edoInputs == 'F'}"
+                                                 styleClass="btn btn-primary"/>
+                            </td>
+                        </tr>
+                    </table>
+                </p:panel>
+            </h:form>
+             
+            <ui:insert name="enviarAprobacion">
+                <ui:include src="enviarAprobacion.jsf"/>
+            </ui:insert>
+        </h:body>
+    </html>
+</f:view>

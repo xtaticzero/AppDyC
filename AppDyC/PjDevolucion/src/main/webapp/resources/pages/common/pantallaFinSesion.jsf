@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" 
+        xmlns:h="http://java.sun.com/jsf/html" 
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        locale="ES"
+        >
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <style type="text/css">
+                .ui-datatable tbody td {
+                    white-space: normal;
+                }
+    
+                .ui-datatable thead th {
+                    white-space: normal;
+                }
+                
+                .ui-paginator {
+                    font-size: 12px !important;
+                }
+            </style>
+        </h:head>
+        <h:body>
+            <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+             
+           
+             
+            <h:form id="formPantallaFinSession2">   
+          <p:panel id="pnlListado2" header="" styleClass="gmxAutoAjustable" style="text-align:center">
+                <p:dialog id="messageSession2" widgetVar="session2" modal="true" resizable="false" draggable="false"
+              header="#{msgValidacion.M0000018}" width="350" closable="false" visible="true">
+        <table border="0">
+            <tr align="justify">
+                <td>
+                    #{msgValidacion.M0000013}
+                </td>
+            </tr><!-- a href="#{msgValidacion.M0000014}">#{msgValidacion.M0000014}</a -->
+            <tr align="right">
+           
+        </tr >
+           
+        </table>
+    </p:dialog>
+            </p:panel >
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

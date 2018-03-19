@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns="http://www.w3.org/1999/xhtml" 
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:h="http://java.sun.com/jsf/html" 
+        xmlns:f="http://java.sun.com/jsf/core" 
+        xmlns:pe="http://primefaces.org/ui/extensions"
+        xmlns:p="http://primefaces.org/ui">
+    <html>
+        <h:head>
+            <meta http-equiv="X-UA-Compatible" content="IE=8" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta http-equiv="pragma" content="no-cache" />
+            <meta http-equiv="cache-control" content="no-cache" />
+            <meta http-equiv="expires" content="0" />
+            <h:outputStylesheet library="css/" name="formato.css"/>
+            <h:outputScript library="js" name="adjuntarDoc.js"/>
+            <h:outputScript library="js" name="general.js"/>
+            <style type="">
+                .ui-paginator {
+                    font-size: 12px !important;
+                }
+                .ui-panelgrid { margin-left: 0px !important;}
+                hr.red:before {content: " "!important;width: 35px!important;height: 6px!important;background-color: #D0021B!important;display: block!important;position: absolute!important;} 
+                .gmxNoborde1 td{border-color:#FFFFFF;}
+                .ui-selectoneradio{width: 10px!important;}
+                .ui-selectoneradio td{padding: 0px!important;border-color:#FFFFFF;}
+                .ui-selectoneradio label {padding-left: 5px!important;padding-right: 1px!important;}
+                hr.red {margin: 0px 0 70px !important;border-top-color: #DCE0E0 !important;position: relative !important;margin-left: 11px !important;}
+                .gmxfhorizontal td:nth-child(odd) {text-align: right !important;width: 398px!important;}
+                .gmxfhorizontal td:nth-child(even) {text-align: left !important;width: 398px!important;}
+                .gmxfhorizontal .ui-outputlabel{font-weight: normal !important;}
+                body {font-family: 'Open Sans';}
+                hr.red {margin: 0px 0px 25px !important;border-top-color: #DCE0E0 !important;position: relative !important;margin-left: 2px !important;} 
+                h2 {font-size: 38px!important;margin-bottom: 0px!important;margin-left: -2px !important;}
+                .ui-selectoneradio{width: 10px!important;}
+                .ui-selectoneradio td{padding: 0px!important;border-color:#FFFFFF;}  
+                .ui-selectoneradio label {padding-left: 5px!important;padding-right: 1px!important;}
+                .gmxfhorizontal .ui-selectoneradio td {padding-left: 0px !important;}
+                #idConsultaDevautisr\:tipoSolicitudId {width: 100%!important;}
+                #idConsultaDevautisr\:ejercicioId {width: 100%!important;}
+                #idConsultaDevautisr\:mostrarSolicitudId {width: 100%!important;}
+                .ui-panelgrid td {border-color: #FFFFFF;}
+                #idConsultaDevautisr\:j_idt37 {height: auto!important;border:0px!important;}
+                #idConsultaDevautisr\:dtlDocumentos\:j_idt38 {border: 0px !important;}
+                .ui-datatable-header .ui-widget-header .ui-corner-top {border: 0px!important;}
+
+                .ui-messages-info, .ui-message-info{
+                    border-radius: 3px 3px 3px 3px !important;
+                    -moz-border-radius: 3px 3px 3px 3px !important;
+                    -webkit-border-radius: 3px 3px 3px 3px !important;
+                    border: 2px solid #bce8f1 !important;
+                    background-color: #d9edf7 !important;
+                    color: #3a87ad !important;
+                    margin-bottom: 30px !important;
+                    padding-top: 30px !important;
+                    padding-bottom: 30px !important;
+                    margin-left: 10px !important;
+                    width: 777px !important;
+                }
+                .ui-messages-info-icon{
+                    display: none;
+                }
+                .ui-icon-close {
+                    display: none;
+                }
+                .ui-messages-error.ui-corner-all {
+                    display: inline-block;
+                    width: 777px;
+                    left: 7px;
+                    text-align: center;
+                    margin-bottom: 30px;
+                    padding-top: 30px;
+                    padding-bottom: 30px;
+                    position: relative !important;
+                    top: 0px;
+                }               
+            </style>
+
+            <script>
+                window.onload = function () {
+                    setTimeout(abrirlinks, 2000);
+
+                }
+
+                function abrirlinks() {
+                    document.getElementById('formInfoBanco:link').click();
+                }
+
+
+
+            </script>
+
+        </h:head>
+        <h:body>
+            <h:form id="formdlg2">
+                <p:dialog header="#{msgValidacion.dyc_consulta_devautisr_banco_201}"  width="600"
+                          resizable="false" closable="false" id="dlgCtaBanco"
+                          widgetVar="clabeWV">
+
+                    <p:panelGrid columns="1">                       
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel style="color: red !important;"  value="#{msgValidacion.L0000019}"/>
+                            </p:column>
+                        </p:row>                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.L0000050}: "/>
+                            </p:column>
+                            <p:column>                                
+                                <p:inputText maxlength="18" id="clabe" style="width:250px;"
+                                             value="#{consultaDevautisrMB.cuentaClabe}"
+                                             onkeypress="return justNumbers(event);">
+                                    <p:ajax event="keyup" listener="#{consultaDevautisrMB.mostrarBanco}" update="nombreBanco"/>
+                                    <p:ajax event="blur" listener="#{consultaDevautisrMB.mostrarBanco}" update="nombreBanco"/>
+                                </p:inputText>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel style="color: red !important;" value=" #{msgValidacion.generalRequerido}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <h:outputText id="nombreBanco" value="#{consultaDevautisrMB.nombreBanco}" /> 
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:commandButton value="#{msgValidacion.asBtnCancelar}" actionListener="#{consultaDevautisrMB.cancelarCuentaClabe}"  update="clabe,nombreBanco,@([id$=dtInfoBanco])"/>                                
+                            </p:column>
+                            <p:column>
+                                <p:commandButton value="#{msgValidacion.asBtnAceptar}" ajax="true" actionListener="#{consultaDevautisrMB.procesarInfoBanco}" styleClass="gmxPositivo"  update="clabe,nombreBanco,@([id$=dtInfoBanco])"/>                               
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:dialog>
+            </h:form>
+
+            <h:form id="formconrdlg1">
+                <p:confirmDialog widgetVar="avisoEdoCtaWV" closable="false"
+                                 header="#{msgValidacion.L0000021}" severity="alert" width="600"
+                                 position="center">
+                    <f:facet name="message">
+                        <p align="justify">
+                            <h:outputText value="#{msgValidacion.dyc_consulta_devautisr_banco_202}" />
+                        </p>
+                    </f:facet>
+                    <p:commandButton value="#{msgValidacion.No}" actionListener="#{consultaDevautisrMB.cerrarDialogo}" update="@([id$=clabe]),@([id$=nombreBanco]),@([id$=dtInfoBanco])"/>
+                    <p:commandButton value="#{msgValidacion.Si}" onclick="avisoEdoCtaWV.hide();" oncomplete="archivoClabeWV.show();" styleClass="gmxPositivo"/>
+                </p:confirmDialog>
+            </h:form>
+
+            <h:form id="formdlg1" enctype="multipart/form-data">
+                <p:dialog header="#{msgValidacion.L0000022}"  width="600"
+                          resizable="false" closable="false"
+                          widgetVar="archivoClabeWV">
+                    <p:panelGrid columns="1">
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel style="color: red !important;"  value="#{msgValidacion.L0000019}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.asEtiRuta} "/>
+                            </p:column>
+                            <p:column>
+                                <p:fileUpload widgetVar="upload" mode="simple" id="fileCarga" value="#{consultaDevautisrMB.archivoClabe}" dragDropSupport="true"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel style="color: red !important;"  value=" #{msgValidacion.generalRequerido}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.aclP4Campo4}: "/>
+                            </p:column>
+                            <p:column>
+                                <p:inputText maxlength="180" id="nombreDoc" style="width:250px; text-transform: uppercase;" value="#{consultaDevautisrMB.nombreArchivoClabe}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:commandButton value="#{msgValidacion.asBtnCancelar}" onsuccess="archivoClabeWV.hide();" update="fileCarga,nombreDoc,@([id$=clabe]),@([id$=nombreBanco]),@([id$=dtInfoBanco])" actionListener="#{consultaDevautisrMB.cancelarArchivoBoton}" process="@this"/>
+                            </p:column>
+                            <p:column>
+                                <p:commandButton value="#{msgValidacion.dyc_consulta_devautisr_banco_208}" ajax="false" actionListener="#{consultaDevautisrMB.procesarArchivoBanco}" update="@([id$=fileCarga]), @([id$=avisoArchivoCtaWV]), @([id$=dtInfoBanco]), @([id$=nombreDoc])" styleClass="gmxPositivo" process="@this"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:dialog>
+            </h:form>
+
+
+            <h:form id="formcomfdlg">
+                <p:confirmDialog widgetVar="avisoArchivoCtaWV" closable="false"
+                                 header="" severity="alert" width="600"
+                                 position="center">
+                    <f:facet name="message">
+                        <p align="justify">
+                            <h:outputText value="#{msgValidacion.dyc_consulta_devautisr_banco_204}" />
+                        </p>
+                    </f:facet>
+                    <p:commandButton value="#{msgValidacion.No}" actionListener="#{consultaDevautisrMB.cerrarDialogoFinal}" update="@([id$=clabe]),@([id$=nombreBanco]),@([id$=dtInfoBanco]),@([id$=fileCarga]),@([id$=nombreDoc])"/>
+                    <p:commandButton value="#{msgValidacion.Si}" update="@([id$=btnEnviar])" ajax="true" actionListener="#{consultaDevautisrMB.activarEnvio}" styleClass="gmxPositivo"/>
+                </p:confirmDialog>
+            </h:form>
+
+
+            <h:form id="formdlg">
+                <p:dialog id="addEdoCtaExp" widgetVar="dlgAddEdoCtaExp" modal="true" resizable="false" draggable="false"
+                          closable="false" header="#{msgValidacion.L0000021}" width="700">
+                    <div align="justify">
+                        <h:outputText value="#{msgValidacion.dyc_consulta_devautisr_banco_207}"/>
+                    </div>
+                    <div align="right">                       
+                        <p:commandButton id="bSalir" value="#{msgValidacion.rsNo}" 
+                                         actionListener="#{consultaDevautisrMB.select}" update="@([id$=clabe]), @([id$=nombreBanco]),@([id$=dtInfoBanco])" style="width:100px; height:40px;"/>
+                        <p:commandButton id="bSi" value="#{msgValidacion.rsSi}" 
+                                         actionListener="#{consultaDevautisrMB.showAdjuntarEdoCta}"
+                                         style="width:100px; height:40px;" immediate="true" styleClass="gmxPositivo"/>
+                    </div>
+                </p:dialog>
+            </h:form>
+
+            <h:form id="formInfoBanco">
+                <div style="width:777px">
+                    <style>
+                        .ui-widget-content{
+                            border: 0px solid #e2e2e2!important;}
+                        .ui-button-icon-left.ui-icon.ui-c.ui-icon-arrowthick-1-e{
+                            width: 0px !important;
+                            height: 0px !important;
+                        }
+                        .ui-button-icon-left.ui-icon.ui-c.ui-icon-arrowthick-1-w{
+                            width: 0px !important;
+                            height: 0px !important;
+                        }
+                        .ui-button .ui-button-text {
+                            padding: .4em 1em .4em 1.2em;
+
+                        }
+                        .ui-button-text-icon-left .ui-button-text {
+                            padding: .4em 1em .4em 1.2em;}
+                        #dvBtnSalir{
+                            position: relative;
+                            left: -250px;
+                            top: -27px !important;
+                        }
+                        .ui-messages-info,.ui-message-info{
+                            border-radius: 3px 3px 3px 3px;
+                            -moz-border-radius: 3px 3px 3px 3px;
+                            -webkit-border-radius: 3px 3px 3px 3px;
+                            border: 2px solid #D0021B;
+                            background-color: #F2DEDE;
+                            text-align: center;
+                            color: #545454;
+                            margin-top: 30px;
+                            margin-bottom: 30px;
+                            padding-top: 30px;
+                            padding-bottom: 30px;
+                        }
+                        .ui-messages-info-icon{
+                            display: none;
+                        }
+                    </style>
+                    <p:dialog id="loadingbar" widgetVar="loadingbarCta" header="Procesando..."
+                              draggable="false" width="250" closable="false" resizable="false">
+                        <p:graphicImage value="/resources/images/ajaxloadingbar.gif"/>
+                    </p:dialog>
+                    <div class="gob-dat-cont">
+                        <h2 style="margin-left: -3px !important;">
+                            <p:outputLabel value="#{msgValidacion.L0000013}"/>
+                        </h2> 
+                        <hr class="red" style="margin-left: 0px !important;"/>
+                        <p:outputLabel style="color: red !important;" value="#{msgValidacion.L0000019}"/>
+                    </div>                   
+                    <div>
+                        <p:messages id="msmtab5" closable="true" autoUpdate="true" globalOnly="true"  /> 
+                    </div>                    
+                    <div style="float: right;">
+                        <p:commandButton id="addEdoCta" icon="ui-icon-arrowthickstop-1-n" 
+                                         ajax="true" process="@this" disabled="#{consultaDevautisrMB.activoAdjuntarArchivo}"
+                                         onclick="archivoClabeWV.show();"/>
+                        <pe:tooltip for="addEdoCta" value="#{msgValidacion.dyc_consulta_devautisr_banco_206}" position="top"/>
+
+                        <p:commandButton icon="ui-icon-document" id="addDocto" ajax="true" process="@this" 
+                                         onclick="clabeWV.show();"/>
+                        <pe:tooltip for="addDocto" value="#{msgValidacion.dyc_consulta_devautisr_banco_205}" position="top"/>
+
+
+                    </div>
+                    <br/><br/><br/>
+                    <div align="center" style="padding-left: 0px;font-size: 15px;">
+                         <p:dataTable id="dtInfoBanco" emptyMessage="#{msgValidacion.tblEmpty}" var="clabes" value="#{consultaDevautisrMB.cuentasClabe}"
+                                       rowIndexVar="rowIndex" 
+                                     style="width: 100%;" rendered="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     selection="#{consultaDevautisrMB.cuentaClabeSelected}" rowKey="#{consultaDevautisrMB.size}" rows="5" paginator="true"
+                                     selectionMode="single" paginatorPosition="bottom" rowStyleClass="#{(rowIndex mod 2) eq 0 ?'highlightA':'highlightB'}">               
+                            <p:ajax event="rowSelect" listener="#{consultaDevautisrMB.activarAdjuntar}"
+                                    update="@([id$=addEdoCta])"/>
+
+                            <p:column style="text-align: left;">
+                                <f:facet name="header">
+                                    <div>
+                                        <h:outputText value="#{msgValidacion.L0000049}"/>
+                                    </div>
+                                </f:facet>
+                                <h:outputText  style="white-space:pre-line;" value="#{clabes.banco}"/>
+                            </p:column>
+                            <p:column style="text-align: left;">
+                                <f:facet name="header">
+                                    <div>
+                                        <h:outputText value="#{msgValidacion.L0000050}"/>
+                                    </div>
+                                </f:facet>
+                                <h:outputText value="#{clabes.cuenta}"/>
+                            </p:column>
+                            <p:column style="text-align: left;">
+                                <f:facet name="header">
+                                    <div>
+                                        <h:outputText value="#{msgValidacion.L0000080}"/>
+                                    </div>
+                                </f:facet>
+                                <h:outputText  style="white-space:pre-line;" value="#{clabes.dyccInstCreditoDTO.descripcion}"/>
+                            </p:column> 
+                            <p:column style="text-align: left;">
+                                <f:facet name="header">
+                                    <div>
+                                        <h:outputText value="#{msgValidacion.DAC00010}"/>
+                                    </div>
+                                </f:facet>
+                                <h:outputText value="#{clabes.cuentaValida == '2' ? 'Adjuntado' : ''}"/>
+                            </p:column> 
+                        </p:dataTable>
+                    </div>                   
+                    <br/>
+                    <div style="float: right;">
+                        <p:commandButton id="btnEnviar" actionListener="#{consultaDevautisrMB.llamadoApplet}" disabled="#{consultaDevautisrMB.activoBotonEnviar}"
+                                         onclick="loadingbarCta.show();" 
+                                         oncomplete="loadingbarCta.hide();" styleClass="gmxPositivo" value="#{msgValidacion.B0000016}">
+                            <f:param name="conformiSI" value="SIA"/>
+                        </p:commandButton>
+                    </div>
+                    <div style="float: right;">
+                        <p:spacer width="10" height="10" />
+                    </div>
+                    <div style="float: right;">
+                        <p:commandButton value="#{msgValidacion.asBtnRegresar}" actionListener="#{consultaDevISRDetalleMB.retroPantallaCuentaBancaria}" update="@all"/>
+                    </div>    
+                </div>
+                <br/>                
+                <h:commandLink id="link" style='display:none'>
+                    <f:ajax event="click" listener="#{consultaDevautisrMB.mostrarDialogos}" />
+                </h:commandLink>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

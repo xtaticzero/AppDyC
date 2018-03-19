@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" 
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:ui="http://java.sun.com/jsf/facelets">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+        <title>Internal Server Error</title>           
+        </h:head>
+        <h:body>
+        <h:outputStylesheet library="css/" name="estilos.css"/>
+        <p:panel id="panelError" header="Error de sesi&oacute;n" style="width:820px;margin-left:auto;margin-right:auto;font-size:25px">
+          <p:outputLabel value="No se ha encontrado los roles ni el usuario en la sesi&oacute;n. Es posible que su sesi&oacute;n haya vencido, favor de autenticarse nuevamente."/>
+                
+          </p:panel>
+        </h:body>
+    </html>
+</f:view>

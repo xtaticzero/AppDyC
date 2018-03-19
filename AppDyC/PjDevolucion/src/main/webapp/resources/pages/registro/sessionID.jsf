@@ -1,0 +1,251 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+        >
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head></h:head>
+        <h:body>
+            <h:form>
+                <p:panel id="pnlDetalle" style="with: 100%">
+                    <p:outputLabel value="Objeto AccesoUsr" style="font-size: 11px;font-weight: bold"/>
+                    <!-- *************************************************************************************** -->
+                    <p:panelGrid>
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="ClaveAdminGral"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{sessionMatrizDictaminadorMB.acc.claveAdminGral}"/>
+                            </p:column>         
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="DescAdminGral"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{sessionMatrizDictaminadorMB.acc.descAdminGral}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="ClaveAdminCentral"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{sessionMatrizDictaminadorMB.acc.claveAdminCentral}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="DescAdminCentral"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{sessionMatrizDictaminadorMB.acc.descAdminCentral}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="NumeroEmp"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{sessionMatrizDictaminadorMB.acc.numeroEmp}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="NombreCompleto"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{sessionMatrizDictaminadorMB.acc.nombreCompleto}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="Nombres"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{sessionMatrizDictaminadorMB.acc.nombres}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="PrimerApellido"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{sessionMatrizDictaminadorMB.acc.primerApellido}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="SegundoApellido"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{sessionMatrizDictaminadorMB.acc.segundoApellido}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="IP"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{sessionMatrizDictaminadorMB.acc.ip}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="Menu"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{sessionMatrizDictaminadorMB.acc.menu}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="IdTipoPersona"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{sessionMatrizDictaminadorMB.acc.idTipoPersona}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="SessionID"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{sessionMatrizDictaminadorMB.acc.sessionID}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="Localidad"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{sessionMatrizDictaminadorMB.acc.localidad}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="LocalidadCRM"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{sessionMatrizDictaminadorMB.acc.localidadCRM}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="DescLocalidad"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{sessionMatrizDictaminadorMB.acc.descLocalidad}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="ClaveLocalidad"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{sessionMatrizDictaminadorMB.acc.claveLocalidad}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="RFC"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{sessionMatrizDictaminadorMB.acc.rfc}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="RFC Corto"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{sessionMatrizDictaminadorMB.acc.rfcCorto}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="TipoAuth"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{sessionMatrizDictaminadorMB.acc.tipoAuth}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="Usuario"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{sessionMatrizDictaminadorMB.acc.usuario}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="UsuarioOficina"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{sessionMatrizDictaminadorMB.acc.usuarioOficina}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="Roles"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{sessionMatrizDictaminadorMB.acc.roles}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="LstAtributos"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{sessionMatrizDictaminadorMB.acc.lstAtributos}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="Procesos"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{sessionMatrizDictaminadorMB.acc.procesos}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="RFC"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{sessionMatrizDictaminadorMB.acc.rfc}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="CentroCosto"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{sessionMatrizDictaminadorMB.acc.centroCosto}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="CentroDatos"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{sessionMatrizDictaminadorMB.acc.centroDatos}"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="URL ERROR"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{sessionMatrizDictaminadorMB.uri}"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:panel>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

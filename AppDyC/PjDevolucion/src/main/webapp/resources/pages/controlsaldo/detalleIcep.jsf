@@ -1,0 +1,725 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+        xmlns:pe="http://primefaces.org/ui/extensions">
+    <html xmlns="http://www.w3.org/1999/xhtml" xmlns:c="http://java.sun.com/jsp/jstl/core">
+        <h:head>
+            <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+            <meta http-equiv="X-UA-Compatible" content="IE=8"/>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <h:outputStylesheet library="css/" name="formato.css"/>
+            <h:outputStylesheet library="css/" name="cc.css"/>
+            <h:outputStylesheet library="css/" name="dyc.css"/>
+            <h:outputScript library="js" name="general.js"/>
+            <style type="text/css">
+                .ui-datatable tbody td {
+                    white-space: normal;
+                    font-size: 9px;
+                }
+
+                .ui-datatable thead th {
+                    white-space: normal;
+                    font-size: 10px;
+                }
+
+                .panelgridLine > .ui-panel-content {
+                    padding: 0px 0px 0px 0px;
+                }
+            </style>
+            <script type="text/javascript">
+                // store original so we can call it inside our overriding method
+              $.datepicker._generateMonthYearHeader_original = $.datepicker._generateMonthYearHeader;
+
+              $.datepicker._generateMonthYearHeader = function (inst, dm, dy, mnd, mxd, s, mn, mns) {
+                  var header = $($.datepicker._generateMonthYearHeader_original(inst, dm, dy, mnd, mxd, s, mn, mns)), years = header.find('.ui-datepicker-year');
+
+                  // reverse the years
+                  years.html(Array.prototype.reverse.apply(years.children()));
+
+                  // return our new html
+                  return $('&lt;div />').append(header).html();
+              }
+            </script>
+            
+            <title>Detalle del ICEP</title>
+        </h:head>
+        <h:body>
+            <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+             
+            <p:dialog modal="true" widgetVar="statusDialog" header="#{msgValidacion.ajaxLoading}" draggable="false"
+                      closable="false">
+                <p:graphicImage value="../../images/ajaxloadingbar.gif"/>
+            </p:dialog>
+             
+            <h:form id="formDetalleIcep">
+                <p:panel id="pnlDetalle" style="width:100%;" valign="top">
+                    <!--<p:growl id="growl" showDetail="true" sticky="true" globalOnly="true"/>-->
+                    <div align="center">
+                        <p:panel header="Datos del contribuyente" style="width:60%; border:1px; text-align:left">
+                            <p:panelGrid id="pnlRazonSocial" style="width:100%;">
+                                <p:row>
+                                    <p:column style="width:35%; text-align:left;">
+                                        <h:outputLabel value="Nombre o raz&oacute;n social:"/>
+                                    </p:column>
+                                    <p:column style="width:65%;text-align:left;">
+                                        <h:outputLabel value="#{detalleIcepMB.nombreRazonSocial}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <h:outputLabel value="#{msgValidacion.deIRfc}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel value="#{detalleIcepMB.rfc}"/>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </p:panel>
+                         
+                        <p:panel header="#{labelscs.headerPanel2}" style="width:60%; border:1px; text-align:left">
+                            <p:panelGrid id="pnlDatosIcep" style="width:100%;">
+                                <p:row>
+                                    <p:column style="width:35%;text-align:left;">
+                                        <h:outputLabel value="Id:"/>
+                                    </p:column>
+                                    <p:column style="width:65%;text-align:left;">
+                                        <p:outputLabel value="#{sesionControlSaldos.idSaldoIcep}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <h:outputLabel value="#{msgValidacion.cbImp}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel value="#{detalleIcepMB.impuesto}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <h:outputLabel value="#{msgValidacion.cbConc}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel value="#{detalleIcepMB.concepto}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <h:outputLabel value="#{msgValidacion.cbPer}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel value="#{detalleIcepMB.periodo}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <h:outputLabel value="#{msgValidacion.cbEjer}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel value="#{detalleIcepMB.ejercicio}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <h:outputLabel value="Origen del saldo:"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel value="#{detalleIcepMB.tipoSaldo}"/>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </p:panel>
+                    </div>
+                    <br/>
+                    <!-- TABLA DECLARACIONES-->
+                    <div align="center">
+                         <c:choose>
+                            <c:when test="${not detalleIcepMB.mostrarTablaDecls}">
+                                <p:panel header="Origen del saldo a favor" style="width:60%; border:1px; text-align:left">
+                                    <p:panelGrid id="pgdOrigenSAF" style="width:100%;">
+                                        <p:row>
+                                            <p:column style="width:35%; text-align:left;">
+                                                <h:outputLabel value="Origen:"/>
+                                            </p:column>
+                                            <p:column style="width:65%;text-align:left;">
+                                                <h:outputLabel value="#{detalleIcepMB.origenSaldo}"/>
+                                            </p:column>
+                                        </p:row>
+                                        <p:row rendered="${not empty detalleIcepMB.fechaPresentacion}">
+                                            <p:column>
+                                                <h:outputLabel value="Fecha de presentaci&oacute;n:"/>
+                                            </p:column>
+                                            <p:column>
+                                                <h:outputLabel value="#{detalleIcepMB.fechaPresentacion}">
+                                                    <f:convertDateTime pattern="dd-MM-yyyy" type="date"/>
+                                                </h:outputLabel>
+                                            </p:column>
+                                        </p:row>
+                                        <p:row rendered="${not empty detalleIcepMB.fechaCausacion}">
+                                            <p:column>
+                                                <h:outputLabel value="Fecha de causaci&oacute;n:"/>
+                                            </p:column>
+                                            <p:column>
+                                                <h:outputLabel value="#{detalleIcepMB.fechaCausacion}">
+                                                    <f:convertDateTime pattern="dd-MM-yyyy" type="date"/>
+                                                </h:outputLabel>
+                                            </p:column>
+                                        </p:row>
+                                        <p:row rendered="${not empty detalleIcepMB.numOperacion}">
+                                            <p:column>
+                                                <h:outputLabel value="N&uacute;mero de operaci&oacute;n:"/>
+                                            </p:column>
+                                            <p:column>
+                                                <p:outputLabel value="#{detalleIcepMB.numOperacion}"/>
+                                            </p:column>
+                                        </p:row>
+                                        <p:row rendered="${not empty detalleIcepMB.numDocumento}">
+                                            <p:column>
+                                                <h:outputLabel value="N&uacute;mero de documento:"/>
+                                            </p:column>
+                                            <p:column>
+                                                <p:outputLabel value="#{detalleIcepMB.numDocumento}"/>
+                                            </p:column>
+                                        </p:row>
+                                        <p:row rendered="${detalleIcepMB.saldoAFavor gt 0}">
+                                            <p:column>
+                                                <h:outputLabel value="Cantidad a favor:"/>
+                                            </p:column>
+                                            <p:column>
+                                                <h:outputLabel value="#{detalleIcepMB.saldoAFavor}">
+                                                    <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                                                </h:outputLabel>
+                                            </p:column>
+                                        </p:row>
+
+                                    </p:panelGrid>
+                                </p:panel>
+                            </c:when>
+                            <c:otherwise>
+                                <p:panel id="pnlDeclaraciones" style="width:60%; border:0px">
+                                    <!--p:commandButton value="Buscar Declaraciones" 
+                                        actionListener="#{detalleIcepMB.buscarDeclaraciones}"/-->
+                                    <p:dataTable id="tbDeclaraciones" value="#{detalleIcepMB.declaraciones}" var="tbDeclaracion"
+                                         style="text-align:center" emptyMessage="#{msgValidacion.tblEmpty}"
+                                         selectionMode="single" selection="#{detalleIcepMB.declaraSelec}"
+                                         rowStyleClass="#{(not tbDeclaracion.efectiva) ? 'decl-no-efectiva' : (tbDeclaracion.fechaFin == null) ? 'con_fecha_fin': 'sin_fecha_fin'}"
+                                         rowIndexVar="rowIndex" rowKey="#{tbDeclaracion.idDeclaraIcep}">
+
+                                         <c:if test="#{detalleIcepMB.permitirEdicion}">
+                                            <p:ajax event="rowSelect" listener="#{detalleIcepMB.manejarRowSelectDeclara}"
+                                                process="@this"
+                                                update="btnElimDeclara btnReactDeclara btnValidarDeclara"/>
+                                        </c:if>
+
+                                        <f:facet name="header">
+                                            <p:toolbar>
+                                                <p:toolbarGroup align="left" valign="center">
+                                                    <h:outputText value="#{msgValidacion.deIDec}"/>
+                                                </p:toolbarGroup>
+                                                 <c:if test="#{detalleIcepMB.permitirEdicion}">
+                                                    <p:toolbarGroup align="right">
+                                                        <p:commandButton id="btnElimDeclara" icon="ui-icon-trash"
+                                                             disabled="#{not detalleIcepMB.habilitarElimDeclaraFechaFin}"
+                                                             title="Eliminar declaraci&oacute;n"
+                                                             actionListener="#{detalleIcepMB.mostrarDlgConfirElim}"
+                                                             update=":formDetalleIcep:mddConfirmarElimDeclara"/>
+                                                             
+                                                        <p:commandButton id="btnReactDeclara" icon="ui-icon-refresh"
+                                                             disabled="#{not detalleIcepMB.habilitarReactDeclara}"
+                                                             title="Reactivar declaraci&oacute;n"
+                                                             actionListener="#{detalleIcepMB.mostrarDlgConfirReact}"
+                                                             update=":formDetalleIcep:mddConfirmarReactDeclara"/>
+                                                             
+                                                        <p:commandButton id="btnAgregarDecla" icon="ui-icon-document" 
+                                                                        title="#{labelscs.toolTipBtnAgregarDeclaraManual}"
+                                                                        update=":formDeclaracion"
+                                                                        action="#{detalleIcepMB.mostrarDialogDetDeclara}"/>
+                                                        
+                                                        <p:commandButton id="btnValidarDeclara" icon="ui-icon-check"   
+                                                                        disabled="#{not detalleIcepMB.habilitarValidarDeclara}"
+                                                                        title="Validar declaraci&oacute;n"
+                                                                        update=":formConfirmAjuste"
+                                                                        actionListener="#{mbConfirmarAjuste.mostrarDialog}"/>
+                                                    </p:toolbarGroup>
+                                                </c:if>
+                                            </p:toolbar>
+                                        </f:facet>
+                                        <p:column headerText="Fecha de presentaci&oacute;n" style="width:135px">
+                                            <h:outputText value="#{tbDeclaracion.fechaPresentacion}"  title="#{tbDeclaracion.notas}">
+                                                <f:convertDateTime pattern="dd-MM-yyyy" type="date"/>
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column headerText="N&uacute;mero de operaci&oacute;n" style="width:135px">
+                                            <h:outputText value="#{tbDeclaracion.numOperacion}"/>
+                                        </p:column>
+                                        <p:column headerText="Tipo de declaraci&oacute;n" style="width:135px">
+                                            <h:outputText value="#{tbDeclaracion.tipoDeclaracion}"/>
+                                        </p:column>
+                                        <p:column headerText="Importe declarado" style="width:135px">
+                                            <h:outputText value="#{tbDeclaracion.importeDeclarado}">
+                                                <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column headerText="Origen declaraci&oacute;n" style="width:100px">
+                                            <h:outputText value="#{tbDeclaracion.origenDeclara}" title="#{tbDeclaracion.descrOrigen}"/>
+                                        </p:column>
+                                        <p:column headerText="" style="width: 50px">
+                                            <p:graphicImage  value="../../images/iconInfo.png" title="#{tbDeclaracion.infoAdicional}" rendered="${not empty tbDeclaracion.infoAdicional}"/>
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:panel>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                    <br/>
+                    <div align="center">
+                        <!--GRID MOVIMIENTOS COMPENSACIONES -->
+                        <c:choose>
+                            <c:when test="${empty detalleIcepMB.compensaciones}">
+                                <p:panel >
+                                     <f:facet name="header">
+                                        <p:toolbar>
+                                            <p:toolbarGroup align="left">
+                                                <h:outputText value="#{labelscs.msjSinCompensaciones}"/>
+                                            </p:toolbarGroup>
+                                            <c:if test="#{detalleIcepMB.permitirEdicion}">
+                                                <p:toolbarGroup align="right">
+                                                    <p:commandButton    id="btnAgregarComp" icon="ui-icon-document" 
+                                                                        title="Agregar compensaci&oacute;n"
+                                                                        oncomplete="wdlgDetalleCompensacion.show()"/>
+                                                </p:toolbarGroup>
+                                            </c:if>
+                                        </p:toolbar>
+                                    </f:facet>
+                                </p:panel>
+                            </c:when>
+
+                            <c:otherwise>
+                                    <p:dataTable id="tbMovsCompensaciones" value="#{detalleIcepMB.compensaciones}"
+                                                 var="movCompAux" style="text-align:center;"
+                                                 rowStyleClass="#{(rowIndex mod 2) eq 0 ?'highlightA':'highlightB'}"
+                                                 emptyMessage="#{msgValidacion.tblEmpty}" rowIndexVar="rowIndex"
+                                                selectionMode="single" selection="#{detalleIcepMB.compensacionSelec}"
+                                                 rowKey="#{movCompAux.numControl}">
+                                        
+                                        <c:if test="#{detalleIcepMB.permitirEdicion}">
+                                            <p:ajax event="rowSelect" listener="#{detalleIcepMB.manejarRowSelectComp}"
+                                                    process="@this"
+                                                    update="btnElimComp"/>
+                                        </c:if>
+                                            
+                                        <f:facet name="header">
+                                            <p:toolbar>
+                                                <p:toolbarGroup align="left" valign="center">
+                                                    <h:outputText value="#{msgValidacion.deIMovComp}"/>
+                                                </p:toolbarGroup>
+                                                <c:if test="#{detalleIcepMB.permitirEdicion}">
+                                                    <p:toolbarGroup align="right">
+                                                        <p:commandButton id="btnElimComp" icon="ui-icon-trash"
+                                                             disabled="#{not detalleIcepMB.habilitarElimComp}"
+                                                             title="Eliminar compensaci&oacute;n"
+                                                             actionListener="#{detalleIcepMB.mostrarDlgConfirElim}"
+                                                             update=":formDetalleIcep:mddConfirmarElimDeclara"/>
+                                                                                 
+                                                        <p:commandButton id="btnAgregarComp2" icon="ui-icon-document" 
+                                                                        title="Agregar compensaci&oacute;n"
+                                                                        update=":formCompensacion"
+                                                                        action="#{mbCompManual.mostrarDialog}"/>
+                                                    </p:toolbarGroup>
+                                                </c:if>
+                                            </p:toolbar>
+                                        </f:facet>
+                                        
+                                        <p:columnGroup type="header">
+                                            <p:row>
+                                                <p:column rowspan="2" headerText="Tipo" style="width: 6%;"/>
+                                                <p:column rowspan="2" headerText="N&uacute;mero de control" style="width: 10%;"/>
+                                                <p:column rowspan="2" headerText="Importe compensado" />
+                                                <p:column rowspan="2" headerText="Importe compensado hist&oacute;rico" style="width: 11%;"/>
+                                                <!--p:column rowspan="2" headerText="Estado" style="width: 10%;"/-->
+                                                <p:column colspan="4" headerText="ICEP destino" style="width: 30%;"/>
+                                                <p:column colspan="2" headerText="Resoluci&oacute;n" style="width: 30%;" />
+                                            </p:row>
+                                            <p:row>
+                                                <p:column headerText="Presentaci&oacute;n declaraci&oacute;n" style="width: 10%;"/>
+                                                <p:column headerText="Concepto" style="width: 13%;"/>
+                                                <p:column headerText="Ejercicio" style="width: 7%;"/>
+                                                <p:column headerText="Periodo" style="width: 10%;"/>
+                                                <p:column headerText="Tipo" style="width: 10%;"/>
+                                                <p:column headerText="Fecha" style="width: 10%;"/>
+                                            </p:row>
+                                        </p:columnGroup>
+
+                                        <p:column>
+                                            <h:outputText value="#{movCompAux.tipoCompensacion}" title="#{movCompAux.notas}"/>
+                                        </p:column>
+                                        <p:column>
+                                            <h:outputText value="#{movCompAux.numControl}"/>
+                                        </p:column>
+                                        <p:column>
+                                            <h:outputText value="#{movCompAux.importeCompensado}">
+                                                <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column>
+                                            <h:outputText value="#{movCompAux.importeComphist}">
+                                                <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column>
+                                            <h:outputText value="#{movCompAux.fechaDeclaracionDestino}">
+                                                <f:convertDateTime pattern="dd-MM-yyyy" type="date"/>
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column>
+                                            <h:outputText value="#{movCompAux.conceptoDestino}"/>
+                                        </p:column>
+                                        <p:column>
+                                            <h:outputText value="#{movCompAux.ejercicioDestino}"/>
+                                        </p:column>
+                                        <p:column>
+                                            <h:outputText value="#{movCompAux.periodoDestino}"/>
+                                        </p:column>
+                                        <p:column>
+                                            <h:outputText value="#{movCompAux.tipoResolucion}"/>
+                                        </p:column>
+                                        <p:column>
+                                            <h:outputText value="#{movCompAux.fechaResolucion}">
+                                                <f:convertDateTime pattern="dd-MM-yyyy" type="date"/>
+                                            </h:outputText>
+                                        </p:column>
+                                    </p:dataTable>
+                                <!--/p:scrollPanel-->
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                    <br/>
+                    <div align="center">
+                        <!--GRID MOVIMIENTOS DEVOLUCIONES -->
+                        <c:choose>
+                            <c:when test="${not empty detalleIcepMB.devoluciones}">
+                                    <p:dataTable id="tbMovDevoluciones" value="#{detalleIcepMB.devoluciones}" var="tbMovDev"
+                                                 style="text-align:center;" emptyMessage="#{msgValidacion.tblEmpty}"
+                                                 selectionMode="single" selection="#{detalleIcepMB.devolucionSelec}"
+                                                 rowIndexVar="rowIndex" rowKey="#{tbMovDev.numControl}"
+                                                 rowStyleClass="#{(rowIndex mod 2) eq 0 ?'highlightA':'highlightB'}">
+                                        
+                                        <c:if test="#{detalleIcepMB.permitirEdicion}">
+                                            <p:ajax event="rowSelect" listener="#{detalleIcepMB.manejarRowSelectDevol}"
+                                                    process="@this"
+                                                    update="btnElimDevol"/>
+                                        </c:if>
+
+                                         <f:facet name="header">
+                                            <p:toolbar>
+                                                <p:toolbarGroup align="left" valign="center">
+                                                    <h:outputText value="#{msgValidacion.deIMovDev}"/>
+                                                </p:toolbarGroup>
+                                                <c:if test="#{detalleIcepMB.permitirEdicion}">
+                                                    <p:toolbarGroup align="right">
+                                                        <p:commandButton id="btnElimDevol" icon="ui-icon-trash"
+                                                                        disabled="#{not detalleIcepMB.habilitarElimDevol}"
+                                                                        title="Eliminar devoluci&oacute;n"
+                                                                        actionListener="#{detalleIcepMB.mostrarDlgConfirElim}"
+                                                                        update=":formDetalleIcep:mddConfirmarElimDeclara"/>
+                                                        <p:commandButton    id="btnAgregarDevolucion" icon="ui-icon-document" 
+                                                                            title="Agregar devoluci&oacute;n"
+                                                                            update=":formDevolucion2"
+                                                                            action="#{devolucionManualMB.mostrarDialog}"/>
+                                                    </p:toolbarGroup>
+                                                </c:if>
+                                            </p:toolbar>
+                                        </f:facet>
+
+                                        <p:columnGroup type="header">
+                                            <p:row>
+                                                
+                                                <p:column rowspan="2" headerText="Tipo" style="width: 7%;"/>
+                                                <p:column rowspan="2" headerText="N&uacute;mero de control" style="width: 10%;"/>
+                                                <p:column rowspan="2" headerText="Importe solicitado" />
+                                                <p:column colspan="9" headerText="Resoluci&oacute;n" />
+                                                
+                                            </p:row>
+                                            <p:row>
+                                                <p:column headerText="Tipo" style="width: 10%;"/>
+                                                <p:column headerText="Fecha" style="width: 9%;"/>
+                                                <p:column headerText="Importe autorizado" style="width: 10%;"/>
+                                                <p:column headerText="Importe negado" style="width: 10%;"/>
+                                                <p:column headerText="Actualizaci&oacute;n" style="width: 9%;"/>
+                                                <p:column headerText="Intereses" style="width: 10%;"/>
+                                                <p:column headerText="Ret. por intereses" style="width: 10%;"/>
+                                                <p:column headerText="Comp. de oficio" style="width: 10%;"/>
+                                                <p:column headerText="Imp. neto a devolver" style="width: 12%;"/>
+                                            </p:row>
+                                        </p:columnGroup>
+                                        
+                                        <p:column headerText="Tipo">
+                                            <h:outputText value="#{tbMovDev.tipoDevolucion}" title="VPMF"/>
+                                        </p:column>
+                                        <p:column headerText="#{msgValidacion.deINumCont}">
+                                            <h:outputText value="#{tbMovDev.numControl}"/>
+                                        </p:column>
+                                        <p:column>
+                                            <h:outputText value="#{tbMovDev.importeSolDev}">
+                                                <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column headerText="#{msgValidacion.deIRes}">
+                                            <h:outputText value="#{tbMovDev.tipoResolucion}"/>
+                                        </p:column>
+                                        <p:column headerText="#{msgValidacion.deIFecRes}">
+                                            <h:outputText value="#{tbMovDev.fechaResolucion}">
+                                                <f:convertDateTime pattern="dd-MM-yy" type="date"/>
+                                            </h:outputText>
+                                        </p:column>
+                                        
+                                        <p:column headerText="#{msgValidacion.deIImpAut}">
+                                            <h:outputText value="#{tbMovDev.importeAutorizado}">
+                                                <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column headerText="#{msgValidacion.deIImpNeg}">
+                                            <h:outputText value="#{tbMovDev.importeNegado}">
+                                                <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column headerText="#{msgValidacion.deIAct}">
+                                            <h:outputText value="#{tbMovDev.actualizacion}">
+                                                <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column headerText="#{msgValidacion.deIInte}">
+                                            <h:outputText value="#{tbMovDev.intereses}">
+                                                <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column headerText="#{msgValidacion.deRetenXInt}">
+                                            <h:outputText value="#{tbMovDev.retIntereses}">
+                                                <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column headerText="#{msgValidacion.deCompOficio}">
+                                            <h:outputText value="#{tbMovDev.impCompensado}">
+                                                <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                                            </h:outputText>
+                                        </p:column>
+                                        <p:column headerText="#{msgValidacion.deIImpTotAct}">
+                                            <!-- importe neto a devolver -->
+                                            <h:outputText value="#{tbMovDev.importeNetoDev}">
+                                                <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                                            </h:outputText>
+                                        </p:column>
+                                    </p:dataTable>
+                                <!--/p:scrollPanel-->
+                            </c:when>
+                            <c:otherwise>
+                                <p:panel >
+                                     <f:facet name="header">
+                                        <p:toolbar>
+                                            <p:toolbarGroup align="left">
+                                                <h:outputText value="#{labelscs.msjSinDevoluciones}"/>
+                                            </p:toolbarGroup>
+                                            <c:if test="#{detalleIcepMB.permitirEdicion}">
+                                                <p:toolbarGroup align="right">
+                                                    <p:commandButton    id="btnAgregarDev2" icon="ui-icon-document" 
+                                                                        title="Agregar devoluci&oacute;n"
+                                                                        oncomplete="wDlgDetalleDevolucion.show()"/>
+                                                </p:toolbarGroup>
+                                            </c:if>
+                                        </p:toolbar>
+                                    </f:facet>
+                                </p:panel>
+                                
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                    <br/>
+                    
+                                                
+                    <br/>
+                    <!--PANEL CALCULOS-->
+                    <div align="right">
+                        <p:panelGrid id="pnlCalculos" update="pnlCalculos">
+                            <p:row>
+                                <p:column style="width:250px; text-align:right;">
+                                    Importe manifestado:
+                                </p:column>
+                                <p:column style="width:50px; text-align:right;">
+                                    <h:outputText value="#{detalleIcepMB.ultimoImpDecl}">
+                                        <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                                    </h:outputText>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="text-align:right;">
+                                    Importe resuelto:
+                                </p:column>
+                                <p:column style="text-align:right;">
+                                    <h:outputText value="#{detalleIcepMB.importeResuelto}">
+                                        <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                                    </h:outputText>
+                                </p:column>
+                            </p:row>
+
+                            <c:if test="#{detalleIcepMB.importeEfectuado > 0}">
+                                <p:row>
+                                    <p:column style="text-align:right;">Importe de las devoluciones y/o compensaciones anteriores(sin incluir actualizaci&oacute;n):</p:column>
+                                    <p:column style="width:50px; text-align:right;">
+                                        <h:outputText value="#{detalleIcepMB.importeEfectuado}">
+                                            <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                                        </h:outputText>
+                                    </p:column>
+                                </p:row>
+                            </c:if>
+
+                            <c:if test="#{detalleIcepMB.importeAcreditacion > 0}">
+                                <p:row>
+                                    <p:column style="text-align:right;">Importe del acreditamiento efectuado:</p:column>
+                                    <p:column style="width:50px; text-align:right;">
+                                        <h:outputText value="#{detalleIcepMB.importeAcreditacion}">
+                                            <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                                        </h:outputText>
+                                    </p:column>
+                                </p:row>
+                            </c:if>
+                            <c:if test="#{not detalleIcepMB.existenAjustes}">
+                                <p:row>
+                                    <p:column style="text-align:right;">
+                                        <p:outputLabel value="Remanente a favor/cargo:" ondblclick="btnIrCalculadora.jq[0].click(); return false;"/>
+
+                                        <p:button id="btnIrCalculadora" outcome="convertidorSaldos" style="display: none;"
+                                              widgetVar="btnIrCalculadora"/>                                                      
+                                    </p:column>
+                                    <p:column style="width:50px; text-align:right;">
+                                        <h:outputText id="otxRemanente" styleClass="#{detalleIcepMB.remanenteFavCargo lt 0 ? 'old' : ''}"
+                                                      value="#{detalleIcepMB.remanenteFavCargo}"
+                                                      title="#{detalleIcepMB.msjRemanenteReal}">
+                                            <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                                        </h:outputText>
+                                    </p:column>
+                                </p:row>
+                            </c:if>
+                        </p:panelGrid>
+                    </div>
+                    <div style="background-color: #58ACFA; color: white;">
+                        <c:if test="#{detalleIcepMB.existenAjustes}">
+                            <table width="100%">
+                                <tr><td>
+                                El saldo ICEP ha sido ajustado manualmente
+                            </td>
+                            <td>
+                                <p:outputLabel value="#{detalleIcepMB.msjRemanenteReal}"/>
+                            </td>
+                            </tr></table>
+                        </c:if>
+                    </div>
+                    <br/>
+                    <div align="center">
+                        <p:panelGrid id="pnlButtons">
+                            <p:row>
+                                <p:column style="width:35px;">
+                                    <p:commandButton value="#{msgValidacion.cbBotImp}"
+                                                     actionListener="#{detalleIcepMB.imprimirReporte}"
+                                                     icon="ui-icon-print" ajax="false" update="@form"
+                                                     onclick="form.target='_blank'"/>
+                                                     
+                                    <p:commandButton    style ="margin-bottom:64px;" value="Calculadora"
+                                                        actionListener="#{mbConvertidorSaldo.abrirDialog}"
+                                                        icon="ui-icon-calculator" update=":frmDlgConvertidorSaldos" process="@this"/>
+                                </p:column>
+                                <p:column style="width:65px;">
+                                    <p:commandButton value="Ver desglose" action="#{detalleIcepMB.irADesglose}">
+                                        <f:param name="remanenteFavCargo" value="#{detalleIcepMB.remanenteFavCargo}" />
+                                    </p:commandButton>
+
+                                    <p:commandButton    value="Ajustar movimientos"
+                                                        actionListener="#{mbMovimientosSaldo.inicializar}"
+                                                        icon="ui-icon-wrench" update=":frmMovimientosSaldo" process="@this"
+                                                        rendered="#{detalleIcepMB.mostrarBtnAjustarMovs}"/>
+                                    
+                                    <p:commandButton    value="Bitacora ajustes"
+                                                        actionListener="#{mbBitacoraAjustes.mostrarDialog}"
+                                                        icon="ui-icon-clock" update=":frmBitacoraAjustes" process="@this"
+                                                        rendered="#{detalleIcepMB.existenAjustes}"/>
+                                    
+                                    <p:commandButton value="#{msgValidacion.cbBotReg}" icon="ui-icon-arrowreturn-1-w"
+                                                     action="#{detalleIcepMB.regresar}"/>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                    </div>
+                </p:panel>
+
+                <p:dialog id="mddConfirmarElimDeclara" header="Confirmar"
+                          widgetVar="dlgConfirmarElimDeclara" modal="true" width="500px" height="120px" resizable="false"
+                          closable="false" visible="#{detalleIcepMB.mostrarDlgConfirElim}">
+                    <table border="0" width="100%">
+                        <tr>
+                            <td><p:outputLabel value="#{detalleIcepMB.mensajeDlgConfirElim}"/></td>
+                        </tr>
+                        <tr>
+                            <td align="right">
+                                <p:commandButton id="btnAceptarElimDeclara" value="Si"
+                                                 action="#{detalleIcepMB.eliminarEntidadHist}"
+                                                    process="@this"
+                                                    update=":formDetalleIcep" />
+                                 
+                                <p:commandButton value="No" oncomplete="dlgConfirmarElimDeclara.hide();"/>
+                            </td>
+                        </tr>
+                    </table>
+                </p:dialog>
+                
+                <p:dialog id="mddConfirmarReactDeclara" header="Confirmar"
+                          widgetVar="dlgConfirmarReactDeclara" modal="true" width="500px" height="120px" resizable="false"
+                          closable="false" visible="#{detalleIcepMB.mostrarDlgConfirReact}">
+                    <table border="0" width="100%">
+                        <tr>
+                            <td><p:outputLabel value="#{detalleIcepMB.mensajeDlgConfirReact}"/></td>
+                        </tr>
+                        <tr>
+                            <td align="right">
+                                <p:commandButton id="btnAceptarReactDeclara" value="Si"
+                                                 action="#{detalleIcepMB.reactivarEntidadHist}"
+                                                 process="@this"
+                                                 update=":formDetalleIcep" />
+                                 
+                                <p:commandButton value="No" oncomplete="dlgConfirmarReactDeclara.hide();"/>
+                            </td>
+                        </tr>
+                    </table>
+                </p:dialog>
+                
+            </h:form>
+             
+            <ui:insert name="compensacionManual">
+                <ui:include src="compensacionManual.jsf"/>
+            </ui:insert>
+
+            <ui:insert name="devolucionHistorica">
+                <ui:include src="devolucionHistorica.jsf"/>
+            </ui:insert>
+
+            <ui:insert name="declaracionManual">
+                <ui:include src="declaracionManual.jsf"/>
+            </ui:insert>
+
+            <ui:insert name="convertidoSaldos">
+                <ui:include src="convertidorSaldos.jsf"/>
+            </ui:insert>
+
+            <ui:insert name="editarMovimientos">
+                <ui:include src="editarMovimientos.xhtml"/>
+            </ui:insert>
+                                                    
+            <ui:insert name="confirmarAjuste">
+                <ui:include src="confirmarAjuste.xhtml"/>
+            </ui:insert>
+           
+            <ui:insert name="bitacoraAjustes">
+                <ui:include src="bitacoraAjustes.xhtml"/>
+            </ui:insert>
+
+        </h:body>
+    </html>
+</f:view>

@@ -1,0 +1,228 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+        xmlns:ui="http://java.sun.com/jsf/facelets" locale="ES">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <title>Reasignar Solicitud Aprobadores</title>
+            <meta http-equiv="X-UA-Compatible" content="IE=8"/>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <meta http-equiv="pragma" content="no-cache"/>
+            <meta http-equiv="cache-control" content="no-cache"/>
+            <meta http-equiv="expires" content="0"/>
+            <h:outputScript library="primefaces" name="primefaces.js"/>
+            <h:outputScript library="js" name="general.js"/>
+            <h:outputStylesheet library="css/" name="formato.css"/>
+            <style type="text/css">
+                .ui-paginator {
+                    font-size: 12px !important;
+                }
+
+                .ui-datatable tbody td {
+                    white-space: normal;
+                }
+
+                .ui-datatable thead th {
+                    white-space: normal;
+                }
+
+                .ui-growl {
+                    width: 600px !important;
+                }
+
+                .ui-growl-message {
+                    width: 520px !important;
+                }
+            </style>
+        </h:head>
+        <h:body>
+            <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+             
+            <p:dialog modal="true" widgetVar="statusDialog" header="#{msgValidacion.ajaxLoading}" draggable="false"
+                      closable="false">
+                <h:graphicImage library="images/" name="ajaxloadingbar.gif"/>
+            </p:dialog>
+             
+            <h:form id="forReasigna">
+                <ui:include src="/resources/pages/common/sessionPage.jsf"></ui:include>
+                <ui:include src="/resources/pages/common/inactividad.jsf"></ui:include>
+                <p:panel id="panelReasigna" header="#{msgValidacion.rsHeader} aprobadores" style="width: 100%">
+                    <p:growl id="msg" for="msg" sticky="true" escape="true" autoUpdate="true"/>
+                    <!--:::::::::::::::::::::Tabla de informacion:::::::::::::::::::::::::-->
+                    <p:scrollPanel style="width:100%;" mode="native">
+                        <p:dataTable id="tblMuestraInfo" scrollWidth="100%" paginator="true"
+                                     paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                     rowsPerPageTemplate="5,10,15,20" rows="10" style="text-align:left;width:100%"
+                                     liveResize="true" rowIndexVar="rowIndex"
+                                     rowStyleClass="#{(rowIndex mod 2) eq 0 ?'highlightA':'highlightB'}"
+                                     value="#{reasignarSolicitudAprobadorMB.listaAprobadores}" var="listaAprob"
+                                     rowKey="#{listaAprob.rfc}"
+                                     selection="#{reasignarSolicitudAprobadorMB.seleccionAprob}"
+                                     emptyMessage="#{msgValidacion.tblEmpty}" selectionMode="single">
+                            <p:ajax event="rowSelect" update="selectButton"
+                                    listener="#{reasignarSolicitudAprobadorMB.seleccionaAprobador}"/>
+                            <f:facet name="header">
+                                <p:toolbar style="border-style:none;">
+                                    <p:toolbarGroup align="rigth">
+                                        <h:panelGrid columns="4" cellspacing="0" width="60%">
+                                            <p:outputLabel value=" De: "/>
+                                            <p:calendar value="#{reasignarSolicitudAprobadorMB.fechaInicio}" locale="es"
+                                                        pattern="dd/MM/yyyy" id="popupButtonCalIni" yearRange="2000"
+                                                        navigator="true" styleClass="myClass">
+                                                <p:ajax event="dateSelect"
+                                                        listener="#{reasignarSolicitudAprobadorMB.setFechas}"
+                                                        update="popupButtonCalFin"
+                                                        process="@this, popupButtonCalIni, popupButtonCalFin"/>
+                                            </p:calendar>
+                                            <p:outputLabel value=" a: "/>
+                                            <p:calendar value="#{reasignarSolicitudAprobadorMB.fechaFin}" locale="es"
+                                                        pattern="dd/MM/yyyy" id="popupButtonCalFin" yearRange="2000"
+                                                        navigator="true" styleClass="myClass" style="margin-left:10%">
+                                                <p:ajax event="dateSelect"
+                                                        listener="#{reasignarSolicitudAprobadorMB.setFechas}"
+                                                        update="popupButtonCalFin"
+                                                        process="@this, popupButtonCalIni, popupButtonCalFin"/>
+                                            </p:calendar>
+                                        </h:panelGrid>
+                                        <p:commandButton id="selectButton" icon="ui-icon-search"
+                                                         update=":forReasigna:tblAprob"
+                                                         action="#{reasignarSolicitudAprobadorMB.mostrarTramitesAprobador}"
+                                                         oncomplete="wgdAprob.show()"
+                                                         title="#{msgValidacion.rsBotonListado}"
+                                                         disabled="#{reasignarSolicitudAprobadorMB.varBotonSearch}"/>
+                                    </p:toolbarGroup>
+                                </p:toolbar>
+                            </f:facet>
+                            <p:column headerText="#{msgValidacion.rsNumeroEmpleadoC}"
+                                      filterBy="#{listaAprob.numEmpleado}">
+                                <h:outputText value="#{listaAprob.numEmpleado}"/>
+                            </p:column>
+                            <p:column headerText="RFC" filterBy="#{listaAprob.rfc}">
+                                <h:outputText value="#{listaAprob.rfc}"/>
+                            </p:column>
+                            <p:column headerText="Nombre">
+                                <h:outputText value="#{listaAprob.nombre} #{listaAprob.apellidoPaterno} #{listaAprob.apellidoMaterno}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:scrollPanel>
+                </p:panel>
+                <p:dialog id="dlgAprob" header="Reasignación de solicitudes aprobadores" widgetVar="wgdAprob"
+                          hideEffect="fade" showEffect="fade" modal="true" width="780px" closable="false">
+                    <div style="max-width:780px; max-height:500px; overflow-y:scroll;">
+                        <p:dataTable id="tblAprob" var="solicitud"
+                                     value="#{reasignarSolicitudAprobadorMB.solicitudesAprobador}" paginator="true"
+                                     rows="10" selection="#{reasignarSolicitudAprobadorMB.listaSeleccionSolicitudes}"
+                                     style="width:100%">
+                            <p:ajax event="rowSelectCheckbox" process="@this"
+                                    update="@this,:forReasigna:botonMostrarListaAprobadores"
+                                    listener="#{reasignarSolicitudAprobadorMB.revisaEstadoSeleccion}"/>
+                            <p:ajax event="rowUnselectCheckbox" process="@this"
+                                    update="@this,:forReasigna:botonMostrarListaAprobadores"
+                                    listener="#{reasignarSolicitudAprobadorMB.revisaEstadoSeleccion}"/>
+                            <p:ajax event="toggleSelect" process="@this"
+                                    update="@this,:forReasigna:botonMostrarListaAprobadores"
+                                    listener="#{reasignarSolicitudAprobadorMB.revisaEstadoSeleccion}"/>
+                            <p:ajax event="rowSelect" process="@this"
+                                    update="@this,:forReasigna:botonMostrarListaAprobadores"
+                                    listener="#{reasignarSolicitudAprobadorMB.revisaEstadoSeleccion}"/>
+                            <p:column selectionMode="multiple" style="width:2%"/>
+                            <p:column headerText="#{msgValidacion.rsDialogReasignarSolDlgNumCtrl}" style="width:15%">
+                                <h:outputText value="#{solicitud.numControl}"/>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.rsDialogReasignarSolDlgRfcCont}" style="width:15%">
+                                <h:outputText value="#{solicitud.rfcContribuyente}"/>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.rsDialogReasignarSolDlgImporteTramite}"
+                                      style="width:15%; text-align:right;">
+                                <h:outputText value="#{solicitud.importeTramite}">
+                                    <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.rsDialogReasignarSolDlgTTramite}" style="width:100%">
+                                <h:outputText value="#{solicitud.tipoTramite}"/>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.rsDialogReasignarSolFechaRegistro}" style="width:15%">
+                                <h:outputText value="#{solicitud.fechaRegistro}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+                        </p:dataTable>
+                    </div>
+                    <h:panelGrid columns="2" style="margin: auto; text-align: center;">
+                        <!-- action="# { reasignarSolicitudAprobadorMB.actualizarInformacion}"  onsuccess="lsSAprob.show()" -->
+                        <p:commandButton value="#{msgValidacion.rsReasignar}" ajax="true" onsuccess=""
+                                         id="botonMostrarListaAprobadores"
+                                         disabled="#{reasignarSolicitudAprobadorMB.botonMostrarListaAprobadoresBloqueado}"
+                                         action="#{reasignarSolicitudAprobadorMB.cargaListaAprobadoresReasignar}"
+                                         update="tblAprobadorListaReasignacion"/>
+                        <p:commandButton value="Cerrar" oncomplete="wgdAprob.hide();" update="panelReasigna,tblAprob"
+                                         action="#{reasignarSolicitudAprobadorMB.reset}"/>
+                    </h:panelGrid>
+                </p:dialog>
+                <p:dialog header="#{msgValidacion.rsDialogReasinAprobadoList}" widgetVar="lssAprob" resizable="false"
+                          id="dialogoListarAprobadoresReasignar" showEffect="fade" hideEffect="fade" modal="true"
+                          style="width:780px;" closable="false" closeOnEscape="false">
+                    <p:messages id="generalErrorActReasig" autoUpdate="true" showDetail="true" closable="true"/>
+                    <div style="max-width:780px; max-height:500px; overflow-y:scroll;">
+                        <p:dataTable id="tblAprobadorListaReasignacion" var="aprobadorReasignacion"
+                                     value="#{reasignarSolicitudAprobadorMB.listaAprobadoresReasignar}"
+                                     rowKey="#{aprobadorReasignacion.numEmpleado}" scrollWidth="100%" paginator="true"
+                                     rows="10" style="margin: 0 auto; width:100%; " resizableColumns="true"
+                                     liveResize="true" selectionMode="single" rendered="true"
+                                     selection="#{reasignarSolicitudAprobadorMB.aprobadorDestinoReasignacion}"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                            <p:ajax event="rowSelect" update=":forReasigna:botonConfirmacionAprobacion"
+                                    listener="#{reasignarSolicitudAprobadorMB.seleccionaAprobadorDestino}"/>
+                            <p:column headerText="#{msgValidacion.rsNumeroEmpleadoC}"
+                                      filterBy="#{aprobadorReasignacion.numEmpleado}">
+                                <h:outputText value="#{aprobadorReasignacion.numEmpleado}"/>
+                            </p:column>
+                            <p:column headerText="RFC" filterBy="#{aprobadorReasignacion.rfc}">
+                                <h:outputText value="#{aprobadorReasignacion.rfc}"/>
+                            </p:column>
+                            <p:column headerText="Nombre">
+                                <h:outputText value="#{aprobadorReasignacion.nombre} #{aprobadorReasignacion.apellidoPaterno} #{aprobadorReasignacion.apellidoMaterno}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </div>
+                    <h:panelGrid columns="2" style="margin: 0 auto;" id="confirmPG">
+                        <p:commandButton value="#{msgValidacion.rsReasignar}" ajax="true"
+                                         id="botonConfirmacionAprobacion" widgetVar="btnConfimApro"
+                                         disabled="#{reasignarSolicitudAprobadorMB.botonConfirmacionAprobacionBloqueado}"
+                                         action="#{reasignarSolicitudAprobadorMB.confirmarReasignacionTramitesAprobador}"/>
+                        <p:commandButton value="#{msgValidacion.asBtnRegresar}" style="margin-right:20px;" ajax="true"
+                                         oncomplete="lssAprob.hide();"
+                                         action="#{reasignarSolicitudAprobadorMB.reseteaSeleccionAprobador}"/>
+                    </h:panelGrid>
+                </p:dialog>
+                <p:confirmDialog id="cfmCDID" widgetVar="cfmCDWv" global="true" showEffect="fade" hideEffect="fade"
+                                 header="#{msgValidacion.rsConfirm}" closable="false" closeOnEscape="false">
+                    <f:facet name="message">
+                        <h:outputText value="#{msgValidacion.rsConfirmReasignacionP1Aprobador} #{reasignarSolicitudAprobadorMB.aprobadorNombreAdministracion} #{msgValidacion.rsConfirmMessageP2}"/>
+                    </f:facet>
+                    <h:panelGrid columns="2" style="margin: 0 auto;">
+                        <p:commandButton value="#{msgValidacion.rsSi}"
+                                         onclick="cfmCDWv.hide(); lssAprob.hide(); wgdAprob.show();"
+                                         action="#{reasignarSolicitudAprobadorMB.realizaReasignacionTramitesAprobador}"/>
+                        <p:commandButton value="#{msgValidacion.rsNo}" oncomplete="cfmCDWv.hide();"/>
+                    </h:panelGrid>
+                </p:confirmDialog>
+                <p:confirmDialog id="cfmNoID" widgetVar="cfmNoWv" global="true" showEffect="fade" hideEffect="fade"
+                                 header="#{msgValidacion.rsConfirm}" closable="false" closeOnEscape="false">
+                    <f:facet name="message">
+                        <h:outputText value="#{msgValidacion.rsConfirmMessage2Aprobador}"/>
+                    </f:facet>
+                    <h:panelGrid columns="2" style="margin: 0 auto;">
+                        <p:commandButton value="#{msgValidacion.rsSi}"
+                                         onclick="cfmNoWv.hide();cfmCDWv.hide();wgdAprob.hide();lssAprob.hide(); "
+                                         action="#{reasignarSolicitudAprobadorMB.mostrarInfoAprobadores}"/>
+                        <p:commandButton value="#{msgValidacion.rsNo}"
+                                         onclick="cfmNoWv.hide();cfmCDWv.hide();lssAprob.hide();"
+                                         update="tblAprob,:forReasigna:botonMostrarListaAprobadores"
+                                         action="#{reasignarSolicitudAprobadorMB.mostrarTramitesAprobador}"/>
+                    </h:panelGrid>
+                </p:confirmDialog>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

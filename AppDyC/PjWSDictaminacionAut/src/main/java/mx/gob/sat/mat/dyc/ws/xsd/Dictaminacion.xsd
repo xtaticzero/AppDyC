@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:tns="http://ws.dyc.mat.sat.gob.mx/" 
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+            version="1.0" 
+
+            elementFormDefault="unqualified" 
+            attributeFormDefault="unqualified">		    
+	
+    <xsd:element name="Dictaminacion">
+        <xsd:annotation>
+            <xsd:documentation>Envolvente para los datos que viajan del cliente al webservice</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="NumControl">
+                    <xsd:simpleType>
+                        <xsd:restriction base="xsd:string">
+                            <xsd:whiteSpace value="collapse"/>
+                            <xsd:pattern value="[dc|DC]{2}[0-9]{12}" />
+                        </xsd:restriction>
+                    </xsd:simpleType>
+                </xsd:element>
+                <xsd:element name="NumLote" nillable="true">
+                    <xsd:simpleType>
+                        <xsd:restriction base="xsd:string">
+                            <xsd:whiteSpace value="collapse"/>
+                            <xsd:pattern value="[0-9]{1,6}|\s{0}" />
+                        </xsd:restriction>
+                    </xsd:simpleType>
+                </xsd:element>
+                <xsd:element name="RFC">
+                    <xsd:simpleType>
+                        <xsd:restriction base="xsd:string">
+                            <xsd:minLength value="12"/>
+                            <xsd:maxLength value="13"/>
+                            <xsd:whiteSpace value="collapse"/>
+                            <xsd:pattern value="[a-zñ&amp;A-ZÑ&amp;]{3,4}[0-9]{2}[0-1][0-9][0-3][0-9][A-Z0-9][A-Z0-9][0-9A-Z]"/>
+                        </xsd:restriction>
+                    </xsd:simpleType>
+                </xsd:element>
+                <xsd:element name="Impuesto">
+                    <xsd:simpleType>
+                        <xsd:restriction base="xsd:string">
+                            <xsd:minLength value="1"/>
+                            <xsd:maxLength value="100"/>
+                            <xsd:whiteSpace value="collapse"/>
+                        </xsd:restriction>
+                    </xsd:simpleType>
+                </xsd:element>
+                <xsd:element name="Concepto">
+                    <xsd:simpleType>
+                        <xsd:restriction base="xsd:string">
+                            <xsd:whiteSpace value="collapse"/>
+                            <xsd:pattern value="[0-9]{1,6}" />
+                        </xsd:restriction>
+                    </xsd:simpleType>
+                </xsd:element>
+                <xsd:element name="NumOperacion">
+                    <xsd:simpleType>
+                        <xsd:restriction base="xsd:string">
+                            <xsd:minLength value="1"/>
+                            <xsd:maxLength value="18"/>
+                            <xsd:whiteSpace value="collapse"/>
+                        </xsd:restriction>
+                    </xsd:simpleType>
+                </xsd:element>
+                <xsd:element name="ImporteSaldoF">
+                    <xsd:simpleType>
+                        <xsd:restriction base="xsd:string">
+                            <xsd:whiteSpace value="collapse"/>
+                            <xsd:pattern value="[0-9]{1,10}(\.[0-9]{1,2})?" />
+                        </xsd:restriction>
+                    </xsd:simpleType>
+                </xsd:element>
+                <xsd:element name="FechaProcModelo" type="xsd:date"/>
+                <xsd:element name="Modelo">
+                    <xsd:simpleType>
+                        <xsd:restriction base="xsd:string">
+                            <xsd:whiteSpace value="collapse"/>
+                            <xsd:pattern value="[sivad|morsa|SIVAD|MORSA]{5}" />
+                        </xsd:restriction>
+                    </xsd:simpleType>
+                </xsd:element>
+                <xsd:element name="MarcResultado">
+                    <xsd:simpleType>
+                        <xsd:restriction base="xsd:string">
+                            <xsd:whiteSpace value="collapse"/>
+                            <xsd:pattern value="[01|02]{2}" />
+                        </xsd:restriction>
+                    </xsd:simpleType>
+                </xsd:element>
+                <xsd:element name="MotRiesgo" nillable="true">
+                    <xsd:simpleType>
+                        <xsd:restriction base="xsd:string">
+                            <xsd:whiteSpace value="collapse"/>
+                            <xsd:pattern value="[0-9]{1,4}|\s{0}" />
+                        </xsd:restriction>
+                    </xsd:simpleType>
+                </xsd:element>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+</xsd:schema>

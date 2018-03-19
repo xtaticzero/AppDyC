@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns="http://www.w3.org/1999/xhtml" 
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:h="http://java.sun.com/jsf/html" 
+        xmlns:f="http://java.sun.com/jsf/core" 
+        xmlns:p="http://primefaces.org/ui">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <title>#{msgValidacion.riaTituloPantalla}</title>
+            <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+            <meta http-equiv="X-UA-Compatible" content="IE=8"/>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <meta http-equiv="pragma" content="no-cache"/>
+            <meta http-equiv="cache-control" content="no-cache"/>
+            <meta http-equiv="expires" content="0"/>
+            <h:outputScript library="js" name="utils.js" target="head"/>
+            <h:outputScript library="js" name="general.js"/>
+            <h:outputStylesheet library="css/" name="formato.css"/>
+            
+            
+        </h:head>
+        <h:body>
+        
+            <f:metadata>
+                <f:event type="preRenderView" listener="#{registrarInfAdicionalMB.validaSolventacion}" />
+            </f:metadata>
+        
+            <h:form id="formRegistraInfAdicional">
+                <!--p:growl id="msgInfAdicional" showDetail="true" globalOnly="true"/-->
+                
+                <p:panel id="pnlBusqueda" header="#{msgValidacion.riaBusqueda}" styleClass="gmxAutoAjustable"
+                         style="text-align:center;">
+                    <p:messages id="msgInfAdicional" showDetail="false" autoUpdate="true" closable="true" global="true" />
+                    <p:panelGrid id="gridBusqueda" style="width:100%x">
+                        <p:row>
+                            <p:column colspan="2" style="text-align:left;color:red;">
+                                <h:outputLabel value="#{msgValidacion.riaCamposObligatorios}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:220px;text-align:left">
+                                <p:outputLabel value="#{msgValidacion.riaNumeroControl}"/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <p:inputText id="numControl" maxlength="30"
+                                             value="#{registrarInfAdicionalMB.numeroDocumento}" 
+                                             required="true"
+                                             disabled="#{registrarInfAdicionalMB.showRegresar}"
+                                             onkeypress="if (event.keyCode == 13) { buscaNumeroControl(); return false; }"
+                                             requiredMessage= "#{msgValidacion.generalMsgRequerido}"
+                                             validatorMessage= "#{msgValidacion.riaExpresionDC}"
+                                             title="Numero de control a consultar">
+                                 <f:validateRegex pattern="#{registrarInfAdicionalMB.expNumControl}" />                                             
+                                </p:inputText>             
+                                <p:message id="msgControl" for="numControl" display="text"/>
+                            </p:column>
+                        </p:row>
+                        <f:facet name="footer">
+                            <p:row>
+                                <p:column colspan="4" style="text-align: center">
+                                    <p:commandButton value="#{msgValidacion.riaBuscar}"
+                                                     update="pnlDatosContribuyente,btnAdjuntar,btnSolventar,gridBusqueda,msgInfAdicional"
+                                                     disabled="#{registrarInfAdicionalMB.showRegresar}"
+                                                     actionListener="#{registrarInfAdicionalMB.buscaNumeroControl}"
+                                                     >
+                                    </p:commandButton>
+                                </p:column>
+                            </p:row>
+                        </f:facet>
+                    </p:panelGrid>
+                </p:panel>
+                
+                
+                <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                <p:dialog id="statusBar" modal="true" widgetVar="statusDialog" header="#{msgValidacion.ajaxLoading}" draggable="false" width="250"
+                          closable="false" resizable="false">
+                    <p:graphicImage value="/resources/images/ajaxloadingbar.gif"/>
+                </p:dialog>
+                
+                
+                <p:panel id="pnlDatosContribuyente"     header="#{msgValidacion.riaInfTramite}"
+                         style="width:100%;text-align:center;">
+                    <p:panelGrid style="width:100%;text-align:left;">
+                        <p:row>
+                            <p:column style="width:220px;text-align:left">
+                                <h:outputLabel value="#{msgValidacion.riaNumeroControl}"></h:outputLabel>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{registrarInfAdicionalMB.tramiteCorto.numeroControl}"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="width:220px;text-align:left">
+                                <h:outputLabel value="#{msgValidacion.riaRFC}"></h:outputLabel>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{registrarInfAdicionalMB.tramiteCorto.rfc}"/>
+                            </p:column>
+                        </p:row>
+
+                       
+                        <p:row rendered="#{registrarInfAdicionalMB.tramiteCorto.tipoPersona eq 'F'}">
+                            <p:column style="width:220px;text-align:left">
+                                <h:outputLabel value="#{msgValidacion.riaNomContribuyente}"></h:outputLabel>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{registrarInfAdicionalMB.tramiteCorto.nombre}"/>
+                            </p:column>
+                        </p:row>
+                    
+                        <p:row rendered="#{registrarInfAdicionalMB.tramiteCorto.tipoPersona eq 'M'}">
+                            <p:column style="width:220px;text-align:left">
+                                <h:outputLabel value="#{msgValidacion.riaEmpresa}"></h:outputLabel>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{registrarInfAdicionalMB.tramiteCorto.empresa}"/>
+                            </p:column>
+                        </p:row>
+                            
+                        <p:row>
+                            <p:column style="width:220px;text-align:left">
+                                <h:outputLabel value="#{msgValidacion.riaTipoTramite}"></h:outputLabel>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{registrarInfAdicionalMB.tramiteCorto.tipoTramite}"/>
+                            </p:column> 
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="width:220px;text-align:left">
+                                <h:outputLabel value="#{msgValidacion.riaEstadoTramite}"></h:outputLabel>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{registrarInfAdicionalMB.tramiteCorto.estadoTramite}"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column style="width:220px;text-align:left">
+                                <h:outputLabel value="#{msgValidacion.riaTramite}"></h:outputLabel>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{registrarInfAdicionalMB.tramiteCorto.tramite}"/>
+                            </p:column>
+                        </p:row>
+                        
+                        <f:facet name="footer">
+                            <p:row>
+                                <p:column colspan="2" style="text-align: center">
+
+                                <p:commandButton id="btnRegresar" value="#{msgValidacion.riaRegresar}"
+                                                 rendered="#{registrarInfAdicionalMB.showRegresar}"
+                                                 action="regresar">
+                                </p:commandButton>
+
+                                <p:commandButton id="btnAdjuntar" value="#{msgValidacion.riaAdjuntar}"
+                                                 disabled="#{registrarInfAdicionalMB.showAdjuntar}"
+                                                 action="#{registrarInfAdicionalMB.adjuntarDocumentos}">
+                                </p:commandButton>
+                                 
+                                <p:commandButton id="btnSolventar" value="#{msgValidacion.riaSolventar}"
+                                                 disabled="#{registrarInfAdicionalMB.showSolventar}"
+                                                 action="#{registrarInfAdicionalMB.solventarReq}">
+                                </p:commandButton>
+                                 
+                            </p:column>
+                            </p:row>
+                        </f:facet>
+                    </p:panelGrid>
+                </p:panel>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

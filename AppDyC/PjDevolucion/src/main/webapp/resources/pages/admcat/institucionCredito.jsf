@@ -1,0 +1,177 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+        >
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <meta http-equiv="X-UA-Compatible" content="IE=8"/>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <meta http-equiv="pragma" content="no-cache"/>
+            <meta http-equiv="cache-control" content="no-cache"/>
+            <meta http-equiv="expires" content="0"/>
+            <h:outputScript library="primefaces" name="primefaces.js"/>
+            <h:outputScript library="js" name="general.js"/>
+            <h:outputStylesheet library="css/" name="formato.css"/>
+            <style type="text/css">
+                .ui-paginator {
+                    font-size: 12px !important;
+                }
+                
+                .ui-growl {
+                    width: 600px !important;
+                }
+
+                .ui-growl-message {
+                    width: 520px !important;
+                }
+            </style>
+        </h:head>
+        <h:body>
+            <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+             
+            <p:dialog modal="true" widgetVar="statusDialog" header="#{msgValidacion.ajaxLoading}" draggable="false"
+                      closable="false">
+                <h:graphicImage library="images/" name="ajaxloadingbar.gif"/>
+            </p:dialog>
+             
+            <h:form id="frmInstCredito">
+                <!--p:confirmDialog id="cfmDialog" message="#{institucionCreditoMB.frmInstitucionCreditoDTO.mensaje}"
+                                 header="#{institucionCreditoMB.frmInstitucionCreditoDTO.tituloDialog}" severity="alert"
+                                 widgetVar="cfm" style="text-align:right">
+                    <p:commandButton value="Aceptar" actionListener="#{institucionCreditoMB.frmBajaIC}"
+                                     process="@this,pnlListaInstCredito" update="idTblLista,messages"
+                                     oncomplete="cfm.hide()"/>
+                    <p:commandButton value="Cancelar" onclick="cfm.hide();" type="button"/>
+                </p:confirmDialog -->
+                <p:growl id="growl" showDetail="true" sticky="true" globalOnly="true"/>
+                <p:panel id="pnlListaInstCredito" style="width: 100%" header="#{msgValidacion.INSTC0000}">
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" globalOnly="true"/>
+                <p:toolbar>
+                    <p:toolbarGroup align="rigth">
+                        <p:commandButton id="btnNuevo" oncomplete="dlgDetalleIC.show();"
+                                         title="#{msgValidacion.INSTC0001}"
+                                         action="#{institucionCreditoMB.frmAdicionaIC}" ajax="true" process="@this"
+                                         update="dlgDetalleIC,messages" icon="ui-icon-document" style="margin:0"/>
+                    </p:toolbarGroup>
+                    <p:toolbarGroup align="rigth">
+                        <p:commandButton id="btnEditar" oncomplete="dlgDetalleIC.show();"
+                                         title="#{msgValidacion.INSTC0002}"
+                                         action="#{institucionCreditoMB.frmModificaIC}" ajax="true"
+                                         process="@this,pnlListaInstCredito" update="dlgDetalleIC,messages"
+                                         icon="ui-icon-pencil" style="margin:0"
+                                         disabled="#{institucionCreditoMB.btnValidar}"></p:commandButton>
+                    </p:toolbarGroup>
+                </p:toolbar>
+                
+                    <p:dataTable id="idTblLista" var="vTblLista" value="#{institucionCreditoMB.listaInstCredito}"
+                                 rowKey="#{vTblLista.idInstCredito}" scrollWidth="100%"
+                                 paginator="#{institucionCreditoMB.frmInstitucionCreditoDTO.paginador}"
+                                 rows="#{institucionCreditoMB.frmInstitucionCreditoDTO.NColumnas}"
+                                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                 rowsPerPageTemplate="5,10,15" resizableColumns="true" liveResize="true"
+                                 rendered='#{institucionCreditoMB.frmInstitucionCreditoDTO.verTabla}'
+                                 selection="#{institucionCreditoMB.selectInstitucion}" selectionMode="single"
+                                 style="width:100%;">
+                        <p:ajax event="rowSelect" listener="#{institucionCreditoMB.activaBoton}"
+                                update=":frmInstCredito:btnEditar"/>
+                        <p:column headerText="Id. Institución" style="width:11%">
+                            <h:outputText value="#{vTblLista.idInstCredito}"/>
+                        </p:column>
+                        <p:column headerText="Nombre">
+                            <h:outputText value="#{vTblLista.descripcion}"/>
+                        </p:column>
+                        <p:column headerText="Estado" style="width:8%">
+                            <h:outputText value="#{vTblLista.estado}"/>
+                        </p:column>
+                        <f:facet name="footer">
+                            <p:outputLabel value="#{institucionCreditoMB.frmInstitucionCreditoDTO.totalResultados} Resultados"/>
+                        </f:facet>
+                    </p:dataTable>
+                </p:panel>
+                <p:dialog id="dlgDetalleIC" header="#{institucionCreditoMB.frmInstitucionCreditoDTO.tituloDialog}"
+                          widgetVar="dlgDetalleIC" hideEffect="drop" modal="true" width="60%">
+                    <div style="text-align:left;">
+                        <p:outputLabel value="#{msgValidacion.inpObligatorio}" styleClass="rojo" rendered="true"/>
+                    </div>
+                    <p:panel id="pnlDetalleIC" visible="true">
+                        <table role="grid" class="ui-panelgrid ui-widget">
+                            <tbody>
+                                <tr role="row" class="ui-widget-content">
+                                    <td role="gridcell">
+                                        <p:outputLabel value="#{msgValidacion.idInsti}:"
+                                                       rendered="#{institucionCreditoMB.frmInstitucionCreditoDTO.nuevaIC}"/>
+                                         
+                                        <p:outputLabel value=" *"
+                                                       rendered="#{institucionCreditoMB.frmInstitucionCreditoDTO.nuevaIC}"
+                                                       styleClass="rojo"/>
+                                    </td>
+                                    <td role="gridcell">
+                                        <h:panelGrid columns="3" cellspacing="0" width="100%">
+                                            <p:inputText id="txtIdInstCredito" required="true"
+                                                         requiredMessage="#{institucionCreditoMB.frmInstitucionCreditoDTO.strMsgIdInstCredito}"
+                                                         value="#{institucionCreditoMB.idInstitucion}"
+                                                         rendered="#{institucionCreditoMB.frmInstitucionCreditoDTO.nuevaIC}"></p:inputText>
+                                            <p:message id="msgIdInstCredito" for="txtIdInstCredito" display="text"/>
+                                        </h:panelGrid>
+                                    </td>
+                                </tr>
+                                <tr role="row" class="ui-widget-content">
+                                    <td role="gridcell">
+                                        <p:outputLabel value="#{msgValidacion.nomInsti}:"/>
+                                         
+                                        <p:outputLabel value=" *" styleClass="rojo"/>
+                                    </td>
+                                    <td role="gridcell">
+                                        <h:panelGrid columns="2" cellspacing="0" width="100%">
+                                            <p:inputText id="txtNombInstCredito" required="true"
+                                                         requiredMessage="#{institucionCreditoMB.frmInstitucionCreditoDTO.strMsgNombInstCredito}"
+                                                         value="#{institucionCreditoMB.instCredito.descripcion}"
+                                                         styleClass="upperCase"></p:inputText>
+                                            <p:message id="msgNombInstCredito" for="txtNombInstCredito" display="text"/>
+                                        </h:panelGrid>
+                                    </td>
+                                </tr>
+                                <tr role="row" class="ui-widget-content">
+                                    <td role="gridcell">
+                                        <p:outputLabel value="Estado:"
+                                                       rendered="#{institucionCreditoMB.frmInstitucionCreditoDTO.editaIC}"/>
+                                         
+                                        <p:outputLabel value=" *"
+                                                       rendered="#{institucionCreditoMB.frmInstitucionCreditoDTO.editaIC}"
+                                                       styleClass="rojo"/><!-- &nbsp;
+                                        <p:outputLabel id="lblEstado" value="#{institucionCreditoMB.instCredito.estado}"
+                                                       rendered="#{institucionCreditoMB.frmInstitucionCreditoDTO.editaIC}"/> -->
+                                    </td>
+                                    <td role="gridcell">
+                                        <h:panelGrid columns="2" cellspacing="0">
+                                            <p:selectOneMenu id="cmbEstado"
+                                                             value="#{institucionCreditoMB.instCredito.estado}"
+                                                             rendered="#{institucionCreditoMB.frmInstitucionCreditoDTO.editaIC}">
+                                                <f:selectItem itemLabel="Activo" itemValue="Activo"/>
+                                                <f:selectItem itemLabel="Inactivo" itemValue="Inactivo"/>
+                                            </p:selectOneMenu>
+                                        </h:panelGrid>
+                                    </td>
+                                </tr>
+                                <tr role="row" class="ui-widget-content">
+                                    <td role="gridcell" colspan="2" align="center">
+                                        <p:inputText id="hddAccion" value="#{institucionCreditoMB.instCredito.ordenSec}"
+                                                     type="hidden"/>
+                                         
+                                        <p:commandButton value="Cancelar" onclick="dlgDetalleIC.hide();" type="button"
+                                                         styleClass="gmxNegativo"/>&nbsp; 
+                                        <p:commandButton value="Aceptar" id="btn"
+                                                         update="pnlDetalleIC,pnlListaInstCredito" process="@form"
+                                                         actionListener="#{institucionCreditoMB.execAccion}"
+                                                         oncomplete="if(!args.validationFailed) dlgDetalleIC.hide()"
+                                                         styleClass="gmxPositivo"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </p:panel>
+                </p:dialog>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

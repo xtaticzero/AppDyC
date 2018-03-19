@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="file:/root/wsdl/ContratoMensajeError/version2/ConsultaTramiteDevolucionService.wsdl" uri="wsdl/ConsultaTramiteDevolucionService.wsdl"/>
+    <system systemId="file:/root/wsdl/ContratoMensajeError/version2/ConsultaTramiteDevolucionService.xsd" uri="wsdl/ConsultaTramiteDevolucionService.xsd"/>
+    <system systemId="file:/root/wsdl/ContratoMensajeError/version2/ConsultaTramiteDevolucionService2017_1.wsdl" uri="wsdl/ConsultaTramiteDevolucionService2017_1.wsdl"/>
+    <system systemId="file:/root/wsdl/ContratoMensajeError/version2/ConsultaTramiteDevolucionService2017.xsd" uri="wsdl/ConsultaTramiteDevolucionService2017.xsd"/>
+</catalog>

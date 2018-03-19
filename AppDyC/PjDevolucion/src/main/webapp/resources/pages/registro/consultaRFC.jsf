@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+        >
+    <html>
+        <h:head>
+            <title>
+                #{msgValidacion.L0000023}
+            </title>
+            <h:outputStylesheet library="css/" name="dyc.css"/>
+        </h:head>
+        <h:body>
+            <h:form>
+             <ui:include src="/resources/pages/common/sessionPage.jsf"></ui:include>
+             <ui:include src="/resources/pages/common/inactividad.jsf"></ui:include>
+                <table border="0">
+                    <tr valign="top">
+                        <td align="left">
+                            <table border="0">
+                                <tr valign="top">
+                                    <td align="left">
+                                        <p:panel id="pnlBuscarRFC" header="#{msgValidacion.L0000004}"
+                                                 style="width: 800px;">
+                                            <p:messages globalOnly="true" showDetail="true" closable="true"/>
+
+                                            <div align="center">
+                                                <div align="left" style="height: 9px;font-size:9px;width: 600px">
+                                                    <p style="color: Red;">
+                                                        #{msgValidacion.L0000019}
+                                                    </p>
+                                                </div>
+                                                <br/>
+                                                <p:fieldset style="width: 600px;">
+                                                    <center>
+                                                        <table border="0">
+                                                            <tr valign="middle">
+                                                                <td align="left" width="80px">
+                                                                    <p:outputLabel id="lblCapturaRFC"
+                                                                                   value="RFC:"/>
+                                                                </td>
+                                                                <td>
+                                                                    <h:panelGrid columns="3">
+                                                                        <p style="color: Red;">*</p>
+                                                                        <p:inputText id="txtCapturaRFC"
+                                                                                     style="text-transform: uppercase;"
+                                                                                     value="#{consultaRFCMB.rfcContribuyente}"
+                                                                                     required="true"
+                                                                                     validator="RfcValidator"
+                                                                                     maxlength="13"
+                                                                                     requiredMessage="#{msgValidacion.msjCampoRequerido}"/>
+                                                                        <p:message id="msjCapturaRFC"
+                                                                                   for="txtCapturaRFC" display="text"/>
+                                                                    </h:panelGrid>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </center>
+                                                </p:fieldset>
+                                            </div>
+                                        </p:panel>
+                                    </td>
+                                </tr>
+
+                                <tr valign="top">
+                                    <td align="center">
+                                        <p:commandButton value="#{msgValidacion.B0000000}"
+                                                         action="#{consultaRFCMB.validaRFC}" ajax="false"
+                                                         style="width:150px" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>
+

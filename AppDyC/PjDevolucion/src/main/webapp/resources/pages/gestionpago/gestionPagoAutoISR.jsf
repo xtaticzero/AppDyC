@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:p="http://primefaces.org/ui">
+    <html>
+        <h:head> 
+            <title>
+                #{msgValidacion.L0000023}
+            </title>
+            <meta http-equiv="X-UA-Compatible" content="IE=8"/>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <h:outputStylesheet library="css/" name="formato.css"/>
+            <h:outputScript library="js" name="calendarioIdiomaEs.js"/>
+            <style type="text/css">
+                .fileupload-content {
+                    border: none !important;
+                    padding: 0px;
+                }
+
+                .fileupload-buttonbar {
+                    border: none !important;
+                    padding: 0px;
+                }
+            </style>
+        </h:head>
+        <h:body>
+            <table border="0">
+                <tr>
+                    <td>
+                        <p:panel id="pnlCargaDescargae" header="Orden de pago autom&aacute;ticas" style="width:910px !important;">
+                            <p:messages id="messages" closable="true" autoUpdate="false" globalOnly="true" />
+                            <div align="left" style="height: 10px;font-size:10px;">
+                                <p style="color: Red;">
+                                    #{msgValidacion.L0000019}
+                                </p>
+                            </div>
+                            <br/>
+                            <p:tabView dynamic="true" id="tabGestionPago" effect="fade" effectDuration="fast"
+                                       orientation="top">
+                                <p:tab title="Cargar archivo" id="tabCarga">
+                                    <h:form id="form1" enctype="multipart/form-data">
+                                        <ui:include src="/resources/pages/common/inactividad.jsf"></ui:include>
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                  <!--   <p:message for="fileDoc" display="text"/> -->
+                                                </td>
+                                            </tr>
+                                             
+                                            <tr>
+                                                <td>
+                                                    <h:panelGrid columns="4" style="border-style:hidden;">
+                                                        <h:outputText value="#{msgValidacion.asEtiRuta}"/>
+                                                        <h:outputText value="#{msgValidacion.asRequerido}"
+                                                                      style="color:red"/>
+                                                        <p:spacer width="30"/>
+                                                        <p:fileUpload value="#{gestionPago.uploadDocumento}" 
+                                                                      mode="simple" id="fileDoc" style="width:411px;"
+                                                                      validator="ArchivoValidator"/>
+                                                    </h:panelGrid>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <div>
+                                            <p:commandButton id="enviarDoc" value="#{msgValidacion.B0000007}"
+                                                             style="width:150px" update=":messages" ajax="false"
+                                                             actionListener="#{gestionPago.cargarDocumentoTESOFE}"/>
+                                             
+                                            <p:spacer height="35"/> 
+                                        </div>
+                                    </h:form>
+                                </p:tab>
+                                <p:tab title="Generar archivos" id="tab1">
+                                    <h:form id="form2" enctype="multipart/form-data">
+                                        <p:messages id="messagesCarga" closable="true" autoUpdate="false" globalOnly="true" />
+                                        <p:fieldset id="confirmSolic">
+                                            <table border="0">
+                                                <tr>
+                                                    <td>
+                                                        <h:selectOneRadio id="options" value="#{gestionPago.select}">
+                                                            <f:selectItem itemLabel="Generar" itemValue="1"/>
+                                                            <f:selectItem itemLabel="Modificar" itemValue="2"/>
+                                                            <p:ajax listener="#{gestionPago.showUploadFile}"
+                                                                    update="confirmSolic :cargaArchivo dtDocAdjuntos"/>
+                                                        </h:selectOneRadio>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <br/>
+                                            <table>
+                                                <tr>
+                                                    <td>
+                                                        <strong>Fecha de presentaci&oacute;n</strong>
+                                                         
+                                                        <a style="color:red">*</a>
+                                                    </td>
+                                                    <td>&nbsp; &nbsp;&nbsp; &nbsp;</td>
+                                                    <td>
+                                                        <strong>Fecha de pago</strong>
+                                                         
+                                                        <a style="color:red">*</a>
+                                                    </td>
+                                                    <td></td>
+                                                </tr>
+                                                 
+                                                <tr>
+                                                    <td>
+                                                        <p:calendar id="fechPresentacion"
+                                                                    style="width:10px;height:20px;"
+                                                                    value="#{gestionPago.fechaPresentacion}"
+                                                                    navigator="true" pattern="dd/MM/yyyy" locale="es"
+                                                                    readonlyInput="true" required="true"
+                                                                    title="Feha de presentaci&oacute;n" mindate="#{now}"
+                                                                    requiredMessage="#{msgValidacion.msjCampoRequerido}"
+                                                                    disabledWeekends="true">
+                                                            <p:ajax event="dateSelect"
+                                                                    listener="#{gestionPago.validaFechaPresentacion}"
+                                                                    update="@form"/>
+                                                        </p:calendar>
+                                                         
+                                                        <p:message for="fechPresentacion" display="text"
+                                                                   showDetail="true" id="msgFechPre"/>
+                                                         
+                                                        <p:watermark for="fechPresentacion" value="dd/mm/aaaa"
+                                                                     id="watermarkFP"/>
+                                                    </td>
+                                                    <td></td>
+                                                    <td>
+                                                        <p:calendar id="fechPago" 
+                                                                    style="width:10px;height:20px;"
+                                                                    value="#{gestionPago.fechaPago}" 
+                                                                    navigator="true"
+                                                                    pattern="dd/MM/yyyy" 
+                                                                    locale="es"
+                                                                    readonlyInput="true" 
+                                                                    required="true"
+                                                                    mindate="#{now}" title="Fecha de pago"
+                                                                    requiredMessage="#{msgValidacion.msjCampoRequerido}"
+                                                                    disabled="#{gestionPago.flagFechaPago}"
+                                                                    disabledWeekends="true">
+                                                            <p:ajax event="dateSelect"
+                                                                    listener="#{gestionPago.validaFechaPago}"
+                                                                    update="@form"
+                                                                    />
+                                                        </p:calendar>
+                                                        <p:watermark for="fechPago" value="dd/mm/aaaa" id="wFechPago"/>
+                                                        <p:message id="msjFechaPago" for="fechPago"/>
+                                                    </td>
+                                                    <td></td>
+                                                </tr>
+                                            </table>
+                                            <div>
+                                                <p:remoteCommand name="cargaDeArchivos" action="#{gestionPago.cargarArchivosTESOFE}"/>
+                                                <p:remoteCommand name="actualizarPagina" update=":messages dtDocAdjuntos fechPresentacion fechPago options msgFechPre @this"/>
+                                                <p:commandButton style="width:200px"
+                                                                 process="@this,fechPago"
+                                                                 update="@form,msjFechaPago"
+                                                                 value="#{gestionPago.showUpload == 'true' ? 'Modificar archivos':'Generar archivos'}"
+                                                                 oncomplete="if (!args.validationFailed){pbAjax.start(); dlgBarraEstadoArchivos.show(); cargaDeArchivos();}"
+                                                                 
+                                                                 id="findDoc"/>
+                                            </div>
+                                        </p:fieldset>
+                                        <p:separator/>
+                                        <table width="100%">
+                                            <tr>
+                                                <td align="left" width="100%">
+                                                    <div align="left">
+                                                        <p:dataTable id="dtDocAdjuntos" style="width: 100%"
+                                                                     paginator="false" rows="20"
+                                                                     emptyMessage="#{msgValidacion.tblEmpty}" var="doc"
+                                                                     value="#{gestionPago.listaEnvioTes}">
+                                                            <f:facet name="header">
+                                                                <p:outputLabel value="Archivos generados para enviar a la TESOFE" />
+                                                            </f:facet>
+                                                            <p:column headerText="Competencia">
+                                                                <h:outputText value="#{doc.compentencia}"/>
+                                                            </p:column>
+                                                            <p:column headerText="Nombre">
+                                                                <h:outputText value="#{doc.nombre}"/>
+                                                            </p:column>
+                                                            <p:column headerText="DAT">
+                                                                <p:commandButton ajax="false" rendered="true"
+                                                                                 style="height:30px"
+                                                                                 icon="ui-icon-circle-arrow-s"
+                                                                                 title="Descargar archivo DAT">
+                                                                    <p:fileDownload value="#{doc.fileDAT}"/>
+                                                                </p:commandButton>
+                                                            </p:column>
+                                                            <p:column headerText="CSV">
+                                                                <p:commandButton ajax="false" rendered="true"
+                                                                                 style="height:30px"
+                                                                                 icon="ui-icon-circle-arrow-s"
+                                                                                 title="Descargar archivo CSV">
+                                                                    <p:fileDownload value="#{doc.fileCSV}"/>
+                                                                </p:commandButton>
+                                                            </p:column>
+                                                            <p:column headerText="Tipo">
+                                                                <h:outputText value="#{doc.tipo}"/>
+                                                            </p:column>
+                                                            <p:column headerText="Registros">
+                                                                  <h:outputText value="#{doc.numeroDev}"/>
+                                                            </p:column>
+                                                            <p:column headerText="Total a pagar">
+                                                                <div align="right">
+                                                                    <h:outputText value="#{doc.totalAPagar}">
+                                                                        <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                                                                    </h:outputText>
+                                                                </div>
+                                                            </p:column>
+    
+                                                        </p:dataTable>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </h:form>
+                                </p:tab>
+                                <p:tab title="Generar reporte" id="tab3">
+                                    <h:form id="form3" enctype="multipart/form-data">
+                                        <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                                            <tr>
+                                                <td>
+                                                    <p:calendar id="fechaReporte"
+                                                                locale="es"
+                                                                navigator="true"  
+                                                                pattern="dd/MM/yyyy"
+                                                                required="true"
+                                                                readonlyInput="true"
+                                                                requiredMessage="#{msgValidacion.msjCampoRequerido}"
+                                                                style="width:10px;height:20px;"
+                                                                title="Feha de pago"
+                                                                value="#{gestionPago.fechaReporte}">
+                                                                <p:ajax event="dateSelect" listener="#{gestionPago.activarBotonReporteDiario}" update="generarReporte" process="@this" />
+                                                    </p:calendar>
+                                                    <p:message for="fechaReporte" display="text" showDetail="true" id="mensajeFecha"/>
+                                                </td>
+                                                <td>
+                                                    <p:commandButton actionListener="#{gestionPago.generarReporteDeDiario}"
+                                                                     disabled="#{gestionPago.flagBotonReporteDiario}"
+                                                                     ajax="false"
+                                                                     id="generarReporte"
+                                                                     process="@this"
+                                                                     style="width:200px"
+                                                                     update=":tabGestionPago:tab3, @this"
+                                                                     value="Generar Reporte"
+                                                                     />
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </h:form>
+                                </p:tab>
+                                <p:tab title="Descargar archivos de pago" id="tab4">
+                                    <h:form id="form4" enctype="multipart/form-data" width="100%">
+                                        <p:panel id="panelArhivosDescarga" header="Descargar archivos de pago por fecha" style=" width:100%">
+                                            <p:panelGrid columns="2"  layout="grid">
+                                                <h:outputText value="Seleccione una fecha" />
+                                                <p:calendar id="idCalendario"
+                                                            locale="es"
+                                                            required="true"
+                                                            requiredMessage="Campo requerido"
+                                                            showOn="button"
+                                                            pattern="dd/MM/yyyy"
+                                                            value="#{gestionPago.fechaBusqueda}"
+                                                            maxdate="#{now}">
+                                                </p:calendar>
+                                                <h:outputText value="" />
+                                                <p:message for="idCalendario" />
+                                                <h:outputText value="" />
+                                                <p:commandButton action="#{gestionPago.buscarArchivosDePago}"
+                                                                 ajax="true"
+                                                                 update=":tabGestionPago:form4:panelArhivosDescarga"
+                                                                 value="Descargar" >
+                                                </p:commandButton>
+                                            </p:panelGrid>
+                                            <p:dataTable id="idTablaArchivosPago" 
+                                                         value="#{gestionPago.listaDeArchivosDePago}"
+                                                         var="archivoDePago"
+                                                         emptyMessage="#{msgValidacion.tblEmpty}">
+                                                <p:column headerText="Nombre">
+                                                    <h:outputText value="#{archivoDePago.name}" />
+                                                </p:column>
+                                                <p:column headerText="Descargar">
+                                                    <p:commandButton id="idBotonDAP" ajax="false" process="@this" icon="ui-icon-arrowthick-1-s">
+                                                        <f:setPropertyActionListener value="#{archivoDePago.absolutePath}" target="#{gestionPago.nombreArchivoADescargar}" />
+                                                        <p:fileDownload value="#{gestionPago.archivoDePago}" />
+                                                    </p:commandButton>
+                                                </p:column>
+                                                
+                                            </p:dataTable>
+                                        </p:panel>
+                                    </h:form>
+                                </p:tab>
+                            </p:tabView>
+                        </p:panel>                            
+                    </td>
+                </tr>
+                
+                <p:dialog header="Generando Archivos"
+                          widgetVar="dlgBarraEstadoArchivos"
+                          draggable="false"
+                          closable="false"
+                          resizable="false"
+                          modal="true"
+                          id="dialogoBarra">
+                    <h:outputText value="Generando archivos, por favor espere..."/>
+                    <p:progressBar widgetVar="pbAjax"
+                                   ajax="true"
+                                   value="#{gestionPago.progress}"
+                                   labelTemplate="{value}%"
+                                   styleClass="animated"
+                                   interval="3000">
+                        <p:ajax event="complete"
+                                oncomplete="dlgBarraEstadoArchivos.hide();pbAjax.setValue(0); actualizarPagina();" />
+                    </p:progressBar>
+                </p:dialog>
+                                                                     
+            </table>
+            <p:dialog id="cargaArchivo" widgetVar="dlgArchivo" modal="true" resizable="false" draggable="false"
+                      closable="false" width="400" visible="#{gestionPago.showUpload}">
+                <h:form id="form4" enctype="multipart/form-data">
+                    <p:message for="fileMod" display="text" showDetail="true" id="msgUP"/>
+                    <div align="left" style="height: 10px;font-size:10px;">
+                        <p style="color: Red;">
+                            #{msgValidacion.L0000019}
+                        </p>
+                    </div>
+                    <table>
+                        <tr>
+                            <td align="center" valign="top">
+                                <a style="color:red">*</a>
+                            </td>
+                            <td align="center" valign="bottom" style="width:100%">
+                                <p:fileUpload id="fileMod" fileUploadListener="#{gestionPago.updateArchivoTESOFE}"
+                                              rendered="#{gestionPago.showUpload}" mode="advanced" auto="true"
+                                              oncomplete="statusDialog.hide();" label="Ruta del archivo..."
+                                              validator="ArchivoValidator" update="msgUP :cargaArchivo"/>
+                            </td>
+                            <td valign="top">
+                                <div align="right">
+                                    <p:commandButton value="Cancelar" actionListener="#{gestionPago.defaultConsulta}"
+                                                     update=":cargaArchivo :tabGestionPago:tab1" title="Cancelar"
+                                                     icon="ui-icon-cancel"/>
+                                </div>
+                            </td>
+                        </tr>
+                         
+                        <tr></tr>
+                    </table>
+                </h:form>
+            </p:dialog>
+            
+        </h:body>
+    </html>
+</f:view>

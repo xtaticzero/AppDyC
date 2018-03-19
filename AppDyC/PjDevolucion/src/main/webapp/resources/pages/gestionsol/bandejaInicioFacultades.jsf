@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view contentType="text/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+    <html xmlns="http://www.w3.org/1999/xhtml" xmlns:p="http://primefaces.org/ui">
+        <h:head>
+            <title>bandejaInicioFacultades</title>
+            <h:outputStylesheet library="css/" name="formato.css"/>
+            <style type="text/css">
+                .ui-paginator {
+                    font-size: 12px !important;
+                }
+
+                .ui-datatable tbody td {
+                    white-space: normal;
+                    vertical-align: text-top;
+                }
+
+                .ui-datatable thead th {
+                    white-space: normal;
+                    vertical-align: text-top;
+                }
+            </style>
+            <script type="text/javascript">
+              function resetTabIndex() {
+                  dataTable.getPaginator().setPage(0);
+              }
+            </script>
+        </h:head>
+        <h:body>
+
+            <p:messages id="messages" showDetail="false" autoUpdate="true" closable="true"/>
+
+              <f:metadata>
+                <f:event type="preRenderView" listener="#{bandejaInicioFacultadesMB.init}" />
+            </f:metadata>
+            <h:form id="bandejaInicioFacultades1">
+                <p:panel header="Bandeja de inicio de facultades" styleClass="gmxAutoAjustable">
+                      <p:messages id="mess2" showDetail="true" autoUpdate="false" closable="true" globalOnly="true"/>
+                      
+                    <p:toolbar>
+                        <p:toolbarGroup align="right">
+        
+                            <p:commandButton id="btnFacultades" icon="ui-icon-folder-collapsed" style="height:30px"
+                                             title="#{msgValidacion.asBtnFacultades}"
+                                             action="#{bandejaInicioFacultadesMB.irIniciarFacultades}"
+                                             disabled="#{bandejaInicioFacultadesMB.varBotonFac}"/>
+                        </p:toolbarGroup>
+                    </p:toolbar>
+                    <p:scrollPanel id="scr1" style="height:600px" mode="native">
+                        <p:dataTable id="solicitudes" var="sol" value="#{bandejaInicioFacultadesMB.dataModel}"
+                                     first="#{bandejaInicioFacultadesMB.first}"
+                                     paginator="#{bandejaInicioFacultadesMB.paginador}" rows="5"
+                                     rowsPerPageTemplate="5,10,15,20"
+                                     emptyMessage="No se encontraron solicitudes de devolución" selectionMode="single"
+                                     selection="#{bandejaInicioFacultadesMB.solicitudAdministrarSolVO}"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                            <p:ajax event="rowSelect"
+                                    update=":bandejaInicioFacultades1:btnFacultades"
+                                    listener="#{bandejaInicioFacultadesMB.onRowSelect}"/>
+                            <p:ajax event="page" listener="#{bandejaInicioFacultadesMB.onPageChange}"/>
+                            <p:column headerText="#{msgValidacion.asNumControl}" filterBy="#{sol.numControl}">
+                                <h:outputText value="#{sol.numControl}"/>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asRFC}"
+                                      filterBy="#{sol.dycpServicioDTO.rfcContribuyente}">
+                                <h:outputText value="#{sol.dycpServicioDTO.rfcContribuyente}"/>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asDictaminado}">
+                                <h:outputText value="#{sol.rolDictaminado}"/>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asOrigenDevolucion}">
+                                <h:outputText value="#{sol.origenDevolucion}"/>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asTipoTramite}">
+                                <h:outputText value="#{sol.tipoTramite}"/>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asFechaRecepcion}">
+                                <h:outputText value="#{sol.fechaPresentacion}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asFechaResolucion}">
+                                <h:outputText value="#{sol.fechaLimite}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asEstadoNotificacion}">
+                                <h:outputText value="#{sol.estadoNotificacion}"/>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asMonto}">
+                                <h:outputText value="#{sol.importeSolicitado}">
+                                    <f:convertNumber currencySymbol="$" type="currency"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asEstadoSolicitud}">
+                                <h:outputText value="#{sol.estadoSolicitud}"/>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asDictaminadorAsignado}">
+                                <h:outputText value="#{sol.nombre} 
+                                                     #{sol.apPaterno}
+                                                     #{sol.apMaterno}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:scrollPanel>
+                </p:panel>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

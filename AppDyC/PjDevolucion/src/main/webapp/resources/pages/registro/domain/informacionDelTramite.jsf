@@ -1,0 +1,261 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+    <script>
+        $OrigenSaldo = $("#form\\:cboOrigenSaldo").hasClass('ui-state-error');
+        $TipoTramite = $("#form\\:cboTipoTramite").hasClass('ui-state-error');
+        $cboSubOrigenSaldo = $("#form\\:cboSubOrigenSaldo").hasClass('ui-state-error');
+        $infoAdicional = $("#form\\:infoAdicional").hasClass('ui-state-error');
+        $ActEconomica = $("#form\\:cboActEconomica").hasClass('ui-state-error');
+
+        console.log($OrigenSaldo);
+
+         if($OrigenSaldo ||  $TipoTramite || $cboSubOrigenSaldo || $infoAdicional || $ActEconomica ){
+
+             document.getElementById("error0").innerHTML="Todos los campos marcados con * son requeridos";
+            document.getElementById("error0").style.display="inherit";  
+
+        }
+        
+    </script>
+    <style>
+        .ui-button-icon-left.ui-icon.ui-c.ui-icon-arrowthick-1-e{width: 0px !important;height: 0px !important;}
+        .ui-button .ui-button-text {padding: .4em 1em .4em 1.2em;}
+        .ui-button-text-icon-left .ui-button-text {padding: .4em 1em .4em 1.2em;}
+
+        #dvBtnSalir{
+            position: relative;
+            left: -250px;
+            top: -24px !important;
+        }
+    </style>
+    <div style="width: 777px">
+        <div class="gob-dat-cont">
+
+            <h2 style="margin-top: -8px !important;">
+                <p:outputLabel value="#{msgValidacion.L0000030}"/>
+            </h2> 
+            <hr class="red" style="margin-top: 4px !important;"/>
+
+        </div>
+        <div id="error0"></div>
+        <style type="text/css">
+            .ui-selectonemenu-panel {
+                z-index: 100 !important;
+            }
+            #error0 {
+                display: none;
+                border-radius: 3px 3px 3px 3px;
+                -moz-border-radius: 3px 3px 3px 3px;
+                -webkit-border-radius: 3px 3px 3px 3px;
+                border: 2px solid #D0021B ;
+                background-color: #F2DEDE;
+                text-align: center;
+                color:#545454 ;
+                margin-top:30px;
+                margin-bottom: 30px;
+                padding-top:30px;
+                padding-bottom: 30px;
+
+            }
+
+            .gmxNoborde td{
+                border: none !important;
+                text-align: left !important;
+            }
+            hr.red {margin: 0px 0 0px !important;border-top-color: #DCE0E0 !important;position: relative !important;margin-left: 0px !important; } 
+            hr.red:before { content: " "!important;width: 35px!important;height: 6px!important;background-color: #D0021B!important;display: block!important;position: absolute!important;} 
+
+            h2 {
+                font-size: 38px!important;
+                margin-bottom: 0px!important;
+                margin-left: 0px !important;
+            }
+            .ui-selectonemenu {
+                margin-top: 0px !important;
+            }
+            hr.red:before {
+                content: " "!important;
+                width: 35px!important;
+                height: 6px!important;
+                background-color: #D0021B!important;
+                display: block!important;
+                position: absolute!important;
+            }
+            .ui-panelgrid td {
+                width: 50%;
+                padding-bottom: 17px !important;
+            }
+            .ui-panelgrid {
+                margin-left: 0px !important;
+            }
+
+        </style>
+        <p:messages id="msmtabTipoTramite" globalOnly="true" closable="true"/>
+        <p:panel style="border: none !important; padding-left: 0px!important;"  >
+            <style type="text/css">
+                .ui-messages-error, .ui-message-error {
+                    color: #b94a48!important;
+                    background-color: #ffffff!important;
+                    border-color: #ffffff!important;
+                    margin-left: -10px !important;
+                }
+                .ui-state-error, .ui-state-error
+                {
+                    border: 1px solid #953434 !important;
+                    background:#ffffff!important;
+                }
+                .ui-selectonemenu{height:39px!important;}
+                .ui-selectonemenu .ui-state-focus{height:39px!important;}
+                .ui-selectonemenu .ui-state-active{height:39px!important;}
+
+                span.ui-messages-error-summary{
+                    display: none;
+                }
+                /*span.ui-messages-error-detail{
+                    display: none;
+                }*/
+                .ui-panel-content .ui-widget-content{padding-left: 0px!important}
+                /*Informacion del tramite */
+                #dvBtnSalir{
+                    left: -536px !important;
+                    top: -24px !important;
+                }
+            </style>
+
+
+            <div class="gobmxContenedor8" style="position:relative; top:-9px; z-index:1!important;">
+                <p:messages id="messages"  showDetail="true" globalOnly="true" autoUpdate="true" closable="true" />
+                <p:panelGrid id="pnlGTipoTramite" styleClass="gmxNoborde" style="padding-left: 0px!important;" >
+                    <p:row>
+                        <p:column >
+                            #{msgValidacion.L0000006}<p:outputLabel value="" for="cboOrigenSaldo"/>: 
+                            <p:selectOneMenu id="cboOrigenSaldo" filterMatchMode="startsWith"
+                                             value="#{adicionarSolicitudMB.tramite.origenSaldo}"  
+                                             converter="CatalogoConverter" required="true" panelStyle="width:373.333px"
+                                             requiredMessage="#{msgValidacion.msjCampoRequerido}" style="width:373.333px">
+                                <p:ajax event="change"
+                                        update="cboTipoTramite"
+                                        process="@this" listener="#{datosSolicitudCtrlMB.buscaTipoTramite}" onclick="myFunction()"></p:ajax>
+                                <f:selectItem itemLabel="#{msgValidacion.msjSelectOneMenu}" itemValue="#{null}"/>
+                                <f:selectItems value="#{adicionarSolicitudMB.catOrigenSaldo}" var="origenSaldo"
+                                               itemLabel="#{origenSaldo.descripcion}" itemValue="#{origenSaldo}"/>
+                            </p:selectOneMenu>
+                            <p:message id="msjccboOrigenSaldo" for="cboOrigenSaldo" display="text"/>
+
+                        </p:column>
+
+                        <p:column>
+                            #{msgValidacion.L0000009}<p:outputLabel value="" for="cboTipoTramite"/>: 
+
+                            <p:selectOneMenu id="cboTipoTramite" filterMatchMode="startsWith"
+                                             value="#{adicionarSolicitudMB.tramite.tipoTramite}"
+                                             converter="CatalogoConverter" required="true" panelStyle="width:373.333px"
+                                             requiredMessage="#{msgValidacion.msjCampoRequerido}" style="width:373.333px">
+                                <p:ajax update="pnlGTipoTramite"
+                                        event="change" process="@this"
+                                        listener="#{datosSolicitudCtrlMB.buscaSubOrigenSaldo}"></p:ajax>
+                                <f:selectItem itemLabel="#{msgValidacion.msjSelectOneMenu}" itemValue="#{null}"/>
+                                <f:selectItems id="itemsTipoTramite" value="#{adicionarSolicitudMB.catTipoTramite}"
+                                               var="tipoTramite" itemLabel="#{tipoTramite.idString}"
+                                               itemValue="#{tipoTramite}" itemDescription="#{tipoTramite.idString}"/>
+                            </p:selectOneMenu>
+                            <p:message id="msjcboTipoTramite" for="cboTipoTramite" display="text"/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column rendered="#{adicionarSolicitudMB.flagsSolicitud.rowSubOrigenSaldo}">
+                            <div style="position: relative; top: -25px;">
+                                #{msgValidacion.L0000054 }<p:outputLabel value="" for="cboSubOrigenSaldo"/>: 
+                                <p:selectOneMenu id="cboSubOrigenSaldo" style="width:373.333px;z-index: " filterMatchMode="startsWith"
+                                                 panelStyle="width:373.333px" value="#{adicionarSolicitudMB.tramite.subOrigenSaldo}"
+                                                 converter="CatalogoConverter" required="true"
+                                                 requiredMessage="#{msgValidacion.msjCampoRequerido}">
+                                    <f:selectItem itemLabel="#{msgValidacion.msjSelectOneMenu}" itemValue="#{null}"/>
+                                    <f:selectItems value="#{adicionarSolicitudMB.catSubOrigenSaldo}" var="subOrigenSaldo"
+                                                   itemLabel="#{subOrigenSaldo.descripcion}" itemValue="#{subOrigenSaldo}"
+                                                   itemDescription="#{subOrigenSaldo.descripcion}"/>
+                                    <p:ajax update="cboOrigenSaldo,cboTipoTramite,cboSubOrigenSaldo" event="change"
+                                            process="@this" listener="#{datosSolicitudCtrlMB.getCatalogoActividades}"></p:ajax>
+                                </p:selectOneMenu>
+                                <p:message id="msjcboSubOrigenSaldo" for="cboSubOrigenSaldo" display="text"/>
+                            </div>
+                        </p:column>
+                        <p:column rendered="#{!adicionarSolicitudMB.flagsSolicitud.rowSubOrigenSaldo}">
+                            &nbsp;
+                        </p:column>
+                        <p:column>
+                            #{msgValidacion.L0000031}<p:outputLabel value="" for="infoAdicional"/>: 
+
+
+                            <p:inputTextarea id="infoAdicional" value="#{adicionarSolicitudMB.tramite.infoAdicional}"
+                                             required="true" requiredMessage="#{msgValidacion.msjCampoRequerido}"
+                                             title="Informaci&oacute;n adicional" styleClass="styleInputTestArea" maxlength="#{adicionarSolicitudMB.maxLength}">
+                                <p:ajax event="blur" listener="#{adicionarSolicitudMB.validarString}" />
+                            </p:inputTextarea>
+                            <p:message id="msjInfoAdicional" for="infoAdicional" display="text"/>
+                            <p:watermark for="infoAdicional" value="Ingresa #{msgValidacion.L0000031}" />
+                        </p:column>
+                    </p:row>
+                    <p:row rendered="#{adicionarSolicitudMB.flagsSolicitud.rowActividad || adicionarSolicitudMB.flagsSolicitud.verRFC}">
+                        <p:column rendered="#{adicionarSolicitudMB.flagsSolicitud.rowActividad}">
+                            #{msgValidacion.L0000053 }<p:outputLabel value="" for="cboActEconomica"/>: 
+
+                            <p:selectOneMenu id="cboActEconomica" style="width:100%" filterMatchMode="startsWith"
+                                             panelStyle="width:373.333px"
+                                             value="#{adicionarSolicitudMB.tramite.actividadEconomica}"
+                                             converter="CatalogoConverter" required="true"
+                                             requiredMessage="#{msgValidacion.msjCampoRequerido}">
+                                <f:selectItem itemLabel="#{msgValidacion.msjSelectOneMenu}" itemValue="#{null}"/>
+                                <f:selectItems value="#{adicionarSolicitudMB.catActividades}" var="actividad"
+                                               itemLabel="#{actividad.descripcion}" itemValue="#{actividad}"
+                                               itemDescription="#{actividad.descripcion}"/>
+                            </p:selectOneMenu>
+                            <p:message id="msjcboActEconomica" for="cboActEconomica" display="text"/>
+                        </p:column>
+
+                        <p:column rendered="#{adicionarSolicitudMB.flagsSolicitud.verRFC}" id="txtRFC">
+                            #{msgValidacion.L0000032}<p:outputLabel value="" for="rfcRetenedor"/>: 
+
+                            <p:inputText maxlength="13" id="rfcRetenedor"
+                                         value="#{adicionarSolicitudMB.flagsSolicitud.rfcTerceros}" required="true"
+                                         style="text-transform: uppercase;"
+                                         requiredMessage="#{msgValidacion.msjCampoRequerido}" validator="RfcValidator"></p:inputText>
+                            <p:message id="msjRFCRetenedor" for="rfcRetenedor" display="text"/>
+                        </p:column>
+                    </p:row>
+                    <p:row rendered="#{adicionarSolicitudMB.flagsSolicitud.verRFCControlador}" >
+                        <p:column  id="txtRFCControladora">
+                            #{msgValidacion.L0000033}<p:outputLabel value="" for="rfcControladora"/>: 
+
+                            <p:inputText maxlength="13" id="rfcControladora"
+                                         value="#{adicionarSolicitudMB.flagsSolicitud.rfcTerceros}"
+                                         style="text-transform: uppercase;"/>
+                            <p:commandButton id="rfcCon" value="Agregar RFC"
+                                             actionListener="#{datosSolicitudCtrlMB.agragarRFCControlador}"
+                                             update="listRfc rfcControladora msmtabTipoTramite msmRFCTerceros"
+                                             style="height:30px"/>
+                            <p:watermark for="rfcControladora" value="Ingrese RFC "/>
+                        </p:column>
+                        <p:column >
+                            <div>
+                                <p:dataList id="listRfc" value="#{adicionarSolicitudMB.tramite.rfcControladora}" var="rfc"
+                                            itemType="disc">
+                                    #{rfc}
+                                </p:dataList>
+                            </div>
+                            <p:message id="msmRFCTerceros" for="rfcControladora" display="text"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </div>
+        </p:panel>
+    </div>
+</ui:composition>
+
+
+
+

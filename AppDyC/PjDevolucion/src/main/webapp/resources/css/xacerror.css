@@ -1,0 +1,31 @@
+@CHARSET "UTF-8";
+
+#xacerror {
+	background-color: #fff;
+	border-radius: 15px;
+	color: #000;
+	display: none;
+	padding: 20px;
+	min-width: 150px;
+	min-height: auto;
+	margin-bottom: auto;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: auto;
+}
+
+#msgError {
+	font: Arial, Helvetica, sans-serif;
+	font-size: 11px !important;
+	color: #2F2F2F;
+	text-decoration: none;
+	font-weight: bold;
+	width: 300px;
+}
+
+.b-close {
+	cursor: pointer;
+	position: absolute;
+	right: 10px;
+	top: 5px;
+}

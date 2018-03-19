@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:oxm="http://www.springframework.org/schema/oxm" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+       
+    <!-- Version SOAP (De acuerdo al WS) -->
+    <bean id="soapMessageFactoryBN" class="org.springframework.ws.soap.saaj.SaajSoapMessageFactory">
+        <property name="soapVersion">
+            <util:constant static-field="org.springframework.ws.soap.SoapVersion.SOAP_12"/>
+        </property>
+    </bean>
+    
+    <!-- XML Binders -->
+    <oxm:jaxb2-marshaller id="marshallerBN" contextPath="mx.gob.sat.mat.buzonnotif.client"/>
+    
+    <!-- SPRING - Ws template -->
+    <bean id="webServiceTemplateBN" class="org.springframework.ws.client.core.WebServiceTemplate">
+        <qualifier value="webServiceTemplateBN"/>
+        <constructor-arg ref="soapMessageFactoryBN"/>
+        <property name="marshaller" ref="marshallerBN"/>
+        <property name="unmarshaller" ref="marshallerBN"/>
+        <property name="defaultUri" value="http://99.90.29.84/wsBuzonNotificaciones.Proxy/BuzonNotificaciones.asmx?WSDL"/>
+    </bean>
+
+    <!-- SPRING - Beans manejados -->    
+    <bean id="buzonNotifService" class="mx.gob.sat.mat.buzonnotif.service.impl.BuzonNotifServiceTestImpl"/>
+    <bean id="buzonNotifWs" class="mx.gob.sat.mat.buzonnotif.ws.impl.BuzonNotifWsImpl"/>
+</beans>

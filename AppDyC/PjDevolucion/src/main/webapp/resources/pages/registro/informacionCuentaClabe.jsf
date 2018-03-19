@@ -1,0 +1,314 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+        >
+    <html>
+        <h:head>
+            <title>
+                #{msgValidacion.aicBTituloActua}
+            </title>
+            <style type="text/css">
+                body {font-family: 'Open Sans';font-size: 16px!important; } 
+                
+                .ui-paginator {
+                    font-size: 16px !important;
+                }
+
+                .ui-datatable tbody td {
+                    white-space: normal;
+                }
+
+                .ui-datatable thead th {
+                    white-space: normal;
+                }
+                  .gmxNoborde1 td{border-color:#FFFFFF;}
+                  hr.red {
+                        margin: 0px 0 0px !important;border-top-color: #DCE0E0 !important;position: relative !important; margin-left: 11px !important;} 
+                  hr.red:before {
+                       content: " "!important;width: 35px!important;height: 6px!important;background-color: #D0021B!important;
+                       display: block!important;  position: absolute!important;} 
+                  h2 {font-size: 38px!important;margin-bottom: 0px!important;margin-left: 10px !important;}
+                  body {font-family: 'Open Sans';font-size: 16px!important; }                
+                 .ui-selectoneradio td{padding: 0px!important;border-color:#FFFFFF!important;}
+                 .ui-selectoneradio label {padding-left: 5px!important; padding-right: 1px!important; }
+                   .ui-widget-content {
+                    border: 0px solid #e2e2e2!important;
+                }
+                  .ui-dialog-content {
+                    margin: 0px 0px 0px 0px!important;
+                    width: 100%!important;}
+                  .ui-messages-error, .ui-message-error {
+                        position: relative !important;
+                        top: 0px;
+                        display: block;
+                        clear: both;
+                        border-radius: 3px 3px 3px 3px;
+                        -moz-border-radius: 3px 3px 3px 3px;
+                        -webkit-border-radius: 3px 3px 3px 3px;
+                        border: 2px solid #D0021B;
+                        background-color: #F2DEDE;
+                        text-align: center;
+                        color: #545454;
+                        margin-top: 30px;
+                        margin-bottom: 30px;
+                        padding-top: 30px;
+                        padding-bottom: 30px;
+                        left: 0px;
+                    }
+                    .ui-icon.ui-icon-close {
+                        display: none;
+                    }
+            </style>
+        </h:head>
+         <h:body>
+             <f:metadata>
+                <f:event type="preRenderView" listener="#{cuentaBancariaCtrl.prerenderView}" />
+            </f:metadata>
+            <h:form id="formulario">
+                <ui:include src="/resources/pages/common/sessionPage.jsf"></ui:include>
+                <ui:include src="/resources/pages/common/inactividad.jsf"></ui:include>
+                <div class="gobmxContenedor8">
+                    <h2>
+                        <p:outputLabel value="#{msgValidacion.aicBTituloActua}"/>
+                    </h2> 
+                    <hr class="red" />
+                </div>
+                <p:panel styleClass="gobmxContenedor8 gmxNoborde">
+                    <p:messages id="msg" for="msg" closable="true"/>
+                    <p:scrollPanel style="width:100%;" mode="native">
+                        <p:dataTable id="tableInfo" scrollWidth="100%" paginator="true"
+                                     paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                     rowsPerPageTemplate="5,10,15,20" rows="10" style="text-align:left;width:100%"
+                                     liveResize="true" rowIndexVar="rowIndex"
+                                     rowStyleClass="#{(rowIndex mod 2) eq 0 ?'highlightA':'highlightB'}"
+                                     emptyMessage="#{msgValidacion.tblEmpty}"
+                                     value="#{cuentaBancariaCtrl.cuantaBancariaPage.dataModel}" var="variable"
+                                     selectionMode="single" rowKey="#{variable.numControl}"
+                                     selection="#{cuentaBancariaCtrl.selectedPrueba}">
+                            <f:facet name="header">
+                                <p:toolbar style="border-style:none;">
+                                    <p:toolbarGroup align="rigth">
+                                        <!--p:commandButton id="btnRem" icon="ui-icon-transferthick-e-w"
+                                                         action="#{cuentaBancariaCtrl.reemplazarCuenta}"
+                                                         title="#{msgValidacion.aicBbRemplazar}"
+                                                         disabled="#{cuentaBancariaCtrl.botonRemplazarCuenta}"/ -->
+                                        <p:commandButton id="btnMod" icon="ui-icon-pencil"
+                                                         title="#{msgValidacion.aicBbModificar}"
+                                                         action="#{cuentaBancariaCtrl.botonOpcionInsertarActualizar}"
+                                                         update=":formActual:dlgActua"/>
+                                    </p:toolbarGroup>
+                                </p:toolbar>
+                            </f:facet>
+                            <!--p:column selectionMode="single" style="width:2%"/-->
+                            <p:column headerText="#{msgValidacion.aicBNumControl}">
+                                <h:outputText value="#{variable.numControl}"/>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.aicBTipoTramite}">
+                                <h:outputText value="#{variable.tramite}"/>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.aicBImportePagar}" >
+                                <h:outputText value="#{variable.importe}">
+                                    <f:convertNumber pattern="$ ###,###,###" locale="==-MX"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.aicBPeriodoSaldoFavor}">
+                                <h:outputText value="#{variable.periodo}"/>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.aicBEjercicioSaldoFavor}">
+                                <h:outputText value="#{variable.ejercicio}"/>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.aicBFechaAutorizacion}">
+                                <h:outputText value="#{variable.fecha}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:scrollPanel>
+                </p:panel>
+            </h:form>
+             
+            <!--                     CUADRO DE DIALGO PARA ACTUALIZAR CUENTA CLABE                                -->
+             
+            <h:form id="formActual" enctype="multipart/form-data">
+                 <p:dialog id="dlgActua" header="#{msgValidacion.aicBDialogActua}" widgetVar="wgdActua" showEffect="fade"
+                          hideEffect="fade" modal="true" width="70%" closable="false"
+                          visible="#{cuentaBancariaCtrl.visibleFile}">
+                    <p:outputLabel value="#{msgValidacion.inpObligatorio}" style="color:red"/>
+                    <p:panel id="panelActua" columns="3" >
+                        <p:messages id="msgT" for="msgT" closable="true"/>
+                        <table align="center">
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="#{msgValidacion.aicBNumControl} : "/>
+                                </td>
+                                <td>
+                                    <p:outputLabel value="#{cuentaBancariaCtrl.selectedPrueba.numControl}"/>
+                                </td>
+                            </tr>
+                             
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="#{msgValidacion.aicBCuentaClabe} :"/><p:outputLabel value="*"
+                                                                                                              style="color:red"/>
+                                </td>
+                                <td>
+                                    <p:inputText id="txtCuenta" value="#{cuentaBancariaCtrl.dyctCuentaBancoDTO.clabe}"
+                                                 required="true" requiredMessage="#{msgValidacion.msjCuentaRequerido}"
+                                                 maxlength="18">
+                                        <p:ajax event="change" listener="#{cuentaBancariaCtrl.buscaBanco}"
+                                                update="comboBancos"/>
+                                    </p:inputText>
+                                </td>
+                            </tr>
+                             
+                            <tr>
+                                <td/>
+                                <td>
+                                    <p:message id="msgCuenta" for="txtCuenta" display="text"/>
+                                </td>
+                            </tr>
+                             
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="#{msgValidacion.aicBBanco} :"/><p:outputLabel value="*"
+                                                                                                        style="color:red"/>
+                                </td>
+                                <td>
+                                    <!--p:selectOneMenu id="comboBancos" style="font-size:8px; width:220px!important;"
+                                                     effect="fade"
+                                                     value="#{cuentaBancariaCtrl.dyccInstCreditoDTO.idInstCredito}"
+                                                     required="true"
+                                                     requiredMessage="#{msgValidacion.msjBancoRequerido}">
+                                        <f:selectItem itemLabel="#{msgValidacion.adycSelect}" itemValue=""
+                                                      noSelectionOption="true"/>
+                                        <f:selectItems value="#{cuentaBancariaCtrl.listaInstitucion}" var="listaInst"
+                                                       itemLabel="#{listaInst.descripcion}"
+                                                       itemValue="#{listaInst.idInstCredito}"/>
+                                    </p:selectOneMenu -->
+                                    <p:outputLabel id="comboBancos"
+                                                   value="#{cuentaBancariaCtrl.dyccInstCreditoDTO.descripcion}"/>
+                                </td>
+                            </tr>
+                             
+                            <tr>
+                                <td/>
+                                <td>
+                                    <p:message id="msgCombo" for="comboBancos" display="text"/>
+                                </td>
+                            </tr>
+                             
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="#{msgValidacion.aicBFechaRegistro} :"/>
+                                </td>
+                                <td>
+                                    <p:outputLabel value="#{cuentaBancariaCtrl.fechaInicial}"/>
+                                </td>
+                            </tr>
+                             
+                            <tr>
+                                <td>
+                                    <p:outputLabel value="#{msgValidacion.aicBFechaUltMod} : "/>
+                                </td>
+                                <td>
+                                    <p:outputLabel value="#{cuentaBancariaCtrl.fechaActualizacion}"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </p:panel>
+                    <p:commandButton value="#{msgValidacion.Cancelar}" style="width: 100px;"
+                                     action="#{cuentaBancariaCtrl.accionesCuentaBanco}">
+                        <f:param name="opcionBoton" value="cancelarInfo"/>
+                    </p:commandButton>
+                    <p:commandButton id="btnAcept" value="#{msgValidacion.Aceptar}" style="width: 100px;"
+                                     styleClass="gmxPositivo" update=":opcionEdo:dlgOpcion, :formActual:msgT"
+                                     action="#{cuentaBancariaCtrl.accionesCuentaBanco}">
+                        <f:param name="opcionBoton" value="actualizarInfo"/>
+                    </p:commandButton>
+                </p:dialog>
+            </h:form>
+             
+            <!--             CUADRO DE DIALOGO QUE MUESTRA LA OPCION DE ADJUNTAR ESTADO DE CUENTA                 -->
+             
+            <h:form id="opcionEdo">
+                <p:dialog id="dlgOpcion" widgetVar="opcion" header="Aceptar cuenta bancaria" showEffect="fade"
+                          hideEffect="fade" modal="true" width="300" closable="false"
+                          visible="#{cuentaBancariaCtrl.opcionEstadoCta}">
+                    <table>
+                        <tr align="center">
+                            <td>
+                                <p:outputLabel value="#{cuentaBancariaCtrl.textoMSG10}"/>
+                            </td>
+                        </tr>
+                         
+                        <tr align="center">
+                            <td>
+                                <p:commandButton value="Aceptar" action="#{cuentaBancariaCtrl.dialogAdjuntaZip}"
+                                                 update=":opcionEdo:dlgOpcion, :formFile:dlgFile"/>
+                            </td>
+                        </tr>
+                    </table>
+                </p:dialog>
+            </h:form>
+             
+            <!--                   CUADRO DE DIALGO PARA ADJUNTAR ESTADO DE CUENTA ZIP                            -->
+             
+            <h:form id="formFile" enctype="multipart/form-data">
+                <p:dialog id="dlgFile" widgetVar="file" header="#{msgValidacion.aicBEtiquetaAdjunta}" showEffect="fade"
+                          hideEffect="fade" modal="true" width="450" visible="#{cuentaBancariaCtrl.opcionAdjuntaZip}"
+                          closable="false">
+                    <table>
+                        <tr>
+                            <td>
+                                <!-- p:outputLabel value="#{msgValidacion.aicBEligeArchivo}"/ -->
+                            </td>
+                            <td>
+                                <p:fileUpload value="#{cuentaBancariaCtrl.file}" mode="simple" dragDropSupport="true"/>
+                            </td>
+                        </tr>
+                    </table>
+                    <p:commandButton value="#{msgValidacion.aicBAdjunta}" ajax="false"
+                                     actionListener="#{cuentaBancariaCtrl.subirArchivo}"
+                                     update=":formActual:msgT, :formRespCta:dlgRespCta, :formFile:dlgFile">
+                        <f:param name="remplaAdjunta" value="adjuntaAcualiza"/>
+                    </p:commandButton>
+                </p:dialog>
+            </h:form>
+             
+            <!--                 CUADRO DE DIALOGO DE ACEPTA SER EL RESPONSABLE DE ESTADO DE CUENTA               -->
+             
+            <h:form id="formRespCta">
+                <p:dialog id="dlgRespCta" widgetVar="respCta" header="Conformidad" showEffect="fade" hideEffect="fade"
+                          modal="true" width="400" visible="#{cuentaBancariaCtrl.opcionConformidad}" closable="false">
+                    <table>
+                        <tr>
+                            <td>
+                                <p align="justify">
+                                    #{cuentaBancariaCtrl.textoMSG8}
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                    <table align="center">
+                        <tr>
+                            <td>
+                                <p:commandButton value="#{msgValidacion.Si}"
+                                                 actionListener="#{cuentaBancariaCtrl.llamadoApplet}"
+                                                 update=":formRespCta:dlgRespCta, :formulario:tableInfo, :formActual:dlgActua">
+                                    <f:param name="conformiSI" value="SIA"/>
+                                </p:commandButton>
+                            </td>
+                            <td>
+                                <p:commandButton value="#{msgValidacion.No}"
+                                                 actionListener="#{cuentaBancariaCtrl.cancelarConformidad}"
+                                                 ajax="false"
+                                                 update=":formRespCta:dlgRespCta, :formulario:tableInfo, :formActual:dlgActua">
+                                    <f:param name="conformiSI" value="NOA"/>
+                                </p:commandButton>
+                            </td>
+                        </tr>
+                    </table>
+                </p:dialog>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

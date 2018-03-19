@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<handler-chains xmlns="http://java.sun.com/xml/ns/javaee">
+  <handler-chain>
+    <handler>
+      <handler-name>mx.gob.sat.mat.dyc.ws.iml.DicAutHandler</handler-name>
+      <handler-class>mx.gob.sat.mat.dyc.ws.impl.DicAutHandler</handler-class>
+    </handler>
+  </handler-chain>
+</handler-chains>

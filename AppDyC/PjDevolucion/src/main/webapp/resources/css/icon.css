@@ -1,0 +1,109 @@
+.ui-icon-sat {
+    background: url("../images/sat_azul.png")!important;
+    border-radius: 0px 0px 0px 0px;
+}
+
+.ui-icon-sat-a {
+    background: url("../images/gris_a.png")!important;
+    border-radius: 0px 0px 0px 0px;
+}
+
+.ui-icon-carpeta-c {
+    background: url("../resources/images/folder_c.png")!important;
+}
+
+.ui-icon-carpeta-a {
+    background: url("../resources/images/folder_a.png")!important;
+}
+
+.ui-icon-proceso {
+    background: url("../resources/images/proceso.png")!important;
+    width: 20px;
+    height: 20px;
+}
+
+.ui-tree {
+    border: medium none;
+    /*
+     width: 99%;
+     height: 400px;
+    */
+}
+
+.ui-tree .ui-tree-container {
+    height: 98%;
+    margin: 0;
+    overflow: auto;
+    padding: 3px;
+    white-space: nowrap;
+}
+
+.ui-orderlist .ui-orderlist-list {
+    height: 200px;
+    list-style-type: none;
+    margin: 0;
+    overflow: auto;
+    padding: 0;
+    width: 737px;
+}
+
+.ui-tree .ui-icon-triangle-1-e {
+    background: url("../images/treeview-famfamfam.gif")repeat scroll-81px-4px transparent !important;
+}
+
+.ui-tree .ui-icon-triangle-1-s {
+    background: url("../images/treeview-famfamfam.gif")repeat scroll-65px-26px transparent !important;
+}
+
+.ajax-estatus {
+    bottom: 107px;
+    height: 107px;
+    position: fixed;
+    right: 800px;
+}
+
+.ui-selectonemenu-panel {
+    height: auto;
+    position: absolute;
+    width: 40%;
+}
+
+#amenu {
+    font-family: Verdana, helvetica, arial, sans-serif;
+    font-size: 68.75%;
+    padding-left: 0;
+    width: 100%;
+}
+
+img {
+    border: none
+}
+
+a:link {
+    text-decoration: none;
+}
+
+a:visited {
+    text-decoration: none;
+}
+
+.panelProceso td, .panelProceso tr {
+    border-style: none !important
+}
+
+/* :::::: ELIMINA ICONO MENSAJE :::::: */
+.ui-growl-image {
+    display: none !important;
+    height: 0px;
+    width: 0px;
+}
+
+.ui-growl-message {
+    /*220 + 32*/
+    width: 252px;
+}
+
+.ui-messages-info-icon, .ui-messages-warn-icon, .ui-messages-error-icon, .ui-messages-fatal-icon, .ui-message-info-icon, .ui-message-warn-icon, .ui-message-error-icon, .ui-message-fatal-icon {
+    display: none !important;
+}
+/* :::::: ELIMINA ICONO MENSAJE :::::: */

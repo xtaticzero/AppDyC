@@ -1,0 +1,164 @@
+.ui-panelgrid td, .ui-panelgrid tr {
+    border-style: none !important
+}
+/**
+* @author [LuFerMX] Luis Fernando Barrios Quiroz
+*/
+/***-------- Dynamic Form ***********/
+.pe-dynaform-label {
+    text-align: left;
+    padding: 2px 20px 0 0;
+}
+
+.dynaForm input, .dynaForm textarea, .dynaForm[colspan="1"] input, .dynaForm[colspan="1"] textarea {
+    width: 150px;
+}
+/* note: trick with colspan is needed for IE8 */
+.dynaForm.calendar input, .dynaForm[colspan="1"].calendar input {
+    width: 120px;
+}
+
+.dynaForm.select .ui-selectonemenu {
+    width: 157px !important;
+}
+
+.dynaForm.select .ui-selectonemenu .ui-selectonemenu-label {
+    width: 130px !important;
+}
+/***-------- Dynamic Form ***********/
+.selectBooleanButton {
+    width: 50px;
+}
+
+.ui-picklist-list li{
+    padding-bottom: 9px !important;
+    margin: 9px !important;
+    padding-top: 9px !important;
+}
+
+.ui-picklist-button-add-all {
+    visibility: hidden !important;
+    display: none !important;
+}
+
+.ui-picklist-button-remove-all {
+    visibility: hidden !important;
+    display: none !important;
+}
+
+.panelgrid tr, .panelgrid td {
+    border-style: none !important
+}
+
+.panelgridBd {
+    padding: 0px;
+    border-style: none !important
+}
+
+.panelgridDefault td, .panelgridDefault tr {
+    border-style: solid;
+}
+
+div.panelgridBorder, div {
+    padding: 0px;
+    margin: 0px;
+    border-collapse: collapse;
+    border-spacing: inherit;
+}
+/** LuFerMX ********************************** */
+/*
+    background: #D9EDF7;
+    color: #3D89B5;
+*/
+.header {
+    background: green;
+}
+
+tr.highlightA {
+    background: #EFF0F7;
+    border: 1px solid Gray;
+}
+
+tr.highlightA > tr > td {
+    background: #EFF0F7;
+    border: 1px solid Gray;
+}
+
+tr.highlightB {
+    color: Black;
+}
+
+tr.highlightB > tr > td {
+    color: Black;
+}
+
+.panelgridLine {
+    padding: 0px 0px 0px 0px;
+    margin: 0px 0px 0px 0px;
+}
+
+.panelgridLine > div {
+    padding: 0px 0px 0px 0px;
+    margin: 0px 0px 0px 0px;
+}
+
+.panelgridLine > .ui-panel-content {
+    padding: 0px 0px 0px 0px;
+}
+
+.rojo {
+    color: Red;
+}
+
+.tdTexto {
+    width: 145px;
+    text-align: justify;
+    margin: 0;
+}
+/** TABLE SOLICITUDES  ***/
+.ui-datatable tbody tr {
+    white-space: normal;
+}
+
+.ui-datatable tbody td {
+    white-space: normal;
+}
+
+.ui-widget-content .ui-datatable thead th {
+    font-weight:bold !important;
+}
+
+.datalist-noborder .ui-widget-content {
+    border: none !important;
+    border-style: none !important;
+}
+
+.ui-widget {
+   /* font-size: 10px !important; */
+}
+
+.documentoEnviado {
+    background-color: #DFDFDF !important;
+    background-image: none !important;
+    color: #000000 !important;
+}
+
+/**
+ui-tree ui-widget ui-widget-content ui-corner-all
+*/
+.ui-tree {
+    border: none !important;
+}
+
+.ui-treenode-leaf-icon {
+    vertical-align: bottom;
+}
+
+.upperCase { 
+    text-transform: uppercase; 
+}
+
+.gmxAutoAjustable{
+    min-width:950px; 
+    max-width:1200px;
+}

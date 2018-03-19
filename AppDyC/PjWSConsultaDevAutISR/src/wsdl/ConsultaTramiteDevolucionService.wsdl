@@ -1,0 +1,55 @@
+<definitions targetNamespace="http://ws.consultaContribuyente.sad.dyc.mat.sat.gob.mx/" name="ConsultaTramiteDevolucionService" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://ws.consultaContribuyente.sad.dyc.mat.sat.gob.mx/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/wsdl/">
+   <types>
+      <xsd:schema>
+         <xsd:import namespace="http://ws.consultaContribuyente.sad.dyc.mat.sat.gob.mx/" schemaLocation="ConsultaTramiteDevolucionService.xsd"/>
+      </xsd:schema>
+   </types>
+   <message name="consultarExistenciaTramitesDevAut">
+      <part name="parameters" element="tns:consultarExistenciaTramitesDevAut"/>
+   </message>
+   <message name="consultarExistenciaTramitesDevAutResponse">
+      <part name="parameters" element="tns:consultarExistenciaTramitesDevAutResponse"/>
+   </message>
+   <message name="consultarDetalleTramiteDevAut">
+      <part name="parameters" element="tns:consultarDetalleTramiteDevAut"/>
+   </message>
+   <message name="consultarDetalleTramiteDevAutResponse">
+      <part name="parameters" element="tns:consultarDetalleTramiteDevAutResponse"/>
+   </message>
+   <portType name="ConsultaTramiteDevolucionServiceImpl">
+      <operation name="consultarExistenciaTramitesDevAut">
+         <input message="tns:consultarExistenciaTramitesDevAut"/>
+         <output message="tns:consultarExistenciaTramitesDevAutResponse"/>
+      </operation>
+      <operation name="consultarDetalleTramiteDevAut">
+         <input message="tns:consultarDetalleTramiteDevAut"/>
+         <output message="tns:consultarDetalleTramiteDevAutResponse"/>
+      </operation>
+   </portType>
+   <binding name="ConsultaTramiteDevolucionServicePortBinding" type="tns:ConsultaTramiteDevolucionServiceImpl">
+      <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+      <operation name="consultarExistenciaTramitesDevAut">
+         <soap:operation soapAction="consultarExistenciaTramitesDevAut"/>
+         <input>
+            <soap:body use="literal"/>
+         </input>
+         <output>
+            <soap:body use="literal"/>
+         </output>
+      </operation>
+      <operation name="consultarDetalleTramiteDevAut">
+         <soap:operation soapAction="consultarDetalleTramiteDevAut"/>
+         <input>
+            <soap:body use="literal"/>
+         </input>
+         <output>
+            <soap:body use="literal"/>
+         </output>
+      </operation>
+   </binding>
+   <service name="ConsultaTramiteDevolucionService">
+      <port name="ConsultaTramiteDevolucionServicePort" binding="tns:ConsultaTramiteDevolucionServicePortBinding">
+         <soap:address location="http://localhost:7001/DyCSAD-ConsultaContribuyente/ConsultaTramiteDevolucionService"/>
+      </port>
+   </service>
+</definitions>

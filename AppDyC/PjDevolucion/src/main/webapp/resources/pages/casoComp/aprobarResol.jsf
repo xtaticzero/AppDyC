@@ -1,0 +1,198 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui">
+    
+    <p:dialog id="dlgAResolucion" header="#{aprobarResolucionComp.dlgTitle}" widgetVar="dlgAResolucion" modal="true"
+        resizable="true" closable="true" style="max-width: 600px; min-height: 160px;">
+        
+        <p:panelGrid id="pnlEmitirResolucionCC" style="width:100%;">
+            <p:row>
+                <p:column colspan="2">
+                    <p:messages id="msgAResol" showDetail="true" closable="true" />
+                </p:column>
+            </p:row>
+            <p:row>
+                <p:column>
+                    <h:outputLabel value="#{msgValidacion.acc00050} "/>
+                </p:column>
+                <p:column>
+                    <h:outputLabel value="#{admCasosComp.numControl}"/>
+                </p:column>
+            </p:row>
+            <p:row rendered="#{!aprobarResolucionComp.mostrarDlgSuperiores}">
+                <p:column>
+                    <h:outputLabel value="#{msgValidacion.acc00051} "/>
+                </p:column>
+                <p:column>
+                    <p:inputTextarea value="#{aprobarResolucionComp.observaciones}" cols="40" rows="3" maxlength="150"
+                                     counter="counterM" counterTemplate="Quedan {0} caracteres" autoResize="false"/>
+                    <br/>
+                    <p:spacer style="width:6px"/>
+                    <h:outputText id="counterM"/>
+                </p:column>
+            </p:row>
+            <p:row rendered="#{aprobarResolucionComp.mostrarDlgSuperiores}">
+                <p:column>
+                    <h:outputLabel value="#{msgValidacion.acc00049}"/>
+                </p:column>
+                <p:column>
+                    <p:selectOneMenu id="cmbSuperiorAAprobarDlg" value="#{aprobarResolucionComp.idSuperior}"
+                                     required="true">
+                        <f:selectItem itemValue="0" itemLabel="-- Seleccione una opción --"/>
+                        <f:selectItems value="#{aprobarResolucionComp.superiores}" var="supAux"
+                                       itemValue="#{supAux.idLong}" itemLabel="#{supAux.descripcion}"/>
+                    </p:selectOneMenu>
+                </p:column>
+            </p:row>
+            <p:row>
+                <p:column style="text-align:left;" colspan="2">
+                    <h:inputHidden value="#{aprobarResolucionComp.claveResolucion}" id="claveResolucion"/>
+                    <p:commandButton id="btnCancelarResol" value="Cancelar" styleClass="gmxNegativo"
+                                     oncomplete="dlgAResolucion.hide();"/>
+                    <p:commandButton id="btnAceptarResol" value="Aceptar" 
+                                     rendered="#{!aprobarResolucionComp.mostrarDlgSuperiores}"
+                                     action="#{aprobarResolucionComp.preguntaSiEscala}"
+                                     process="@this, pnlEmitirResolucionCC" 
+                                     update="pnlEmitirResolucionCC, dlgAReasigDictaminador, dlgReasignacionDictaminador, dlgAEscalar"
+                                     styleClass="gmxPositivo"/>
+                    <p:commandButton id="btnAceptarDEAA" value="Aceptar" widgetVar="btnAceptarDEAA" 
+                                     rendered="#{aprobarResolucionComp.mostrarDlgSuperiores}"
+                                     action="#{aprobarResolucionComp.registrarSuperiorAprobacion}"
+                                     process="@this, pnlEmitirResolucionCC" update="pnlEmitirResolucionCC, dlgAEscalar"
+                                     styleClass="gmxPositivo" />
+                </p:column>
+            </p:row>
+        </p:panelGrid>
+    </p:dialog>
+                                     
+    <p:dialog id="dlgAReasigDictaminador" widgetVar="wvDlgAReasigDictaminador" 
+        header="Reasignacion de dictaminador opcional" modal="true" 
+        style="width: 600px; min-height: 150px;" rendered="true" resizable="true" closeable="true">
+        
+         <h5>Dictaminador asignado</h5> 
+
+        <p:panelGrid columns="2">
+            <p:outputLabel value="Nombre">:</p:outputLabel>
+            <h:outputText value="#{aprobarResolucionComp.nombreDictaminador}" />
+            <p:outputLabel value="No. empleado">:</p:outputLabel>
+            <h:outputText value="#{aprobarResolucionComp.numEmpDictaminador}" />
+        </p:panelGrid>
+        
+         <h5>¿Desea reasignar el dictaminador?</h5> 
+
+        <h:panelGrid columns="2" style="margin: auto; text-align: center;">
+
+            <p:commandButton value="Si" process="@this"
+                action="#{aprobarResolucionComp.mostrarListaDictaminadoresReasignacion}" 
+                update="dlgAReasigDictaminador, dlgReasignacionDictaminador" />
+
+            <p:commandButton value="No" process="@this"
+                action="#{aprobarResolucionComp.omitirReasignarDictaminador}"
+                update="dlgAReasigDictaminador" />
+
+        </h:panelGrid>
+        
+    </p:dialog>
+
+    <p:dialog id="dlgReasignacionDictaminador" widgetVar="wvDlgReasignacionDictaminador" 
+        header="Reasignacion de dictaminador opcional" modal="true" 
+        style="max-width: 600px; min-height: 150px;" rendered="true" resizable="true" closeable="true">
+        
+        <p:messages id="messages2" showDetail="true" closable="true" />
+        
+        <h5>Dictaminador asignado</h5>
+
+        <p:panelGrid columns="2">
+            <p:outputLabel value="Nombre">:</p:outputLabel>
+            <h:outputText value="#{aprobarResolucionComp.nombreDictaminador}" />
+            <p:outputLabel value="No. empleado">:</p:outputLabel>
+            <h:outputText value="#{aprobarResolucionComp.numEmpDictaminador}" />
+        </p:panelGrid>
+
+        <h:panelGrid columns="2" style="margin: auto; text-align: center;">
+
+            <p:commandButton value="Reasignar" process="@this" 
+                id="botonConfirmacionAprobacion" update="messages2"
+                action="#{aprobarResolucionComp.reasignarDictaminador}" 
+                disabled="#{!aprobarResolucionComp.confirmacionReasignacion}" />
+
+            <p:commandButton value="Cancelar" process="@this" 
+                action="#{aprobarResolucionComp.cancelarReasignarDictaminador}" 
+                update="dlgAReasigDictaminador, dlgReasignacionDictaminador" />
+
+        </h:panelGrid>
+
+        <!-- ************************************ INICIA LISTA DICTAMINADORES ************************************  -->
+        <p:dataTable id="idTblLista" var="vTblLista" value="#{aprobarResolucionComp.listaDictaminadoresReasignacion}"
+                     rowKey="#{vTblLista.numEmpleado}" scrollWidth="100%"
+                     paginator="#{mDictaminadorMB.frm.paginador}"
+                     paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                     rowsPerPageTemplate="10,15,20" rows="#{mDictaminadorMB.frm.rowsPaginador}"
+                     style="width:100%; max-height: 220px;" resizableColumns="true" liveResize="true" rowIndexVar="rowIndex"
+                     rowStyleClass="#{(rowIndex mod 2) eq 0 ?'highlightA':'highlightB'}"
+                     selection="#{aprobarResolucionComp.dictaminadorSeleccionado}" selectionMode="single"
+                     emptyMessage="#{msgValidacion.tblEmpty}">
+
+            <f:facet name="header">Reasignar dictaminador</f:facet>
+
+            <p:ajax event="rowSelect" update=":frmDictaminar:botonConfirmacionAprobacion" listener="#{aprobarResolucionComp.onRowSelect}"/>
+
+            <p:column sortBy="#{vTblLista.numEmpleado}" headerText="#{msgValidacion.mdNEmpleado}" width="200">
+                <h:outputText value="#{vTblLista.numEmpleado}"/>
+            </p:column>
+            <p:column sortBy="#{vTblLista.nombreCompleto}" headerText="#{msgValidacion.mdTblCol1}">
+                <h:outputText value="#{vTblLista.nombreCompleto}"/>
+            </p:column>
+            <p:column headerText="#{msgValidacion.mdTblCol2}" width="90">
+                <h:outputText value="#{vTblLista.descComision}"/>
+            </p:column>
+            <p:column width="90">
+                <f:facet name="header">
+                    <h:outputText value="#{msgValidacion.mdTblCol3}"/>
+                </f:facet>
+                <h:outputText value="#{vTblLista.activoPortal == 1 ? 'Activo' : 'Inactivo' }"/>
+            </p:column>
+            <f:facet name="footer">
+                <p:outputLabel value="#{mDictaminadorMB.frm.numResultados} Resultados"
+                               style="text-align:left"/>
+            </f:facet>
+        </p:dataTable>
+        <!-- ************************************ TERMINA LISTA DICTAMINADORES ************************************  -->
+        
+    </p:dialog>
+    
+    <p:dialog id="dlgAEscalar" header="Escalamiento opcional" widgetVar="dlgAEscalar" modal="true"
+        rendered="true" resizable="true" closable="true" >
+
+        <p:panelGrid id="pnlEscalarCC" style="width:100%;">
+            <p:row>
+                <p:column colspan="2">
+                    <p:messages id="msgAEscal" showDetail="true" closable="true"/>
+                </p:column>
+            </p:row>
+            <p:row>
+                <p:column>
+                    <h:outputLabel value="¿Desea escalar el trámite?"/>
+                </p:column>
+            </p:row>
+            <p:row  style="text-align:left;" colspan="2">
+                <p:column>
+                    
+                    <h:panelGrid columns="2" style="margin: auto; text-align: center;">
+                        
+                        <p:commandButton id="Acepta" value="Si"              
+                            process="@this" update="dlgAResolucion"
+                            action="#{aprobarResolucionComp.aceptoEscalar}" />
+                        
+                        <p:commandButton id="noAcepta" value="No" 
+                            process="@this" update="dlgAResolucion"
+                            action="#{aprobarResolucionComp.noAceptoEscalar}" />
+
+                    </h:panelGrid>
+    
+                </p:column>
+            </p:row>
+        </p:panelGrid>
+    </p:dialog>
+
+</f:view>

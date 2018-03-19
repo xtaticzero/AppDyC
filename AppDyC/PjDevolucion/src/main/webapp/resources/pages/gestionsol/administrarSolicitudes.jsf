@@ -1,0 +1,175 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view contentType="text/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+    <html xmlns="http://www.w3.org/1999/xhtml" xmlns:p="http://primefaces.org/ui">
+        <h:head>
+            <title>administrarSolicitudes</title>
+            <h:outputStylesheet library="css/" name="formato.css"/>
+            <style type="text/css">
+                .ui-paginator {
+                    font-size: 12px !important;
+                }
+
+                .ui-datatable tbody td {
+                    white-space: normal;
+                    vertical-align: text-top;
+                }
+
+                .ui-datatable thead th {
+                    white-space: normal;
+                    vertical-align: text-top;
+                }
+            </style>
+            <script type="text/javascript">
+              function resetTabIndex() {
+                  dataTable.getPaginator().setPage(0);
+              }
+            </script>
+        </h:head>
+        <h:body>
+            <h:form id="administrarSolicitudes1">
+                <p:panelGrid style="width:100%" rendered="#{dictaminarSolicitudMB.etiObligatorio}">
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.diCamposObligatorios}" style="color:red;"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+                <p:panel id="pnlSeleccionSolicitudes" styleClass="gmxAutoAjustable" widgetVar="filtro"
+                         visible="#{administrarSolicitudesMB.pnlSelSol}">
+                    <p:growl id="mess" globalOnly="true"/>
+                    <p:panelGrid style="width:100%;">
+                        <p:row>
+                            <p:column style="width:450px;text-align:right">
+                                <p:outputLabel value="#{msgValidacion.asSeleccionarSolicitudes}"/>
+                                <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                            </p:column>
+                            <p:column style="width:270px;text-align:left">
+                                <p:selectOneMenu id="selEstado" value="#{administrarSolicitudesMB.seleccionCombo}"
+                                                 style="width:300px" required="true"
+                                                 requiredMessage="#{msgValidacion.diRequerido}">
+                                    <f:selectItem itemLabel="#{msgValidacion.asComboSeleccion}" itemValue=""/>
+                                    <f:selectItem itemLabel="#{msgValidacion.asComboValor1}"
+                                                  itemValue="#{msgValidacion.asComboProceso}"/>
+                                    <f:selectItem itemLabel="#{msgValidacion.asComboValor2}"
+                                                  itemValue="#{msgValidacion.asComboPreautorizada}"/>
+                                    <f:selectItem itemLabel="#{msgValidacion.asComboValor3}"
+                                                  itemValue="#{msgValidacion.asComboRequerida}"/>
+                                    <f:selectItem itemLabel="#{msgValidacion.asComboValor4}"
+                                                  itemValue="#{msgValidacion.asComboDesistida}"/>
+                                    <f:selectItem itemLabel="#{msgValidacion.asComboValor5}"
+                                                  itemValue="#{msgValidacion.asComboPreasignada}"/>
+                                </p:selectOneMenu>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column/>
+                            <p:column style="text-align:left">
+                                <p:message id="idSelEstado" for="selEstado" display="text"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <div align="right" style="height:40px">
+                        <p:commandButton id="cancelar" value="#{msgValidacion.asBtnCancelar}"
+                                         action="#{administrarSolicitudesMB.buscarSolicitudes1}"
+                                         disabled="#{administrarSolicitudesMB.varBotonCan}"
+                                         update=":administrarSolicitudes2:solicitudes,idSelEstado,cancelar,:administrarSolicitudes2:scr1,:administrarSolicitudes2:btnDictaminar"
+                                         immediate="true"/>
+                         
+                        <p:commandButton value="#{msgValidacion.asBtnBuscar}"
+                                         action="#{administrarSolicitudesMB.buscarSolicitudes}"
+                                         update=":administrarSolicitudes2:solicitudes,idSelEstado,cancelar,:administrarSolicitudes2:btnDictaminar"/>
+                    </div>
+                </p:panel>
+                <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                <p:dialog id="statusBar" modal="true" widgetVar="statusDialog" header="#{msgValidacion.ajaxLoading}"
+                          draggable="false" width="250" closable="false" resizable="false">
+                    <p:graphicImage value="/resources/images/ajaxloadingbar.gif"/>
+                </p:dialog>
+            </h:form>
+             
+            <h:form id="administrarSolicitudes2">
+                <p:panel header="#{msgValidacion.asPanelDevolucion}" styleClass="gmxAutoAjustable"
+                         visible="#{administrarSolicitudesMB.pnlDevolucion}">
+                    <p:growl id="mess2" globalOnly="true"/>
+                    <p:toolbar>
+                        <p:toolbarGroup align="right">
+                            <p:commandButton id="btnDictaminar" icon="ui-icon-search" style="height:30px"
+                                             title="#{msgValidacion.asBtnDictaminar}"
+                                             rendered="#{administrarSolicitudesMB.btnDictaminar}"
+                                             disabled="#{administrarSolicitudesMB.varBotonDic}"
+                                             action="#{administrarSolicitudesMB.dictaminar}"/>
+                        </p:toolbarGroup>
+                    </p:toolbar>
+                    <p:scrollPanel id="scr1" style="height:600px" mode="native">
+                        <p:dataTable id="solicitudes" 
+                                     var="sol" 
+                                     rowKey="#{sol.numControl}"
+                                     widgetVar="dataTableSolicitud"
+                                     value="#{administrarSolicitudesMB.listaSolicitudesDictaminador}"
+                                     style="font-size:13.5px;" 
+                                     paginator="true" 
+                                     rows="5"
+                                     rowsPerPageTemplate="5,10,15,20" 
+                                     lazy="true"
+                                     emptyMessage="#{msgValidacion.administrarSolicitudes_t01}" 
+                                     selectionMode="single"
+                                     selection="#{administrarSolicitudesMB.solicitudAdministrarSolVO}"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                            <p:ajax event="rowSelect" update=":administrarSolicitudes2:btnDictaminar"
+                                    listener="#{administrarSolicitudesMB.onRowSelect}"/>
+                            <p:column headerText="#{msgValidacion.asNumControl}" 
+                                      filterBy="#{sol.numControl}"
+                                      filterMaxLength = "14">                                
+                                <h:outputText value="#{sol.numControl}">                                    
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asRFC}"
+                                      filterBy="#{sol.dycpServicioDTO.rfcContribuyente}" filterMaxLength = "13">
+                                <h:outputText value="#{sol.dycpServicioDTO.rfcContribuyente}"/>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asDictaminado}">
+                                <h:outputText value="#{sol.rolDictaminado}"/>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asOrigenDevolucion}">
+                                <h:outputText value="#{sol.origenDevolucion}"/>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asTipoTramite}">
+                                <h:outputText value="#{sol.tipoTramite}"/>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asFechaRecepcion}">
+                                <h:outputText value="#{sol.fechaPresentacion}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asFechaResolucion}">
+                                <h:outputText value="#{sol.fechaLimite}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asEstadoNotificacion}">
+                                <h:outputText value="#{sol.estadoNotificacion}"/>
+                            </p:column>
+                            <p:column headerText="Estado del último documento" style="color:red;">
+                                <h:outputText value="#{sol.estadoDocumento}"/>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asMonto}">
+                                <h:outputText value="#{sol.importeSolicitado}">
+                                    <f:convertNumber currencySymbol="$" type="currency"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asEstadoSolicitud}">
+                                <h:outputText value="#{sol.estadoSolicitud}"/>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asDictaminadorAsignado}">
+                                <h:outputText value="#{sol.nombre} 
+                                                     #{sol.apPaterno}
+                                                     #{sol.apMaterno}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:scrollPanel>
+                </p:panel>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

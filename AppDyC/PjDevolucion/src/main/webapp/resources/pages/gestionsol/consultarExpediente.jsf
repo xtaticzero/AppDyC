@@ -1,0 +1,815 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+    <html xmlns="http://www.w3.org/1999/xhtml" xmlns:p="http://primefaces.org/ui">
+        <h:head>
+            <title>consultarExpediente</title>
+            <h:outputScript library="js" name="calendarioIdiomaEs.js"/>
+            <h:outputStylesheet library="css/" name="formato.css"/>
+            <style type="text/css">
+                .ui-paginator {
+                    font-size: 12px !important;
+                }
+
+                .ui-datatable tbody td {
+                    white-space: normal;
+                }
+
+                .ui-datatable thead th {
+                    white-space: normal;
+                }
+                
+                @media (max-height: 600px) {
+
+                    #detalleContribuyente > div:last-child {
+                        height: 350px !important;
+                    }
+
+                }
+                
+                .ui-panel .ui-panel-content {
+                        padding: 0.5em 0em !important;
+                    }
+
+                .ui-dialog .ui-dialog-titlebar-close, .ui-dialog .ui-dialog-titlebar-minimize, .ui-dialog .ui-dialog-titlebar-maximize {
+                    float: right;
+                    margin: 0px;
+                    top: 0px;
+                    padding: 1px;
+                    cursor: pointer;
+                    margin-top: 10px;
+                    margin-right: 10px;
+                }
+            </style>
+        </h:head>
+        <h:body>
+            <script type="text/javascript">
+              $(document).ready(function () {
+                  $("#btnPrint").click(function () {
+                      $("#pruebaPrint").click();
+                  });
+              });
+            </script>
+            <h:form id="consultarExpediente" prependId="false">
+                <p:panel id="general" styleClass="gmxAutoAjustable">
+                   <p:messages id="msgGeneral" closable="true" showDetail="false" />
+                    
+                    
+                    <p:panel id="pnlDatosContribuyente" header="Datos resumidos del contribuyente">
+                        <p:panelGrid style="text-align:left">
+                            <p:row>
+                                <p:column style="width:400px;text-align:left;font-weight:bold">
+                                    <p:outputLabel value="Datos del contribuyente "/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width:400px;text-align:left">
+                                    <p:outputLabel value="RFC: "/>
+                                </p:column>
+                                <p:column style="text-align:left">
+                                    <p:outputLabel value="#{dyCConsultarExpedienteMB.personaDTO.rfcVigente}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width:400px;text-align:left; #{dyCConsultarExpedienteMB.personaIdentificacion.tipoPersona == 'F' ? 'display:none' : 'display:disabled;'}">
+                                    <p:outputLabel value="Denominación o razón social: "/>
+                                </p:column>
+                                <p:column style="text-align:left; #{dyCConsultarExpedienteMB.personaIdentificacion.tipoPersona == 'F' ? 'display:none' : 'display:disabled;'}">
+                                    <p:outputLabel value="#{dyCConsultarExpedienteMB.personaIdentificacion.razonSocial}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width:400px;text-align:left; #{dyCConsultarExpedienteMB.personaIdentificacion.tipoPersona == 'M' ? 'display:none' : 'display:disabled;'}">
+                                    <p:outputLabel value="Nombre: "/>
+                                </p:column>
+                                <p:column style="text-align:left; #{dyCConsultarExpedienteMB.personaIdentificacion.tipoPersona == 'M' ? 'display:none' : 'display:disabled;'}">
+                                    <p:outputLabel value="#{dyCConsultarExpedienteMB.personaIdentificacion.nombre}"/>
+                                    <p:outputLabel value=" "/>
+                                    <p:outputLabel value="#{dyCConsultarExpedienteMB.personaIdentificacion.apPaterno}"/>
+                                    <p:outputLabel value=" "/>
+                                    <p:outputLabel value="#{dyCConsultarExpedienteMB.personaIdentificacion.apMaterno}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width:400px;text-align:left;font-weight:bold">
+                                    <p:outputLabel value="Domicilio fiscal "/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width:400px;text-align:left">
+                                    <p:outputLabel value="Calle: "/>
+                                </p:column>
+                                <p:column style="text-align:left">
+                                    <p:outputLabel value="#{dyCConsultarExpedienteMB.domicilio.calle}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width:400px;text-align:left">
+                                    <p:outputLabel value="Delegación o municipio: "/>
+                                </p:column>
+                                <p:column style="text-align:left">
+                                    <p:outputLabel value="#{dyCConsultarExpedienteMB.domicilio.municipio}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width:400px;text-align:left">
+                                    <p:outputLabel value="Entidad federativa: "/>
+                                </p:column>
+                                <p:column style="text-align:left">
+                                    <p:outputLabel value="#{dyCConsultarExpedienteMB.domicilio.entFed}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width:400px;text-align:left">
+                                    <p:outputLabel value="Número de Administración Desconcentrada de Auditoría Fiscal: "/>
+                                </p:column>
+                                <p:column style="text-align:left">
+                                    <p:outputLabel value="#{dyCConsultarExpedienteMB.domicilio.claveAdmonLocal}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width:400px;text-align:left">
+                                    <p:outputLabel value="Descripción de la Administración de Auditoría Fiscal que corresponde: "/>
+                                </p:column>
+                                <p:column style="text-align:left">
+                                    <p:outputLabel value="#{dyCConsultarExpedienteMB.domicilio.admonLocal}"/>
+                                </p:column>
+                                <p:row></p:row>
+                            </p:row>
+                        </p:panelGrid>
+                    </p:panel>
+                    
+                 
+                    
+                    <p:panel id="pnlDatosTramite" header="Información resumida del trámite">
+                        <p:panelGrid style="text-align:left">
+                            <p:row>
+                                <p:column style="width:200px;text-align:left;font-weight:bold">
+                                    <p:outputLabel value="Información del trámite "/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width:200px;text-align:left">
+                                    <p:outputLabel value="Fecha de registro del trámite: "/>
+                                </p:column>
+                                <p:column style="text-align:left">
+                                    <h:outputLabel value="#{dyCConsultarExpedienteMB.dycpSolicitudDTO.fechaPresentacion}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                    </h:outputLabel>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width:200px;text-align:left">
+                                    <p:outputLabel value="Número de control: "/>
+                                </p:column>
+                                <p:column style="text-align:left">
+                                    <p:outputLabel value="#{dyCConsultarExpedienteMB.dycpSolicitudDTO.numControl}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width:200px;text-align:left">
+                                    <p:outputLabel value="Fecha de Pago (depósito confirmado): "/>
+                                </p:column>
+                                <p:column style="text-align:left">
+                                    <h:outputText value="#{dyCConsultarExpedienteMB.fechaPago}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                    </h:outputText>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                    </p:panel>
+                    
+                    
+                    
+                    
+                    <p:panel id="pnlNotas" header="Notas registradas al expediente del trámite">
+                        <p:scrollPanel id="scr1" style="height:110px" mode="native">
+                            <p:dataTable var="inc" value="#{dyCConsultarExpedienteMB.listaNotas}" style="width:100%"
+                                         emptyMessage="No se encontraron notas registradas"
+                                         paginator="#{dyCConsultarExpedienteMB.paginador5}" rows="10"
+                                         rowsPerPageTemplate="5,10,15,20"
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                                <p:column headerText="Fecha de creación" style="text-align:center">
+                                    <div align="left">
+                                        <h:outputLabel value="#{inc.fecha}">
+                                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                        </h:outputLabel>
+                                    </div>
+                                </p:column>
+                                <p:column headerText="Responsable" style="text-align:center">
+                                    <div align="left">
+                                        <h:outputLabel value="#{inc.usuario}"/>
+                                    </div>
+                                </p:column>
+                                <p:column headerText="Nota" style="text-align:center">
+                                    <div align="left">
+                                        <h:outputLabel value="#{inc.texto}"/>
+                                    </div>
+                                </p:column>
+                            </p:dataTable>
+                        </p:scrollPanel>
+                    </p:panel>                    
+                    <p:panel id="pnlDocsAdjuntos" header="Documentos adjuntos">
+                        <div align="center" style="font-weight:bold">
+                            <p:outputLabel value="#{msgValidacion.consultarExpediente_MSG008}"/>
+                        </div>
+                        <p:dataTable id="tblAdjuntos" var="inc" value="#{dyCConsultarExpedienteMB.dataModel}"
+                                     emptyMessage="No se encontraron documentos adjuntos"
+                                     paginator="#{dyCConsultarExpedienteMB.paginador1}" rows="10"
+                                     rowsPerPageTemplate="5,10,15,20" selectionMode="single"
+                                     selection="#{dyCConsultarExpedienteMB.dyctArchivoDTO}"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                            <p:ajax event="rowSelect" update="boton boton30"
+                                    listener="#{dyCConsultarExpedienteMB.onRowSelectDocs}"/>
+                            <f:facet name="header">
+                                <div align="right" style="height:30px">
+                                    <p:commandButton id="boton" icon="ui-icon-disk" title="Descargar documento adjunto"
+                                                     style="height:30px" ajax="false" immediate="true"
+                                                     disabled="#{dyCConsultarExpedienteMB.varBotonDocs}"
+                                                     actionListener="#{dyCConsultarExpedienteMB.downloadDocs}">
+                                        <p:fileDownload value="#{dyCConsultarExpedienteMB.fileDocs}"/>
+                                    </p:commandButton>
+                                    <p:commandButton id="boton30" icon="ui-icon-trash" title="Borrar documento adjunto" type="button"
+                                                     style="height:30px"
+                                                     disabled="#{dyCConsultarExpedienteMB.varBotonDocs}"
+                                                     onclick="dlgPregunta.show();"/>
+                                    <p:commandButton id="boton2" icon="ui-icon-document" style="height:30px"
+                                                     disabled="#{dyCConsultarExpedienteMB.varBotonAnexDoc}"
+                                                     title="Cargar documento adjunto" oncomplete="dlgCargar.show();"
+                                                     actionListener="#{dyCConsultarExpedienteMB.clear}"
+                                                     update=":consultarExpediente2:carga"/>
+                                </div>
+                            </f:facet>
+                            <p:column headerText="Fecha de registro">
+                                <h:outputText value="#{inc.fechaRegistro}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Nombre archivo">
+                                <h:outputText value="#{inc.nombreArchivo}"/>
+                            </p:column>
+                            <p:column headerText="Nombre documento">
+                                <h:outputText value="#{inc.descripcion}"/>
+                            </p:column>
+                            <p:column headerText="Estado">
+                                <h:outputText value="Adjuntado"/>
+                            </p:column>
+                        </p:dataTable>
+                        
+    </p:panel>
+	  
+	 <p:dialog widgetVar="dlgDetalle" modal="true" width="840" height="510" resizable="true" draggable="false"
+                               rendered="true" closable="true" header="Detalle contribuyente" id="detalleContribuyente">
+                        <p:panel id="pnlDatosContribuyenteGen" header="Datos generales del contribuyente"
+                                 style="width:100%">
+                            <p:panelGrid style="width:100%;text-align:left">
+                                <p:row>
+                                    <p:column style="width:400px;text-align:left;font-weight:bold">
+                                        <p:outputLabel value="Datos del contribuyente "/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width:400px;text-align:left">
+                                        <p:outputLabel value="RFC: "/>
+                                    </p:column>
+                                    <p:column style="text-align:left">
+                                        <p:outputLabel value="#{dyCConsultarExpedienteMB.personaDTO.rfcVigente}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width:400px;text-align:left; #{dyCConsultarExpedienteMB.personaIdentificacion.tipoPersona == 'M' ? 'display:none' : 'display:disabled;'}">
+                                        <p:outputLabel value="Apellido paterno: "/>
+                                    </p:column>
+                                    <p:column style="text-align:left; #{dyCConsultarExpedienteMB.personaIdentificacion.tipoPersona == 'M' ? 'display:none' : 'display:disabled;'}">
+                                        <p:outputLabel value="#{dyCConsultarExpedienteMB.personaIdentificacion.apPaterno}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width:400px;text-align:left; #{dyCConsultarExpedienteMB.personaIdentificacion.tipoPersona == 'M' ? 'display:none' : 'display:disabled;'}">
+                                        <p:outputLabel value="Apellido materno: "/>
+                                    </p:column>
+                                    <p:column style="text-align:left; #{dyCConsultarExpedienteMB.personaIdentificacion.tipoPersona == 'M' ? 'display:none' : 'display:disabled;'}">
+                                        <p:outputLabel value="#{dyCConsultarExpedienteMB.personaIdentificacion.apMaterno}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width:400px;text-align:left; #{dyCConsultarExpedienteMB.personaIdentificacion.tipoPersona == 'M' ? 'display:none' : 'display:disabled;'}">
+                                        <p:outputLabel value="Nombre(s): "/>
+                                    </p:column>
+                                    <p:column style="text-align:left; #{dyCConsultarExpedienteMB.personaIdentificacion.tipoPersona == 'M' ? 'display:none' : 'display:disabled;'}">
+                                        <p:outputLabel value="#{dyCConsultarExpedienteMB.personaIdentificacion.nombre}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width:400px;text-align:left; #{dyCConsultarExpedienteMB.personaIdentificacion.tipoPersona == 'F' ? 'display:none' : 'display:disabled;'}">
+                                        <p:outputLabel value="#{msgValidacion.aclP2Campo16_1}"/>
+                                    </p:column>
+                                    <p:column style="text-align:left; #{dyCConsultarExpedienteMB.personaIdentificacion.tipoPersona == 'F' ? 'display:none' : 'display:disabled;'}">
+                                        <p:outputLabel value="#{dyCConsultarExpedienteMB.personaIdentificacion.razonSocial}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width:400px;text-align:left;font-weight:bold">
+                                        <p:outputLabel value="Domicilio fiscal "/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width:400px;text-align:left">
+                                        <p:outputLabel value="Calle: "/>
+                                    </p:column>
+                                    <p:column style="text-align:left">
+                                        <p:outputLabel value="#{dyCConsultarExpedienteMB.domicilio.calle}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width:400px;text-align:left">
+                                        <p:outputLabel value="#{msgValidacion.aclP2Campo6}"/>
+                                    </p:column>
+                                    <p:column style="text-align:left">
+                                        <p:outputLabel value="#{dyCConsultarExpedienteMB.domicilio.numeroExt}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width:400px;text-align:left">
+                                        <p:outputLabel value="#{msgValidacion.aclP2Campo7}"/>
+                                    </p:column>
+                                    <p:column style="text-align:left">
+                                        <p:outputLabel value="#{dyCConsultarExpedienteMB.domicilio.numeroInt}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width:400px;text-align:left">
+                                        <p:outputLabel value="Colonia: "/>
+                                    </p:column>
+                                    <p:column style="text-align:left">
+                                        <p:outputLabel value="#{dyCConsultarExpedienteMB.domicilio.colonia}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width:400px;text-align:left">
+                                        <p:outputLabel value="#{msgValidacion.aclP6Campo9}"/>
+                                    </p:column>
+                                    <p:column style="text-align:left">
+                                        <p:outputLabel value="#{dyCConsultarExpedienteMB.domicilio.municipio}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width:400px;text-align:left">
+                                        <p:outputLabel value="#{msgValidacion.aclP6Campo10}"/>
+                                    </p:column>
+                                    <p:column style="text-align:left">
+                                        <p:outputLabel value="#{dyCConsultarExpedienteMB.domicilio.codigoPostal}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width:400px;text-align:left">
+                                        <p:outputLabel value="Localidad: "/>
+                                    </p:column>
+                                    <p:column style="text-align:left">
+                                        <p:outputLabel value="#{dyCConsultarExpedienteMB.domicilio.localidad}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width:400px;text-align:left">
+                                        <p:outputLabel value="Entidad federativa: "/>
+                                    </p:column>
+                                    <p:column style="text-align:left">
+                                        <p:outputLabel value="#{dyCConsultarExpedienteMB.domicilio.entFed}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width:400px;text-align:left">
+                                        <p:outputLabel value="#{msgValidacion.aclP6Campo13}"/>
+                                    </p:column>
+                                    <p:column style="text-align:left">
+                                        <p:outputLabel value="#{dyCConsultarExpedienteMB.domicilio.claveAdmonLocal}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width:400px;text-align:left">
+                                        <p:outputLabel value="#{msgValidacion.aclP6Campo14}"/>
+                                    </p:column>
+                                    <p:column style="text-align:left">
+                                        <p:outputLabel value="#{dyCConsultarExpedienteMB.domicilio.admonLocal}"/>
+                                    </p:column>
+                                    <p:row></p:row>
+                                </p:row>
+                            </p:panelGrid>
+                        </p:panel>
+                        <div align="right">
+                            <br/>
+                             
+                            <p:commandButton type="button" value="Cerrar" onclick="dlgDetalle.hide();"/>
+                            <br/><br/><br/><br/><br/><br/>
+                        </div>
+                    </p:dialog>
+        <p:dialog id="dlgAPregunta" header="Eliminación de archivo" widgetVar="dlgPregunta" modal="true"
+              width="600" height="220" rendered="true" resizable="true" closable="true" >
+        <p:panelGrid id="pnlEscalarCC" style="width:100%;">
+
+            <p:row>
+                <p:column>
+                    <h:outputLabel value="¿Desea eliminar el archivo?"/>
+                </p:column>
+            </p:row>
+            <p:row  style="text-align:left;" colspan="2">
+                    <p:column>
+                    
+                    <p:commandButton id="noAcepta" value="No" 
+                                     onclick="dlgPregunta.hide();"/>
+                    <p:commandButton id="acepta" value="Si" ajax="false"
+                                     actionListener="#{dyCConsultarExpedienteMB.borrarDocs}"
+                                     process="@this"
+                                     update="pnlDocsAdjuntos"
+                                     onclick="dlgPregunta.hide();"/>
+                    </p:column>
+                    
+                
+            </p:row>
+            <p:row>
+            </p:row>
+            <p:row>
+            <p:column>
+                    <h:outputLabel  value="Nota: No podrá recuperar el arhivo una vez borrado."/>
+            </p:column>
+            </p:row>
+        </p:panelGrid>
+    </p:dialog>
+                    
+                    
+                    <p:panel id="pnlDocsAnexos" header="Documentos anexos" 
+                             rendered="#{dyCConsultarExpedienteMB.panelAnexos}">
+                        <p:dataTable var="inc" value="#{dyCConsultarExpedienteMB.dataModelAnexo}"
+                                     emptyMessage="No se encontraron documentos anexos"
+                                     paginator="#{dyCConsultarExpedienteMB.paginador2}" rows="10"
+                                     rowsPerPageTemplate="5,10,15,20" selectionMode="single"
+                                     selection="#{dyCConsultarExpedienteMB.consultarExpedienteVO}"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                            <p:ajax event="rowSelect" update="boton3"
+                                    listener="#{dyCConsultarExpedienteMB.onRowSelectAnexos}"/>
+                            <f:facet name="header">
+                                <div align="right" style="height:30px">
+                                    <p:commandButton id="boton3" icon="ui-icon-disk" title="Descargar documento anexo"
+                                                     style="height:30px" ajax="false" immediate="true"
+                                                     disabled="#{dyCConsultarExpedienteMB.varBotonAnexos}"
+                                                     actionListener="#{dyCConsultarExpedienteMB.downloadAnexos}">
+                                        <p:fileDownload value="#{dyCConsultarExpedienteMB.fileAnexos}"/>
+                                    </p:commandButton>
+                                </div>
+                            </f:facet>
+                            <p:column headerText="Fecha de registro">
+                                <h:outputText value="#{inc.fechaRegistro}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Nombre documento">
+                                <h:outputText value="#{inc.nombreAnexo}"/>
+                            </p:column>
+                            <p:column headerText="Estado">
+                                <h:outputText value="Adjuntado"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                    <p:panel id="pnlDocsAdjuntosRequeridos" header="Documentos adjuntos requeridos">
+                        <p:dataTable id="tblAdjuntosRequeridos" var="inc"
+                                     value="#{dyCConsultarExpedienteMB.dataModelDocumentoRequerido}"
+                                     emptyMessage="No se encontraron documentos adjuntos requeridos"
+                                     paginator="#{dyCConsultarExpedienteMB.paginador3}" rows="10"
+                                     rowsPerPageTemplate="5,10,15,20" selectionMode="single"
+                                     selection="#{dyCConsultarExpedienteMB.dyctInfoRequeridaDTO}"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                            <p:ajax event="rowSelect" update="boton4"
+                                    listener="#{dyCConsultarExpedienteMB.onRowSelectDocsRequeridos}"/>
+                            <f:facet name="header">
+                                <div align="right" style="height:30px">
+                                    <p:commandButton id="boton4" icon="ui-icon-disk" title="Descargar documento adjunto"
+                                                     style="height:30px" ajax="false" immediate="true"
+                                                     disabled="#{dyCConsultarExpedienteMB.varBotonDocsRequeridos}"
+                                                     actionListener="#{dyCConsultarExpedienteMB.downloadDocsRequeridos}">
+                                        <p:fileDownload value="#{dyCConsultarExpedienteMB.fileDocsRequeridos}"/>
+                                    </p:commandButton>
+                                </div>
+                            </f:facet>
+                            <p:column headerText="Fecha de registro">
+                                <h:outputText value="#{inc.dyctReqInfoDTO.fechaRegistro}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Nombre archivo">
+                                <h:outputText value="#{inc.listaDyctArchivoInfReqDTO[0].nombreArchivo}"/>
+                            </p:column>
+                            <p:column headerText="Estado">
+                                <h:outputText value="Adjuntado"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                    <p:panel id="pnlDocsAnexosRequeridos" header="Documentos anexos requeridos"
+                              rendered="#{dyCConsultarExpedienteMB.panelAnexos}">
+                        <p:dataTable var="inc" value="#{dyCConsultarExpedienteMB.dataModelAnexoRequerido}"
+                                     emptyMessage="No se encontraron documentos anexos requeridos"
+                                     paginator="#{dyCConsultarExpedienteMB.paginador4}" rows="10"
+                                     rowsPerPageTemplate="5,10,15,20" selectionMode="single"
+                                     selection="#{dyCConsultarExpedienteMB.dyctAnexoReqDTO}"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                            <p:ajax event="rowSelect" update="boton5"
+                                    listener="#{dyCConsultarExpedienteMB.onRowSelectAnexosRequeridos}"/>
+                            <f:facet name="header">
+                                <div align="right" style="height:30px">
+                                    <p:commandButton id="boton5" icon="ui-icon-disk" title="Descargar documento anexo"
+                                                     style="height:30px" ajax="false" immediate="true"
+                                                     disabled="#{dyCConsultarExpedienteMB.varBotonAnexosRequeridos}"
+                                                     actionListener="#{dyCConsultarExpedienteMB.downloadAnexosRequeridos}">
+                                        <p:fileDownload value="#{dyCConsultarExpedienteMB.fileAnexosRequeridos}"/>
+                                    </p:commandButton>
+                                </div>
+                            </f:facet>
+                            <p:column headerText="Fecha de registro">
+                                <h:outputText value="#{inc.dyctReqInfoDTO.fechaRegistro}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Nombre archivo">
+                                <h:outputText value="#{inc.nombreArchivo}"/>
+                            </p:column>
+                            <p:column headerText="Estado">
+                                <h:outputText value="Adjuntado"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                    <p:panel id="pnlSolicitudDevolucion" header="Inconsistencias de la solicitud de devolución"
+                              rendered="#{dyCConsultarExpedienteMB.panelInconsistencias}">
+                        <p:dataTable var="inc" value="#{dyCConsultarExpedienteMB.listaInconsistenciasDev}"
+                                     style="width:100%" emptyMessage="No se encontraron inconsistencias"
+                                     paginator="#{dyCConsultarExpedienteMB.paginador6}" rows="10"
+                                     rowsPerPageTemplate="5,10,15,20"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                            <p:column headerText="Fecha de creación" style="text-align:center">
+                                <div align="left">
+                                    <h:outputLabel value="#{inc.fechaRegistro}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                    </h:outputLabel>
+                                </div>
+                            </p:column>
+                            <p:column headerText="Descripción" style="text-align:center">
+                                <div align="left">
+                                    <h:outputLabel value="#{inc.descripcion}"/>
+                                </div>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                     <p:dialog id="dlgFolio" modal="true"  rendered="true" resizable="false" visible="#{dyCConsultarExpedienteMB.mensajeFechaB}"
+                                        draggable="false" header="#{msgValidacion.msjConfirmacion}"  closable="false">
+                                  <table border="0">
+                                      <tr align="justify">
+                                          <td>  <h:outputText value="#{msgValidacion.consultarExpediente_MSG005}  #{dyCConsultarExpedienteMB.mensajeFecha}  #{msgValidacion.consultarExpediente_MSG005_1}" /></td>
+                                      </tr>
+                                      <tr>
+                                          <td>
+                                              <p:commandButton id="noAceptaNyV" value="No" ajax="false"
+                                                                       actionListener="#{dyCConsultarExpedienteMB.cancelar}"
+                                                                       process="@this"
+                                                                       update="@form"
+                                                                       oncomplete="dlgTes.hide();"/>
+                                                      <p:commandButton id="aceptaNyV" value="Si" ajax="false"
+                                                                       actionListener="#{dyCConsultarExpedienteMB.saveNyV}"
+                                                                       process="@this"
+                                                                       update="@form"
+                                                                       oncomplete="dlgTes.hide();"/>
+                                          </td>
+                                      </tr>
+                                  </table>
+                                  <br/><br/>
+                              </p:dialog>
+ <p:dialog id="dlgFechaMala" header="#{msgValidacion.msjConfirmacion}" visible="#{dyCConsultarExpedienteMB.mensajeFechaError}" modal="true"
+                               width="600" height="220" rendered="true" resizable="false" closable="false" >
+                        <p:panelGrid id="dlgFechaMalaPanel" style="width:100%;">
+                            <p:row>
+                                <p:column>
+                                    <h:outputText value="#{msgValidacion.consultarExpediente_MSG007}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row  style="text-align:left;" colspan="2">
+                                <p:column>
+                                    <p:commandButton id="dlgFechaMalaBtn" value="Aceptar" 
+                                                    ajax="false" process="@this"
+                                                                       update="@form"
+                                                    
+                                                    actionListener="#{dyCConsultarExpedienteMB.salir}"/>    
+                                    </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                    </p:dialog>
+                    <p:panel id="pnlDocsGestion" header="#{msgValidacion.consultarExpediente_T001}"  rendered="true">
+                        <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" /> 
+                        <p:dataTable var="inc" 
+                                     id="pnlDocsGestion2"
+                                     editable="true"
+                                     value="#{dyCConsultarExpedienteMB.dataModelDocsGestion}"
+                                     emptyMessage="No se encontraron documentos de gestión"
+                                     paginator="#{dyCConsultarExpedienteMB.paginador7}" 
+                                     rows="10"
+                                  
+                                     rowsPerPageTemplate="5,10,15,20" 
+                                     selectionMode="single"
+                                     selection="#{dyCConsultarExpedienteMB.solicitudAdministrarSolVO}"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                            <p:ajax event="rowSelect"      process="@this" partialSubmit="true" listener="#{dyCConsultarExpedienteMB.onRowSelectGestion}" update="boton6"/>
+                            <p:ajax event="rowEdit"        process="@this" partialSubmit="true" listener="#{dyCConsultarExpedienteMB.onRowEdit}"         update=":consultarExpediente:dlgFolio"/>
+                            <p:ajax event="rowEditCancel"  process="@this" partialSubmit="true" listener="#{dyCConsultarExpedienteMB.onRowCancel}"      update=":consultarExpediente:dlgFolio" />
+                            
+                            <f:facet name="header">
+                                <div align="right" style="height:30px">
+                                    <p:commandButton id="boton6" icon="ui-icon-arrowstop-1-s"
+                                                    title="Descargar documento de gestion" style="height:30px"
+                                                    ajax="false" immediate="true"
+                                                    disabled="#{dyCConsultarExpedienteMB.varBotonGestion}"
+                                                    actionListener="#{dyCConsultarExpedienteMB.downloadDocsGestion}">
+                                       <p:fileDownload value="#{dyCConsultarExpedienteMB.fileDocsGestion}"/>
+                                   </p:commandButton>
+                                </div>
+                            </f:facet>
+                            <p:column headerText="Fecha de registro">
+                                <h:outputText value="#{inc.fechaRegistro}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                               
+                            </p:column>
+                            
+                            <p:column headerText="Fecha de notificación">
+                                
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{inc.fechaNotificacion}">
+                                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                        </h:outputText>
+                                    </f:facet>
+                                    <f:facet name="input">
+                                       <p:calendar id="caFecha"
+                                                    style="width: 100%"
+                                                    value="#{inc.fechaNotificacion}"
+                                                    navigator="true" pattern="dd/MM/yyyy" yearRange="2000"
+                                                    locale="es" readonlyInput="true"
+                                                    required="true"
+                                                    disabledWeekends="true"
+                                                    requiredMessage="#{msgValidacion.generalMsgRequerido}"
+                                                    styleClass="myClass">
+                                        </p:calendar>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            
+                            <p:column headerText="Nombre documento">
+                                <h:outputText value="#{inc.nombreArchivo}"/>
+                            </p:column>
+                            <p:column headerText="Folio NyV">  
+                            
+                                <p:cellEditor>
+                                    <f:facet name="output">
+                                        <h:outputText value="#{inc.folio}" />
+                                    </f:facet>
+                                    <f:facet name="input">
+                                        <p:inputText value="#{inc.folio}" required="true" maxlength="15" requiredMessage="#{msgValidacion.generalMsgRequerido}"/>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
+                            <p:column headerText="Estado">
+                                <h:outputText value="Aprobado"/>
+                            </p:column>
+                            <p:column rendered="#{dyCConsultarExpedienteMB.tieneRolDYC008}">                       
+                                 <p:rowEditor  />
+                            </p:column>  
+                        </p:dataTable>
+                    </p:panel>
+                    
+                   
+                                                                     
+                    <p:panel id="pnlArt22" header="Artículo 22" rendered="#{dyCConsultarExpedienteMB.ocultarPanelArt22}" >
+                        <p:dataTable id="tblArt22" var="art22" value="#{dyCConsultarExpedienteMB.listaArticulo22}"
+                                     emptyMessage="No se encontraron trámites correspondientes"
+                                     paginator="#{dyCConsultarExpedienteMB.paginador8}" rows="10"
+                                     rowsPerPageTemplate="5,10,15,20"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                            <p:column headerText="Número de orden">
+                                <h:outputText value="#{art22.folio}">
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Fecha de registro">
+                                <h:outputText value="#{art22.fechaRegistro}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Fecha Inicio">
+                                <h:outputText value="#{art22.fechaInicio}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Fecha Fin">
+                                <h:outputText value="#{art22.fechaFin}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                    
+                                           
+                    <p:panel id="pnlMotivosRiesgo" header="Motivos de Riesgo" rendered="#{dyCConsultarExpedienteMB.ocultarPanelMotRies}" >
+                        <p:dataTable id="tblMotivosRiesgo" var="motRiesgo" value="#{dyCConsultarExpedienteMB.listaMotivosRiesgo}"
+                                     emptyMessage="No se encontraron trámites correspondientes"
+                                     paginator="#{dyCConsultarExpedienteMB.paginador8}" rows="10"
+                                     rowsPerPageTemplate="5,10,15,20"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                            <p:column headerText="Fecha de registro">
+                                <h:outputText value="#{motRiesgo.fechaRegistro}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="C&oacute;digo">
+                                <h:outputText value="#{motRiesgo.motRiesgo}">
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Regla">
+                                <h:outputText value="#{motRiesgo.rfc}">
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Modelo">
+                                <h:outputText value="#{motRiesgo.idModelo == 1?'SIVAD':'MORSA'}">
+                                </h:outputText>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    <p:panel style="width:100%;height:45px">
+                        <div align="center">
+                            <p:commandButton value="Regresar" action="#{dyCConsultarExpedienteMB.dictaminarSolicitud}"
+                                             immediate="true"/>
+                            <div style="display:none">
+                                <h:commandLink id="pruebaPrint" value="Enviar a PDF"
+                                               action="#{dyCConsultarExpedienteMB.downloadPDF}" target="_blank"/>
+                            </div>
+                            <!--   <div style="display:none">
+                                <h:commandButton id="pruebaPrint" value="Imprimir Expediente" style="height:28px">
+                                    <p:printer target=":consultarExpediente3:pnlDatos"/>
+                                </h:commandButton>
+                            </div>    -->
+                            <p:commandButton id="btnPrint" value="Imprimir" action="#"/>
+                             
+                            <p:commandButton value="Detalle trámite comp"
+                                             rendered="#{dyCConsultarExpedienteMB.botonTramite2}"
+                                             action="#{dyCConsultarExpedienteMB.detalleTramite2}"/>
+                             
+                            <p:commandButton value="Detalle trámite"
+                                             rendered="#{dyCConsultarExpedienteMB.botonTramite1}"
+                                             action="#{dyCConsultarExpedienteMB.detalleTramite1}"/>
+                             
+                            <p:commandButton type="button" value="Detalle contribuyente" onclick="dlgDetalle.show();"/>
+                        </div>
+                    </p:panel>
+                   
+                </p:panel>
+            </h:form>
+             
+            <h:form id="consultarExpediente2" enctype="multipart/form-data">
+                <p:dialog id="carga" widgetVar="dlgCargar" modal="true" resizable="false" draggable="false"
+                          closable="true" header="Cargar documento adjunto" width="670">
+                    <p:panelGrid style="width:100%">
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.diCamposObligatorios}" style="color:red;"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <br/>
+                    <p:panelGrid columns="3" style="border-style:hidden;">
+                        <h:outputText value="#{msgValidacion.asEtiRuta}"/>
+                        <p:outputLabel value="#{msgValidacion.asRequerido}" style="color:red"/>
+                        <p:fileUpload value="#{dyCConsultarExpedienteMB.file}" mode="simple" dragDropSupport="true"
+                                      style="width:411px;" update="tblAdjuntos" validator="ArchivoValidator"/>
+                        <p:outputLabel value="Nombre del documento: "/>
+                        <p:outputLabel value="#{msgValidacion.asRequerido}" style="color:red"/>
+                        <p:inputText id="documento" maxlength="200" style="width:400px; text-transform:uppercase"
+                                     value="#{dyCConsultarExpedienteMB.nombreDocumento}" required="true"
+                                     requiredMessage="Campo requerido (nombre documento)"/>
+                        <p:outputLabel/>
+                    </p:panelGrid>
+                    <p:panelGrid style="width:100%;text-align:center;">
+                        <p:row>
+                            <p:column>
+                                <p:commandButton value="#{msgValidacion.asBtnCancelar}" ajax="false" immediate="true"
+                                                 onclick="dlgCargar.hide();"/>
+                                <p:commandButton id="chartBtn" value="Cargar" 
+                                                 action="#{dyCConsultarExpedienteMB.fileUpload}" ajax="false"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:dialog>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

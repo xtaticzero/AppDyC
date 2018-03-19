@@ -1,0 +1,231 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+        xmlns:ui="http://java.sun.com/jsf/facelets" locale="ES">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <title>Contribuyente confiable</title>
+            <meta http-equiv="X-UA-Compatible" content="IE=8"/>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <meta http-equiv="pragma" content="no-cache"/>
+            <meta http-equiv="cache-control" content="no-cache"/>
+            <meta http-equiv="expires" content="0"/>
+            <h:outputScript library="primefaces" name="primefaces.js"/>
+            <h:outputScript library="js" name="general.js"/>
+            <h:outputStylesheet library="css/" name="formato.css"/>
+            <style type="text/css">
+                .ui-paginator {
+                    font-size: 12px !important;
+                }
+
+                .ui-datatable tbody td {
+                    white-space: normal;
+                }
+
+                .ui-datatable thead th {
+                    white-space: normal;
+                }
+
+                .ui-growl {
+                    width: 600px !important;
+                }
+
+                .ui-growl-message {
+                    width: 520px !important;
+                }
+            </style>
+        </h:head>
+        <h:body>
+            <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+             
+            <p:dialog modal="true" widgetVar="statusDialog" header="#{msgValidacion.ajaxLoading}" draggable="false"
+                      closable="false">
+                <h:graphicImage library="images/" name="ajaxloadingbar.gif"/>
+            </p:dialog>
+             
+            <h:form id="pnlPrincipalRFCNo">
+                <ui:include src="/resources/pages/common/sessionPage.jsf"></ui:include>
+                <ui:include src="/resources/pages/common/inactividad.jsf"></ui:include>
+                <p:panel id="pnRFCNo" header="Contribuyentes confiables" style="width: 100%">
+                    <p:growl id="msg" for="msg" sticky="true" escape="true" autoUpdate="true"/>
+                    <p:toolbar>
+                        <p:toolbarGroup align="rigth">
+                            <p:commandButton id="btnInsertar" icon="ui-icon-document" title="Insertar RFC"
+                                             action="#{rfcConfiableMB.opcionesRealizar}"
+                                             update=":formDialog:dlgPrincipal">
+                                <f:param name="opcionConfi" value="btn1ns3rt"/>
+                            </p:commandButton>
+                            <p:commandButton id="btnModificar" icon="ui-icon-pencil" title="Modificar RFC"
+                                             action="#{rfcConfiableMB.opcionesRealizar}"
+                                             update=":formDialog:dlgPrincipal">
+                                <f:param name="opcionConfi" value="btnM0d1f1c4r"/>
+                            </p:commandButton>
+                            <p:commandButton id="btnBusqueda" icon="ui-icon-search" title="Bitácora"
+                                             action="#{rfcConfiableMB.opcionesRealizar}"
+                                             update=":formDialog:dlgPrincipal">
+                                <f:param name="opcionConfi" value="btnBusqu3d4"/>
+                            </p:commandButton>
+                            <!--p:commandButton id="prueba" icon="ui-icon-search" title="Prueba"
+                                             action="#{rfcNoConfiable.muestraRfcNoConfiable}" update="tblMuestraInfo"/ -->
+                        </p:toolbarGroup>
+                    </p:toolbar>
+                    <!--:::::::::::::::::::::Tabla de informacion:::::::::::::::::::::::::-->
+                    <p:scrollPanel style="width:100%;" mode="native">
+                        <p:dataTable id="tblMuestraInfo" scrollWidth="100%" paginator="true"
+                                     paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                     rowsPerPageTemplate="5,10,15,20" rows="10" style="text-align:left;width:100%"
+                                     liveResize="true" rowIndexVar="rowIndex"
+                                     rowStyleClass="#{(rowIndex mod 2) eq 0 ?'highlightA':'highlightB'}"
+                                     value="#{rfcConfiableMB.listaRfcConfiables}" var="confiables"
+                                     rowKey="#{confiables.rfc}" selection="#{rfcConfiableMB.seleccionConfiable}"
+                                     emptyMessage="#{msgValidacion.tblEmpty}" selectionMode="single">
+                            <p:column headerText="RFC" filterBy="#{confiables.rfc}">
+                                <h:outputText value="#{confiables.rfc}"/>
+                            </p:column>
+                            <p:column headerText="Nombre o Razón social">
+                                <h:outputText value="#{confiables.nombreCompleto}"/>
+                            </p:column>
+                            <p:column headerText="Estatus">
+                                <h:outputText value="#{confiables.esConfiable == 1 ? 'Activo' : 'Inactivo'}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:scrollPanel>
+                </p:panel>
+            </h:form>
+             
+            <h:form id="formDialog">
+                <p:dialog id="dlgPrincipal"
+                          header="#{rfcConfiableMB.panelInsertar == true ? 'Alta de' : rfcConfiableMB.panelModificar == true ? 'Modificar' : rfcConfiableMB.panelBitacor == true ? 'Bitácora' : ''} contribuyente confiable"
+                          widgetVar="wgdPrincipal" hideEffect="fade" showEffect="fade" modal="true" width="60%"
+                          closable="false">
+                    <p:outputLabel id="obliga" value="#{msgValidacion.inpObligatorio}" style="color:red"
+                                   rendered="#{rfcConfiableMB.panelInsertar == true ? true : rfcConfiableMB.panelModificar == true ? true : false}"/>
+                    <!--:::::::::::::::::::: PANEL INSERTAR :::::::::::::::::::::::-->
+                    <p:panelGrid id="pngDialogInsert" rendered="#{rfcConfiableMB.panelInsertar}">
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="RFC:"/>
+                                <p:outputLabel value="*" style="color:red"/>
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="txtRfc" value="#{rfcConfiableMB.insertarConfiable.rfc}" required="true"
+                                             requiredMessage="#{msgValidacion.mcRequerido}"
+                                             validatorMessage="Introduzca un RFC valido y con homoclave"
+                                             styleClass="upperCase">
+                                    <p:ajax event="change" listener="#{rfcConfiableMB.buscaRfcEnAmpliado}"
+                                            update="txtNom"/>
+                                </p:inputText>
+                                <p:message id="msgRfc" for="txtRfc" display="text"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="Nombre o Razón social:"/>
+                                <p:outputLabel value="*" style="color:red"/>
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="txtNom" value="#{rfcConfiableMB.insertarConfiable.nombreCompleto}"
+                                             disabled="true"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="2">
+                                <p:commandButton id="btnCancelInser" value="Cancelar" oncomplete="wgdPrincipal.hide();"
+                                                 action="#{rfcConfiableMB.reset}" styleClass="gmxNegativo"/>
+                                <p:commandButton value="Aceptar" action="#{rfcConfiableMB.insertar}"
+                                                 update="pngDialogInsert :pnlPrincipalRFCNo:pnRFCNo"
+                                                 styleClass="gmxPositivo"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <!--:::::::::::::::::::: PANEL MODIFICAR :::::::::::::::::::::::-->
+                    <p:panelGrid id="pngDialoModif" rendered="#{rfcConfiableMB.panelModificar}">
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="RFC:"/>
+                            </p:column>
+                            <p:column>
+                                <p:inputText value="#{rfcConfiableMB.seleccionConfiable.rfc}" disabled="true"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="Nombre o Razón social:"/>
+                            </p:column>
+                            <p:column>
+                                <p:inputText value="#{rfcConfiableMB.seleccionConfiable.nombreCompleto}"
+                                             disabled="true"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="Estatus:"/>
+                                <p:outputLabel value="*" style="color:red"/>
+                            </p:column>
+                            <p:column>
+                                <p:selectOneRadio id="rdEstatus"
+                                                  value="#{rfcConfiableMB.seleccionConfiable.esConfiable}">
+                                    <f:selectItem itemLabel="Activo" itemValue="1"/>
+                                    <f:selectItem itemLabel="Inactivo" itemValue="0"/>
+                                </p:selectOneRadio>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="2">
+                                <p:commandButton id="btnCanMod" value="Cancelar" oncomplete="wgdPrincipal.hide();"
+                                                 action="#{rfcConfiableMB.reset}" styleClass="gmxNegativo"/>
+                                <p:commandButton value="Aceptar" action="#{rfcConfiableMB.modificar}"
+                                                 update="pngDialogInsert :pnlPrincipalRFCNo:pnRFCNo"
+                                                 styleClass="gmxPositivo"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <!--:::::::::::::::::::: PANEL BITACORA :::::::::::::::::::::::-->
+                    <p:panelGrid id="pnlDialogBitacora" rendered="#{rfcConfiableMB.panelBitacor}">
+                        <p:row>
+                            <p:column colspan="2">
+                                <p:dataTable id="tblBitacora" scrollWidth="100%" paginator="true"
+                                             paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                             rowsPerPageTemplate="5,10,15,20" rows="10"
+                                             style="text-align:left;width:100%" liveResize="true" rowIndexVar="rowIndex"
+                                             rowStyleClass="#{(rowIndex mod 2) eq 0 ?'highlightA':'highlightB'}"
+                                             emptyMessage="#{msgValidacion.tblEmpty}"
+                                             value="#{rfcConfiableMB.listaBitacoraRfcConfiables}" var="bitacoraConf">
+                                    <p:column headerText="RFC">
+                                        <h:outputText value="#{bitacoraConf.dycpRfcDTO.rfc}"/>
+                                    </p:column>
+                                    <p:column headerText="Fecha última modificación">
+                                        <h:outputText value="#{bitacoraConf.fechaModificacion}"/>
+                                    </p:column>
+                                    <p:column headerText="Estatus">
+                                        <h:outputText value="#{bitacoraConf.dyccTipoAccionRfcDTO.idTipoAccionRfc == 1 ? 'Activo' : 'Inactivo'}"/>
+                                    </p:column>
+                                    <p:column headerText="Responsable">
+                                        <h:outputText value="#{bitacoraConf.usuarioResp}"/>
+                                    </p:column>
+                                </p:dataTable>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="2">
+                                <p:commandButton value="Cerrar" oncomplete="wgdPrincipal.hide();" ajax="false"
+                                                 action="#{rfcConfiableMB.reset}" styleClass="gmxNegativo"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:dialog>
+                <p:dialog modal="true" resizable="false" visible="#{rfcConfiableMB.restriccion}" draggable="false"
+                          header="Aviso!..." width="450" closable="false">
+                    <table border="0">
+                        <tr align="justify">
+                            <td>No es competencia de esta autoridad realizar alguna acci&oacute;n en el Cat&aacute;logo
+                                de Padr&oacute;n confiables.</td>
+                        </tr>
+                    </table>
+                    <br/>
+                    <br/>
+                </p:dialog>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

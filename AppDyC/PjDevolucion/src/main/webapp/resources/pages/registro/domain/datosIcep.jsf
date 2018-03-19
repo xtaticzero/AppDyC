@@ -1,0 +1,155 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+     <script>
+        $tipoperiodo = $("#form\\:cboTipoPeriodo").hasClass('ui-state-error');
+        $periodo = $("#form\\:cboPeriodo").hasClass('ui-state-error');
+        $ejercicio = $("#form\\:cboEjercicio").hasClass('ui-state-error');
+         
+         if($tipoperiodo ||  $periodo || $ejercicio  ){
+             document.getElementById("error1").innerHTML="Todos los campos marcados con * son requeridos";
+            document.getElementById("error1").style.display="inherit";  
+             
+         }
+    
+    </script>
+    <style>
+                        #dvBtnSalir{
+                            position: relative;
+                            left: -250px !important;
+                            top: -24px !important;
+                        }
+                    </style>
+    <div style="width: 1180px">
+      <div class="gob-dat-cont">
+        <h2 style="margin-left: 0px ! important;">
+           <p:outputLabel value="#{msgValidacion.L0000010}"/>
+        </h2> 
+        <hr class="red"  style="margin-left: 0px ! important;margin-top: 4px !important;" />
+    </div>
+    <style type="text/css">
+      .gmxNoborde td {
+           border: none !important;
+
+            text-align: left !important;
+        }
+        .ui-selectonemenu{height:39px!important;}
+        .ui-selectonemenu .ui-state-focus{height:39px!important;}
+        .ui-selectonemenu .ui-state-active{height:39px!important;}
+        .ui-selectonemenu-items-wrapper
+         {
+            z-index: 1000!important;
+         }
+          .ui-selectonemenu-panel {
+                z-index: 100 !important;
+            }
+        .ui-panelgrid .ui-widget-content {
+    height: 0px;
+}
+.ui-button-icon-left.ui-icon.ui-c.ui-icon-arrowthick-1-e{
+            width: 0px !important;
+            height: 0px !important;
+        }
+        .ui-button .ui-button-text {
+            padding: .4em 1em .4em 1.2em;
+
+        }
+        .ui-button-text-icon-left .ui-button-text {
+            padding: .4em 1em .4em 1.2em;
+        }
+    </style>
+
+   
+   <div id="error1" style="margin-left: 0px;"></div>
+   <p:messages id="icepMasagge" globalOnly="true" closable="true"/>
+   <div style="position: relative; margin-left: -5px;">
+    <p:panel style="border: none !important;"  >
+        <p:panelGrid id="pnlGDatosICEP"  styleClass="gmxNoborde" style="  margin-bottom: 18px; margin-left: -12px !important;">
+            <p:row>
+                <p:column> 
+                    <p:outputLabel value="#{msgValidacion.L0000071 }" />
+                    <span style="margin-right: 23px;"><p:spacer width="0" /> </span>
+                    <p:outputLabel id="impuestoICEP" value="#{adicionarSolicitudMB.tramite.impuesto.descripcion}"/>
+                </p:column>
+            </p:row>
+            <p:row>
+                <p:column > 
+                    <p:outputLabel value="#{msgValidacion.L0000072 }"  />
+                    <span style="margin-right: 23px;"><p:spacer width="0" /> </span>
+                <p:outputLabel id="conceptoICEP" value="#{adicionarSolicitudMB.tramite.concepto.descripcion}"/>
+                </p:column>
+            </p:row>
+          </p:panelGrid>
+                <br/><br/>
+          <p:panelGrid styleClass="gmxNoborde" style="margin-left: -12px !important;">
+            <p:row>
+                <p:column>                    
+                        #{msgValidacion.L0000073 }<p:outputLabel value="" for="cboTipoPeriodo"/>: 
+                        <p:selectOneMenu id="cboTipoPeriodo" filterMatchMode="startsWith"
+                                         value="#{adicionarSolicitudMB.tramite.tipoPeriodo}"
+                                         converter="CatalogoConverter" required="true" panelStyle="width:373.333px;"
+                                         requiredMessage="#{msgValidacion.msjCampoRequerido}" style="width: 373.333px">
+                            <p:ajax event="change" update="cboPeriodo,cboEjercicio msjcboTipoPeriodo" process="@this"
+                                    listener="#{solicitudDevolicionUtilsMB.buscaTipoPeriodo}"></p:ajax>
+                            <f:selectItem itemLabel="#{msgValidacion.msjSelectOneMenu}" itemValue="#{null}"/>
+                            <f:selectItems value="#{adicionarSolicitudMB.catTipoPeriodo}" var="tipoPeriodo"
+                                           itemLabel="#{tipoPeriodo.descripcion}" itemValue="#{tipoPeriodo}"/>
+                        </p:selectOneMenu>
+                        <p:message id="msjcboTipoPeriodo" for="cboTipoPeriodo" display="text"/>
+                </p:column>
+                <p:column>
+                    #{msgValidacion.L0000074}<p:outputLabel value="" for="cboPeriodo"/>: 
+                    <p:selectOneMenu id="cboPeriodo" filterMatchMode="startsWith"
+                                     value="#{adicionarSolicitudMB.tramite.periodo}" converter="CatalogoConverter"
+                                     panelStyle="width:373.333px;" required="true"
+                                     requiredMessage="#{msgValidacion.msjCampoRequerido}" style="width: 373.333px">
+                        <p:ajax update="cboEjercicio msjccboPeriodo" process="@this"></p:ajax>
+                        <f:selectItem itemLabel="#{msgValidacion.msjSelectOneMenu}" itemValue="#{null}"/>
+                        <f:selectItems value="#{adicionarSolicitudMB.catPeriodo}" var="periodo"
+                                       itemLabel="#{periodo.descripcion}" itemValue="#{periodo}"/>
+                    </p:selectOneMenu>
+                    <p:message id="msjccboPeriodo" for="cboPeriodo" display="text"/>
+                </p:column>
+                <p:column>
+                    #{msgValidacion.L0000101}<p:outputLabel value="" for="cboEjercicio"/>: 
+                    <p:selectOneMenu id="cboEjercicio" filterMatchMode="startsWith"
+                                     value="#{adicionarSolicitudMB.tramite.ejercicio}" converter="CatalogoConverter"
+                                     panelStyle="width:373.333px;" required="true"
+                                     requiredMessage="#{msgValidacion.msjCampoRequerido}" style="width: 373.333px">
+                        <p:ajax event="change"
+                                update="cboSubtramite icepMasagge  confirmInsistencia msjccboEjercicio"
+                                process="@this" listener="#{solicitudDevolicionUtilsMB.subTiposTramite}"></p:ajax>
+                        <f:selectItem itemLabel="#{msgValidacion.msjSelectOneMenu}" itemValue="#{null}"/>
+                        <f:selectItems value="#{adicionarSolicitudMB.catEjercicio}" var="ejercicio"
+                                       itemLabel="#{ejercicio.idNum}" itemValue="#{ejercicio}"/>
+                    </p:selectOneMenu>
+                    <p:message id="msjccboEjercicio" for="cboEjercicio" display="text"/>
+                </p:column>
+            </p:row>
+            <p:row rendered="#{adicionarSolicitudMB.flagsSolicitud.showSubtipoTramite}">
+                <p:column >
+                    #{msgValidacion.L0000034}<p:outputLabel value="" for="cboSubtramite"/>: 
+                        <p:selectOneMenu id="cboSubtramite" style="width: 353.333px" panelStyle="width:373.333px;" 
+                                         filterMatchMode="startsWith" value="#{adicionarSolicitudMB.tramite.subTramite}"
+                                         converter="CatalogoConverter" required="true"
+                                         requiredMessage="#{msgValidacion.msjCampoRequerido}">
+                            <f:selectItem itemLabel="#{msgValidacion.msjSelectOneMenu}" itemValue="#{null}"/>
+                            <f:selectItems value="#{adicionarSolicitudMB.subtramite}" var="subtramite"
+                                           itemLabel="#{subtramite.descripcion}" itemValue="#{subtramite}"/>
+                        </p:selectOneMenu>
+                        <p:message id="msjcboSubtramite" for="cboSubtramite" display="text"/>
+                </p:column>
+            </p:row>
+        </p:panelGrid>
+    </p:panel>
+    </div>
+                         </div>
+</ui:composition>
+
+
+
+
+
+
+
+

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" 
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans          
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd          
+        http://www.springframework.org/schema/tx             
+        http://www.springframework.org/schema/tx/spring-tx-2.5.xsd          
+        http://www.springframework.org/schema/context              
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd
+        http://www.springframework.org/schema/util         
+        http://www.springframework.org/schema/util/spring-util-3.1.xsd">
+
+    <util:properties id="conexionBD" location="file:///siat/dyc/configuraciondyc/parametrosdyc.properties" />
+
+    <!-- HABILITADORES -->
+    <!-- Habilitar anotacion Autowired -->
+    <context:annotation-config/>
+    <!-- Habilitar anotacion Transactional -->
+    <tx:annotation-driven proxy-target-class="true" transaction-manager="transactionManagerDYC" />
+
+    <!-- DATASOURCE - Inicio -->
+    <context:property-placeholder properties-ref="conexionBD" />
+
+    <bean id="dataSourceDYC" class="oracle.jdbc.pool.OracleDataSource">
+        <property name="URL" value="#{conexionBD['urlD']}"/>
+        <property name="user" value="#{conexionBD['usernameD']}"/>
+        <property name="password" value="#{conexionBD['passwordD']}"/>
+    </bean>
+
+    <!-- Transaccionalidad -->
+    <bean id="transactionManagerDYC"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSourceDYC" />
+    </bean>
+    <!-- DATASOURCE - Fin -->
+    
+    <bean id="dycAutomaticasDel" class="mx.gob.sat.mat.dyc.batch.devautomaticas.service.impl.DycAutomaticasDelImpl" />
+    <bean id="dycAutomaticasService" class="mx.gob.sat.mat.dyc.batch.devautomaticas.service.impl.DycAutomaticasServiceImpl" />
+    <bean id="cargaMasivoAutomaticasService" class="mx.gob.sat.mat.dyc.cargaautomaticas.impl.CargaMasivoAutomaticasServiceImpl" />
+    <bean id="cargaMasivoAutomaticasDAO" class="mx.gob.sat.siat.dyc.dao.cargaautomaticas.impl.CargaMasivoAutomaticasDAOImpl" />
+    <bean id="resolucionService" class="mx.gob.sat.siat.dyc.resolucion.service.impl.ResolucionServiceImpl" />
+    <bean id="calcularActualizacionResDevoluService" class="mx.gob.sat.siat.dyc.controlsaldos.service.icep.impl.CalcularActualizacionResDevoluServiceImpl" />
+    <bean id="calcularFechasService" class="mx.gob.sat.siat.dyc.generico.util.calculo.impl.CalcularFechasServiceImpl" />
+    <bean id="serviceCargarSaldoIcep" class="mx.gob.sat.siat.dyc.controlsaldos.service.impl.CargarSaldoIcepServiceImpl" />
+    <bean id="controlSaldoImporte" class="mx.gob.sat.mat.dyc.controlsaldos.service.impl.ControlSaldoImporteImpl" />
+    <bean id="daoMovCompensacion" class="mx.gob.sat.siat.dyc.dao.util.impl.DyctCompHistoricaDAOImpl" />
+    <bean id="daoMovDevolucion" class="mx.gob.sat.siat.dyc.dao.movsaldo.impl.DyctMovDevolucionDAOImpl" />
+    <bean id="daoResolComp" class="mx.gob.sat.siat.dyc.dao.resolucion.impl.DyctResolCompDAOImpl" />
+    <!--bean id="daoDeclaraIcepEst" class="mx.gob.sat.siat.dyc.dao.icep.impl.DyctDeclaraIcepDAOImpl" /-->
+   
+    <!-- Procesar Declaracion -->
+    <import resource="classpath:applicationContext-DycService-ProcesarDeclaracion.xml"/>    
+    
+    <!-- Afectar Saldos x Devoluciones (Registrar Datos ICEP) -->
+    <import resource="classpath:applicationContext-DycService-AfectarSaldosXDevoluciones.xml"/>
+
+    <!-- Crear caso de devolucion -->
+    <import resource="classpath:applicationContext-DycService-CasoAutomaticasIva.xml"/>
+
+    <!-- Integrar expediente -->
+    <import resource="classpath:applicationContext-DycService-IntegrarExpediente.xml"/>
+    
+    <import resource="classpath:diaHabilContextBatch.xml"/>
+    <import resource="classpath:applicationContextActualizadorBatch.xml"/>
+            
+</beans>

@@ -1,0 +1,243 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    <h:form id="formCompensacion">
+    <p:dialog id="dlgDetalleCompensacion" widgetVar="wdlgDetalleCompensacion" header="Agregar compensación histórica" draggable="true"
+              resizable="false" modal="true"  closable="true" width="630px" height="580px" visible="#{mbCompManual.mostrarDlgComp}">
+        
+            <!--p style="color: Red; background-color:lightgrey">Los datos con * son obligatorios</p-->
+
+        <p:scrollPanel style="width:595px;height:480px">
+        <p:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" globalOnly="true"/>
+
+            <p:panelGrid id="pnlCompensacion" style="height:750px; width:420px;">
+                <p:row>
+                    <p:column style="width:150px;">
+                        <h:outputText value="Número de control:"/>
+                        <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                    </p:column>
+                    <p:column style="width:250px;">
+                        <p:inputText id="imsNumControl" maxlength="14" value="#{mbCompManual.numControl}"
+                                    required="true" requiredMessage="#{msgValidacion.mcRequerido}" styleClass="upperCase">
+                            <pe:keyFilter regEx="/[A-Za-z0-9]/i" />
+                            <f:validator binding="#{numCtrlValidadorImpl}" />
+                            <p:ajax event="change" process="@this" listener="#{mbCompManual.validarNumControl}" update="msgCompNumControl2"/>
+                        </p:inputText>
+                        <p:message id="msgCompNumControl2" for="imsNumControl" display="text" style="background-color:lightgrey"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <h:outputText value="Fecha de la declaración destino:"/>
+                        <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                    </p:column>
+                    <p:column>
+                        <p:calendar value="#{mbCompManual.fechaDeclDest}"
+                                    maxdate="#{now}" id="dateFechaDeclaraDestino" style="width: 300px"
+                                    readonlyInput="true" navigator="true" showOn="button" pattern="dd/MM/yyyy"
+                                    required="true" requiredMessage="#{msgValidacion.mcRequerido}" locale="es"
+                                    yearRange="c-12:c+12">
+                            <p:ajax update="dateFechaResol" event="dateSelect" process="@this" listener="#{mbCompManual.manejarChangeFechaDeclaDestino}"></p:ajax>
+                        </p:calendar>
+                        <p:message id="msgCompFechAplicacion" for="dateFechaDeclaraDestino" display="text"/>
+                    </p:column>
+                </p:row>   
+                <p:row>
+                    <p:column colspan="2">
+                        <p:fieldset id="fstIcepDestino" legend="#{labelscs.legendFieldsetIcepDest}" widgetVar="wfstIcepDestino" style="width: 97%">
+                            <p:panelGrid>
+                                <p:row> 
+                                    <p:column style="width:95px;">
+                                        <p:outputLabel value="#{msgValidacion.cbImp}"/>
+                                        <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                                    </p:column>
+                                    <p:column style="width:370px;">
+                                        <p:selectOneMenu id="cmbImpuesto" value="#{mbCompManual.idImpuestoDest}"
+                                                         required="true"
+                                                         requiredMessage="El impuesto es requerido"
+                                                         style="width:345px">
+                                            <f:selectItem itemLabel="#{msgValidacion.comboSeleccion}" itemValue=""/>
+                                            <f:selectItems value="#{mbCatalogosEstaticos.impuestos}" var="impuesto"
+                                                           itemLabel="#{impuesto.descripcion}"
+                                                           itemValue="#{impuesto.id}"/>
+                                            <p:ajax process="@this" update="cmbConcepto" event="change" listener="#{mbCompManual.actualizarConceptos}"/>
+                                        </p:selectOneMenu>
+                                        <p:message for="cmbImpuesto" display="text" />
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width:115px;">
+                                        <p:outputLabel value="#{msgValidacion.cbConc}"/>
+                                        <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                                    </p:column>
+                                    <p:column style="width:370px;">
+                                        <p:selectOneMenu id="cmbConcepto" value="#{mbCompManual.idConceptoDest}"
+                                                         requiredMessage="El concepto es requerido"
+                                                         style="width:345px" required="true" panelStyle="width:500px">
+                                            <f:selectItem itemLabel="#{msgValidacion.comboSeleccion}" itemValue=""/>
+                                            <f:selectItems value="#{mbCompManual.conceptos}" var="itConcepto"
+                                                           itemLabel="#{itConcepto.descripcion}"
+                                                           itemValue="#{itConcepto.id}" 
+                                                           itemDescription="#{itConcepto.id} -- #{itConcepto.descripcion}"/>
+                                        </p:selectOneMenu>
+                                         <p:message for="cmbConcepto" display="text" />
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width:105px;">
+                                        <p:outputLabel value="Tipo de periodo:"/>
+                                        <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                                    </p:column>
+                                    <p:column style="width:200px;">
+                                        <p:selectOneMenu id="cmbTipoPeriodo" value="#{mbCompManual.idTipoPeriodoDest}"
+                                                         requiredMessage="#{msgValidacion.msjTpeRequerido}"
+                                                         style="width:208px" required="true">
+                                            <f:selectItem itemLabel="#{msgValidacion.comboSeleccion}" itemValue=""/>
+                                            <f:selectItems value="#{mbCatalogosEstaticos.tiposPeriodo}"
+                                                           itemLabel="#{tipoPeriodo.descripcion}" var="tipoPeriodo"
+                                                           itemValue="#{tipoPeriodo.idStr}"/>
+                                            <p:ajax update="cmbPeriodo"
+                                                    listener="#{mbCompManual.actualizarPeriodos}"/>
+                                        </p:selectOneMenu>
+                                        <p:message for="cmbTipoPeriodo" display="text" />
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width:105px;">
+                                        <p:outputLabel value="#{msgValidacion.cbPer}"/>
+                                        <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                                    </p:column>
+                                    <p:column style="width:200px;">
+                                        <p:selectOneMenu id="cmbPeriodo" value="#{mbCompManual.idPeriodoDest}"
+                                                         requiredMessage="#{msgValidacion.msjPerRequerido}"
+                                                         style="width:208px" required="true" 
+                                                         disabled="${fn:length(mbCompManual.periodos) == 1}">
+                                                         
+                                            <f:selectItem itemLabel="#{msgValidacion.comboSeleccion}" itemValue=""/>
+                                            <f:selectItems value="#{mbCompManual.periodos}" var="periodo"
+                                                           itemLabel="#{periodo.descripcion}"
+                                                           itemValue="#{periodo.id}"/>
+                                        </p:selectOneMenu>
+                                        <p:message for="cmbPeriodo" display="text" />
+                                    </p:column>
+                                </p:row>
+                                        <p:row>
+                                            <p:column style="width:105px;">
+                                                <p:outputLabel value="#{msgValidacion.cbEjer}"/>
+                                                <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                                            </p:column>
+                                            <p:column style="width:200px;">
+                                                <p:selectOneMenu id="cmbEjercicio" value="#{mbCompManual.idEjercicioDest}"
+                                                                 requiredMessage="#{msgValidacion.msjEjeRequerido}"
+                                                                 style="width:208px" required="true">
+                                                    <f:selectItem itemLabel="#{msgValidacion.comboSeleccion}" itemValue=""/>
+                                                    <f:selectItems value="#{mbCatalogosEstaticos.ejercicios}"
+                                                                   var="ejercicio" itemLabel="#{ejercicio.id}"
+                                                                   itemValue="#{ejercicio.id}"/>
+                                                </p:selectOneMenu>
+                                                <p:message for="cmbEjercicio" display="text" />
+                                            </p:column>
+                                        </p:row>
+                                    </p:panelGrid>   
+                                </p:fieldset>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <h:outputText value="Importe compensado:"/>
+                        <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                    </p:column>
+                    <p:column>
+                        <pe:inputNumber id="inuImpCompensado" style="width:190px;"
+                                        value="#{mbCompManual.importeComp}"
+                                        symbol="$ " required="true" requiredMessage="#{msgValidacion.mcRequerido}"/>
+                        <p:message id="msgImpCompensado" for="inuImpCompensado" display="text"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <h:outputText value="Fecha de resolución:"/>
+                        <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                    </p:column>
+                    <p:column>
+                        <p:calendar value="#{mbCompManual.fechaResol}"
+                                    maxdate="#{now}" id="dateFechaResol" style="width: 300px"
+                                    mindate="#{mbCompManual.fechaDeclDest}" locale="es"
+                                    navigator="true" readonlyInput="true" showOn="button" pattern="dd/MM/yyyy"
+                                    required="true" requiredMessage="#{msgValidacion.mcRequerido}"
+                                    yearRange="c-12:c+12"/>
+                        <p:message id="msgDateComRes" for="dateFechaResol" display="text"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <h:outputText value="Tipo resolución:"/>
+                        <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                    </p:column>
+                    <p:column>
+                        <p:selectOneMenu id="cmbResCompensacion"
+                                         value="#{mbCompManual.idTipoResol}"
+                                         style="width:200px;" required="true"
+                                         requiredMessage="#{msgValidacion.mcRequerido}">
+                            <p:ajax update="pnlCompensacion" event="change" process="pnlCompensacion @this"></p:ajax>
+                            <f:selectItem itemLabel="#{msgValidacion.comboSeleccion}" itemValue=""/>
+                            <f:selectItems value="#{mbCatalogosEstaticos.tiposResolComp}"
+                                           var="tipoResol" itemLabel="#{tipoResol.descripcion}"
+                                           itemValue="#{tipoResol.id}"/>
+                        </p:selectOneMenu>
+                        <p:message id="msgCmbResCompensacion" for="cmbResCompensacion" display="text"/>
+                    </p:column>
+                </p:row>
+                 <p:row rendered="#{mbCompManual.idTipoResol == 6}">
+                    <p:column>
+                        <h:outputText value="Importe liquidado:"/>
+                        <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                    </p:column>
+                    <p:column>
+                        <pe:inputNumber id="impLiquidado" style="width:190px;"
+                                        value="#{mbCompManual.importeLiquidado}"
+                                        symbol="$ " maxValue="9999999999.99"/>
+                        <p:message id="msgImpLiquidado" for="impLiquidado" display="text"/>
+                    </p:column>
+                </p:row>
+                <p:row rendered="#{mbCompManual.idTipoResol == 6 || mbCompManual.idTipoResol == 7}">
+                    <p:column>
+                        <h:outputText value="Número de documento determinante:"/>
+                        <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="itxNumDocDette"
+                                     value="#{mbCompManual.numDocDeterminante}" maxlength="30"
+                                     style="width: 190px" 
+                                     styleClass="upperCase"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column colspan="2">
+                        <table border="0" style="width: 100%"><tr><td>
+                            <h:outputText value="Notas:"/>
+                        </td>
+                        <td>
+                            <p:inputTextarea value="#{mbCompManual.notas}" id="itaNotas" rows="3" cols="58" 
+                                counter="display" maxlength="255" counterTemplate="Quedan {0} caracteres." />
+                        </td></tr>
+                        <tr><td></td>
+                        <td>
+                            <h:outputText id="display" />
+                        </td></tr></table>
+                    </p:column>
+                </p:row>
+
+               
+            </p:panelGrid>
+            </p:scrollPanel>
+            <br/>
+            <p:commandButton    value="Aceptar" actionListener="#{mbCompManual.insertar}" process="pnlCompensacion @this" 
+                                update=":formDetalleIcep dlgDetalleCompensacion"/>
+
+            <p:commandButton value="Cancelar" 
+                              update="formCompensacion dlgDetalleCompensacion"
+                              action="#{mbCompManual.limpiar}" process="@this" />
+    </p:dialog>
+    </h:form>
+</f:view>

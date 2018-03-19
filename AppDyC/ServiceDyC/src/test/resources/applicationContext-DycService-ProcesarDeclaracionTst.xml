@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" 
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans          
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd          
+        http://www.springframework.org/schema/tx             
+        http://www.springframework.org/schema/tx/spring-tx-2.5.xsd          
+        http://www.springframework.org/schema/context              
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+    <!-- HABILITADORES -->
+    <!-- Habilitar autowired -->
+    <context:annotation-config/>
+    
+    <!-- DATASOURCE -->
+    <bean id="dataSourceDYC" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+        <property name="url" value="jdbc:oracle:thin:@10.55.121.193:33400/STD_FIS"/>
+        <property name="username" value="SIAT_DYC"/>
+        <property name="password" value="Dyc5App5#2"/>
+    </bean>    
+    <bean id="jdbcTemplateDYC" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceDYC"></property>
+    </bean>
+    
+    <!-- SPRING - Beans manejados - Inicio -->
+    <bean id="procesarDeclaracionCompBussinesDelTest" class="mx.gob.sat.mat.dyc.controlsaldos.service.impl.ProcesarDeclaracionCompBussinesDelTestImpl" />
+
+    <!-- Saldo ICEP -->
+    <bean id="dyctSaldoIcepDAO" class="mx.gob.sat.siat.dyc.dao.impl.DyctSaldoIcepDAOImpl" />
+    <!-- SPRING - Beans manejados - Fin -->
+</beans>

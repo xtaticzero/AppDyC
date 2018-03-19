@@ -1,0 +1,246 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" 
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:p="http://primefaces.org/ui">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <title>Administrar Motivos de riesgo</title>
+            <style type="text/css">
+                .ui-datatable tbody td {
+                    white-space: normal;
+                }
+
+                .ui-datatable thead th {
+                    white-space: normal;
+                }
+            </style>
+
+        </h:head>
+        <h:body>
+            <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+             
+            <p:dialog modal="true" widgetVar="statusDialog" header="#{msgValidacion.ajaxLoading}" draggable="false"
+                      closable="false">
+                <h:graphicImage library="images/" name="ajaxloadingbar.gif"/>
+            </p:dialog>
+                      
+            <h:form id="formMotivoRiesgo">
+                <p:growl id="growl" showDetail="true" sticky="true" globalOnly="true"/>
+                <p:panel id="pnlListaMotivoRiesgo" style="width: 100%" header="#{msgValidacion.DAC00029}">
+                <p:toolbar style="width:892px" id="barraBotones">
+                    <p:toolbarGroup align="rigth">
+                        <p:commandButton disabled="#{motivoRiesgo.banderaBotones}"
+                                         icon="ui-icon-trash"
+                                         id="eliminar"
+                                         title="#{msgValidacion.DAC00030}"
+                                         onclick="deleteConfirmDlg.show()"
+                                         ajax="true" process="@this"
+                                         style="margin:0"/>
+                        
+                        <p:commandButton oncomplete="dlgMotivoRiesgo.show();" actionListener="#{motivoRiesgo.modifyMotivoRiesgoLitener}"
+                                         disabled="#{motivoRiesgo.banderaBotones}"
+                                         icon="ui-icon-pencil"
+                                         id="modificar"
+                                         title="#{msgValidacion.DAC00031}"
+                                         ajax="true" process="@this"
+                                         update="dlgMotivoRiesgo,msgDialiogMotivoRiesgo" style="margin:0"/>
+                        
+                        <p:commandButton oncomplete="dlgMotivoRiesgo.show();" action="#{motivoRiesgo.addMotivoRiesgoListener}"
+                                         icon="ui-icon-document"
+                                         id="agregar"
+                                         title="#{msgValidacion.DAC00032}"
+                                         ajax="true" process="@this"
+                                         update="dlgMotivoRiesgo" style="margin:0"/>
+                        
+                        <p:commandButton oncomplete="dlgMotivoRiesgo.show();" actionListener="#{motivoRiesgo.selectMotivoRiesgoLitener}"
+                                         icon="ui-icon-search"
+                                         id="buscar"
+                                         title="#{msgValidacion.DAC00033}" 
+                                         ajax="true" process="@this"
+                                         update="dlgMotivoRiesgo" style="margin:0"/>
+                              
+                    </p:toolbarGroup>
+                </p:toolbar>
+                
+                <p:dataTable emptyMessage="#{msgValidacion.DAC00006}" 
+                             id="tabla"
+                             rowsPerPageTemplate="5,10,15,20"
+                             paginator="true"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rows="5" 
+                             rowKey="#{motivoRiesgoLista.idCompuestaTemp}" 
+                             selection="#{motivoRiesgo.motivoRiesgoSeleccionado}"
+                             selectionMode="single"
+                             style="width:900px;"
+                             var="motivoRiesgoLista" 
+                             value="#{motivoRiesgo.listaMotivoRiesgo}"
+                             filteredValue="#{motivoRiesgo.listaMotivoRiesgo}"
+                             resizableColumns="false">
+                    <p:ajax event="rowSelect" update=":formMotivoRiesgo:eliminar, :formMotivoRiesgo:modificar" 
+                            listener="#{motivoRiesgo.activarBotones}"/>
+                    
+                    <p:column headerText="#{msgValidacion.DAC00007}" style="display:none;">
+                        <h:outputText value="#{motivoRiesgoLista.idMotivoRiesgo}" />
+                    </p:column>
+                 
+                    <p:column headerText="#{msgValidacion.DAC00034}">
+                        <h:outputText value="#{motivoRiesgoLista.codigo}" />
+                    </p:column>
+                 
+                    <p:column headerText="#{msgValidacion.DAC00035}">
+                        <h:outputText value="#{motivoRiesgoLista.regla}" />
+                    </p:column>
+                    <p:column headerText="#{msgValidacion.DAC00027}">
+                        <h:outputText value="#{motivoRiesgoLista.modelo}" />
+                    </p:column>
+                    <p:column headerText="#{msgValidacion.DAC00010}">
+                        <h:outputText value="#{motivoRiesgoLista.estado}" />
+                    </p:column>                    
+                </p:dataTable>
+                    </p:panel>
+                <p:confirmDialog closable="true" id="deleteConfirmDialog" message="#{msgValidacion.DAC00012}" severity="alert" widgetVar="deleteConfirmDlg" >
+                    <p:commandButton id="declineDelete" value="No" onclick="deleteConfirmDlg.hide()" type="button" styleClass="gmxNegativo"/>
+                    <p:commandButton actionListener="#{motivoRiesgo.removeMotivoRiesgoLitener}" 
+                                     id="confirmDelete" 
+                                     update="@form"
+                                     value="Si" styleClass="gmxPositivo"/>
+                </p:confirmDialog>
+                                     
+                <p:confirmDialog closable="true" modal="true" id="notificaDialog"  
+                                     message="#{motivoRiesgo.mensajeNotif}" severity="alert" widgetVar="notifDlgVar" 
+                                     visible="#{motivoRiesgo.frmMotivoRiesgoDTO.banderaMsg}">
+                           <p:commandButton value="Aceptar" onclick="notifDlgVar.hide();" update="@form" type="button" styleClass="gmxPositivo"/>
+                </p:confirmDialog>
+                <p:dialog id="dlgMotivoRiesgo" header="#{motivoRiesgo.frmMotivoRiesgoDTO.tituloDialog}"
+                          widgetVar="dlgMotivoRiesgo" hideEffect="drop" modal="true" width="60%">
+                    <div style="text-align:left;">
+                        <p:outputLabel value="#{msgValidacion.inpObligatorio}" style="color:red" rendered="true"/>
+                    </div>
+                    <p:panel id="pnlMotivoRiesgo" visible="true">
+                        <p:row>
+                                    <p:column colspan="2">
+                                        <p:messages id="msgDialiogMotivoRiesgo" showDetail="true" autoUpdate="true"
+                                                    closable="true" showSummary="false"  />
+                                    </p:column>
+                        </p:row>
+                        
+                        <table role="grid" border="0" cellspacing="2">
+                            <tbody>
+                                <tr role="row" class="ui-widget-content">
+                                    <td role="gridcell" width="40%">
+                                        <p:outputLabel value="#{msgValidacion.DAC00034}"/>
+                                         
+                                        <p:outputLabel value=" *" style="color:red;"/>
+                                    </td>
+                                    <td role="gridcell" width="60%">
+                                        <h:panelGrid columns="2" >
+                                           <p:inputText id="txtCodigo" required="true"
+                                                        requiredMessage="#{msgValidacion.DAC00036}"
+                                                        value="#{motivoRiesgo.codigo}" maxlength="4"
+                                                        rendered="#{motivoRiesgo.frmMotivoRiesgoDTO.bandCodigo}"
+                                                        validatorMessage="#{msgValidacion.DAC00041}"
+                                                        disabled="#{motivoRiesgo.frmMotivoRiesgoDTO.bandActivoCodigo}">
+                                               <f:validateLength minimum="1" maximum="4" />         
+                                               <f:validateRegex pattern="^([1-9]{1}+)(\d*)$" />         
+                                            </p:inputText>
+                                        </h:panelGrid>
+                                    </td>
+                                </tr>
+                                <tr role="row" class="ui-widget-content">
+                                    <td role="gridcell" width="40%">
+                                        <p:outputLabel value="#{msgValidacion.DAC00035}" rendered="#{motivoRiesgo.frmMotivoRiesgoDTO.bandRegla}"/>
+                                         
+                                        <p:outputLabel value=" *" style="color:red;" rendered="#{motivoRiesgo.frmMotivoRiesgoDTO.bandRegla}"/>
+                                    </td>
+                                    <td role="gridcell" width="60%">
+                                        <h:panelGrid columns="2">
+                                            <p:inputTextarea id="itxtAreaRegla"
+                                                value="#{motivoRiesgo.regla}"
+                                                style="width:400px; height: 200px" 
+                                                required="true"
+                                                autoResize="false" maxlength="400"
+                                                requiredMessage="#{msgValidacion.DAC00040}"
+                                                rendered="#{motivoRiesgo.frmMotivoRiesgoDTO.bandRegla}"
+                                                counter="display" counterTemplate="{0} #{msgValidacion.DAC00039}"
+                                                validatorMessage="#{msgValidacion.DAC00044}"
+                                                >                                                
+                                            </p:inputTextarea>
+                                            <h:outputText />    
+                                            <h:outputText id="display" />    
+                                        </h:panelGrid>
+                                    </td>
+                                </tr>
+                                <tr role="row" class="ui-widget-content">
+                                    <td role="gridcell" width="40%">
+                                        <p:outputLabel value="#{msgValidacion.DAC00027}" />
+                                         
+                                        <p:outputLabel value=" *" style="color:red;"/>
+                                    </td>
+                                    <td role="gridcell" width="60%">
+                                        <h:panelGrid columns="2">
+                                            <p:selectOneMenu id="cmbModelo" 
+                                                             required="true"
+                                                             style="width:300px"
+                                                             requiredMessage="#{msgValidacion.DAC00037}"
+                                                             value="#{motivoRiesgo.modelo}"
+                                                             rendered="#{motivoRiesgo.frmMotivoRiesgoDTO.bandModelo}"
+                                                             disabled="#{motivoRiesgo.frmMotivoRiesgoDTO.bandActivoModelo}">
+                                               <f:selectItem itemValue="" itemLabel="" noSelectionOption="true"/>
+                                               <f:selectItems value="#{motivoRiesgo.listaModelo}" var="listaModelo"
+                                                              itemValue="#{listaModelo.idModelo}"
+                                                              itemLabel="#{listaModelo.descripcion}"/>
+                                                        <p:ajax update="cmbModelo" event="valueChange">  
+                                                    </p:ajax>
+                                            </p:selectOneMenu>
+                                        </h:panelGrid>
+                                    </td>
+                                </tr>
+                                <tr role="row" class="ui-widget-content">
+                                    <td role="gridcell">
+                                        <p:outputLabel value="#{msgValidacion.DAC00010}"
+                                                       rendered="#{motivoRiesgo.frmMotivoRiesgoDTO.bandEstado}"/>
+                                         
+                                        <p:outputLabel value=" *"
+                                                       rendered="#{motivoRiesgo.frmMotivoRiesgoDTO.bandEstado}"
+                                                       style="color:red;"/>
+                                    </td>
+                                    <td role="gridcell">
+                                        <h:panelGrid columns="2" cellspacing="0" width="100%">
+                                            <p:selectOneRadio id="oneRdoEstado" value="#{motivoRiesgo.estado}" 
+                                                 required="true" 
+                                                 rendered="#{motivoRiesgo.frmMotivoRiesgoDTO.bandEstado}"
+                                                 disabled="#{motivoRiesgo.frmMotivoRiesgoDTO.bandActivoEstado}">
+                                                <f:selectItem itemLabel="#{msgValidacion.DAC00014}" itemValue="1"/>  
+                                                <f:selectItem itemLabel="#{msgValidacion.DAC00015}" itemValue="0" />
+                                            </p:selectOneRadio>
+                                            <p:message id="msgEstado" for="oneRdoEstado" display="text"/>
+                                        </h:panelGrid>
+                                    </td>
+                                </tr>
+                                <tr role="row" class="ui-widget-content">
+                                    <td role="gridcell" colspan="2" align="center">
+                                        <p:commandButton value="Cancelar" onclick="dlgMotivoRiesgo.hide();" type="button"
+                                                         styleClass="gmxNegativo"/>&nbsp; 
+                                        <p:commandButton value="Guardar" id="btnGuardar"
+                                                         rendered="#{motivoRiesgo.frmMotivoRiesgoDTO.bandBtnGuardar}"
+                                                         update="pnlMotivoRiesgo,msgDialiogMotivoRiesgo,pnlListaMotivoRiesgo,notificaDialog" 
+                                                         process="@this, pnlMotivoRiesgo"
+                                                         actionListener="#{motivoRiesgo.execGuardar}"
+                                                         styleClass="gmxPositivo"/>&nbsp;
+                                        <p:commandButton value="Buscar" id="btnBuscar"
+                                                         rendered="#{motivoRiesgo.frmMotivoRiesgoDTO.bandBtnBuscar}"
+                                                         update="pnlMotivoRiesgo,msgDialiogMotivoRiesgo,pnlListaMotivoRiesgo" process="@form"
+                                                         actionListener="#{motivoRiesgo.execBuscar}"
+                                                         styleClass="gmxPositivo"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </p:panel>
+                </p:dialog>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

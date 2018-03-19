@@ -1,0 +1,262 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:element name="consultarDeterminacionDeImpuestosXML">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="consultarDeterminacionDeImpuestosCdiDpdif"/>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="consultarDeterminacionDeImpuestosCdiDpdifAnio"/>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="consultarDeterminacionImpuestoCdiImpuestos"/>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="consultarDeterminacionImpuestoForma13"/>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="consultarDeterminacionImpuestoForma13A"/>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="consultarDeterminacionImpuestoDid"/>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="consultarDeterminacionImpuestoForma2"/>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="consultarDeterminacionImpuestoForma2a"/>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="consultarDeterminacionImpuestosForma3"/>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="consultarDeterminacionImpuestoForma132"/>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="consultarDeterminacionImpuestosDID2"/>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="consultarDeterminacionImpuestoForma22"/>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="consultarDeterminacionImpuestoforma2a2"/>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="consultarDeterminacionImpuestoForma32"/>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="consultarDeterminacionImpuestoDID3"/>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="consultarDetalleDeterminacionImpuestoForma1E"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="consultarDeterminacionDeImpuestosCdiDpdif">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="N_EJERCICIO" type="xs:int"/>
+                <xs:element minOccurs="0" name="C_N_PERIODO" type="xs:string"/>
+                <xs:element minOccurs="0" name="TDIEPCO1" type="xs:string"/>
+                <xs:element minOccurs="0" name="FPERCEH1" type="xs:dateTime" nillable="true"/>
+                <xs:element minOccurs="0" name="N_NUMERO_OPERACION" type="xs:int"/>
+                <xs:element minOccurs="0" name="FORMULARIO" type="xs:string"/>
+                <xs:element minOccurs="0" name="I_111021" type="xs:int"/>
+                <xs:element minOccurs="0" name="I_111024" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="consultarDeterminacionDeImpuestosCdiDpdifAnio">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="N_EJERCICIO" type="xs:int"/>
+                <xs:element minOccurs="0" name="C_N_PERIODO" type="xs:int"/>
+                <xs:element minOccurs="0" name="TDIEPCO1" type="xs:int"/>
+                <xs:element minOccurs="0" name="FPERCEH1" type="xs:dateTime" nillable="true"/>
+                <xs:element minOccurs="0" name="N_NUMERO_OPERACION" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="FORMA" type="xs:string"/>
+                <xs:element minOccurs="0" name="I_111021" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="I_111024" type="xs:decimal"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="consultarDeterminacionImpuestoCdiImpuestos">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="c_sti_cilmapv1" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="consultarDeterminacionImpuestoForma13">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="n_ejercicio" type="xs:int"/>
+                <xs:element minOccurs="0" name="c_n_periodo" type="xs:int"/>
+                <xs:element minOccurs="0" name="tdiepco1" type="xs:int"/>
+                <xs:element minOccurs="0" name="fperceh1" type="xs:dateTime" nillable="true"/>
+                <xs:element minOccurs="0" name="n_numero_operacion" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="forma" type="xs:string"/>
+                <xs:element minOccurs="0" name="i_111021" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="i_111024" type="xs:decimal"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="consultarDeterminacionImpuestoForma13A">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="n_ejercicio" type="xs:int"/>
+                <xs:element minOccurs="0" name="c_n_periodo" type="xs:int"/>
+                <xs:element minOccurs="0" name="tdiepco1" type="xs:string"/>
+                <xs:element minOccurs="0" name="fperceh1" type="xs:dateTime" nillable="true"/>
+                <xs:element minOccurs="0" name="n_numero_operacion" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="forma" type="xs:string"/>
+                <xs:element minOccurs="0" name="i_111021" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="i_111024" type="xs:decimal"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="consultarDeterminacionImpuestoDid">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="n_ejercicio" type="xs:int"/>
+                <xs:element minOccurs="0" name="c_n_periodo" type="xs:int"/>
+                <xs:element minOccurs="0" name="tdiepco1" type="xs:int"/>
+                <xs:element minOccurs="0" name="fperceh1" type="xs:dateTime" nillable="true"/>
+                <xs:element minOccurs="0" name="n_numero_operacion" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="forma" type="xs:string"/>
+                <xs:element minOccurs="0" name="i_111021" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="i_111024" type="xs:decimal"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="consultarDeterminacionImpuestoForma2">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="n_ejercicio" type="xs:int"/>
+                <xs:element minOccurs="0" name="c_n_periodo" type="xs:int"/>
+                <xs:element minOccurs="0" name="tdiepco1" type="xs:string"/>
+                <xs:element minOccurs="0" name="fperceh1" type="xs:dateTime" nillable="true"/>
+                <xs:element minOccurs="0" name="n_numero_operacion" type="xs:string"/>
+                <xs:element minOccurs="0" name="c_n_periodo" type="xs:int"/>
+                <xs:element minOccurs="0" name="forma" type="xs:string"/>
+                <xs:element minOccurs="0" name="i_111021" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="i_111024" type="xs:decimal"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="consultarDeterminacionImpuestoForma2a">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="n_ejercicio" type="xs:int"/>
+                <xs:element minOccurs="0" name="c_n_periodo" type="xs:int"/>
+                <xs:element minOccurs="0" name="tdiepco1" type="xs:string"/>
+                <xs:element minOccurs="0" name="fperceh1" type="xs:dateTime" nillable="true"/>
+                <xs:element minOccurs="0" name="n_numero_operacion" type="xs:string"/>
+                <xs:element minOccurs="0" name="c_n_periodo" type="xs:int"/>
+                <xs:element minOccurs="0" name="forma" type="xs:string"/>
+                <xs:element minOccurs="0" name="i_111021" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="i_111024" type="xs:decimal"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="consultarDeterminacionImpuestosForma3">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="n_ejercicio" type="xs:int"/>
+                <xs:element minOccurs="0" name="c_n_periodo" type="xs:int"/>
+                <xs:element minOccurs="0" name="tdiepco1" type="xs:string"/>
+                <xs:element minOccurs="0" name="fperceh1" type="xs:dateTime" nillable="true"/>
+                <xs:element minOccurs="0" name="n_numero_operacion" type="xs:string"/>
+                <xs:element minOccurs="0" name="c_n_periodo" type="xs:int"/>
+                <xs:element minOccurs="0" name="forma" type="xs:string"/>
+                <xs:element minOccurs="0" name="i_111021" type="xs:int"/>
+                <xs:element minOccurs="0" name="i_111024" type="xs:decimal"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="consultarDeterminacionImpuestoForma132">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="n_ejercicio" type="xs:int"/>
+                <xs:element minOccurs="0" name="c_n_periodo" type="xs:int"/>
+                <xs:element minOccurs="0" name="tdiepco1" type="xs:int"/>
+                <xs:element minOccurs="0" name="fperceh1" type="xs:dateTime" nillable="true"/>
+                <xs:element minOccurs="0" name="n_numero_operacion" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="forma" type="xs:string"/>
+                <xs:element minOccurs="0" name="i_111021" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="i_111024" type="xs:decimal"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="consultarDeterminacionImpuestosDID2">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="n_ejercicio" type="xs:int"/>
+                <xs:element minOccurs="0" name="c_n_periodo" type="xs:int"/>
+                <xs:element minOccurs="0" name="tdiepco1" type="xs:int"/>
+                <xs:element minOccurs="0" name="fperceh1" type="xs:dateTime" nillable="true"/>
+                <xs:element minOccurs="0" name="n_numero_operacion" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="forma" type="xs:string"/>
+                <xs:element minOccurs="0" name="i_111021" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="i_111024" type="xs:decimal"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="consultarDeterminacionImpuestoForma22">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="n_ejercicio" type="xs:int"/>
+                <xs:element minOccurs="0" name="c_n_periodo" type="xs:int"/>
+                <xs:element minOccurs="0" name="tdiepco1" type="xs:string"/>
+                <xs:element minOccurs="0" name="fperceh1" type="xs:dateTime" nillable="true"/>
+                <xs:element minOccurs="0" name="n_numero_operacion" type="xs:string"/>
+                <xs:element minOccurs="0" name="forma" type="xs:string"/>
+                <xs:element minOccurs="0" name="i_111021" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="i_111024" type="xs:decimal"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="consultarDeterminacionImpuestoforma2a2">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="n_ejercicio" type="xs:int"/>
+                <xs:element minOccurs="0" name="c_n_periodo" type="xs:int"/>
+                <xs:element minOccurs="0" name="tdiepco1" type="xs:string"/>
+                <xs:element minOccurs="0" name="fperceh1" type="xs:dateTime" nillable="true"/>
+                <xs:element minOccurs="0" name="n_numero_operacion" type="xs:string"/>
+                <xs:element minOccurs="0" name="forma" type="xs:string"/>
+                <xs:element minOccurs="0" name="i_111021" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="i_111024" type="xs:decimal"/>        
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="consultarDeterminacionImpuestoForma32">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="n_ejercicio" type="xs:int"/>
+                <xs:element minOccurs="0" name="c_n_periodo" type="xs:int"/>
+                <xs:element minOccurs="0" name="tdiepco1" type="xs:string"/>
+                <xs:element minOccurs="0" name="fperceh1" type="xs:dateTime" nillable="true"/>
+                <xs:element minOccurs="0" name="n_numero_operacion" type="xs:string"/>
+                <xs:element minOccurs="0" name="forma" type="xs:string"/>
+                <xs:element minOccurs="0" name="i_111021" type="xs:int"/>
+                <xs:element minOccurs="0" name="i_111024" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="consultarDeterminacionImpuestoDID3">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="n_ejercicio" type="xs:int"/>
+                <xs:element minOccurs="0" name="c_n_periodo" type="xs:int"/>
+                <xs:element minOccurs="0" name="tdiepco1" type="xs:int"/>
+                <xs:element minOccurs="0" name="fperceh1" type="xs:dateTime" nillable="true"/>
+                <xs:element minOccurs="0" name="n_numero_operacion" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="forma" type="xs:string"/>
+                <xs:element minOccurs="0" name="i_111021" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="i_111024" type="xs:decimal"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="consultarDetalleDeterminacionImpuestoForma1E">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="n_ejercicio" type="xs:int"/>
+                <xs:element minOccurs="0" name="c_n_periodo" type="xs:int"/>
+                <xs:element minOccurs="0" name="tdiepco1" type="xs:string"/>
+                <xs:element minOccurs="0" name="fperceh1" type="xs:dateTime" nillable="true"/>
+                <xs:element minOccurs="0" name="n_numero_operacion" type="xs:string"/>
+                <xs:element minOccurs="0" name="forma" type="xs:string"/>
+                <xs:element minOccurs="0" name="i_111021" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="i_111024" type="xs:decimal"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>

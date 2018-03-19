@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" 
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:ui="http://java.sun.com/jsf/facelets">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            
+        </h:head>
+        <h:body>
+            <h:form id="idFormPrincipal">
+                <p:panel id="pnlBusqueda" header="#{msgValidacion.reporteDictAutomatica}" style="width: 100%" widgetVar="panel">
+                    <p:toolbar id="idToolBar">
+                        <p:toolbarGroup align="right">
+                                <p:commandButton title="Imprimir formato PDF" icon="ui-icon-print" process="@this" ajax="false">
+                                    <p:dataExporter type="pdf" target="idTablaLista" fileName="Reporte" encoding="ISO-8859-1"/>
+                                </p:commandButton>
+                        </p:toolbarGroup>
+                    </p:toolbar>
+                    <p:dataTable id="idTablaLista" var="varGenerarReporte" value="#{generarReporteMB.listaGenerarReporte}" >                        
+                            <p:column>
+                                <p:outputLabel value="#{varGenerarReporte.etiquetas}" />
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{varGenerarReporte.totalRegistros}" />
+                            </p:column>
+                            <p:column exportable="false" >
+                                <p:commandButton value="Consultar Detalle"  actionListener="#{generarReporteMB.redireccionarDetalleTramiteGenerarReporte}">
+                                    <f:param name="opcion" value="#{varGenerarReporte.opcion}"/>
+                                    <f:param name="variableAux" value="#{varGenerarReporte.valor}"/>
+                                </p:commandButton>
+                            </p:column>                                                  
+                    </p:dataTable>
+                                <p:toolbar id="toolbar2">
+                            <p:toolbarGroup align="right">                                 
+                                    <p:commandButton value="Regresar" actionListener="#{generarReporteMB.regresar}">
+                                        <f:param name="regresar" value="dycAdministracion"/>
+                                    </p:commandButton>                                
+                            </p:toolbarGroup>
+                        </p:toolbar>
+                </p:panel>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>
+

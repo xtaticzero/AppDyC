@@ -1,0 +1,775 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<jpr:project xmlns:jpr="http://xmlns.oracle.com/ide/project">
+   <hash n="component-versions">
+      <value n="oracle.adfdt.controller.common.migrator.ProjectMigrator" v="11.1.1.1.0"/>
+      <value n="oracle.adfdt.controller.jsf2.diagram.migrate.JsfNodeMigratorHelper" v="11.1.1.1.0"/>
+      <value n="oracle.adfdt.controller.migrate.TrinidadDatabindingsProjectMigrator" v="11.1.2.0.0"/>
+      <value n="oracle.adfdtinternal.dvt.datapresdt.migration.DVTDataMapMigrator" v="11.1.1.1.0.3"/>
+      <value n="oracle.adfdtinternal.model.ide.security.wizard.FormPageMigrator" v="11.1.1.0.0"/>
+      <value n="oracle.adfdtinternal.model.ide.security.wizard.JpsFilterMigrator" v="11.1.1.1.0"/>
+      <value n="oracle.adfdtinternal.view.common.migration.wizards.MigrationHelper" v="11.1.1.1.0.3"/>
+      <value n="oracle.adfdtinternal.view.rich.migration.ComponentIdNodeMigratorHelper" v="11.1.1.1.0.01"/>
+      <value n="oracle.adfdtinternal.view.rich.migration.LibraryVersionMigrator" v="11.1.1.1.0.1"/>
+      <value n="oracle.ide.model.Project" v="11.1.2.0.0"/>
+      <value n="oracle.ide.model.ResourcePathsMigrator" v="11.1.1.1.0"/>
+      <value n="oracle.ideimpl.model.TechnologyScopeUpdateMigrator" v="11.1.2.0.0.4"/>
+      <value n="oracle.jbo.dt.jdevx.deployment.JbdProjectMigrator" v="11.1.2.0.0"/>
+      <value n="oracle.jbo.dt.jdevx.ui.appnav.APProjectMigrator" v="11.1.1.0.1.5"/>
+      <value n="oracle.jbo.dt.migrate.ResourceBundlePathMigrator" v="11.1.1.0.1.5"/>
+      <value n="oracle.jbo.dt.migration.ServiceInterfaceMigrator" v="11.1.1.1.0"/>
+      <value n="oracle.jdeveloper.ejb.EjbMigrator" v="11.1.1.1.0"/>
+      <value n="oracle.jdeveloper.library.ProjectLibraryMigrator" v="11.1.1.1.0"/>
+      <value n="oracle.jdeveloper.model.OutputDirectoryMigrator" v="11.1.1.1.0"/>
+      <value n="oracle.jdevimpl.deploy.DeploymentProfilesMigrator" v="11.1.1.1.0"/>
+      <value n="oracle.jdevimpl.deploy.jps.JpsDataMigrator" v="11.1.1.1.0"/>
+      <value n="oracle.jdevimpl.jsp.JspMigrator" v="11.1.1"/>
+      <value n="oracle.jdevimpl.offlinedb.migration.OfflineDBProjectMigrator" v="11.1.1.1.0"/>
+      <value n="oracle.jdevimpl.offlinedb.migration.OfflinePlSqlMigrator" v="11.1.1.1.0"/>
+      <value n="oracle.jdevimpl.resourcebundle.XliffAddin$XliffMigratorHelper" v="11.1.1.1.0"/>
+      <value n="oracle.jdevimpl.webapp.jsp.libraries.JspLibraryMigrator" v="11.1.1.1.4"/>
+      <value n="oracle.jdevimpl.webapp.WebAppContentSetNodeMigratorHelper" v="11.1.1"/>
+      <value n="oracle.jdevimpl.webapp.WebAppProjectNodeMigratorHelper" v="11.1.2.0.0"/>
+      <value n="oracle.jdevimpl.webservices.rest.migration.RestPathMigrator" v="11.1.2.0.0"/>
+      <value n="oracle.jdevimpl.webservices.WebServicesMigratorHelper" v="11.1.1.1.0"/>
+      <value n="oracle.jdevimpl.xml.wl.WeblogicMigratorHelper" v="11.1.1.1.0"/>
+      <value n="oracle.modeler.bmmigrate.management.Migration" v="11.1.1.1.0"/>
+      <value n="oracle.toplink.workbench.addin.migration.PersistenceProjectMigrator" v="11.1.1.1.0"/>
+      <value n="oracle.toplink.workbench.addin.migration.TopLinkProjectMigrator" v="11.1.1.1.0"/>
+   </hash>
+   <list n="contentSets">
+      <string v="oracle.bm.commonIde.data.project.ModelerProjectSettings/modelersContentSet"/>
+      <string v="oracle.mds.internal.dt.ide.MDSLibraryCustCSProvider/mdsContentSet"/>
+      <string v="oracle.mds.internal.dt.ide.MDSADFLibVirtualNodeCSProvider/mdsLibVirtualNodeContentSet"/>
+      <string v="oracle.jdeveloper.model.PathsConfiguration/javaContentSet"/>
+      <string v="oracle.ide.model.ResourcePaths/resourcesContentSet"/>
+      <string v="oracle.jdeveloper.model.J2eeSettings/webContentSet"/>
+      <string v="oracle.jdeveloper.offlinedb.model.OfflineDBProjectSettings/offlineDBContentSet"/>
+      <string v="oracle.adfdtinternal.model.ide.settings.ADFMSettings/adfmContentSet"/>
+      <string v="oracle.toplink.workbench.addin/toplinkContentSet"/>
+   </list>
+   <value n="defaultPackage" v="AppDyC"/>
+   <hash n="oracle.ide.model.ResourcePaths">
+      <hash n="resourcesContentSet">
+         <list n="constituent-sets">
+            <hash>
+               <list n="url-path">
+                  <url path="../PjDevolucion/RESOURCES/CasosComplementarias/"/>
+               </list>
+            </hash>
+         </list>
+         <list n="pattern-filters">
+            <string v="+*"/>
+         </list>
+         <list n="url-path">
+            <url path="."/>
+            <url path="src/main/resources/"/>
+            <url path="pom.xml"/>
+         </list>
+      </hash>
+   </hash>
+   <hash n="oracle.ide.model.TechnologyScopeConfiguration">
+      <list n="technologyScope">
+         <string v="JSF"/>
+         <string v="JSP"/>
+         <string v="Java"/>
+         <string v="Maven"/>
+         <string v="XML"/>
+      </list>
+   </hash>
+   <hash n="oracle.jdeveloper.compiler.OjcConfiguration">
+      <value n="internalEncoding" v="UTF8"/>
+      <list n="Javac.commandline.optionlist">
+         <string v="-g"/>
+         <string v="-Xlint:all"/>
+         <string v="-Xlint:-cast"/>
+         <string v="-Xlint:-empty"/>
+         <string v="-Xlint:-fallthrough"/>
+         <string v="-Xlint:-path"/>
+         <string v="-Xlint:-processing"/>
+         <string v="-Xlint:-serial"/>
+         <string v="-Xlint:-unchecked"/>
+      </list>
+      <value n="webIANAEncoding" v="UTF-8"/>
+   </hash>
+   <hash n="oracle.jdeveloper.maven.compiler.MavenRunConfiguration">
+      <list n="availableGoalList">
+         <string v="deploy"/>
+         <string v="generate-resources"/>
+         <string v="generate-sources"/>
+         <string v="generate-test-resources"/>
+         <string v="generate-test-sources"/>
+         <string v="initialize"/>
+         <string v="integration-test"/>
+         <string v="post-clean"/>
+         <string v="post-integration-test"/>
+         <string v="post-site"/>
+         <string v="pre-clean"/>
+         <string v="pre-integration-test"/>
+         <string v="prepare-package"/>
+         <string v="pre-site"/>
+         <string v="process-classes"/>
+         <string v="process-resources"/>
+         <string v="process-sources"/>
+         <string v="process-test-classes"/>
+         <string v="process-test-resources"/>
+         <string v="process-test-sources"/>
+         <string v="site"/>
+         <string v="site-deploy"/>
+         <string v="test"/>
+         <string v="test-compile"/>
+         <string v="validate"/>
+         <string v="verify"/>
+      </list>
+      <value n="goalToRun" v="package"/>
+      <url n="mavenHome" protocol="file" path="/opt/apache-maven-3.0.5/"/>
+      <value n="mavenVersion" v="Maven version: 3.0.5"/>
+      <url n="pomfileURL" path="pom.xml"/>
+      <hash n="remoteRepositories">
+         <list n="remoteRepositoryList">
+            <hash>
+               <value n="indexUpdateUrl" v="http://10.55.121.173:8080/archiva/repository/internal/.index"/>
+               <value n="repositoryId" v="-118297581"/>
+               <value n="repositoryName" v="InternalRepository"/>
+               <value n="repositoryUrl" v="http://10.55.121.173:8080/archiva/repository/internal/"/>
+            </hash>
+         </list>
+      </hash>
+      <list n="selectedGoalList">
+         <string v="package"/>
+         <string v="clean"/>
+         <string v="compile"/>
+         <string v="install"/>
+      </list>
+   </hash>
+   <hash n="oracle.jdeveloper.model.J2eeSettings">
+      <value n="j2eeWebAppName" v="AppDyC-PjComplementarias-webapp"/>
+      <value n="j2eeWebContextRoot" v="AppDyC-PjComplementarias-context-root"/>
+      <hash n="webContentSet">
+         <list n="pattern-filters">
+            <string v="+**"/>
+         </list>
+         <list n="url-path">
+            <url path="src/main/webapp/"/>
+         </list>
+      </hash>
+   </hash>
+   <hash n="oracle.jdeveloper.model.PathsConfiguration">
+      <hash n="javaContentSet">
+         <list n="pattern-filters">
+            <string v="+**"/>
+         </list>
+         <list n="url-path">
+            <url path="src/main/java/"/>
+         </list>
+      </hash>
+   </hash>
+   <hash n="oracle.jdevimpl.config.JProjectLibraries">
+      <list n="exportedReferences">
+         <hash>
+            <value n="id" v="org.springframework:spring-core:3.2.2.RELEASE:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="org.springframework:spring-context:3.2.2.RELEASE:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="org.springframework:spring-web:3.2.2.RELEASE:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="org.springframework:spring-beans:3.2.2.RELEASE:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="org.springframework:spring-aop:3.2.2.RELEASE:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="org.springframework:spring-expression:3.2.2.RELEASE:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="org.springframework:spring-jdbc:3.2.2.RELEASE:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="org.springframework:spring-tx:3.2.2.RELEASE:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="commons-logging:commons-logging:1.1.1:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="commons-collections:commons-collections:3.2.1:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="mx.gob.sat:ojdbc6:1.0:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="org.springframework:spring-context-support:3.2.2.RELEASE:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="c3p0:c3p0:0.9.1.1:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="log4j:log4j:1.2.17:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="aopalliance:aopalliance:1.0:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="javax.servlet:servlet-api:2.5:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="AppDyC:DomainDyC:1.0:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="AppDyC:DaoDyC:1.0:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="mx.gob.sat.cobranza:diaHabil:1.1.5:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="mx.gob.sat.siat:PjPlantillador:0.1.1:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="AppDyC:PjHerramientaComple:1.0:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="mx.gob.sat:rolproceso:1.5.4:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="mx.gob.sat:siatbitacora:1.5.3:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="mx.gob.sat.cobranza:domainCobranza:1.2.4:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="mx.gob.sat.cobranza:negocioCobranza:1.2.3:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="mx.gob.sat.cobranza:HerramientaCalculo:1.2.0:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="org.aspectj:aspectjrt:1.7.4:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="org.aspectj:aspectjweaver:1.7.4:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="org.slf4j:slf4j-api:1.7.2:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="org.slf4j:jcl-over-slf4j:1.7.2:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="org.slf4j:slf4j-log4j12:1.7.2:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+      </list>
+      <hash n="internalDefinitions">
+         <list n="libraryDefinitions">
+            <hash>
+               <list n="classPath">
+                  <url protocol="file" path="/root/.m2/repository/org/springframework/spring-core/3.2.2.RELEASE/spring-core-3.2.2.RELEASE.jar"/>
+               </list>
+               <value n="description" v="org.springframework:spring-core:3.2.2.RELEASE:jar"/>
+               <value n="id" v="org.springframework:spring-core:3.2.2.RELEASE:jar"/>
+               <value n="locked" v="true"/>
+            </hash>
+            <hash>
+               <list n="classPath">
+                  <url protocol="file" path="/root/.m2/repository/org/springframework/spring-context/3.2.2.RELEASE/spring-context-3.2.2.RELEASE.jar"/>
+               </list>
+               <value n="description" v="org.springframework:spring-context:3.2.2.RELEASE:jar"/>
+               <value n="id" v="org.springframework:spring-context:3.2.2.RELEASE:jar"/>
+               <value n="locked" v="true"/>
+            </hash>
+            <hash>
+               <list n="classPath">
+                  <url protocol="file" path="/root/.m2/repository/org/springframework/spring-web/3.2.2.RELEASE/spring-web-3.2.2.RELEASE.jar"/>
+               </list>
+               <value n="description" v="org.springframework:spring-web:3.2.2.RELEASE:jar"/>
+               <value n="id" v="org.springframework:spring-web:3.2.2.RELEASE:jar"/>
+               <value n="locked" v="true"/>
+            </hash>
+            <hash>
+               <list n="classPath">
+                  <url protocol="file" path="/root/.m2/repository/org/springframework/spring-beans/3.2.2.RELEASE/spring-beans-3.2.2.RELEASE.jar"/>
+               </list>
+               <value n="description" v="org.springframework:spring-beans:3.2.2.RELEASE:jar"/>
+               <value n="id" v="org.springframework:spring-beans:3.2.2.RELEASE:jar"/>
+               <value n="locked" v="true"/>
+            </hash>
+            <hash>
+               <list n="classPath">
+                  <url protocol="file" path="/root/.m2/repository/org/springframework/spring-aop/3.2.2.RELEASE/spring-aop-3.2.2.RELEASE.jar"/>
+               </list>
+               <value n="description" v="org.springframework:spring-aop:3.2.2.RELEASE:jar"/>
+               <value n="id" v="org.springframework:spring-aop:3.2.2.RELEASE:jar"/>
+               <value n="locked" v="true"/>
+            </hash>
+            <hash>
+               <list n="classPath">
+                  <url protocol="file" path="/root/.m2/repository/org/springframework/spring-expression/3.2.2.RELEASE/spring-expression-3.2.2.RELEASE.jar"/>
+               </list>
+               <value n="description" v="org.springframework:spring-expression:3.2.2.RELEASE:jar"/>
+               <value n="id" v="org.springframework:spring-expression:3.2.2.RELEASE:jar"/>
+               <value n="locked" v="true"/>
+            </hash>
+            <hash>
+               <list n="classPath">
+                  <url protocol="file" path="/root/.m2/repository/org/springframework/spring-jdbc/3.2.2.RELEASE/spring-jdbc-3.2.2.RELEASE.jar"/>
+               </list>
+               <value n="description" v="org.springframework:spring-jdbc:3.2.2.RELEASE:jar"/>
+               <value n="id" v="org.springframework:spring-jdbc:3.2.2.RELEASE:jar"/>
+               <value n="locked" v="true"/>
+            </hash>
+            <hash>
+               <list n="classPath">
+                  <url protocol="file" path="/root/.m2/repository/org/springframework/spring-tx/3.2.2.RELEASE/spring-tx-3.2.2.RELEASE.jar"/>
+               </list>
+               <value n="description" v="org.springframework:spring-tx:3.2.2.RELEASE:jar"/>
+               <value n="id" v="org.springframework:spring-tx:3.2.2.RELEASE:jar"/>
+               <value n="locked" v="true"/>
+            </hash>
+            <hash>
+               <list n="classPath">
+                  <url protocol="file" path="/root/.m2/repository/commons-logging/commons-logging/1.1.1/commons-logging-1.1.1.jar"/>
+               </list>
+               <value n="description" v="commons-logging:commons-logging:1.1.1:jar"/>
+               <value n="id" v="commons-logging:commons-logging:1.1.1:jar"/>
+               <value n="locked" v="true"/>
+            </hash>
+            <hash>
+               <list n="classPath">
+                  <url protocol="file" path="/root/.m2/repository/commons-collections/commons-collections/3.2.1/commons-collections-3.2.1.jar"/>
+               </list>
+               <value n="description" v="commons-collections:commons-collections:3.2.1:jar"/>
+               <value n="id" v="commons-collections:commons-collections:3.2.1:jar"/>
+               <value n="locked" v="true"/>
+            </hash>
+            <hash>
+               <list n="classPath">
+                  <url protocol="file" path="/root/.m2/repository/mx/gob/sat/ojdbc6/1.0/ojdbc6-1.0.jar"/>
+               </list>
+               <value n="description" v="mx.gob.sat:ojdbc6:1.0:jar"/>
+               <value n="id" v="mx.gob.sat:ojdbc6:1.0:jar"/>
+               <value n="locked" v="true"/>
+            </hash>
+            <hash>
+               <list n="classPath">
+                  <url protocol="file" path="/root/.m2/repository/org/springframework/spring-context-support/3.2.2.RELEASE/spring-context-support-3.2.2.RELEASE.jar"/>
+               </list>
+               <value n="description" v="org.springframework:spring-context-support:3.2.2.RELEASE:jar"/>
+               <value n="id" v="org.springframework:spring-context-support:3.2.2.RELEASE:jar"/>
+               <value n="locked" v="true"/>
+            </hash>
+            <hash>
+               <list n="classPath">
+                  <url protocol="file" path="/root/.m2/repository/c3p0/c3p0/0.9.1.1/c3p0-0.9.1.1.jar"/>
+               </list>
+               <value n="description" v="c3p0:c3p0:0.9.1.1:jar"/>
+               <value n="id" v="c3p0:c3p0:0.9.1.1:jar"/>
+               <value n="locked" v="true"/>
+            </hash>
+            <hash>
+               <list n="classPath">
+                  <url protocol="file" path="/root/.m2/repository/log4j/log4j/1.2.17/log4j-1.2.17.jar"/>
+               </list>
+               <value n="description" v="log4j:log4j:1.2.17:jar"/>
+               <value n="id" v="log4j:log4j:1.2.17:jar"/>
+               <value n="locked" v="true"/>
+            </hash>
+            <hash>
+               <list n="classPath">
+                  <url protocol="file" path="/root/.m2/repository/aopalliance/aopalliance/1.0/aopalliance-1.0.jar"/>
+               </list>
+               <value n="description" v="aopalliance:aopalliance:1.0:jar"/>
+               <value n="id" v="aopalliance:aopalliance:1.0:jar"/>
+               <value n="locked" v="true"/>
+            </hash>
+            <hash>
+               <list n="classPath">
+                  <url protocol="file" path="/root/.m2/repository/javax/servlet/servlet-api/2.5/servlet-api-2.5.jar"/>
+               </list>
+               <value n="description" v="javax.servlet:servlet-api:2.5:jar"/>
+               <value n="id" v="javax.servlet:servlet-api:2.5:jar"/>
+               <value n="locked" v="true"/>
+            </hash>
+            <hash>
+               <list n="classPath">
+                  <url protocol="file" path="/root/.m2/repository/AppDyC/DomainDyC/1.0/DomainDyC-1.0.jar"/>
+               </list>
+               <value n="description" v="AppDyC:DomainDyC:1.0:jar"/>
+               <value n="id" v="AppDyC:DomainDyC:1.0:jar"/>
+               <value n="locked" v="true"/>
+            </hash>
+            <hash>
+               <list n="classPath">
+                  <url protocol="file" path="/root/.m2/repository/AppDyC/DaoDyC/1.0/DaoDyC-1.0.jar"/>
+               </list>
+               <value n="description" v="AppDyC:DaoDyC:1.0:jar"/>
+               <value n="id" v="AppDyC:DaoDyC:1.0:jar"/>
+               <value n="locked" v="true"/>
+            </hash>
+            <hash>
+               <list n="classPath">
+                  <url protocol="file" path="/root/.m2/repository/mx/gob/sat/cobranza/diaHabil/1.1.5/diaHabil-1.1.5.jar"/>
+               </list>
+               <value n="description" v="mx.gob.sat.cobranza:diaHabil:1.1.5:jar"/>
+               <value n="id" v="mx.gob.sat.cobranza:diaHabil:1.1.5:jar"/>
+               <value n="locked" v="true"/>
+            </hash>
+            <hash>
+               <list n="classPath">
+                  <url protocol="file" path="/root/.m2/repository/mx/gob/sat/siat/PjPlantillador/0.1.1/PjPlantillador-0.1.1.jar"/>
+               </list>
+               <value n="description" v="mx.gob.sat.siat:PjPlantillador:0.1.1:jar"/>
+               <value n="id" v="mx.gob.sat.siat:PjPlantillador:0.1.1:jar"/>
+               <value n="locked" v="true"/>
+            </hash>
+            <hash>
+               <list n="classPath">
+                  <url protocol="file" path="/root/.m2/repository/AppDyC/PjHerramientaComple/1.0/PjHerramientaComple-1.0.jar"/>
+               </list>
+               <value n="description" v="AppDyC:PjHerramientaComple:1.0:jar"/>
+               <value n="id" v="AppDyC:PjHerramientaComple:1.0:jar"/>
+               <value n="locked" v="true"/>
+            </hash>
+            <hash>
+               <list n="classPath">
+                  <url protocol="file" path="/root/.m2/repository/mx/gob/sat/rolproceso/1.5.4/rolproceso-1.5.4.jar"/>
+               </list>
+               <value n="description" v="mx.gob.sat:rolproceso:1.5.4:jar"/>
+               <value n="id" v="mx.gob.sat:rolproceso:1.5.4:jar"/>
+               <value n="locked" v="true"/>
+            </hash>
+            <hash>
+               <list n="classPath">
+                  <url protocol="file" path="/root/.m2/repository/mx/gob/sat/siatbitacora/1.5.3/siatbitacora-1.5.3.jar"/>
+               </list>
+               <value n="description" v="mx.gob.sat:siatbitacora:1.5.3:jar"/>
+               <value n="id" v="mx.gob.sat:siatbitacora:1.5.3:jar"/>
+               <value n="locked" v="true"/>
+            </hash>
+            <hash>
+               <list n="classPath">
+                  <url protocol="file" path="/root/.m2/repository/mx/gob/sat/cobranza/domainCobranza/1.2.4/domainCobranza-1.2.4.jar"/>
+               </list>
+               <value n="description" v="mx.gob.sat.cobranza:domainCobranza:1.2.4:jar"/>
+               <value n="id" v="mx.gob.sat.cobranza:domainCobranza:1.2.4:jar"/>
+               <value n="locked" v="true"/>
+            </hash>
+            <hash>
+               <list n="classPath">
+                  <url protocol="file" path="/root/.m2/repository/mx/gob/sat/cobranza/negocioCobranza/1.2.3/negocioCobranza-1.2.3.jar"/>
+               </list>
+               <value n="description" v="mx.gob.sat.cobranza:negocioCobranza:1.2.3:jar"/>
+               <value n="id" v="mx.gob.sat.cobranza:negocioCobranza:1.2.3:jar"/>
+               <value n="locked" v="true"/>
+            </hash>
+            <hash>
+               <list n="classPath">
+                  <url protocol="file" path="/root/.m2/repository/mx/gob/sat/cobranza/HerramientaCalculo/1.2.0/HerramientaCalculo-1.2.0.jar"/>
+               </list>
+               <value n="description" v="mx.gob.sat.cobranza:HerramientaCalculo:1.2.0:jar"/>
+               <value n="id" v="mx.gob.sat.cobranza:HerramientaCalculo:1.2.0:jar"/>
+               <value n="locked" v="true"/>
+            </hash>
+            <hash>
+               <list n="classPath">
+                  <url protocol="file" path="/root/.m2/repository/org/aspectj/aspectjrt/1.7.4/aspectjrt-1.7.4.jar"/>
+               </list>
+               <value n="description" v="org.aspectj:aspectjrt:1.7.4:jar"/>
+               <value n="id" v="org.aspectj:aspectjrt:1.7.4:jar"/>
+               <value n="locked" v="true"/>
+            </hash>
+            <hash>
+               <list n="classPath">
+                  <url protocol="file" path="/root/.m2/repository/org/aspectj/aspectjweaver/1.7.4/aspectjweaver-1.7.4.jar"/>
+               </list>
+               <value n="description" v="org.aspectj:aspectjweaver:1.7.4:jar"/>
+               <value n="id" v="org.aspectj:aspectjweaver:1.7.4:jar"/>
+               <value n="locked" v="true"/>
+            </hash>
+            <hash>
+               <list n="classPath">
+                  <url protocol="file" path="/root/.m2/repository/org/slf4j/slf4j-api/1.7.2/slf4j-api-1.7.2.jar"/>
+               </list>
+               <value n="description" v="org.slf4j:slf4j-api:1.7.2:jar"/>
+               <value n="id" v="org.slf4j:slf4j-api:1.7.2:jar"/>
+               <value n="locked" v="true"/>
+            </hash>
+            <hash>
+               <list n="classPath">
+                  <url protocol="file" path="/root/.m2/repository/org/slf4j/jcl-over-slf4j/1.7.2/jcl-over-slf4j-1.7.2.jar"/>
+               </list>
+               <value n="description" v="org.slf4j:jcl-over-slf4j:1.7.2:jar"/>
+               <value n="id" v="org.slf4j:jcl-over-slf4j:1.7.2:jar"/>
+               <value n="locked" v="true"/>
+            </hash>
+            <hash>
+               <list n="classPath">
+                  <url protocol="file" path="/root/.m2/repository/org/slf4j/slf4j-log4j12/1.7.2/slf4j-log4j12-1.7.2.jar"/>
+               </list>
+               <value n="description" v="org.slf4j:slf4j-log4j12:1.7.2:jar"/>
+               <value n="id" v="org.slf4j:slf4j-log4j12:1.7.2:jar"/>
+               <value n="locked" v="true"/>
+            </hash>
+         </list>
+      </hash>
+      <list n="libraryReferences">
+         <hash>
+            <value n="id" v="org.springframework:spring-core:3.2.2.RELEASE:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="org.springframework:spring-context:3.2.2.RELEASE:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="org.springframework:spring-web:3.2.2.RELEASE:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="org.springframework:spring-beans:3.2.2.RELEASE:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="org.springframework:spring-aop:3.2.2.RELEASE:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="org.springframework:spring-expression:3.2.2.RELEASE:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="org.springframework:spring-jdbc:3.2.2.RELEASE:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="org.springframework:spring-tx:3.2.2.RELEASE:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="commons-logging:commons-logging:1.1.1:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="commons-collections:commons-collections:3.2.1:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="mx.gob.sat:ojdbc6:1.0:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="org.springframework:spring-context-support:3.2.2.RELEASE:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="c3p0:c3p0:0.9.1.1:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="log4j:log4j:1.2.17:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="aopalliance:aopalliance:1.0:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="javax.servlet:servlet-api:2.5:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="AppDyC:DomainDyC:1.0:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="AppDyC:DaoDyC:1.0:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="mx.gob.sat.cobranza:diaHabil:1.1.5:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="mx.gob.sat.siat:PjPlantillador:0.1.1:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="AppDyC:PjHerramientaComple:1.0:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="mx.gob.sat:rolproceso:1.5.4:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="mx.gob.sat:siatbitacora:1.5.3:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="mx.gob.sat.cobranza:domainCobranza:1.2.4:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="mx.gob.sat.cobranza:negocioCobranza:1.2.3:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="mx.gob.sat.cobranza:HerramientaCalculo:1.2.0:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="org.aspectj:aspectjrt:1.7.4:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="org.aspectj:aspectjweaver:1.7.4:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="org.slf4j:slf4j-api:1.7.2:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="org.slf4j:jcl-over-slf4j:1.7.2:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+         <hash>
+            <value n="id" v="org.slf4j:slf4j-log4j12:1.7.2:jar"/>
+            <value n="isJDK" v="false"/>
+         </hash>
+      </list>
+   </hash>
+   <hash n="oracle.jdevimpl.config.JProjectPaths">
+      <url n="outputDirectory" path="target/"/>
+   </hash>
+   <hash n="oracle.jdevimpl.webapp.facelets.libraries.ProjectFaceletsTagLibraries">
+      <list n="facelets-tag-libraries">
+         <hash>
+            <hash n="baseLibrary">
+               <value n="name" v="JSF Core"/>
+               <value n="version" v="2.0"/>
+            </hash>
+            <value n="name" v="JSF Core"/>
+            <value n="taglibURL" v="@oracle.home@../oracle_common/modules/oracle.jsf_2.0/jsf-impl.jar!/com/sun/faces/metadata/taglib/facelets_jsf_core.taglib.xml"/>
+            <value n="URI" v="http://java.sun.com/jsf/core"/>
+            <value n="version" v="2.0"/>
+         </hash>
+         <hash>
+            <hash n="baseLibrary">
+               <value n="name" v="JSF HTML"/>
+               <value n="version" v="2.0"/>
+            </hash>
+            <value n="name" v="JSF HTML"/>
+            <value n="taglibURL" v="@oracle.home@../oracle_common/modules/oracle.jsf_2.0/jsf-impl.jar!/com/sun/faces/metadata/taglib/html_basic.taglib.xml"/>
+            <value n="URI" v="http://java.sun.com/jsf/html"/>
+            <value n="version" v="2.0"/>
+         </hash>
+         <hash>
+            <hash n="baseLibrary">
+               <value n="name" v="Facelets Composite"/>
+               <value n="version" v="2.0"/>
+            </hash>
+            <value n="name" v="Facelets Composite"/>
+            <value n="taglibURL" v="@oracle.home@../oracle_common/modules/oracle.jsf_2.0/jsf-impl.jar!/com/sun/faces/metadata/taglib/composite.taglib.xml"/>
+            <value n="URI" v="http://java.sun.com/jsf/composite"/>
+            <value n="version" v="2.0"/>
+         </hash>
+         <hash>
+            <hash n="baseLibrary">
+               <value n="name" v="Facelets"/>
+               <value n="version" v="2.0"/>
+            </hash>
+            <value n="name" v="Facelets"/>
+            <value n="taglibURL" v="@oracle.home@../oracle_common/modules/oracle.jsf_2.0/jsf-impl.jar!/com/sun/faces/metadata/taglib/ui.taglib.xml"/>
+            <value n="URI" v="http://java.sun.com/jsf/facelets"/>
+            <value n="version" v="2.0"/>
+         </hash>
+         <hash>
+            <hash n="baseLibrary">
+               <value n="name" v="Mojarra Ext Utils"/>
+               <value n="version" v="2.0"/>
+            </hash>
+            <value n="name" v="Mojarra Ext Utils"/>
+            <value n="taglibURL" v="@oracle.home@../oracle_common/modules/oracle.jsf_2.0/jsf-impl.jar!/META-INF/mojarra_ext.taglib.xml"/>
+            <value n="URI" v="http://mojarra.dev.java.net/mojarra_ext"/>
+            <value n="version" v="2.0"/>
+         </hash>
+         <hash>
+            <hash n="baseLibrary">
+               <value n="name" v="JSTL"/>
+               <value n="version" v="2.0"/>
+            </hash>
+            <value n="name" v="JSTL"/>
+            <value n="taglibURL" v="@oracle.home@../oracle_common/modules/oracle.jsf_2.0/jsf-impl.jar!/com/sun/faces/metadata/taglib/jstl-core.taglib.xml"/>
+            <value n="URI" v="http://java.sun.com/jsp/jstl/core"/>
+            <value n="version" v="2.0"/>
+         </hash>
+         <hash>
+            <hash n="baseLibrary">
+               <value n="name" v="JSTL Functions"/>
+               <value n="version" v="2.0"/>
+            </hash>
+            <value n="name" v="JSTL Functions"/>
+            <value n="taglibURL" v="@oracle.home@../oracle_common/modules/oracle.jsf_2.0/jsf-impl.jar!/com/sun/faces/metadata/taglib/jstl-fn.taglib.xml"/>
+            <value n="URI" v="http://java.sun.com/jsp/jstl/functions"/>
+            <value n="version" v="2.0"/>
+         </hash>
+      </list>
+   </hash>
+   <hash n="oracle.jdevimpl.webapp.jsp.libraries.model.ProjectTagLibraries">
+      <list n="tag-libraries">
+         <hash>
+            <hash n="baseLibrary">
+               <value n="name" v="JSF Core"/>
+               <value n="version" v="2.0"/>
+            </hash>
+            <value n="jspVersion" v="2.1"/>
+            <value n="name" v="JSF Core"/>
+            <value n="tldURL" v="@oracle.home@../oracle_common/modules/oracle.jsf_2.0/jsf-impl.jar!/META-INF/jsf_core.tld"/>
+            <value n="URI" v="http://java.sun.com/jsf/core"/>
+            <value n="version" v="2.0"/>
+         </hash>
+         <hash>
+            <hash n="baseLibrary">
+               <value n="name" v="JSF HTML"/>
+               <value n="version" v="2.0"/>
+            </hash>
+            <value n="jspVersion" v="2.1"/>
+            <value n="name" v="JSF HTML"/>
+            <value n="tldURL" v="@oracle.home@../oracle_common/modules/oracle.jsf_2.0/jsf-impl.jar!/META-INF/html_basic.tld"/>
+            <value n="URI" v="http://java.sun.com/jsf/html"/>
+            <value n="version" v="2.0"/>
+         </hash>
+      </list>
+   </hash>
+</jpr:project>

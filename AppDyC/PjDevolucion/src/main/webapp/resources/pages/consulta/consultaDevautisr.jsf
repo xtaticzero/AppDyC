@@ -1,0 +1,115 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" 
+    xmlns:h="http://java.sun.com/jsf/html" 
+    xmlns:p="http://primefaces.org/ui">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <meta http-equiv="X-UA-Compatible" content="IE=8"/>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <meta http-equiv="pragma" content="no-cache"/>
+            <meta http-equiv="cache-control" content="no-cache"/>
+            <meta http-equiv="expires" content="0"/>
+             <style type="text/css">
+                .ui-panelgrid { margin-left: 0px !important;}
+                hr.red:before {content: " "!important;width: 35px!important;height: 6px!important;background-color: #D0021B!important;display: block!important;position: absolute!important;} 
+                .gmxNoborde1 td{border-color:#FFFFFF;}
+                .ui-selectoneradio{width: 10px!important;}
+                .ui-selectoneradio td{padding: 0px!important;border-color:#FFFFFF;}
+                .ui-selectoneradio label {padding-left: 5px!important;padding-right: 1px!important;}
+                hr.red {margin: 0px 0 70px !important;border-top-color: #DCE0E0 !important;position: relative !important;margin-left: 11px !important;}
+                .gmxfhorizontal td:nth-child(odd) {text-align: right !important;width: 398px!important;}
+                .gmxfhorizontal td:nth-child(even) {text-align: left !important;width: 398px!important;}
+                .gmxfhorizontal .ui-outputlabel{font-weight: normal !important;}
+                body {font-family: 'Open Sans';}
+                hr.red {margin: 0px 0px 25px !important;border-top-color: #DCE0E0 !important;position: relative !important;margin-left: 2px !important;} 
+                h2 {font-size: 38px!important;margin-bottom: 0px!important;margin-left: -2px !important;}
+                .ui-selectoneradio{width: 10px!important;}
+                .ui-selectoneradio td{padding: 0px!important;border-color:#FFFFFF;}  
+                .ui-selectoneradio label {padding-left: 5px!important;padding-right: 1px!important;}
+                .gmxfhorizontal .ui-selectoneradio td {padding-left: 0px !important;}
+                #idConsultaDevautisr\:tipoSolicitudId {width: 100%!important;}
+                #idConsultaDevautisr\:ejercicioId {width: 100%!important;}
+                #idConsultaDevautisr\:mostrarSolicitudId {width: 100%!important;}
+                .ui-panelgrid td {border-color: #FFFFFF;}
+             </style>
+        </h:head>
+    </html>
+    <h:body>
+       <h:form id="idConsultaDevautisr">
+            <div style="width: 777px!important;">
+                <h2>
+                   <p:outputLabel value="Consulta de tramites"/>
+                </h2> 
+                <hr class="red" />
+                <p:panelGrid style="border-color:#FFFFFF;" id="combosId">
+                    <p:row>
+                        <p:column style="padding: 0px;width: 239px!important;"> 
+                            <p:outputLabel value="Tipo de Solicitud:"/>
+                        </p:column>
+                        <p:column style="width: 30px!important;"  ></p:column>
+                         <p:column style="padding: 0px;width: 239px!important;"> 
+                               <p:outputLabel value="Ejercicio:" rendered="#{consultaDevautisrMB.mostrarEjercicio}"/>
+                        </p:column>
+                        <p:column style="width: 30px!important;" ></p:column>
+                        <p:column style="padding: 0px;width: 239px!important;"  > 
+                               <p:outputLabel value="Mostrar Solicitudes:" rendered="#{consultaDevautisrMB.mostrarSolicitud}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column style="padding: 0px;width: 239px!important;">           
+                           <p:selectOneMenu id="tipoSolicitudId"
+                                            value="#{consultaDevautisrMB.tipoSolicitudId}"
+                                            required="true"
+                                            ajax="true"
+                                            requiredMessage="#{msgValidacion.mcRequerido}">
+                              <f:selectItem itemLabel="#{msgValidacion.comboSeleccion}" itemValue=""/>
+                              <f:selectItem itemLabel="Compensacion"                 itemValue="1"/>
+                              <f:selectItem itemLabel="Devolucion manual"            itemValue="2"/>
+                              <f:selectItem itemLabel="Devolucion automatica IVA"    itemValue="3"/>
+                              <f:selectItem itemLabel="Devoluciones automaticas ISR" itemValue="4"/>
+                              <p:ajax update="combosId" listener="#{consultaDevautisrMB.mostrarEjercicio}" />
+                            </p:selectOneMenu>
+                        </p:column>
+                         <p:column style="width: 30px!important;"></p:column>
+                        <p:column style="padding: 0px;width: 239px!important;">           
+                           <p:selectOneMenu id="ejercicioId"
+                                            rendered="#{consultaDevautisrMB.mostrarEjercicio}"
+                                            value="#{consultaDevautisrMB.ejercicioId}"
+                                            required="true"
+                                            requiredMessage="#{msgValidacion.mcRequerido}">
+                              <f:selectItem itemLabel="#{msgValidacion.comboSeleccion}" itemValue=""/>
+                             <f:selectItems value="#{consultaDevautisrMB.catalogoEjercicio}"
+                                            var="tipoEjercicio" itemLabel="#{tipoEjercicio.itemLabel}"
+                                            itemValue="#{tipoEjercicio.itemValue}"/>
+                                  <p:ajax update="combosId" listener="#{consultaDevautisrMB.mostrarSolicitud}"/>
+                                </p:selectOneMenu>
+                        </p:column>
+                         <p:column style="width: 30px!important;" ></p:column>
+                        <p:column style="padding: 0px;width: 239px!important;"  >           
+                           <p:selectOneMenu id="mostrarSolicitudId"
+                                            value="#{consultaDevautisrMB.mostrarSolicitudId}"
+                                            required="true"
+                                            rendered="#{consultaDevautisrMB.mostrarSolicitud}"
+                                            requiredMessage="#{msgValidacion.mcRequerido}">
+                              <f:selectItem itemLabel="#{msgValidacion.comboSeleccion}" itemValue=""/>
+                             <f:selectItems value="#{consultaDevautisrMB.catalogoMostrarSolicitud}"
+                                            var="tipoEjercicio" itemLabel="#{tipoEjercicio.itemLabel}"
+                                            itemValue="#{tipoEjercicio.itemValue}"/>
+                                </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="5">
+                              <p:commandButton id="btnBuscar"
+                                               value="Siguiente"
+                                               ajax="true"
+                                               styleClass="gmxPositivo"
+                                               action="#{consultaDevautisrMB.buscarTramites}"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </div>
+       </h:form> 
+    </h:body>
+</f:view>  

@@ -1,0 +1,123 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view contentType="text/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+    <html xmlns="http://www.w3.org/1999/xhtml" xmlns:p="http://primefaces.org/ui">
+        <h:head>
+            <title>bandejaDocumentos</title>
+            <h:outputStylesheet library="css/" name="formato.css"/>
+            <style type="text/css">
+                .ui-datatable tbody td {
+                    white-space: normal;
+                }
+
+                .ui-datatable thead th {
+                    white-space: normal;
+                }
+            </style>
+        </h:head>
+        <h:body>
+            <h:form id="bandejaDocumentos">
+                <p:panel header="#{msgValidacion.asPanelDocumentos}" styleClass="gmxAutoAjustable">
+                    <p:messages id="messJefes" globalOnly="true" closable="true"/>
+                    <p:toolbar>
+                        <p:toolbarGroup align="left">
+                            <p:spacer width="10"/>
+                            <p:commandButton id="btnConsultar" icon="ui-icon-search"
+                                             title="#{msgValidacion.asBtnConsultar}"
+                                             disabled="#{bandejaDocumentosMB.varBotonCon}"
+                                             actionListener="#{bandejaDocumentosMB.downloadDocumentos}" ajax="false">
+                                <p:fileDownload value="#{bandejaDocumentosMB.fileDocumentos}"/>
+                            </p:commandButton>
+                            <p:commandButton id="btnAprobar" icon="ui-icon-mail-closed"
+                                             title="#{msgValidacion.asBtnAprobar}"
+                                             disabled="#{bandejaDocumentosMB.varBotonApr}"
+                                             action="#{bandejaDocumentosMB.enviarAprob}"
+                                             update=":bandejaDocumentos3:gridJefes"/>
+                        </p:toolbarGroup>
+                    </p:toolbar>
+                    <p:scrollPanel style="height:200px" mode="native">
+                        <p:dataTable id="documentos" var="sol" value="#{bandejaDocumentosMB.dataModel}" paginator="true"
+                                     rows="10" rowsPerPageTemplate="5,10,15,20"
+                                     emptyMessage="No se encontraron documentos" selectionMode="single"
+                                     selection="#{bandejaDocumentosMB.documentoAdministrarSolVO}"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                            <p:ajax event="rowSelect"
+                                    update=":bandejaDocumentos:btnConsultar :bandejaDocumentos:btnAprobar"
+                                    listener="#{bandejaDocumentosMB.onRowSelect}"/>
+                            <p:column headerText="#{msgValidacion.asNumControl}">
+                                <h:outputText value="#{sol.numControl}"/>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asRFC}">
+                                <h:outputText value="#{sol.rfcContribuyente}"/>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asDictaminado}">
+                                <h:outputText value="#{sol.rolDictaminado}"/>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asTipTramite}">
+                                <h:outputText value="#{sol.tipoTramite}"/>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asFechaRecepcionTramite}">
+                                <h:outputText value="#{sol.fechaPresentacion}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asNomDocumento}">
+                                <h:outputText value="#{sol.nombreDocumento}"/>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asFechaResolucion2}">
+                                <h:outputText value="#{sol.fechaLimite}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asEstDocumento}">
+                                <h:outputText value="#{sol.estadoDesc}"/>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asMonto}">
+                                <h:outputText value="#{sol.importeSolicitado}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:scrollPanel>
+                </p:panel>
+            </h:form>
+             
+            <h:form id="bandejaDocumentos3">
+                <p:dialog widgetVar="dlgJefesSup" modal="true" closable="false" resizable="false"
+                          header="#{msgValidacion.asDlgJefesSup}" width="600" height="180">
+                    <p:panelGrid style="width:100%">
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.diCamposObligatorios}" style="color:red;"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <br/>
+                    <p:panelGrid id="gridJefes" columns="3">
+                        <p:outputLabel value="#{msgValidacion.asLblJefes}"/>
+                        <p:selectOneMenu id="comboJefes" style="width:290px;" required="true"
+                                         requiredMessage="#{msgValidacion.diRequerido}"
+                                         value="#{bandejaDocumentosMB.numEmp}">
+                            <f:selectItem itemLabel="Seleccione una opcion" itemValue=""/>
+                            <f:selectItems value="#{bandejaDocumentosMB.listaJefesSup}" var="jefes"
+                                           itemLabel="#{jefes.nombre} #{jefes.apellidoPaterno} #{jefes.apellidoMaterno}"
+                                           itemValue="#{jefes.numEmpleado}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel value="*" style="color:red"/>
+                        <p:outputLabel/>
+                        <p:message id="idMsgJefes" for="comboJefes" display="text"/>
+                    </p:panelGrid>
+                    <p:panelGrid style="width:100%;text-align:center;">
+                        <p:row>
+                            <p:column>
+                                <p:commandButton value="#{msgValidacion.asBtnAceptar}"
+                                                 update="idMsgJefes,:bandejaDocumentos:messJefes,comboJefes,:bandejaDocumentos:documentos"
+                                                 action="#{bandejaDocumentosMB.accionGuardarJefes}"/>
+                                <p:spacer width="50"/>
+                                <p:commandButton value="#{msgValidacion.iaBtnCancelar}" onclick="dlgJefesSup.hide();"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:dialog>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

@@ -1,0 +1,282 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:f="http://java.sun.com/jsf/core" 
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <h:head></h:head>
+    <h:outputStylesheet library="css/" name="estilos.css"/>
+    <ui:include src="/WEB-INF/templates/sessionTimeOut.xhtml"/>
+    <p:dialog modal="true" widgetVar="statusDialog" header="#{mensajes['msgEspere']}" draggable="false" closable="false"
+              resizable="false">
+        <p:graphicImage value="/resources/images/ajaxloadingbar.gif"/>
+    </p:dialog>
+
+    <h:form id="Campo">
+        <p:messages id="messages"  showDetail="true" globalOnly="true" autoUpdate="true" closable="true" />
+        <p:panel id="pnlTbl" style="width:800px" visible="#{emailJobMB.emailReporteProcesoModel.tblVisible}">
+
+            <p:dataTable id="tbl" var="emaiEc" value="#{emailJobMB.emailReporteProcesoModel.listEmail}" emptyMessage="#{mensajes['msg.dataTable.vacio']}"
+                         filteredValue="#{emailJobMB.emailReporteProcesoModel.listEmailTmp}" paginator="true" rows="5" resizableColumns="true" paginatorPosition="bottom">
+                <f:facet name= "header">
+                    <h:outputText value="#{mensajes['catalogo.EmailProcs.titulo']}"/>
+                    <h:commandLink action="#{emailJobMB.generaExcel}" immediate="true" style="margin-left:90%;">
+                        <h:graphicImage value="/resources/images/excel1.png" height="20px" width="20px" style="border:none"/>
+                    </h:commandLink>
+                    <p:spacer width="15" height="10"/>
+                    <h:commandLink  action="#{emailJobMB.generaPdf}" immediate="true" >
+                        <h:graphicImage value="/resources/images/pdf1.png" height="20px" width="20px" style="border:none"/>
+                    </h:commandLink>
+                </f:facet>
+                <p:column sortBy="#{emaiEc.nombreCompleto}"  filterBy="#{emaiEc.nombreCompleto}" headerText="#{mensajes['etNombreCompleto']}" width="22px" filterMaxLength="18"
+                          filterStyle="margin:auto; width:60px;" filterMatchMode="contains">
+                    <h:outputText id="tipNombre" value="#{emaiEc.nombreCompleto}"></h:outputText>
+                    <p:tooltip for="tipNombre" value="#{emaiEc.nombreCompleto}"></p:tooltip> 
+                </p:column>
+                <p:column sortBy="#{emaiEc.correoElectronico}" filterBy="#{emaiEc.correoElectronico}" headerText="#{mensajes['etCorreo']}" width="22px" filterMaxLength="18"
+                          filterStyle="margin:auto; width:60px;" filterMatchMode="contains">
+                    <h:outputText id="tipCorreo" value="#{emaiEc.correoElectronico}"></h:outputText>
+                    <p:tooltip for="tipCorreo" value="#{emaiEc.correoElectronico}"></p:tooltip> 
+                </p:column>
+                <p:column sortBy="#{emaiEc.correoElectronicoAlterno}" filterBy="#{emaiEc.correoElectronicoAlterno}" headerText="#{mensajes['etCorreoAlterno']}" width="22px" filterMaxLength="18"
+                          filterStyle="margin:auto; width:60px;" filterMatchMode="contains">
+                    <h:outputText id="tipCorreoAlterno" value="#{emaiEc.correoElectronicoAlterno}"></h:outputText>
+                    <p:tooltip for="tipCorreoAlterno" value="#{emaiEc.correoElectronicoAlterno}"></p:tooltip> 
+                </p:column>
+
+                <p:column headerText="#{mensajes['etEditar']}" style="text-align:center" width="35">
+                    <p:commandButton process="@this" update=":Campo:pnlEdita, :Campo:pnlTbl" action="#{emailJobMB.abrirEditar}"
+                                     icon="ui-icon-pencil" onclick="$('#Campo\\:pnlTbl').hide();" onsuccess="statusDialog.hide();">
+                        <f:setPropertyActionListener value="#{emaiEc}" 
+                                                     target="#{emailJobMB.emailReporteProcesoModel.emailEdit}" /> 
+                    </p:commandButton>
+                </p:column>
+                <p:column headerText="#{mensajes['etEliminar']}" style="text-align:center" width="35">
+                    <p:commandButton process="@this"  update=":Campo:pnlElimina, :Campo:pnlTbl" action="#{emailJobMB.abrirEliminar}"
+                                     icon="ui-icon-close" onclick="$('#Campo\\:pnlTbl').hide();" onsuccess="statusDialog.hide();"
+                                     >
+                        <f:setPropertyActionListener value="#{emaiEc}" 
+                                                     target="#{emailJobMB.emailReporteProcesoModel.emailEli}" /> 
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+            <div align="right">
+                <br />
+                <p:commandButton process="@this" update=":Campo:pnlAgrega, :Campo:pnlTbl" 
+                                 onclick="$('#Campo\\:pnlTbl').hide();
+                                         statusDialog.show();" onsuccess="statusDialog.hide();"
+                                 action="#{emailJobMB.abrirNuevo}" value="#{mensajes['btnNuevo']}" />
+            </div>
+
+        </p:panel>
+
+        <p:panel id="pnlAgrega" header="#{mensajes['catalogo.EmailProcs.Agrega']}" style="width:600px"  visible="#{emailJobMB.emailReporteProcesoModel.nvoVisible}">
+            <p:outputLabel value="#{mensajes['msgCampoObligatorio']}" style="color:red">
+            </p:outputLabel>
+            <h:panelGrid id="gridNvo" columns="2" cellspacing="3" cellpadding="3">
+                <p:row>
+                    <p:column>
+                        <h:outputText value="#{mensajes['etNombreCompleto']}"/>
+                        <h:outputText value="*" style="color:red" />
+                    </p:column>
+                </p:row>
+                <p:inputTextarea id="nombreCompleto" value="#{emailJobMB.emailReporteProcesoModel.nombreCompleto}"
+                                 required="true"
+                                 requiredMessage="#{mensajes['msgRequerido']}"
+                                 style="width:200px"
+                                 rows="1" cols="30"
+                                 maxlength="200"
+                                 counter="counter0"
+                                 counterTemplate="{0} caracteres restantes."
+                                 autoResize="false">
+                </p:inputTextarea>
+                <h:outputText />
+                <p:message id="mensajesnombreCompleto" for="nombreCompleto" display="text"  />
+                <h:outputText />
+                <h:outputText id="counter0"/>
+
+
+                <p:row>
+                    <p:column>
+                        <h:outputText value="#{mensajes['etCorreo']}"/>
+                        <h:outputText value="*" style="color:red" />
+                    </p:column>
+                </p:row>
+
+                <p:inputTextarea id="Correo" value="#{emailJobMB.emailReporteProcesoModel.correoElectronico}" 
+                                 required="true"
+                                 requiredMessage="#{mensajes['msgRequerido']}" 
+                                 style="width:200px"
+                                 rows="3" cols="30"
+                                 maxlength="150"  
+                                 counter="counter2"
+                                 counterTemplate="{0} caracteres restantes."
+                                 autoResize="false"
+                                 validatorMessage="#{emailJobMB.emailReporteProcesoModel.correoElectronico} El correo no es valido">
+                    <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+                </p:inputTextarea>                
+                <h:outputText />
+                <p:message id="mensajesCorreo" for="Correo" display="text"  />
+                <h:outputText />
+                <h:outputText id="counter2"/>
+
+
+                <p:row>
+                    <p:column>
+                        <h:outputText value="#{mensajes['etCorreoAlterno']}"/>
+                        <h:outputText />
+                    </p:column>
+                </p:row>
+
+                <p:inputTextarea id="CorreoAlt" value="#{emailJobMB.emailReporteProcesoModel.correoElectronicoAlterno}" 
+                                 style="width:200px"
+                                 rows="3" cols="30"
+                                 maxlength="150"  
+                                 counter="counter1"
+                                 counterTemplate="{0} caracteres restantes."
+                                 autoResize="false"
+                                 >
+
+                </p:inputTextarea>                
+                <h:outputText />
+                <p:message id="mensajesCorreoAlt" for="CorreoAlt" display="text"  />
+                <h:outputText />
+                <h:outputText id="counter1"/>
+
+
+                <h:panelGrid columns="2">
+                    <p:commandButton id="cmbGuardarNvo" value="#{mensajes['btnGuardar']}" action="#{emailJobMB.agrega}" style="left:90%"
+                                     process="@this, nombreCompleto, Correo, CorreoAlt" update="pnlAgrega, pnlTbl, messages "
+                                     onclick="statusDialog.show();
+                                             $('#Campo\\:pnlAgrega').hide();" onsuccess="statusDialog.hide();"/>
+                    <p:commandButton id="cmbCancelarNvo" value="#{mensajes['btnCancelar']}" action="#{emailJobMB.cerrar}" style="left:90%"
+                                     process="@this" update="pnlAgrega, pnlTbl, messages " 
+                                     onclick="statusDialog.show();
+                                             $('#Campo\\:pnlAgrega').hide();
+                                     " onsuccess="statusDialog.hide();">
+                        <p:resetInput target="pnlAgrega" />
+                    </p:commandButton>
+                </h:panelGrid>
+            </h:panelGrid>
+        </p:panel>
+
+        <p:panel id="pnlEdita" header="#{mensajes['catalogo.EmailProcs.Editar']}"  style="width:600px" visible="#{emailJobMB.emailReporteProcesoModel.edtVisible}">
+            <p:outputLabel value="#{mensajes['msgCampoObligatorio']}" style="color:red">
+            </p:outputLabel>
+            <h:panelGrid id="gridEdt" columns="2" cellspacing="3" cellpadding="3">
+                <p:row>
+                    <p:column>
+                        <h:outputText value="#{mensajes['etNombreCompleto']}"/>
+                        <h:outputText value="*" style="color:red" />
+                    </p:column>
+                </p:row>
+                <p:inputTextarea id="NombreEdt" value="#{emailJobMB.emailReporteProcesoModel.emailEdit.nombreCompleto}"
+                                 required="true"
+                                 requiredMessage="#{mensajes['msgRequerido']}"
+                                 style="width:200px"
+                                 rows="1" cols="30"
+                                 counter="counter3"
+                                 counterTemplate="{0} caracteres restantes."
+                                 maxlength="200"
+                                 autoResize="false">
+                </p:inputTextarea>
+                <h:outputText />
+                <p:message id="mensajesNombreEdt" for="NombreEdt" display="text"  />
+                <h:outputText />
+                <h:outputText id="counter3"/>
+
+
+                <p:row>
+                    <p:column>
+                        <h:outputText  value="#{mensajes['etCorreo']}"/>
+                        <h:outputText value="*" style="color:red" />
+                    </p:column>
+                </p:row>
+                <p:inputTextarea id="CorreoEdt" value="#{emailJobMB.emailReporteProcesoModel.emailEdit.correoElectronico}"
+                                 required="true"
+
+                                 requiredMessage="#{mensajes['msgRequerido']}" 
+                                 style="width:200px"
+                                 rows="3" cols="30"
+                                 maxlength="150"  
+                                 counter="counter4"
+                                 counterTemplate="{0} caracteres restantes."
+                                 autoResize="false"
+                                 validatorMessage="#{emailJobMB.emailReporteProcesoModel.correoElectronico} El correo no es valido">
+                    <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+                </p:inputTextarea>
+                <h:outputText />
+                <p:message id="mensajesCorreoEdt" for="CorreoEdt" display="text"  />
+                <h:outputText />
+                <h:outputText id="counter4"/>
+
+                <p:row>
+                    <p:column>
+                        <h:outputText  value="#{mensajes['etCorreoAlterno']}"/>
+                        <h:outputText/>
+                    </p:column>
+                </p:row>
+                <p:inputTextarea id="CorreoEdtAltr" value="#{emailJobMB.emailReporteProcesoModel.emailEdit.correoElectronicoAlterno}"
+                                 style="width:200px"
+                                 rows="3" cols="30"
+                                 maxlength="150"  
+                                 counter="counter5"
+                                 counterTemplate="{0} caracteres restantes."
+                                 autoResize="false"
+                                 >
+
+                </p:inputTextarea>
+                <h:outputText />
+                <p:message id="mensajesCorreoEdtAltr" for="CorreoEdtAltr" display="text"  />
+                <h:outputText />
+                <h:outputText id="counter5"/>
+
+                <h:panelGrid columns="2">
+
+                    <p:commandButton id="cmbGuardarEdt" value="#{mensajes['btnGuardar']}" action="#{emailJobMB.edita}" style="left:90%"
+                                     onclick="statusDialog.show();
+                                             $('#Campo\\:pnlEdita').hide();" onsuccess="statusDialog.hide();"
+                                     process="@this, NombreEdt, CorreoEdt, CorreoEdtAltr" update="pnlEdita, pnlTbl, messages "
+                                     />
+                    <p:commandButton id="cmbCancelarEdt" value="#{mensajes['btnCancelar']}" action="#{emailJobMB.cerrar}"  style="left:90%"
+                                     onclick="statusDialog.show();
+                                             $('#Campo\\:pnlEdita').hide();" onsuccess="statusDialog.hide();"
+                                     update="pnlEdita, pnlTbl, messages" process="@this" immediate="true">
+                        <p:resetInput target="pnlEdita" />
+                    </p:commandButton>
+                </h:panelGrid>
+            </h:panelGrid>
+        </p:panel>
+
+        <p:panel id="pnlElimina" header="#{mensajes['catalogo.EmailProcs.Elimina']}" style="width:600px" visible="#{emailJobMB.emailReporteProcesoModel.elmVisible}">
+
+            <h:panelGrid id="gridEli" columns="2" cellspacing="3" cellpadding="3">
+                <h:outputText  value="#{mensajes['etNombreCompleto']}"/>
+                <p:inputText id="txtRfcEli" value="#{emailJobMB.emailReporteProcesoModel.emailEli.nombreCompleto}" disabled="true" style="width:200px"/>
+
+                <h:outputText  value="#{mensajes['etCorreo']}"/>
+                <p:inputTextarea id="txtCorreoEli" value="#{emailJobMB.emailReporteProcesoModel.emailEli.correoElectronico}" disabled="true" style="width:200px"/>
+
+                <h:outputText  value="#{mensajes['etCorreoAlterno']}"/>
+                <p:inputTextarea id="txtCorreoEliAlt" value="#{emailJobMB.emailReporteProcesoModel.emailEli.correoElectronicoAlterno}" disabled="true" style="width:200px"/>
+
+
+                <h:panelGrid columns="2">
+                    <p:commandButton id="cmbGuardarEli" value="#{mensajes['btnEliminar']}" action="#{emailJobMB.elimina}" style="left:90%"
+                                     process="@this" update="pnlElimina, pnlTbl, messages"  
+                                     onclick="statusDialog.show();
+                                             $('#Campo\\:pnlElimina').hide();" onsuccess="statusDialog.hide();"/>
+                    <p:commandButton id="cmbCancelarEli" value="#{mensajes['btnCancelar']}" action="#{emailJobMB.cerrar}" style="left:90%"
+                                     process="@this" update="pnlElimina, pnlTbl, messages" 
+                                     onclick="statusDialog.show();
+                                             $('#Campo\\:pnlElimina').hide();" onsuccess="statusDialog.hide();">
+                        <p:resetInput target="pnlElimina" />
+                    </p:commandButton>
+                </h:panelGrid>
+            </h:panelGrid>
+        </p:panel>
+
+    </h:form>
+</html>

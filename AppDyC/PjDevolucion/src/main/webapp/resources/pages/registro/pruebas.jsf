@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+        >
+    <html>
+        <h:head>
+            <script type="text/javascript"> 
+            function redireccionar() {
+                window.setTimeout(function() {
+                    
+                    window.location.href = '#{redireccionamientoMB.url}';
+                }, 0);
+                }
+            </script>
+        </h:head>
+        <h:body>
+            <h:form>
+                <h:panelGrid  style=" padding-left:50px; align:center; width:800px" >
+                <div style="position: relative;  top: 50%; transform: translateY(50%);" align="center">
+                <table style="padding: 100px; width: 800px;" bgcolor="#e8e8e8" border="0">
+                
+                    <tr>
+                        <td colspan="2" align="center">
+                            <div style="background-color: #c3b0c3;">
+                            <h:outputText value='#{redireccionamientoMB.url}'/>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td align="right" >
+                            <p:commandButton id="idRedireccionar" action="#{redireccionamientoMB.redireccionaBuzon}" value="Aceptar" style="" />
+                        </td>
+                    </tr>
+                </table>                    
+                </div>
+                </h:panelGrid>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

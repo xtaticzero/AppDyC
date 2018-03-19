@@ -1,0 +1,238 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view contentType="text/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+    <html xmlns="http://www.w3.org/1999/xhtml" xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <h:outputStylesheet library="css/" name="formato.css"/>
+    </h:head>
+        <h:body>
+            <h:form id="frmComentario">
+                <p:messages id="messages" rendered="true" showDetail="true" autoUpdate="true" closable="true" globalOnly="true"/>
+                <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                <p:dialog id="statusBar" modal="true" widgetVar="statusDialog" header="#{msgValidacion.ajaxLoading}"
+                    draggable="false" width="250" closable="false" resizable="false">
+                    <p:graphicImage value="/resources/images/ajaxloadingbar.gif"/>
+                </p:dialog>
+                
+                <p:panel style="width:500px; height:380px; border:1;text-align: center; border:0;" id="panelOpEscalar"
+                header="Aprobar documentos - Comentarios" rendered="#{comentarioMB.esPanelOpEscalar}">
+                    <div align="center">
+                        <p:outputLabel value="Los campos marcados con * son obligatorios" style="color:red;"/>
+                        <p:panelGrid columns="2" style="border: none;">
+
+                            <p:panelGrid style="width:210px;text-align: right;border: none;" columns="1" id="titulos" >
+                                <p:outputLabel>Comentarios</p:outputLabel> 
+                            </p:panelGrid>
+                            <p:panelGrid style="text-align: left;border: none;" columns="1" id="contCom">
+                                <p:inputTextarea autoResize="false"
+                                                 cols="40" 
+                                                 counterTemplate="{0} characters remaining." 
+                                                 id="comentario1"
+                                                 maxlength="3000" 
+                                                 rows="6" 
+                                                 style="width:210px !important; resize: none; text-transform:uppercase"
+                                                 value="#{comentarioMB.txtaComentarios}"/>
+                            </p:panelGrid>
+                            <p:panelGrid style="width:210px;text-align: right;border: none;" columns="1" id="titEscalar" >                                                    
+                                <p:outputLabel>Escalar<p:outputLabel style="color:red;">*</p:outputLabel></p:outputLabel>
+                                <p:outputLabel rendered="#{comentarioMB.escalar}" id="etiJefeSup">Jefe superior a quien se escala la aprobación:</p:outputLabel>
+                            </p:panelGrid>
+                            <p:panelGrid style="text-align: left;border: none;" columns="1" id="Contenido">                                                                        
+                                <p:selectOneMenu id="cboEscalar" 
+                                                 required="true"
+                                                 requiredMessage="Debe seleccionar la opción escalar"
+                                                 value="#{comentarioMB.cboEscalar}" >
+                                    <f:selectItem itemLabel="- Seleccionar -"/>
+                                    <f:selectItem itemLabel="Si" itemValue="1"/>
+                                    <f:selectItem itemLabel="No" itemValue="2"/>                                
+                                    <p:ajax event="change" listener="#{comentarioMB.habilitarComboJefe}"  update="Contenido, titEscalar"/>
+                                </p:selectOneMenu>                                                                      
+                                <p:selectOneMenu id="cboJefeSup" value="#{comentarioMB.numEmpleado}" rendered="#{comentarioMB.escalar}" style="width:200px;" 
+                                    required="true" requiredMessage="Debe seleccionar un jefe">
+                                    <f:selectItem itemLabel="- Seleccionar -"/>
+                                    <f:selectItems var="aprobador" value="#{comentarioMB.listaAprobadorDTO}"
+                                                itemLabel="#{aprobador.nombreCompleto}" itemValue="#{aprobador.numEmpleado}"/>  
+                                        <p:ajax update="cboJefeSup" />
+                                </p:selectOneMenu>   
+                                <p:message for="cboEscalar" severity="error" showDetail="true" display="text" />
+                                <p:message for="cboJefeSup" severity="error" showDetail="true" display="text" />
+                            </p:panelGrid>
+                        </p:panelGrid>
+                        <h:panelGrid columns="2" style="margin: auto; text-align: center;">
+                            <p:commandButton id="btnAceptar" value="Aceptar" action="#{comentarioMB.escalarDocumento}"  ajax="false" styleClass="gmxPositivo"/>   
+                            <p:commandButton id="btnCancelar" value="Cancelar" action="#{comentarioMB.cancelar}" ajax="false" immediate="true"/>
+                        </h:panelGrid>
+                    </div>
+                </p:panel>
+     
+                <p:panel style="width:500px;border:1;text-align:center;" id="panelObliEscalar" 
+                header="Escalaci&oacute;n obligatoria" rendered="#{comentarioMB.esPanelObliEscalar}">
+                    <div align="center">
+                        <p:panelGrid columns="2" style="border: none;">
+                            <p:panelGrid style="width:210px;text-align: right;border: none;" columns="1" id="titulosObliEscalar" >
+                                    <p:outputLabel>Comentarios:</p:outputLabel>
+                                    <p:outputLabel>Jefe superior a quien se escala la aprobación:</p:outputLabel>
+                            </p:panelGrid>
+                            <p:panelGrid style="text-align: left;border: none;" columns="1" id="contenidoObliEscalar" >
+                                    <p:inputTextarea autoResize="false"
+                                                     cols="30"
+                                                     counterTemplate="{0} characters remaining." 
+                                                     id="idComentario2"
+                                                     maxlength="3000" 
+                                                     rows="6" 
+                                                     style="width:210px !important; resize: none; text-transform:uppercase"     
+                                                     value="#{comentarioMB.txtaComentarios}"/>
+                                    <p:selectOneMenu id="cboJefeSupObliEscalar" value="#{comentarioMB.numEmpleado}" required="true" requiredMessage="Debe seleccionar un jefe" style="width:200px;">
+                                        <f:selectItem itemLabel="- Seleccionar -"/>
+                                        <f:selectItems var="aprobador" value="#{comentarioMB.listaAprobadorDTO}"
+                                                    itemLabel="#{aprobador.nombreCompleto}" itemValue="#{aprobador.numEmpleado}"/>    
+                                    </p:selectOneMenu>
+                                    <p:message for="cboJefeSupObliEscalar" severity="error" showDetail="true" display="text" />
+                            </p:panelGrid>
+                        </p:panelGrid>
+                        <h:panelGrid columns="2" style="margin: auto; text-align: center;">
+                            <p:commandButton id="btnAceptarObliEscalar" value="Aceptar" action="#{comentarioMB.escalarDocumento}" styleClass="gmxPositivo"/>    
+                            <p:commandButton id="btnCancelarObliEscalar" value="Cancelar" action="#{comentarioMB.cancelar}" immediate="true" ajax="false"/>
+                        </h:panelGrid>
+                    </div>
+                </p:panel>
+                
+                <p:panel style="width:800px; border:1;align:center;text-align:center;" id="panelOmitirPago"
+                header="Rechazar documento" rendered="#{comentarioMB.esPanelOmitirPago}"  >
+                    <div align="center">
+                        <p:outputLabel value="Los campos marcados con * son obligatorios" style="color:red;"/>
+                        <p:panelGrid columns="1">
+                            <p:panelGrid columns="2" style="border: none;">
+                                <p:panelGrid style="width:150px;text-align: right;border: none;" columns="1" id="titulosOmitirPago" >
+                                    <p:outputLabel>Comentarios <p:outputLabel value="*" style="color:red;"/></p:outputLabel>
+                                </p:panelGrid>
+                                <p:panelGrid style="text-align: left;border: none;" columns="1" id="ContenidoOmitirPago">
+                                    <p:inputTextarea autoResize="false" 
+                                                     cols="30" 
+                                                     counterTemplate="{0} characters remaining." 
+                                                     id="idComentario3"
+                                                     maxlength="3000"
+                                                     required="true"
+                                                     requiredMessage="#{msgValidacion.diRequerido}"
+                                                     rows="6" 
+                                                     style="min-width:210px !important; max-width:400px !important; resize: none; text-transform:uppercase"     
+                                                     value="#{comentarioMB.txtaComentarios}"/>
+                                    <p:message for="idComentario3" showDetail="true" display="text" />
+                                    <p:outputLabel>
+                                        <p:selectBooleanCheckbox value="#{comentarioMB.omitirPago}" rendered="#{comentarioMB.omitirPago}"/>
+                                        <p:outputLabel rendered="#{comentarioMB.omitirPago}">Omitir pago de intereses</p:outputLabel>
+                                    </p:outputLabel>
+                                </p:panelGrid>
+                            </p:panelGrid>
+                                    
+                            <h3> Dictaminador asignado </h3>
+                                    
+                            <p:panelGrid columns="2">
+                                <p:outputLabel value="Nombre">:</p:outputLabel>
+                                <h:outputText value="#{resumenDevMB.nombreDictaminador}" />
+                                <p:outputLabel value="No. empleado">:</p:outputLabel>
+                                <h:outputText value="#{resumenDevMB.numeroEmpleadoDictaminador}" />
+                            </p:panelGrid>
+                            
+                            <h:panelGrid columns="2" style="margin: auto; text-align: center;">
+                                <!-- disabled="# { !comentarioMB.registroSeleccionado}" -->
+                                <p:commandButton id="btnAceptarOmitirPago" value="Aceptar" 
+                                    action="#{comentarioMB.irARechazo}" ajax="false" styleClass="gmxPositivo"/>
+                                <p:commandButton id="btnCancelarOmitirPago" value="Cancelar" 
+                                    action="#{comentarioMB.cancelar}" immediate="true" ajax="false"/>
+                            </h:panelGrid>
+                                    
+                            <div>
+                                <!-- ************************************ INICIA LISTA DICTAMINADORES ************************************  -->
+                                <p:dataTable id="idTblLista" var="vTblLista" value="#{comentarioMB.listaDictaminadoresReasignacion}"
+                                             rowKey="#{vTblLista.numEmpleado}" scrollWidth="100%"
+                                             paginator="#{comentarioMB.frm.paginador}"
+                                             paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                             rowsPerPageTemplate="10,15,20" rows="#{comentarioMB.frm.rowsPaginador}"
+                                             style="width:100%;" resizableColumns="true" liveResize="true" rowIndexVar="rowIndex"
+                                             rowStyleClass="#{(rowIndex mod 2) eq 0 ?'highlightA':'highlightB'}"
+                                             selection="#{comentarioMB.dictaminadorSeleccionado}" selectionMode="single"
+                                             emptyMessage="#{msgValidacion.tblEmpty}">
+
+                                    <f:facet name="header">Reasignar dictaminador</f:facet>
+                                    
+                                    <p:ajax event="rowSelect" update=":frmComentario:btnAceptarOmitirPago" listener="#{comentarioMB.onRowSelect}"/>
+
+                                    <p:column sortBy="#{vTblLista.numEmpleado}" headerText="#{msgValidacion.mdNEmpleado}" width="200">
+                                        <h:outputText value="#{vTblLista.numEmpleado}"/>
+                                    </p:column>
+                                    <p:column sortBy="#{vTblLista.nombreCompleto}" headerText="#{msgValidacion.mdTblCol1}">
+                                        <h:outputText value="#{vTblLista.nombreCompleto}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgValidacion.mdTblCol2}" width="90">
+                                        <h:outputText value="#{vTblLista.descComision}"/>
+                                    </p:column>
+                                    <p:column width="90">
+                                        <f:facet name="header">
+                                            <h:outputText value="#{msgValidacion.mdTblCol3}"/>
+                                        </f:facet>
+                                        <h:outputText value="#{vTblLista.activoPortal == 1 ? 'Activo' : 'Inactivo' }"/>
+                                    </p:column>
+                                    <f:facet name="footer">
+                                        <p:outputLabel value="#{comentarioMB.frm.numResultados} Resultados"
+                                                       style="text-align:left"/>
+                                    </f:facet>
+                                </p:dataTable>
+                                <!-- ************************************ TERMINA LISTA DICTAMINADORES ************************************  -->
+
+                            </div>
+                        </p:panelGrid>
+                    </div>
+                </p:panel>
+                
+                <p:panel style="width:500px;border:1;text-align:center; border:0;" id="panelObsFirma"
+                header="Tipo de firma" rendered="#{comentarioMB.esPanelObsFirma}">
+                    <p:outputLabel value="Los campos marcados con * son obligatorios" style="color:red;"/>
+                    <div align="center">
+                        <p:panelGrid columns="2" style="border: none;">                        
+                                <p:outputLabel>Tipo de firma<p:outputLabel style="color:red;">*</p:outputLabel></p:outputLabel>                                                                                
+                                <p:selectOneMenu id="cboObsFirma1" var="f" value="#{comentarioMB.cboFirma}" required="true" requiredMessage="Debe seleccionar el tipo de firma">
+                                    <f:selectItem itemLabel="- Seleccionar -" itemValue="" />
+                                    <f:selectItems value="#{comentarioMB.listaDeTipoDeFirma}" 
+                                                   var="entry" itemValue="#{entry.key}" itemLabel="#{entry.value}" />
+                                </p:selectOneMenu> 
+                                <p:outputLabel></p:outputLabel>
+                                <p:message for="cboObsFirma1" severity="error" showDetail="true" rendered="true" display="text" />
+                        </p:panelGrid>
+
+                        <h:panelGrid columns="2" style="margin: auto; text-align: center;">
+                            <p:commandButton id="btnAceptarObsFirma" value="Aceptar" action="#{comentarioMB.irAFirma1}" styleClass="gmxPositivo" ajax="false"/>
+                            <p:commandButton id="btnCancelarObsFirma" value="Cancelar" action="#{comentarioMB.cancelar}" immediate="true" ajax="false"/>
+                        </h:panelGrid>
+                    </div>
+                </p:panel>
+                
+                <p:panel style="width:500px;border:1;align:center;text-align:center;" id="panelAdmin"
+                    header="Comentarios omitir pago de intereses" rendered="#{comentarioMB.esPanel}">
+                    <p:outputLabel value="Los campos marcados con * son obligatorios" style="color:red;"/>
+                    <div align="center">
+                        <p:panelGrid columns="2" style="border: none;">
+                            <p:panelGrid style="width:150px;text-align: right;border: none;" columns="1" id="titulosAdmin" >
+                                <p:outputLabel>Comentarios<p:outputLabel style="color:red;">*</p:outputLabel></p:outputLabel>
+                            </p:panelGrid>
+                            <p:panelGrid style="text-align: left;border: none;" columns="1" id="ContenidoAdmin">
+                                <p:inputTextarea autoResize="false"
+                                                 cols="30"  
+                                                 counterTemplate="{0} characters remaining."
+                                                 id="idComentario5"
+                                                 maxlength="3000"
+                                                 rows="10" 
+                                                 style="width:210px !important; resize: none; text-transform:uppercase"     
+                                                 value="#{comentarioMB.txtaComentarios}"/>
+                             </p:panelGrid>
+                        </p:panelGrid>
+                        <h:panelGrid columns="2" style="margin: auto; text-align: center;">
+                            <p:commandButton id="btnAceptarAdmi" value="Aceptar" action="#{comentarioMB.irAdmin}" ajax="false" styleClass="gmxPositivo"/>
+                            <p:commandButton id="btnCancelarAdmi" value="Cancelar" action="#{comentarioMB.cancelar}" immediate="true" ajax="false"/>
+                        </h:panelGrid>
+                    </div>
+                </p:panel>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

@@ -1,0 +1,814 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://www.sat.gob.mx/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://www.sat.gob.mx/" xmlns:s1="http://tempuri.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://www.sat.gob.mx/">
+      <s:import namespace="http://tempuri.org/"/>
+      <s:element name="RFCTerminos">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RFC" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RFCTerminosResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="RFCTerminosResult" type="s:int"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CorreoDeTerminos">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RFC" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CorreoDeTerminosResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CorreoDeTerminosResult" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Encripta">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="sCad" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="EncriptaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="EncriptaResult" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="EncriptaUrl">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="sCad" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="EncriptaUrlResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="EncriptaUrlResult" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DesEncripta">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="sCad" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DesEncriptaResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="DesEncriptaResult" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ObtieneSello">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="_cadena" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ObtieneSelloResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ObtieneSelloResult" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ObtieneSelloFunc">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="_cadena" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ObtieneSelloFuncResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ObtieneSelloFuncResult" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ValidaCertificado">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="noCertificado" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ValidaCertificadoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ValidaCertificadoResult" type="tns:ARA"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ARA">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Codigo" type="s:int"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Descripcion" type="s:string"/>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="FechaHoraServer">
+        <s:complexType/>
+      </s:element>
+      <s:element name="FechaHoraServerResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="FechaHoraServerResult" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RegistraBuzonTributario">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="rfc" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="fechaHora" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="numeroCelular" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="cadenaOriginal" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="firma" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RegistraBuzonTributarioResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RegistraBuzonTributarioResult" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RegistraBuzonTributarioOrigen">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="rfc" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="fechaHora" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="numeroCelular" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="cadenaOriginal" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="firma" type="s:string"/>
+            <s:element minOccurs="1" maxOccurs="1" name="appOrigen" type="s:int"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RegistraBuzonTributarioOrigenResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RegistraBuzonTributarioOrigenResult" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ObtieneNombreIDC">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="rfc" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ObtieneNombreIDCResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ObtieneNombreIDCResult" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ObtieneDatosReimpresion">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="rfc" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ObtieneDatosReimpresionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ObtieneDatosReimpresionResult" type="tns:DatosReimpresion"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="DatosReimpresion">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="fechaHora" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="numeroCelular" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="cadenaOriginal" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="firma" type="s:string"/>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="RegistraComunicado">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="idComunicado" type="s:int"/>
+            <s:element minOccurs="0" maxOccurs="1" name="RFC" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="razon_social" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="correo" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="vigenciaIni" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="vigenciaFin" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="parametros" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RegistraComunicadoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RegistraComunicadoResult" type="s1:errorComunicado"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RegistraCorreo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="idCorreo" type="s:int"/>
+            <s:element minOccurs="0" maxOccurs="1" name="RFC" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="cuentaCorreo" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="celular" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="parametros" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RegistraCorreoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RegistraCorreoResult" type="s1:errorComunicado"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetNotificacionesRFC">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RFC" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetNotificacionesRFCResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetNotificacionesRFCResult" type="tns:ArrayOfResumenComunicados"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfResumenComunicados">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ResumenComunicados" nillable="true" type="s1:ResumenComunicados"/>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="ObtDatosGralesEmpleado">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RFCEmpleado" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ObtDatosGralesEmpleadoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ObtDatosGralesEmpleadoResult" type="tns:DatosEmpleado"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="DatosEmpleado">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ExtensionData" type="tns:ExtensionDataObject"/>
+          <s:element minOccurs="0" maxOccurs="1" name="error" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="indicadorDepartamento" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="roles" type="tns:ArrayOfRoles"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ExtensionDataObject"/>
+      <s:complexType name="ArrayOfRoles">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="roles" nillable="true" type="tns:roles"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="roles">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ExtensionData" type="tns:ExtensionDataObject"/>
+          <s:element minOccurs="0" maxOccurs="1" name="rol" type="s:string"/>
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:complexType name="errorComunicado">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="cveError" type="s:int"/>
+          <s:element minOccurs="0" maxOccurs="1" name="descError" type="s:string"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ResumenComunicados">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Encabezado" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Detalle" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="f_VigenciaIni" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="f_VigenciaFin" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="id_Comunicado" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="c_id" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="f_acceso" type="s:string"/>
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="RFCTerminosSoapIn">
+    <wsdl:part name="parameters" element="tns:RFCTerminos"/>
+  </wsdl:message>
+  <wsdl:message name="RFCTerminosSoapOut">
+    <wsdl:part name="parameters" element="tns:RFCTerminosResponse"/>
+  </wsdl:message>
+  <wsdl:message name="CorreoDeTerminosSoapIn">
+    <wsdl:part name="parameters" element="tns:CorreoDeTerminos"/>
+  </wsdl:message>
+  <wsdl:message name="CorreoDeTerminosSoapOut">
+    <wsdl:part name="parameters" element="tns:CorreoDeTerminosResponse"/>
+  </wsdl:message>
+  <wsdl:message name="EncriptaSoapIn">
+    <wsdl:part name="parameters" element="tns:Encripta"/>
+  </wsdl:message>
+  <wsdl:message name="EncriptaSoapOut">
+    <wsdl:part name="parameters" element="tns:EncriptaResponse"/>
+  </wsdl:message>
+  <wsdl:message name="EncriptaUrlSoapIn">
+    <wsdl:part name="parameters" element="tns:EncriptaUrl"/>
+  </wsdl:message>
+  <wsdl:message name="EncriptaUrlSoapOut">
+    <wsdl:part name="parameters" element="tns:EncriptaUrlResponse"/>
+  </wsdl:message>
+  <wsdl:message name="DesEncriptaSoapIn">
+    <wsdl:part name="parameters" element="tns:DesEncripta"/>
+  </wsdl:message>
+  <wsdl:message name="DesEncriptaSoapOut">
+    <wsdl:part name="parameters" element="tns:DesEncriptaResponse"/>
+  </wsdl:message>
+  <wsdl:message name="ObtieneSelloSoapIn">
+    <wsdl:part name="parameters" element="tns:ObtieneSello"/>
+  </wsdl:message>
+  <wsdl:message name="ObtieneSelloSoapOut">
+    <wsdl:part name="parameters" element="tns:ObtieneSelloResponse"/>
+  </wsdl:message>
+  <wsdl:message name="ObtieneSelloFuncSoapIn">
+    <wsdl:part name="parameters" element="tns:ObtieneSelloFunc"/>
+  </wsdl:message>
+  <wsdl:message name="ObtieneSelloFuncSoapOut">
+    <wsdl:part name="parameters" element="tns:ObtieneSelloFuncResponse"/>
+  </wsdl:message>
+  <wsdl:message name="ValidaCertificadoSoapIn">
+    <wsdl:part name="parameters" element="tns:ValidaCertificado"/>
+  </wsdl:message>
+  <wsdl:message name="ValidaCertificadoSoapOut">
+    <wsdl:part name="parameters" element="tns:ValidaCertificadoResponse"/>
+  </wsdl:message>
+  <wsdl:message name="FechaHoraServerSoapIn">
+    <wsdl:part name="parameters" element="tns:FechaHoraServer"/>
+  </wsdl:message>
+  <wsdl:message name="FechaHoraServerSoapOut">
+    <wsdl:part name="parameters" element="tns:FechaHoraServerResponse"/>
+  </wsdl:message>
+  <wsdl:message name="RegistraBuzonTributarioSoapIn">
+    <wsdl:part name="parameters" element="tns:RegistraBuzonTributario"/>
+  </wsdl:message>
+  <wsdl:message name="RegistraBuzonTributarioSoapOut">
+    <wsdl:part name="parameters" element="tns:RegistraBuzonTributarioResponse"/>
+  </wsdl:message>
+  <wsdl:message name="RegistraBuzonTributarioOrigenSoapIn">
+    <wsdl:part name="parameters" element="tns:RegistraBuzonTributarioOrigen"/>
+  </wsdl:message>
+  <wsdl:message name="RegistraBuzonTributarioOrigenSoapOut">
+    <wsdl:part name="parameters" element="tns:RegistraBuzonTributarioOrigenResponse"/>
+  </wsdl:message>
+  <wsdl:message name="ObtieneNombreIDCSoapIn">
+    <wsdl:part name="parameters" element="tns:ObtieneNombreIDC"/>
+  </wsdl:message>
+  <wsdl:message name="ObtieneNombreIDCSoapOut">
+    <wsdl:part name="parameters" element="tns:ObtieneNombreIDCResponse"/>
+  </wsdl:message>
+  <wsdl:message name="ObtieneDatosReimpresionSoapIn">
+    <wsdl:part name="parameters" element="tns:ObtieneDatosReimpresion"/>
+  </wsdl:message>
+  <wsdl:message name="ObtieneDatosReimpresionSoapOut">
+    <wsdl:part name="parameters" element="tns:ObtieneDatosReimpresionResponse"/>
+  </wsdl:message>
+  <wsdl:message name="RegistraComunicadoSoapIn">
+    <wsdl:part name="parameters" element="tns:RegistraComunicado"/>
+  </wsdl:message>
+  <wsdl:message name="RegistraComunicadoSoapOut">
+    <wsdl:part name="parameters" element="tns:RegistraComunicadoResponse"/>
+  </wsdl:message>
+  <wsdl:message name="RegistraCorreoSoapIn">
+    <wsdl:part name="parameters" element="tns:RegistraCorreo"/>
+  </wsdl:message>
+  <wsdl:message name="RegistraCorreoSoapOut">
+    <wsdl:part name="parameters" element="tns:RegistraCorreoResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetNotificacionesRFCSoapIn">
+    <wsdl:part name="parameters" element="tns:GetNotificacionesRFC"/>
+  </wsdl:message>
+  <wsdl:message name="GetNotificacionesRFCSoapOut">
+    <wsdl:part name="parameters" element="tns:GetNotificacionesRFCResponse"/>
+  </wsdl:message>
+  <wsdl:message name="ObtDatosGralesEmpleadoSoapIn">
+    <wsdl:part name="parameters" element="tns:ObtDatosGralesEmpleado"/>
+  </wsdl:message>
+  <wsdl:message name="ObtDatosGralesEmpleadoSoapOut">
+    <wsdl:part name="parameters" element="tns:ObtDatosGralesEmpleadoResponse"/>
+  </wsdl:message>
+  <wsdl:portType name="TerminosSoap">
+    <wsdl:operation name="RFCTerminos">
+      <wsdl:input message="tns:RFCTerminosSoapIn"/>
+      <wsdl:output message="tns:RFCTerminosSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="CorreoDeTerminos">
+      <wsdl:input message="tns:CorreoDeTerminosSoapIn"/>
+      <wsdl:output message="tns:CorreoDeTerminosSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="Encripta">
+      <wsdl:input message="tns:EncriptaSoapIn"/>
+      <wsdl:output message="tns:EncriptaSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="EncriptaUrl">
+      <wsdl:input message="tns:EncriptaUrlSoapIn"/>
+      <wsdl:output message="tns:EncriptaUrlSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="DesEncripta">
+      <wsdl:input message="tns:DesEncriptaSoapIn"/>
+      <wsdl:output message="tns:DesEncriptaSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="ObtieneSello">
+      <wsdl:input message="tns:ObtieneSelloSoapIn"/>
+      <wsdl:output message="tns:ObtieneSelloSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="ObtieneSelloFunc">
+      <wsdl:input message="tns:ObtieneSelloFuncSoapIn"/>
+      <wsdl:output message="tns:ObtieneSelloFuncSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="ValidaCertificado">
+      <wsdl:input message="tns:ValidaCertificadoSoapIn"/>
+      <wsdl:output message="tns:ValidaCertificadoSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="FechaHoraServer">
+      <wsdl:input message="tns:FechaHoraServerSoapIn"/>
+      <wsdl:output message="tns:FechaHoraServerSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="RegistraBuzonTributario">
+      <wsdl:input message="tns:RegistraBuzonTributarioSoapIn"/>
+      <wsdl:output message="tns:RegistraBuzonTributarioSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="RegistraBuzonTributarioOrigen">
+      <wsdl:input message="tns:RegistraBuzonTributarioOrigenSoapIn"/>
+      <wsdl:output message="tns:RegistraBuzonTributarioOrigenSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="ObtieneNombreIDC">
+      <wsdl:input message="tns:ObtieneNombreIDCSoapIn"/>
+      <wsdl:output message="tns:ObtieneNombreIDCSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="ObtieneDatosReimpresion">
+      <wsdl:input message="tns:ObtieneDatosReimpresionSoapIn"/>
+      <wsdl:output message="tns:ObtieneDatosReimpresionSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="RegistraComunicado">
+      <wsdl:input message="tns:RegistraComunicadoSoapIn"/>
+      <wsdl:output message="tns:RegistraComunicadoSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="RegistraCorreo">
+      <wsdl:input message="tns:RegistraCorreoSoapIn"/>
+      <wsdl:output message="tns:RegistraCorreoSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetNotificacionesRFC">
+      <wsdl:input message="tns:GetNotificacionesRFCSoapIn"/>
+      <wsdl:output message="tns:GetNotificacionesRFCSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="ObtDatosGralesEmpleado">
+      <wsdl:input message="tns:ObtDatosGralesEmpleadoSoapIn"/>
+      <wsdl:output message="tns:ObtDatosGralesEmpleadoSoapOut"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="TerminosSoap" type="tns:TerminosSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="RFCTerminos">
+      <soap:operation soapAction="http://www.sat.gob.mx/RFCTerminos" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CorreoDeTerminos">
+      <soap:operation soapAction="http://www.sat.gob.mx/CorreoDeTerminos" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Encripta">
+      <soap:operation soapAction="http://www.sat.gob.mx/Encripta" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EncriptaUrl">
+      <soap:operation soapAction="http://www.sat.gob.mx/EncriptaUrl" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DesEncripta">
+      <soap:operation soapAction="http://www.sat.gob.mx/DesEncripta" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtieneSello">
+      <soap:operation soapAction="http://www.sat.gob.mx/ObtieneSello" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtieneSelloFunc">
+      <soap:operation soapAction="http://www.sat.gob.mx/ObtieneSelloFunc" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidaCertificado">
+      <soap:operation soapAction="http://www.sat.gob.mx/ValidaCertificado" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FechaHoraServer">
+      <soap:operation soapAction="http://www.sat.gob.mx/FechaHoraServer" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegistraBuzonTributario">
+      <soap:operation soapAction="http://www.sat.gob.mx/RegistraBuzonTributario" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegistraBuzonTributarioOrigen">
+      <soap:operation soapAction="http://www.sat.gob.mx/RegistraBuzonTributarioOrigen" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtieneNombreIDC">
+      <soap:operation soapAction="http://www.sat.gob.mx/ObtieneNombreIDC" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtieneDatosReimpresion">
+      <soap:operation soapAction="http://www.sat.gob.mx/ObtieneDatosReimpresion" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegistraComunicado">
+      <soap:operation soapAction="http://www.sat.gob.mx/RegistraComunicado" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegistraCorreo">
+      <soap:operation soapAction="http://www.sat.gob.mx/RegistraCorreo" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetNotificacionesRFC">
+      <soap:operation soapAction="http://www.sat.gob.mx/GetNotificacionesRFC" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtDatosGralesEmpleado">
+      <soap:operation soapAction="http://www.sat.gob.mx/ObtDatosGralesEmpleado" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="TerminosSoap12" type="tns:TerminosSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="RFCTerminos">
+      <soap12:operation soapAction="http://www.sat.gob.mx/RFCTerminos" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CorreoDeTerminos">
+      <soap12:operation soapAction="http://www.sat.gob.mx/CorreoDeTerminos" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Encripta">
+      <soap12:operation soapAction="http://www.sat.gob.mx/Encripta" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="EncriptaUrl">
+      <soap12:operation soapAction="http://www.sat.gob.mx/EncriptaUrl" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DesEncripta">
+      <soap12:operation soapAction="http://www.sat.gob.mx/DesEncripta" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtieneSello">
+      <soap12:operation soapAction="http://www.sat.gob.mx/ObtieneSello" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtieneSelloFunc">
+      <soap12:operation soapAction="http://www.sat.gob.mx/ObtieneSelloFunc" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidaCertificado">
+      <soap12:operation soapAction="http://www.sat.gob.mx/ValidaCertificado" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FechaHoraServer">
+      <soap12:operation soapAction="http://www.sat.gob.mx/FechaHoraServer" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegistraBuzonTributario">
+      <soap12:operation soapAction="http://www.sat.gob.mx/RegistraBuzonTributario" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegistraBuzonTributarioOrigen">
+      <soap12:operation soapAction="http://www.sat.gob.mx/RegistraBuzonTributarioOrigen" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtieneNombreIDC">
+      <soap12:operation soapAction="http://www.sat.gob.mx/ObtieneNombreIDC" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtieneDatosReimpresion">
+      <soap12:operation soapAction="http://www.sat.gob.mx/ObtieneDatosReimpresion" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegistraComunicado">
+      <soap12:operation soapAction="http://www.sat.gob.mx/RegistraComunicado" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegistraCorreo">
+      <soap12:operation soapAction="http://www.sat.gob.mx/RegistraCorreo" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetNotificacionesRFC">
+      <soap12:operation soapAction="http://www.sat.gob.mx/GetNotificacionesRFC" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ObtDatosGralesEmpleado">
+      <soap12:operation soapAction="http://www.sat.gob.mx/ObtDatosGralesEmpleado" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Terminos">
+    <wsdl:port name="TerminosSoap" binding="tns:TerminosSoap">
+      <soap:address location="http://99.90.29.84/wsBuzonTributario.Proxy/Terminos.asmx"/>
+    </wsdl:port>
+    <wsdl:port name="TerminosSoap12" binding="tns:TerminosSoap12">
+      <soap12:address location="http://99.90.29.84/wsBuzonTributario.Proxy/Terminos.asmx"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

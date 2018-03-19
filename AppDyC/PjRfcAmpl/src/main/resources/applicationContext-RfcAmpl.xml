@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:oxm="http://www.springframework.org/schema/oxm" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/oxm http://www.springframework.org/schema/oxm/spring-oxm.xsd
+                           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+    
+    <!-- Version SOAP (De acuerdo al WS) -->
+    <bean id="soapMessageFactory" class="org.springframework.ws.soap.saaj.SaajSoapMessageFactory">
+        <property name="soapVersion">
+            <util:constant static-field="org.springframework.ws.soap.SoapVersion.SOAP_11"/>
+        </property>
+    </bean>
+    
+    <!-- XML Binders -->
+    <oxm:jaxb2-marshaller id="marshallerIDC" contextPath="mx.gob.sat.mat.rfcampl.client"/>
+    
+    <!-- SPRING - Ws template -->
+    <bean id="webServiceTemplateIDC" class="org.springframework.ws.client.core.WebServiceTemplate">
+        <qualifier value="webServiceTemplateIDC"/>
+        <constructor-arg ref="soapMessageFactory"/>
+        <property name="marshaller" ref="marshallerIDC"/>
+        <property name="unmarshaller" ref="marshallerIDC"/>
+        <property name="defaultUri" value="${rfcampl.service.wsdl}"/>
+    </bean>
+
+    <!-- SPRING - Beans manejados -->
+    <bean id="rfcAmplService" class="mx.gob.sat.mat.rfcampl.service.impl.RfcAmplServiceImpl"/>
+    <bean id="rfcAmplWs" class="mx.gob.sat.mat.rfcampl.ws.impl.RfcAmplWsImpl"/>
+
+
+    <!-- PROPERTIES - Inicio -->
+    <bean id="placeholderConfig" class="org.jasypt.spring.properties.EncryptablePropertyPlaceholderConfigurer">
+        <constructor-arg ref="configurationEncryptor"/>
+        <property name="ignoreUnresolvablePlaceholders" value="false"/>
+        <property name="location">
+            <value>file:/mat/rfcampl/configuracion/parametrosrfcampl.properties</value>
+        </property>
+    </bean>
+    <!-- Encriptacion -->
+    <bean id="configurationEncryptor" class="org.jasypt.encryption.pbe.StandardPBEStringEncryptor">
+        <property name="algorithm" value="PBEWithMD5AndDES"/>
+        <property name="password" value="44pDyC"/>
+    </bean>
+    <!-- PROPERTIES - Fin -->
+</beans>

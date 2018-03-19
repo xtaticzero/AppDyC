@@ -1,0 +1,175 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <h:outputScript library="primefaces" name="jquery/jquery.js"/>
+            <script type="text/javascript" src="../../js/identificaNavegador.js" language="JavaScript"></script>
+            <script type="text/javascript">
+                (function () {
+                    var po = document.createElement('script');
+                    po.type = 'text/javascript';
+                    po.src = "#{ejecutaFIELMB.urlFirmado}";
+                    var s = document.getElementsByTagName('script')[0];
+                    s.parentNode.insertBefore(po, s);
+                })();
+            </script>
+                <style type="text/css">
+                 .gmxNoborde1 td{border-color:#FFFFFF;}
+                 </style>
+                 
+            <h:outputStylesheet library="css/" name="botones.css"/>
+        </h:head>
+        <h:body>
+            <h:outputScript name="js/identificaNavegador.js"/>
+             
+            <p:panel id="basic" style="margin-bottom:0px; border: 1px solid #FFFFFF !important; width:800px;" rendered="#{!ejecutaFIELMB.firmaBandera}">
+                <h:form id="formFirma">
+                    <div id="panelPrincipal" align="left">
+                        <p:panel id="panelFirmado"
+                                 style="width:500px;border:1;text-align: center; border: 1px solid #FFFFFF !important;">
+                            <div id="firmado-widget-container">
+                                <p:dialog id="statusBar2" widgetVar="statusDialog2" header="Procesando..."
+                                          draggable="false" width="250" closable="false" resizable="false"
+                                          visible="true" dynamic="true">
+                                    <p:graphicImage value="/resources/images/ajaxloadingbar.gif"/>
+                                </p:dialog>
+                            </div>
+                        </p:panel>
+                        <div id="firmado-widget-container"></div>
+                    </div>
+                    <div id="basicoPanelId">
+                    <p:panel id="basic" style="margin-bottom:0px; border: 1px solid #FFFFFF !important; width:645px;">
+                        <p:commandButton ajax="true" id="btnEnviarForm" immediate="true"
+                                         onclick="colocarValor('#{ejecutaFIELMB.cadenaOriginal}'); statusDialog2.show();"
+                                         style="width:100px;" value="Firmar" styleClass="gmxPositivo"/>
+                        <p:commandButton action="#{ejecutaFIELMB.regrersar}" id="btnRegresar" immediate="true"
+                                         style="width:160px;height:40px;" styleClass="blanco" value="Regresar"
+                                         ajax="false"/>
+                        <p:commandButton   style="display:none" value="Generar" id="openView"
+                                         action="#{ejecutaFIELMB.openView}"  ajax="false" update="@all" />
+                        <p:commandButton style="display:none" id="hideStatus" onclick="statusDialog.hide();"
+                                         type="button" ajax="false"/>
+                        <!-- Inicia Dialogo de error al generar cadena y sello | insertar solicitud | generar acuse -->
+                        <p:dialog id="dialogAsigErr" header="Atención!" widgetVar="dlgAsigError" resizable="false"
+                                  width="500" modal="true" closable="false"
+                                  visible="#{adicionarSolicitudMB.flagsSolicitud.showMessageErrorAsig}">
+                            <div align="justify">
+                                <a>
+                                    #{ejecutaFIELMB.mensajeDialogo}</a>
+                            </div>
+                            <br/>
+                            <p:separator/>
+                            <div>
+                                <h4>
+                                    Importante tener a la mano el siguiente c&oacute;digo:
+                                    <a style="color:red">
+                                        #{ejecutaFIELMB.folio}</a>
+                                </h4>
+                            </div>
+                            <div align="right">
+                                <p:commandButton id="btnError" action="#{datosSolicitudCtrlMB.cancelarSolicitud}"
+                                                 value="Aceptar" style="width: 150px;height:34px" immediate="true"
+                                                 ajax="false"/>
+                            </div>
+                            <br/>
+                            <br/>
+                            <p:separator/>
+                            <h:outputText value="#{now}" style="font-size:12px;font-weight:bold;">
+                                <f:convertDateTime dateStyle="full" locale="es_MX" timeZone="Mexico/General"
+                                                   type="date"/>
+                            </h:outputText>
+                        </p:dialog>
+                                
+                                
+                        <p:dialog id="dialogAsigErrFolio" header="Atención!" widgetVar="dlgAsigErrorFolio" resizable="false"
+                                  width="500" modal="true" closable="false"
+                                  visible="#{adicionarSolicitudMB.flagsSolicitud.showMessageErrorAsigFolio}">
+                                  
+                                  <div align="justify">
+                                    <a>#{ejecutaFIELMB.mensajeDialogo}</a>
+                                  </div>
+                                  <br/>
+                                  <div align="right">
+                                        <p:commandButton id="btnErrorFolio" action="#{datosSolicitudCtrlMB.cancelarSolicitud}"
+                                                          value="Aceptar" style="width: 150px;height:34px" immediate="true"
+                                                          ajax="false"/>
+                                  </div>
+                                  <br/>
+                        </p:dialog>
+                                
+                        <p:dialog id="dialogAsigErrFolioConsulta" header="Atención!" widgetVar="dlgAsigErrorFolio" resizable="false"
+                                  width="500" modal="true" closable="false"
+                                  visible="#{adicionarSolicitudMB.flagsSolicitud.showMessageErrorAsigConsulta}">
+                                  
+                                  <div align="justify">
+                                    <a>#{ejecutaFIELMB.mensajeDialogo}</a>
+                                  </div>
+                                  <br/>
+                                  <div align="right">
+                                        <p:commandButton id="btnErrorFolioConsulta" action="#{datosSolicitudCtrlMB.cancelarSolicitudConsulta}"
+                                                          value="Aceptar" style="width: 150px;height:34px" immediate="true"
+                                                          ajax="false"/>
+                                  </div>
+                                  <br/>
+                        </p:dialog>
+                                
+                                
+                                
+                        <!-- Fin Dialogo de error al generar cadena y sello | insertar solicitud | generar acuse -->
+                        <p:dialog id="dialogEr" header="Atención!" widgetVar="dlgSolError" resizable="false" width="500"
+                                  modal="true" closable="false"
+                                  visible="#{adicionarSolicitudMB.flagsSolicitud.showMessageError}">
+                            <div align="justify">
+                                <a>El sistema no pudo ejecutar correctamente este servicio, le sugerimos lo intente mas
+                                   tarde!...</a>
+                            </div>
+                            <div align="right">
+                                <p:commandButton id="btnCancel" action="#{datosSolicitudCtrlMB.cancelarSolicitud}"
+                                                 value="Aceptar" style="width: 150px;height:34px" immediate="true"
+                                                 ajax="false"/>
+                            </div>
+                            <br/>
+                            <br/>
+                            <p:separator/>
+                            <h:outputText value="#{now}" style="font-size:12px;font-weight:bold;">
+                                <f:convertDateTime dateStyle="full" locale="es_MX" timeZone="Mexico/General"
+                                                   type="date"/>
+                            </h:outputText>
+                        </p:dialog>
+                   <p:dialog id="dialogAsigErrID" header="Folio Generado" widgetVar="dlgAsigErrorDI" resizable="false" width="500"
+                          modal="true" closable="false" visible="#{ejecutaFIELMB.folioSecuenciaB}">
+                     
+                     
+                     
+                     <p:panelGrid styleClass="gmxNoborde1">
+                        <p:row>
+                            <p:column>
+                                El folio generado para la solicitud es: <span style="color:Red;">#{ejecutaFIELMB.folioSecuencia}</span>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:right">
+                                <p:commandButton value="Continuar"
+                                                 actionListener="#{ejecutaFIELMB.cerrarFolio}" 
+                                                  update="@all"
+                                                   style="margin-bottom:0px; border: 1px solid #FFFFFF !important; width:200px;margin-left: 25% !important;"
+                                                  ajax="false"
+                                                  onstart="statusDialog.show();"
+                                                  styleClass="gmxPositivo"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:dialog>
+                   
+                    </p:panel>
+                             </div>
+                    <input type="hidden" id="firmaDigital" name="firmaDigital" value="#{ejecutaFIELMB.usuarioFirmado.firmaDigital}"/>
+                    <input type="hidden" id="cadenaOriginal" name="cadenaOriginal" value="#{ejecutaFIELMB.usuarioFirmado.cadenaOriginal}"/>
+                    <input type="hidden" id="rfcSession" name="rfcSession" value="#{ejecutaFIELMB.usuarioFirmado.accesoUsr.usuario}"/>
+                </h:form>
+            </p:panel>
+        </h:body>
+    </html>
+</f:view>

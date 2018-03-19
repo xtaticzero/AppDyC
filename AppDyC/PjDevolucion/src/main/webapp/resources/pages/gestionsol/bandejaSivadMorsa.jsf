@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui">
+    <html>
+        <h:head>
+            <title>bandejaSivadMorsa</title>
+            <h:outputStylesheet library="css/" name="formato.css"/>
+            <style type="text/css">
+                .ui-paginator {
+                    font-size: 12px !important;
+                }
+
+                .ui-datatable tbody td {
+                    white-space: normal;
+                    vertical-align: text-top;
+                }
+
+                .ui-datatable thead th {
+                    white-space: normal;
+                    vertical-align: text-top;
+                }
+            </style>
+            <script type="text/javascript">
+              function resetTabIndex() {
+                  dataTable.getPaginator().setPage(0);
+              }
+            </script>
+        </h:head>
+        <h:body>
+            <h:form id="bandejaSivadMorsa">
+                <ui:include src="/resources/pages/common/inactividad.jsf"></ui:include>
+                <p:messages id="msgGeneral" showDetail="true" globalOnly="true" closable="true"/>
+                <p:panel header="Bandeja de documentos" styleClass="gmxAutoAjustable">
+                    <p:scrollPanel style="width:100%" mode="native">
+                        <p:dataTable emptyMessage="#{msgValidacion.tblEmpty}" id="documentos" paginator="true" rows="5"
+                                     rowsPerPageTemplate="5,10,15" liveScroll="true" lazy="true"
+                                     selection="#{bandejaAprobarSivadMorsa.bandejaDocumentosSolDTO}" selectionMode="single"
+                                     rowIndexVar="rowIndex" rowKey="#{sol.numControl}"
+                                     style="font-size:13.5px;" value="#{bandejaAprobarSivadMorsa.listaSolicitudesAprobarSivadMorsa}" var="sol">
+
+                            <p:ajax event="rowSelect" update="btnConsultar" listener="#{bandejaAprobarSivadMorsa.onRowSelect}"/>
+
+                            <f:facet name="header">
+                                <div style="height:49px;">
+                                    <p:commandButton id="btnConsultar" icon="ui-icon-search"
+                                                     ajax="false"
+                                                     action="#{bandejaAprobarSivadMorsa.irAresumenAbonoNoEfectuado}" 
+                                                     disabled="#{bandejaAprobarSivadMorsa.varBotonCon}"
+                                                     style="background: #4A90E2"/>
+                                </div>
+                            </f:facet>
+                            
+                            <p:column headerText="#{msgValidacion.asNumControl}" filterBy="#{sol.numControl}" filterMaxLength="14">
+                                <h:outputText value="#{sol.numControl}"/>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asRFC}"  filterBy="#{sol.rfcContribuyente}" filterMaxLength="13">
+                                <h:outputText value="#{sol.rfcContribuyente}"/>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asTipTramite}">
+                                <h:outputText value="#{sol.tipoTramite}"/>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asFechaRecepcionTramite}">
+                                <h:outputText value="#{sol.fechaPresentacion}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asNomDocumento}">
+                                <h:outputText value="#{sol.nombreDocumento}"/>
+                            </p:column>
+                            <p:column headerText="Fecha de vencimiento">
+                                <div align="left">
+                                    <h:outputText value="#{sol.fechaFinalizacion}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                    </h:outputText>
+                                </div>
+                            </p:column>
+                            <p:column headerText="Dictaminador">
+                                <div align="left">
+                                    <h:outputText value="#{sol.nombreDictaminador}"/>
+                                </div>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asMonto}">
+                                <div align="right">
+                                    <h:outputText value="#{sol.importeSolicitado}">
+                                        <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                                    </h:outputText>
+                                </div>
+                            </p:column>
+                                                     
+                        </p:dataTable>
+                    </p:scrollPanel>
+                </p:panel>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

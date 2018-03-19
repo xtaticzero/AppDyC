@@ -1,0 +1,188 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+        xmlns:ui="http://java.sun.com/jsf/facelets">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <h:outputStylesheet library="css/" name="cc.css"/>
+            <h:outputStylesheet library="css/" name="formato.css"/>
+            <h:outputScript library="js" name="casosCompensacion.js"/>
+            <style type="text/css">
+                .ui-inputfield {
+                    width: 100% !important;
+                }
+
+                .fileupload-content {
+                    height: 0 !important;
+                    border: none !important;
+                }
+
+                .fileupload-buttonbar {
+                    border: none !important;
+                }
+            </style>
+        </h:head>
+        <h:body>
+            <p:dialog modal="true" widgetVar="statusDialog" header="#{msgValidacion.ajaxLoading}" draggable="false"
+                      resizable="false" closable="false">
+                <h:graphicImage library="images/" name="ajaxloadingbar.gif"/>
+            </p:dialog>
+             
+            <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+             
+            <h:form id="frmEmitirRequerimiento">
+                <p:panelGrid id="pnlEmitirRequerimiento" style="width: 810px;">
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="#{msgValidacion.acc00053}"/>
+                            </p:column>
+                        </p:row>
+                    </f:facet>
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="#{msgValidacion.acc00021}  #{admCasosComp.numControl}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column style="font-weight: bold;">
+                            <p:messages id="messages" globalOnly="true" autoUpdate="true" closable="true"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column style="font-weight: bold;">
+                            <h:outputLabel value="#{msgValidacion.acc00054}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column rendered="#{pEmitirReqCCMB.estado == 'creando'}">
+                            <p:pickList id="pLstInfoARequerir" value="#{pEmitirReqCCMB.infoARequerir}" var="itemIAR"
+                                        itemLabel="#{itemIAR.descripcion}" itemValue="#{itemIAR}"
+                                        addLabel="#{msgValidacion.Agregar}" removeLabel="#{msgValidacion.Quitar}"
+                                        converter="itemCVConverter">
+                                <f:facet name="sourceCaption">
+                                    <h:outputLabel value="#{msgValidacion.acc00055}"/>
+                                </f:facet>
+                                <f:facet name="targetCaption">
+                                    <h:outputLabel value="#{msgValidacion.acc00056}"/>
+                                </f:facet>
+                            </p:pickList>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column rendered="#{pEmitirReqCCMB.estado == 'esperandoAprobador' or pEmitirReqCCMB.estado == 'consultando'}">
+                            <p:selectOneListbox id="lstInfoARequerirSeleccionada" style="height: 100px; width:97%;">
+                                <f:selectItems value="#{pEmitirReqCCMB.infoARequerirSeleccionada}" var="infoAReqSelec"
+                                               itemValue="#{infoAReqSelec.id}"
+                                               itemLabel="#{infoAReqSelec.descripcion}"/>
+                            </p:selectOneListbox>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column style="font-weight: bold;">
+                            <h:outputLabel value="#{msgValidacion.acc00057}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column rendered="#{pEmitirReqCCMB.estado == 'creando'}">
+                            <table border="0">
+                                <tbody>
+                                    <tr>
+                                        <td rowspan="2" width="350">
+                                            <p:inputTextarea id="txaReqPersonalizado"
+                                                             value="#{pEmitirReqCCMB.requerimiento}" maxlength="3000"
+                                                             cols="35" rows="3" autoResize="false" counter="counter2"
+                                                             counterTemplate="Quedan {0} caracteres"
+                                                             style="height:100px;"/>
+                                        </td>
+                                        <td style="padding-bottom: 0px; padding-top: 0px;">
+                                            <p:commandButton id="btnAgregarReqPersonalizado"
+                                                             title="#{msgValidacion.Agregar}"                
+                                                             action="#{pEmitirReqCCMB.agregarReqPersonalizado}"
+                                                             update="txaReqPersonalizado lstOtrosReqs"
+                                                             icon="ui-icon-arrow-1-e"/>
+                                        </td> 
+                                        <td rowspan="2" width="350">
+                                            <p:selectOneListbox id="lstOtrosReqs" style="height: 100px;"
+                                                                value="#{pEmitirReqCCMB.reqPersSelec}">
+                                                <f:selectItems value="#{pEmitirReqCCMB.otrosReqs}"
+                                                               var="reqPersonalizado" itemValue="#{reqPersonalizado}"
+                                                               itemLabel="#{reqPersonalizado}"/>
+                                            </p:selectOneListbox>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding-bottom: 0px; padding-top: 0px;">
+                                            <p:commandButton id="btnQuitarOtroReq" title="#{msgValidacion.Quitar}"
+                                                             action="#{pEmitirReqCCMB.quitarReqPersonalizado}"
+                                                             update="lstOtrosReqs" icon="ui-icon-arrow-1-w"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <h:outputText id="counter2"/>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column rendered="#{pEmitirReqCCMB.estado == 'esperandoAprobador' or pEmitirReqCCMB.estado == 'consultando'}">
+                            <p:selectOneListbox id="lstOtrosReqsConsulta" style="height: 100px; width:97%;">
+                                <f:selectItems value="#{pEmitirReqCCMB.otrosReqs}" var="otroReq" itemValue="#{otroReq}"
+                                               itemLabel="#{otroReq}"/>
+                            </p:selectOneListbox>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column style="font-weight: bold;">
+                            <h:outputLabel value="#{msgValidacion.acc00058}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column rendered="#{pEmitirReqCCMB.estado == 'creando'}">
+                            <p:pickList id="pltAnexos" value="#{pEmitirReqCCMB.anexos}" var="anexo"
+                                        itemLabel="#{anexo.descripcion}" itemValue="#{anexo}"
+                                        addLabel="#{msgValidacion.Agregar}" removeLabel="#{msgValidacion.Quitar}"
+                                        converter="itemCVConverter"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column rendered="#{pEmitirReqCCMB.estado == 'esperandoAprobador' or pEmitirReqCCMB.estado == 'consultando'}">
+                            <p:selectOneListbox id="lstAnexosRequeridos" style="height: 100px; width:97%;">
+                                <f:selectItems value="#{pEmitirReqCCMB.anexosRequeridos}" var="i" itemValue="#{i.id}"
+                                               itemLabel="#{i.id} #{i.descripcion}"/>
+                            </p:selectOneListbox>
+                        </p:column>
+                    </p:row>
+                    <f:facet name="footer">
+                        <p:row>
+                            <p:column style="text-align: left">
+                                <p:button id="btnCancelar" value="#{msgValidacion.B0000005}" outcome="dictaminar"/>
+                                <h:panelGroup id="btnEnviarAAprob">
+                                    <p:commandButton value="#{msgValidacion.asBtnAprobar}"
+                                                     oncomplete="dlgEnviarAprob.show()"
+                                                     rendered="#{pEmitirReqCCMB.estado == 'esperandoAprobador'}"/>
+                                </h:panelGroup>
+                                <p:commandButton id="btnGenDoc" value="#{msgValidacion.acc00059}"
+                                                 actionListener="#{pEmitirReqCCMB.generarDocumento}"
+                                                 rendered="#{pEmitirReqCCMB.estado == 'creando'}"
+                                                 styleClass="btn btn-primary"
+                                                 onclick="PrimeFaces.monitorDownload(null, stop2)" ajax="false">
+                                    <p:fileDownload value="#{pEmitirReqCCMB.streamedContArchGen}"/>
+                                    <p:remoteCommand name="stop2"
+                                                     update="pnlEmitirRequerimiento :frmEnviarAprob:dlgEnviarAprob"/>
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </f:facet>
+                </p:panelGrid>
+            </h:form>
+             
+            <ui:insert name="enviarAprobacion">
+                <ui:include src="enviarAprobacion.jsf"/>
+            </ui:insert>
+        </h:body>
+    </html>
+</f:view>

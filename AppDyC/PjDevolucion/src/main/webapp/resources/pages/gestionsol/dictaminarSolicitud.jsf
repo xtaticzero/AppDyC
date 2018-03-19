@@ -1,0 +1,634 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view  xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+    <html xmlns="http://www.w3.org/1999/xhtml" xmlns:p="http://primefaces.org/ui">
+        <h:head>
+            <title>dictaminarSolicitud</title>
+            <h:outputStylesheet library="css/" name="formato.css"/>
+            <style type="text/css">
+                .ui-paginator {
+                    font-size: 12px !important;
+                }
+
+                .ui-picklist .ui-picklist-list {
+                    height: 150px !important;
+                    width: 300px;
+                }
+
+                .ui-selectlistbox-item {
+                    padding-bottom: 4px !important;
+                    margin: 9px !important;
+                    padding-top: 4px !important;
+                }
+
+                .preformatted {
+                    white-space: pre-wrap;
+                }
+
+                .ui-inputfield {
+                    width: 295px !important;
+                }
+
+                .ui-datatable tbody td {
+                    white-space: normal;
+                    vertical-align: text-top;
+                }
+
+                .ui-datatable thead th {
+                    white-space: normal;
+                    vertical-align: text-top;
+                }
+            </style>
+        </h:head>
+        <h:body>
+            <h:form id="dictaminarSolicitud">
+                <p:panelGrid rendered="#{dictaminarSolicitudMB.etiObligatorio}">
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.diCamposObligatorios}" style="color:red;"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+                <p:panel styleClass="gmxAutoAjustable">
+                    <p:growl id="mess" globalOnly="true"/>
+                    <p:fieldset legend="#{msgValidacion.asFieldInformacion}">
+                        <p:panelGrid style="width:100%">
+                            <p:row rendered="#{dictaminarSolicitudMB.solicitudAdministrarSolVO.estadoSolicitud=='Preautorizada'}">
+                                <p:column style="width:280px;text-align:left;font-style:italic;color:#0000A0">
+                                    <p:outputLabel value="#{msgValidacion.asContrConfiable}"/>
+                                </p:column>
+                                <p:column style="width:480px;text-align:left">
+                                    <!--p:outputLabel value="#{dictaminarSolicitudMB.solicitudAdministrarSolVO.estadoSolicitud}"/-->
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width:280px;text-align:left">
+                                    <p:outputLabel value="#{msgValidacion.asEtiRFC}"/>
+                                </p:column>
+                                <p:column style="width:480px;text-align:left">
+                                    <p:outputLabel value="#{dictaminarSolicitudMB.solicitudAdministrarSolVO.dycpServicioDTO.rfcContribuyente}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width:280px;text-align:left">
+                                    <p:outputLabel value="#{msgValidacion.asEtiNumControl}"/>
+                                </p:column>
+                                <p:column style="width:480px;text-align:left">
+                                    <p:outputLabel value="#{dictaminarSolicitudMB.solicitudAdministrarSolVO.numControl}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width:280px;text-align:left">
+                                    <p:outputLabel value="#{msgValidacion.asPeriodo}"/>
+                                </p:column>
+                                <p:column style="width:480px;text-align:left">
+                                    <p:outputLabel value="#{dictaminarSolicitudMB.solicitudAdministrarSolVO.periodo}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width:280px;text-align:left">
+                                    <p:outputLabel value="#{msgValidacion.asEtiTipoTramite}"/>
+                                </p:column>
+                                <p:column style="width:480px;text-align:left">
+                                    <p:outputLabel value="#{dictaminarSolicitudMB.solicitudAdministrarSolVO.tipoTramite}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width:280px;text-align:left">
+                                    <p:outputLabel value="#{msgValidacion.asEtiFechaRecepcion}"/>
+                                </p:column>
+                                <p:column style="width:480px;text-align:left">
+                                    <h:outputLabel value="#{dictaminarSolicitudMB.solicitudAdministrarSolVO.fechaPresentacion}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                    </h:outputLabel>
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row rendered="#{dictaminarSolicitudMB.ocultarFechaResolucion}">
+                                <p:column style="width:280px;text-align:left">
+                                    <p:outputLabel value="#{msgValidacion.asEtiFechaResolucion}"/>
+                                </p:column>
+                                <p:column style="width:480px;text-align:left">
+                                    <h:outputLabel value="#{dictaminarSolicitudMB.solicitudAdministrarSolVO.fechaLimite}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                    </h:outputLabel>
+                                </p:column>
+                            </p:row>
+                            
+                            
+                            <p:row rendered="#{dictaminarSolicitudMB.ocultarFechaAprobacion}"  >
+                                <p:column style="width:280px;text-align:left">
+                                    <p:outputLabel value="#{msgValidacion.asEtiFechaAprobacion}"/>
+                                </p:column>
+                                <p:column style="width:480px;text-align:left">
+                                    <h:outputLabel value="#{dictaminarSolicitudMB.solicitudAdministrarSolVO.fechaAprobacion}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                    </h:outputLabel>
+                                </p:column>
+                            </p:row>
+                            
+                            
+                            
+                            <p:row>
+                                <p:column style="width:280px;text-align:left">
+                                    <p:outputLabel value="#{msgValidacion.asEtiMonto}"/>
+                                </p:column>
+                                <p:column style="width:480px;text-align:left">
+                                    <h:outputText value="#{dictaminarSolicitudMB.solicitudAdministrarSolVO.importeSolicitado}">
+                                        <f:convertNumber currencySymbol="$ " type="currency" locale="es-MX"/>
+                                    </h:outputText>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width:280px;text-align:left">
+                                    <p:outputLabel value="#{msgValidacion.asEstadoTramite}"/>
+                                </p:column>
+                                <p:column style="width:480px;text-align:left">
+                                    <p:outputLabel value="#{dictaminarSolicitudMB.solicitudAdministrarSolVO.estadoSolicitud}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width:280px;text-align:left; #{dictaminarSolicitudMB.solicitudAdministrarSolVO.fechaResolucion == null ? 'display:none' : 'display:disabled;'}">
+                                    <p:outputLabel value="#{msgValidacion.asFecResolucion}"/>
+                                </p:column>
+                                <p:column style="width:480px;text-align:left; #{dictaminarSolicitudMB.solicitudAdministrarSolVO.fechaResolucion == null ? 'display:none' : 'display:disabled;'}">
+                                    <h:outputLabel value="#{dictaminarSolicitudMB.solicitudAdministrarSolVO.fechaResolucion}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                    </h:outputLabel>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width:280px;text-align:left; #{dictaminarSolicitudMB.solicitudAdministrarSolVO.impAutorizado == null ? 'display:none' : 'display:disabled;'}">
+                                    <p:outputLabel value="#{msgValidacion.asMontoautorizado}"/>
+                                </p:column>
+                                <p:column style="width:480px;text-align:left; #{dictaminarSolicitudMB.solicitudAdministrarSolVO.impAutorizado == null ? 'display:none' : 'display:disabled;'}">
+                                    <h:outputText value="#{dictaminarSolicitudMB.solicitudAdministrarSolVO.impAutorizado}">
+                                        <f:convertNumber currencySymbol="$ " type="currency"/>
+                                    </h:outputText>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                    </p:fieldset>
+                      
+                    
+                    <p:panel rendered="#{dictaminarSolicitudMB.hidePreasignada}">                     
+                    <p:fieldset legend="#{msgValidacion.asFieldSeguimiento}">
+                        <br/>
+                        <p:scrollPanel style="height:120px" mode="native">
+                            <p:dataTable rendered="#{dictaminarSolicitudMB.tblSeguimientos}" var="inc"
+                                         value="#{dictaminarSolicitudMB.listaDocsSeguimientos}" style="width:100%"
+                                         emptyMessage="No se encontraron seguimientos"
+                                         paginator="#{dictaminarSolicitudMB.paginador}" rows="10"
+                                         rowsPerPageTemplate="5,10,15,20"
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                                <p:column headerText="#{msgValidacion.asDocumento}" style="text-align:justify">
+                                    <p:outputLabel value="#{inc.nombreArchivo}"/>
+                                </p:column>
+                                <p:column headerText="#{msgValidacion.asAccion}" style="text-align:justify">
+                                    <p:outputLabel value="#{inc.accion}"/>
+                                </p:column>
+                                <p:column headerText="#{msgValidacion.asResponsable}" style="text-align:justify">
+                                    <p:outputLabel value="#{inc.responsable}"/>
+                                </p:column>
+                                <p:column headerText="#{msgValidacion.asFecha}" style="text-align:justify">
+                                    <h:outputLabel value="#{inc.fecha}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                    </h:outputLabel>
+                                </p:column>
+                                <p:column headerText="#{msgValidacion.asComentarios}" style="text-align:justify">
+                                    <p:outputLabel value="#{inc.comentarios}"/>
+                                </p:column>
+                            </p:dataTable>
+                        </p:scrollPanel>
+                    </p:fieldset>
+                    <p:fieldset legend="#{msgValidacion.asFieldDictaminar}">
+                        <p:panelGrid style="width:100%;" rendered="#{dictaminarSolicitudMB.panelCombo}">
+                            <p:row>
+                                <p:column style="width:400px;text-align:right">
+                                    <p:outputLabel value="#{msgValidacion.asOpciones}"/>
+                                    <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                                </p:column>
+                                <p:column style="width:254px;text-align:left">
+                                    <p:selectOneMenu id="comboOpcion" style="width:290px;"
+                                                     value="#{dictaminarSolicitudMB.opcionCombo}" required="true"
+                                                     requiredMessage="#{msgValidacion.diRequerido}">
+                                        <f:selectItem itemLabel="#{msgValidacion.asComboSeleccion}" itemValue=""/>
+                                        <f:selectItems value="#{dictaminarSolicitudMB.lm}"
+                                                       itemValue="#{dictaminarSolicitudMB.lm}"/>
+                                        <p:ajax event="change" update="botones"
+                                                listener="#{dictaminarSolicitudMB.metodoCombo2}"/>
+                                    </p:selectOneMenu>
+
+                                    <p:dialog id="dlgTes" header="#{msgValidacion.msjConfirmacion}" widgetVar="dlgTes" modal="true"
+                                              width="600" height="220" rendered="true" resizable="true" closable="true" >
+                                        <p:panelGrid id="dlgTesPanel" style="width:100%;">
+                                            <p:row>
+                                                <p:column>
+                                                  <h:outputText value="#{msgValidacion.dictaminarSolicitud_MSG003}" />
+                                                </p:column>
+                                            </p:row>
+                                            <p:row  style="text-align:left;" colspan="2">
+                                                    <p:column>
+
+                                                    <p:commandButton id="noAceptaNyV" value="No" 
+                                                                     onclick="dlgTes.hide();"/>
+                                                    <p:commandButton id="aceptaNyV" value="Si" ajax="false"
+                                                                     actionListener="#{dictaminarSolicitudMB.cambioDeEstadoEnProceso}"
+                                                                     process="@this"
+                                                                     update="@form"
+                                                                     oncomplete="dlgTes.hide();"/>
+                                                    </p:column>
+                                            </p:row>
+
+                                        </p:panelGrid>
+                                    </p:dialog>
+                                    <p:dialog modal="true" resizable="false" visible="#{dictaminarSolicitudMB.asPeriodo}"
+                                                draggable="false" header="Aviso!..." width="450" closable="true">
+                                          <table border="0">
+                                              <tr align="justify">
+                                                  <td><h:outputText value="#{msgValidacion.dictaminarSolicitud_MSG004}" /></td>
+                                              </tr>
+                                              <tr><td>
+                                                   <p:commandButton id="cerrarID" value="Si" ajax="false"
+                                                                     actionListener="#{dictaminarSolicitudMB.camabiarInicio}"
+                                                                     process="@this"
+                                                                     update="@form"/>
+                                                  </td></tr>
+                                          </table>
+                                          <br/><br/>
+                                      </p:dialog>                               
+                                  
+                                                                     
+                                                                     
+                                                             
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel/>
+                                </p:column>
+                                <p:column style="text-align:left;width:100px">
+                                    <p:message id="idcomboOpcion" for="comboOpcion" display="text"/>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel/>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+
+                        <p:panelGrid id="botones" style="width:100%;text-align:center"
+                                     rendered="#{dictaminarSolicitudMB.panelBoton}">
+                            <p:row>
+                                <p:column style="text-align:center">
+                                    <p:commandButton id="btnPrueba" value="#{msgValidacion.asBtnAceptar}"
+                                                     action="#{dictaminarSolicitudMB.metodoCombo}"
+                                                     update="idcomboOpcion" ajax="false"
+                                                     rendered="#{dictaminarSolicitudMB.aceptar1}"/>
+                                    <p:commandButton id="btnPruebaDos" value="#{msgValidacion.asBtnAceptar}"
+                                                     oncomplete="#{dictaminarSolicitudMB.comboAbre}"
+                                                     action="#{dictaminarSolicitudMB.metodoCombo}" update="idcomboOpcion,btnPruebaDos,mess,:dictaminarSolicitud3:pickList,
+                                                     :dictaminarSolicitud3:pickList2,
+                                                     :dictaminarSolicitud3:otros,
+                                                     :dictaminarSolicitud3:basic,
+                                                     :dictaminarSolicitud3:bt1,
+                                                     :dictaminarSolicitud3:bt2,
+                                                     :dictaminarSolicitud3:aprob,
+                                                     :dictaminarSolicitud3:genDoc,
+                                                     :dictaminarSolicitud3:grid,
+                                                     :dictaminarSolicitud3:messPick,
+                                                     :dictaminarSolicitud6"
+                                                     rendered="#{dictaminarSolicitudMB.aceptar2}"/>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                    
+                                
+                        <p:panelGrid style="width:100%;text-align:center;">
+                            <p:row>
+                                <p:column style="width:100%;">
+                                    <p:commandButton value="#{msgValidacion.asBtnRegresar}"
+                                                     action="#{dictaminarSolicitudMB.regresoSolicitudes}" ajax="false"
+                                                     immediate="true" update="comboOpcion"/>
+                                    <p:commandButton value="#{msgValidacion.asBtnDocAdicional}"
+                                                     disabled="#{dictaminarSolicitudMB.btnDocAdicional}"
+                                                     action="#{dictaminarSolicitudMB.infoAdicional}" immediate="true"
+                                                     ajax="false"/>
+                                    <p:commandButton value="#{msgValidacion.asBtnNota}" immediate="true"
+                                                     actionListener="#{dictaminarSolicitudMB.focoArea}"
+                                                     oncomplete="dlgNota.show();"/>
+                                    <p:commandButton value="#{msgValidacion.asBtnConExpediente}" ajax="false"
+                                                     immediate="true"
+                                                     action="#{dictaminarSolicitudMB.consultarExpediente}"/>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                                
+                    </p:fieldset>
+                  </p:panel>
+                  <p:panelGrid style="width:100%;text-align:center;" rendered="#{dictaminarSolicitudMB.hidePreasignada == false}">
+                            <p:row>
+                                <p:column style="width:100%;">
+                                    <p:commandButton value="#{msgValidacion.asBtnRegresar}"
+                                                     action="#{dictaminarSolicitudMB.regresoSolicitudes}" ajax="false"
+                                                     immediate="true" update="comboOpcion"/>
+                                    
+                                </p:column>
+                            </p:row>
+                  </p:panelGrid>       
+                </p:panel>
+                                
+                <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                <p:dialog id="statusBar" modal="true" widgetVar="statusDialog" header="Procesando..." draggable="false"
+                          width="250" closable="false" resizable="false">
+                    <p:graphicImage value="/resources/images/ajaxloadingbar.gif"/>
+                </p:dialog>
+            </h:form>
+             
+            <h:form id="dictaminarSolicitud2">
+                <p:dialog widgetVar="dlgNota" modal="true" closable="false" resizable="false"
+                          header="#{msgValidacion.asDialogNota}" width="470" height="320">
+                    <p:panelGrid style="width:100%">
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.diCamposObligatorios}" style="color:red;"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <br/>
+                    <p:panelGrid id="panelNota">
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.asLblNota}"/>
+                                <p:spacer width="5"/>
+                                <p:outputLabel value="*" style="color:red"/>
+                            </p:column>
+                            <p:column>
+                                <p:inputTextarea id="areaNota" maxlength="250" counter="counter"
+                                                 style="text-transform:uppercase;width:300px;height:130px"
+                                                 counterTemplate="Quedan {0} caracteres"
+                                                 value="#{dictaminarSolicitudMB.nota}" required="true" autoResize="true"
+                                                 requiredMessage="#{msgValidacion.diRequerido}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel/>
+                                <p:outputLabel/>
+                            </p:column>
+                            <p:column>
+                                <p:message id="idMsgNota" for="areaNota" display="text"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText id="counter"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <p:panelGrid style="width:100%;text-align:center;">
+                        <p:row>
+                            <p:column>
+                                <p:commandButton value="#{msgValidacion.asBtnCancelar}" update="panelNota"
+                                                 process="@this" onclick="dlgNota.hide();"
+                                                 actionListener="#{dictaminarSolicitudMB.resetFail}"/>
+                                <p:commandButton id="btnPrueba4" value="#{msgValidacion.asBtnGuardar}"
+                                                 update="panelNota,idMsgNota,:dictaminarSolicitud:mess"
+                                                 action="#{dictaminarSolicitudMB.accionGuardar}"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:dialog>
+            </h:form>
+             
+            <h:form id="dictaminarSolicitud3" prependId="false">
+                     
+                <p:dialog widgetVar="dlgPrimerReq" modal="true" closable="false" resizable="false" draggable="false"
+                          header="#{msgValidacion.asDlgEmitirReq}" visible="#{dictaminarSolicitudMB.dialogReqs}">
+                      <div style="width: 780px;height: 300px;overflow-y:scroll;  ">
+                    <p:messages id="messPick" globalOnly="true" closable="true" for="msgReqs"/>
+                    <p:outputLabel value="#{msgValidacion.asEtiInformacion}" style="font-weight:bold"/>
+                    <p:panelGrid style="width:100%" columns="1">
+                        <p:pickList id="pickList" disabled="#{dictaminarSolicitudMB.pick1}" addLabel="Agregar"
+                                    removeLabel="Quitar" value="#{dictaminarSolicitudMB.informacion}" var="info"
+                                    itemLabel="#{info.descripcion}" itemValue="#{info}" rendered="true"
+                                    converter="teamPickListConverter" style="text-align:justify" immediate="true">
+                            <p:ajax event="transfer" listener="#{dictaminarSolicitudMB.onTransfer}"/>
+                        </p:pickList>
+                    </p:panelGrid>
+                    <p:separator/>
+                    <p:outputLabel value="#{msgValidacion.asEtiOtrosReqs}" style="font-weight:bold"/>
+                    <p:panelGrid>
+                        <p:row>
+                            <p:column style="width:100%;">
+                                <table border="0">
+                                    <tr>
+                                        <td rowspan="2">
+                                            <p:inputTextarea id="otros" maxlength="3000" style="height:80px"
+                                                             autoResize="true" disabled="#{dictaminarSolicitudMB.pick3}"
+                                                             counter="counter2" counterTemplate="Quedan {0} caracteres"
+                                                             value="#{dictaminarSolicitudMB.otrosReq}"/>
+                                        </td>
+                                        <td>
+                                            <p:commandButton id="bt1" icon="ui-icon-arrow-1-e" title="Agregar"
+                                                             disabled="#{dictaminarSolicitudMB.pick5}"
+                                                             action="#{dictaminarSolicitudMB.llenarLista}"
+                                                             update="basic,otros"/>
+                                        </td>
+                                        <td rowspan="2">
+                                            <p:selectOneListbox id="basic" style="height:85px"
+                                                                disabled="#{dictaminarSolicitudMB.pick4}"
+                                                                value="#{dictaminarSolicitudMB.otrosReq2}">
+                                                <f:selectItems value="#{dictaminarSolicitudMB.listaOtrosReq}" var="req"
+                                                               itemLabel="#{req}" itemValue="#{req}"/>
+                                            </p:selectOneListbox>
+                                        </td>
+                                    </tr>
+                                     
+                                    <tr>
+                                        <td>
+                                            <p:commandButton id="bt2" icon="ui-icon-arrow-1-w" title="Quitar"
+                                                             disabled="#{dictaminarSolicitudMB.pick6}"
+                                                             actionListener="#{dictaminarSolicitudMB.vaciarLista}"
+                                                             update="basic"/>
+                                        </td>
+                                    </tr>
+                                     
+                                    <tr>
+                                        <td>
+                                            <h:outputText id="counter2"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <p:separator/>
+                    <p:outputLabel value="#{msgValidacion.asEtiAnexos}" style="font-weight:bold"/>
+                    <p:panelGrid style="width:100%" columns="1">
+                        <p:outputLabel/>
+                        <p:pickList id="pickList2" disabled="#{dictaminarSolicitudMB.pick2}" addLabel="Agregar"
+                                    removeLabel="Quitar" value="#{dictaminarSolicitudMB.anexos}" var="anex"
+                                    itemLabel="#{anex.nombre} #{anex.descripcion}" rendered="true" itemValue="#{anex}"
+                                    converter="teamPickListConverter" style="text-align:justify" immediate="true">
+                            <p:ajax event="transfer" listener="#{dictaminarSolicitudMB.onTransfer2}"/>
+                        </p:pickList>
+                    </p:panelGrid>
+                    <p:panelGrid id="grid" style="width:100%;text-align:center;">
+                        <p:row>
+                            <p:column>
+                                <p:commandButton value="#{msgValidacion.iaBtnCancelar}" onclick="dlgPrimerReq.hide();"
+                                                 actionListener="#{dictaminarSolicitudMB.limpiarVariable}"
+                                                 update=":dictaminarSolicitud:comboOpcion :dictaminarSolicitud:btnPruebaDos"/>
+                                <p:commandButton value="Cargar documento"
+                                                 rendered="#{dictaminarSolicitudMB.documentoCargar}"
+                                                 onclick="dlgCargar.show();"/>
+                                <p:commandButton id="aprob" value="Enviar a aprobaci&oacute;n" oncomplete="dlgJefesSup.show();"
+                                                 rendered="#{dictaminarSolicitudMB.enviarAprob}"
+                                                 disabled="#{dictaminarSolicitudMB.disabledReqs}"
+                                                 action="#{dictaminarSolicitudMB.comboJefesSup}"
+                                                 update=":dictaminarSolicitud5:gridJefes"/>
+                                <p:commandButton id="genDoc" value="Generar documento"
+                                                 actionListener="#{dictaminarSolicitudMB.imprimirSeleccion}"
+                                                 rendered="#{dictaminarSolicitudMB.generarDoc}" immediate="true"
+                                                 update="pickList,pickList2,otros,basic,bt1,bt2,aprob,genDoc,grid,messPick"/>
+                                <div style="display:none">
+                                    <p:commandButton id="idDescargaDocumento"
+                                                     actionListener="#{dictaminarSolicitudMB.downloadDocumentos}"
+                                                     ajax="false">
+                                        <p:fileDownload value="#{dictaminarSolicitudMB.fileRequerimiento}"/>
+                                    </p:commandButton>
+                                </div>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                                     </div>
+                </p:dialog>
+               
+            </h:form>
+             
+            <h:form id="dictaminarSolicitud4" enctype="multipart/form-data">
+                <p:dialog id="carga" widgetVar="dlgCargar" modal="true" resizable="false" draggable="false"
+                          closable="true" header="Cargar documento generado" width="670">
+                    <p:panelGrid style="width:100%">
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.diCamposObligatorios}" style="color:red;"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <br/>
+                    <p:panelGrid columns="3" style="border-style:hidden;">
+                        <h:outputText value="#{msgValidacion.asEtiRuta}"/>
+                        <p:outputLabel value="#{msgValidacion.asRequerido}" style="color:red"/>
+                        <p:fileUpload value="#{dictaminarSolicitudMB.file}" mode="simple" dragDropSupport="true"
+                                      style="width:411px;" validator="ArchivoValidator"/>
+                        <p:outputLabel/>
+                    </p:panelGrid>
+                    <p:panelGrid style="width:100%;text-align:center;">
+                        <p:row>
+                            <p:column>
+                                <p:commandButton value="#{msgValidacion.asBtnCancelar}" ajax="false" immediate="true"
+                                                 onclick="dlgCargar.hide();"/>
+                                <p:commandButton id="chartBtn" value="Cargar"
+                                                 action="#{dictaminarSolicitudMB.fileUpload}" ajax="false"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:dialog>
+            </h:form>
+             
+            <h:form id="dictaminarSolicitud5">
+                <p:dialog id="dialogJefes" widgetVar="dlgJefesSup" modal="true" closable="false" resizable="false"
+                          header="#{msgValidacion.asDlgJefesSup}" width="730" height="220">
+                    <p:messages id="messJefes" globalOnly="true" closable="true"/>
+                    <p:panelGrid style="width:100%">
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.diCamposObligatorios}" style="color:red;"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <br/>
+                    <p:panelGrid id="gridJefes" columns="3">
+                        <p:outputLabel value="#{msgValidacion.asLblJefes}"/>
+                        <p:outputLabel value="*" style="color:red"/>
+                        <p:selectOneMenu id="comboJefes" style="width:290px;" required="true"
+                                         requiredMessage="#{msgValidacion.diRequerido}"
+                                         value="#{dictaminarSolicitudMB.numEmp}">
+                            <f:selectItem itemLabel="Seleccione una opci&oacute;n" itemValue=""/>
+                            <f:selectItems value="#{dictaminarSolicitudMB.listaJefesSup}" var="jefes"
+                                           itemLabel="#{jefes.nombre} #{jefes.apellidoPaterno} #{jefes.apellidoMaterno}"
+                                           itemValue="#{jefes.numEmpleado}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel/>
+                        <p:outputLabel/>
+                        <p:message id="idMsgJefes" for="comboJefes" display="text"/>
+                    </p:panelGrid>
+                    <br/>
+                    <p:panelGrid style="width:100%;text-align:center;">
+                        <p:row>
+                            <p:column>
+                                <p:commandButton value="#{msgValidacion.iaBtnCancelar}"
+                                                 action="#{dictaminarSolicitudMB.limpiarComboJefes}"
+                                                 oncomplete="dlgJefesSup.hide();"/>
+                                <p:commandButton value="#{msgValidacion.asBtnAceptar}" update=":dictaminarSolicitud:comboOpcion :dictaminarSolicitud:btnPruebaDos 
+                                                         :dictaminarSolicitud:mess idMsgJefes"
+                                                 action="#{dictaminarSolicitudMB.accionGuardarJefes}"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:dialog>
+            </h:form>
+             
+            <h:form id="dictaminarSolicitud6" prependId="false">
+                <p:dialog widgetVar="dlgContribuyente" modal="true" closable="false" resizable="false"
+                          header="#{msgValidacion.asDlgCarta}" height="160" width="800"
+                          visible="#{dictaminarSolicitudMB.dialogCarta}">
+                    <p:messages id="messCarta" globalOnly="true" closable="true" for="msgCarta"/>
+                    <br/>
+                    <br/>
+                    <div align="center">
+                        <p:commandButton value="#{msgValidacion.asBtnCancelar}" onclick="dlgContribuyente.hide();"
+                                         action="#{dictaminarSolicitudMB.dialogContrib}"
+                                         update=":dictaminarSolicitud:comboOpcion :dictaminarSolicitud:btnPruebaDos"/>
+                         
+                        <p:commandButton value="Cargar documento" rendered="#{dictaminarSolicitudMB.documentoCargar}"
+                                         onclick="dlgCargar.show();"/>
+                        <div style="display:none">
+                            <p:commandButton id="docGenNuevo"
+                                             actionListener="#{dictaminarSolicitudMB.downloadDocumentos}" ajax="false">
+                                <p:fileDownload value="#{dictaminarSolicitudMB.fileRequerimiento}"/>
+                            </p:commandButton>
+                        </div>
+                        <p:commandButton value="#{msgValidacion.asBtnContribuyente}" oncomplete="dlgJefesSup.show();"
+                                         action="#{dictaminarSolicitudMB.llenarCombo}"
+                                         disabled="#{dictaminarSolicitudMB.disabledCarta}"
+                                         update=":dictaminarSolicitud5:gridJefes"/>
+                    </div>
+                </p:dialog>
+            </h:form>
+             
+            <!--  visible="#{dictaminarSolicitudMB.dialogCarta}" -->
+             
+            <h:form id="dictaminarSolicitud9" prependId="false">
+                <p:dialog widgetVar="dlgFacultades1" modal="true" closable="false" resizable="false"
+                          header="Emitir inicio de facultades" height="130" width="600"
+                          visible="#{dictaminarSolicitudMB.dialogFacultades1}">
+                    <p:outputLabel value="#{msgValidacion.asNumeroControl} #{dictaminarSolicitudMB.solicitudAdministrarSolVO.numControl}"
+                                   style="font-weight: bold;"/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <p:commandButton value="#{msgValidacion.iaBtnCancelar}" onclick="dlgFacultades1.hide();"
+                                     action="#{dictaminarSolicitudMB.dialogFacultades}"/>
+                    <p:commandButton value="Enviar a aprobaci&oacute;n" oncomplete="dlgJefesSup.show();"
+                                     action="#{dictaminarSolicitudMB.comboJefesSup}"
+                                     update=":dictaminarSolicitud5:gridJefes"/>
+                </p:dialog>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

@@ -1,0 +1,136 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+            <meta http-equiv="X-UA-Compatible" content="IE=8"/>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <meta http-equiv="pragma" content="no-cache"/>
+            <meta http-equiv="cache-control" content="no-cache"/>
+            <meta http-equiv="expires" content="0"/>
+            <h:outputScript library="js" name="utils.js" target="head"/>
+            <h:outputScript library="js" name="posicion.js" target="head"/>
+            <h:outputScript library="js" name="general.js"/>
+            <style type="text/css">
+                .gmxNoborde1 td{border-color:#FFFFFF;}
+                hr.red {
+                        margin: 0px 0 0px !important;border-top-color: #DCE0E0 !important;position: relative !important; margin-left: 11px !important;} 
+                hr.red:before {
+                       content: " "!important;width: 35px!important;height: 6px!important;background-color: #D0021B!important;
+                       display: block!important;  position: absolute!important;} 
+                h2 {font-size: 38px!important;margin-bottom: 0px!important;margin-left: 10px !important;}
+                body {font-family: 'Open Sans';font-size: 16px!important; }                
+                .ui-selectoneradio td{padding: 0px!important;border-color:#FFFFFF!important;}
+                .ui-selectoneradio label {padding-left: 5px!important; padding-right: 1px!important; }
+                .ui-outputlabel-rfi {margin-left: 0px !important;}
+                #formReimpresionAcuse\:j_idt15 {text-align: left !important;margin-left: -10px !important;display: block;}
+                #formReimpresionAcuse\:selectAcuse {display: block;margin-left: -10px;}
+                #formReimpresionAcuse\:labelAcuse {display: initial;margin-left: -10px !important;}
+            </style>    
+        </h:head>
+        <h:body>
+            
+            <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+             
+            <p:dialog modal="true" widgetVar="statusDialog" header="#{msgValidacion.ajaxLoading}" draggable="false"
+                      resizable="false" closable="false">
+                <p:graphicImage value="../../images/ajaxloadingbar.gif"/>
+            </p:dialog>
+            
+            <h:form id="formReimpresionAcuse">
+                <div class="gobmxContenedor8">
+                    <h2>
+                        <p:outputLabel value="#{msgValidacion.raTitulo}"/>
+                    </h2> 
+                    <hr class="red" />
+                </div>
+                <p:messages globalOnly="true" closable="true" autoUpdate="true"/>
+                
+                <p:panelGrid id="pnlDocumento" styleClass="gobmxContenedor8 gmxfvertical gmxNoborde1" style="margin-top:10px!important;">
+                    <p:row>
+                        <p:column style="width: 50%!important; text-align: right !important;" >
+                             <p:outputLabel value="#{msgValidacion.aclP2Campo1}"/>
+                        </p:column>
+                        <p:column style="width: 30px!important;">&nbsp;</p:column>
+                        <p:column style="width: 50%!important;">
+                            #{acuseReciboMB.rfc}
+                        </p:column>
+                    </p:row>
+                     <p:row>
+                        <p:column colspan="3" >
+                            <p:selectOneRadio id="selectAcuse" value="#{acuseReciboMB.selectAcuse}"
+                                              required="true"
+                                             
+                                              requiredMessage="#{msgValidacion.msjCampoRequerido}">
+                                <p:ajax update=":formReimpresionAcuse:labelAcuse"/>
+                                <f:selectItem itemLabel="#{msgValidacion.tooltop14}" itemValue="1"/>
+                                <f:selectItem itemLabel="#{msgValidacion.tooltop15}" itemValue="2"/>
+                                <f:selectItem itemLabel="#{msgValidacion.tooltop16}" itemValue="3"/>
+                                <p:ajax event="change" listener="#{acuseReciboMB.toggleBoton}" update=":formReimpresionAcuse"/>
+                            </p:selectOneRadio>
+                            <p:message id="msjOptions" for="selectAcuse" display="text"/>
+                        </p:column>
+                    </p:row>
+                    <p:row id="rowNumAcuse">
+                        <p:column style="text-align:left" colspan="3">
+                            <p:outputLabel value="#{(acuseReciboMB.selectAcuse =='1' || acuseReciboMB.selectAcuse =='3') ? 'N&uacute;mero de control' : 'Folio del aviso'}"
+                                           id="labelAcuse" for="numControl"/>:
+                            <p:inputText id="numControl" value="#{acuseReciboMB.numControl}" required="true"
+                                         requiredMessage="Es requerido por el sistema"
+                                         style="text-transform: uppercase; width: 180px;"/>
+                            <p:message id="msgNumControl" for="numControl" display="text"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+                <p:dataTable  id="tablaBasica"   var="dat" value="#{acuseReciboMB.lstNumControlDoc}"
+                              emptyMessage="No hay resultados para mostrar"
+                              rendered="#{acuseReciboMB.showTable}">
+
+                    <f:facet name="header">
+                        Resolucion
+                    </f:facet>
+
+                    <p:column headerText="Nombre Archivo">              
+                        <h:outputText value ="#{dat.nombreArchivo}"/>      
+                    </p:column>        
+
+
+                    <p:column headerText="N&uacute;mero de Documento">              
+                        <h:outputText value ="#{dat.numControlDoc}"/>      
+                    </p:column>
+
+                    <p:column style="width:32px;text-align: center">
+
+                        <p:commandButton update="formReimpresionAcuse" ajax="false" 
+                                         action="#{acuseReciboMB.imprimirAcuseRequerimiento}" icon="ui-icon-print" title="Imprimir">
+                            <f:setPropertyActionListener value="#{dat}" 
+                                                         target="#{acuseReciboMB.selectNumControlDoc}" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+               <p:panelGrid id="pnlBtns1" styleClass="gobmxContenedor8 gmxNoborde1" >
+                   <p:row>
+                        <p:column rendered="#{acuseReciboMB.btnImprFlag}">
+                            <p:commandButton id="cons" 
+                                 value="Buscar Acuses de Requerimiento" 
+                                 rendered="#{acuseReciboMB.btnImprFlag}"
+                                 actionListener="#{acuseReciboMB.isAdm}" 
+                                 styleClass="gmxPositivo"
+                                 update="msgNumControl numControl" ajax="false" onclick="statusDialog.show();"
+                                style="width:200px"  />
+                       </p:column>
+                        <p:column  rendered="#{acuseReciboMB.btnImprFlag2}">
+                           <p:commandButton id="imp"
+                                            value="Imprimir" 
+                                            styleClass="gmxPositivo"
+                                            rendered="#{acuseReciboMB.btnImprFlag2}"
+                                            actionListener="#{acuseReciboMB.isAdm}"
+                                            update="msgNumControl numControl" ajax="false" style="width:200px" />
+                        </p:column>
+                    </p:row> 
+               </p:panelGrid>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

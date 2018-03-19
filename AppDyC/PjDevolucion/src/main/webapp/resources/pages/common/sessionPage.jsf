@@ -1,0 +1,44 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html">
+    <p:dialog modal="true" widgetVar="statusDialog" header="#{msgValidacion.ajaxLoading}" draggable="false"
+              resizable="false" closable="false" appendToBody="true" position="center">
+        <h:graphicImage library="images/" name="ajaxloadingbar.gif"/>
+    </p:dialog>
+              <style>
+                  #confirmBackToLogin{
+                        display: inline-block !important;
+                        position: relative !important;
+                        line-height: normal !important;
+                        cursor: pointer !important;
+                        vertical-align: middle !important;
+                        text-align: center !important;
+                        overflow: visible !important;
+                        background: #4A90E2 !important;
+                        border: 1px solid #4A90E2 !important;
+                        color: #fff !important;
+                        box-shadow: 0 2px 0 0 #1b5eab !important;
+                        margin: 0 auto  !important;;
+                        height: 39px !important;
+                  }
+              </style>         
+    <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"
+                  onerror="#{session != null ? null : 'session.show();'}" id="loading"/>
+    <p:dialog id="messageSession" widgetVar="session" modal="true" resizable="false" draggable="false"
+              header="¡Sesión Expirada!" width="350" closable="false">
+        <table border="0">
+            <tr align="justify">
+                <td>
+                    #{msgValidacion.M0000013}
+                </td>
+            </tr><!-- a href="#{msgValidacion.M0000014}">#{msgValidacion.M0000014}</a -->
+            <tr align="right">
+            <td>
+                <input id="confirmBackToLogin" type="button" value="Aceptar"
+                       onclick="window.location='https://siatdev.sat.gob.mx/PTSC/prototipo/cerrarSesion';"/>
+            </td>
+        </tr >
+           
+        </table>
+    </p:dialog>
+</ui:composition>
+

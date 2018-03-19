@@ -1,0 +1,309 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+        xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <title>Criterios de Búsqueda</title>
+            <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+            <meta http-equiv="X-UA-Compatible" content="IE=8"/>
+            <meta http-equiv="Colntent-Type" content="text/html; charset=UTF-8"/>
+            <h:outputStylesheet library="css/" name="formato.css"/>   
+             <style type="text/css">
+                .ui-paginator {
+                    font-size: 12px !important;
+                }
+
+                .ui-datatable tbody td {
+                    white-space: normal;
+                    vertical-align: text-top;
+                }
+                
+                   .ui-datatable thead th {
+                    white-space: normal;
+                    vertical-align: text-top;
+                }
+            </style>
+
+             <style type="text/css">
+                .ui-datatable tbody td {
+                    white-space: normal;
+                }
+            </style>    
+        </h:head>
+        <h:body>
+           
+            <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+             
+            <p:dialog modal="true" widgetVar="statusDialog" header="#{msgValidacion.ajaxLoading}" draggable="false"
+                      closable="false">
+                <p:graphicImage value="../../images/ajaxloadingbar.gif"/>
+            </p:dialog>
+                      
+            <h:form id="formBusquedaIceps">
+                <p:panel id="pnlControlSaldos" header="Control de saldos" style="width:100%; align:center;">
+                    <p:tabView id="tabView" dynamic="true" cache="true">
+                        <p:tab id="tabBusqueda" title="#{labelscs.titleTabBusqueda}">
+                            <p:focus context="pnlParamsBusqueda"/>
+
+                            <p:messages id="msjsBusqueda" showDetail="true" autoUpdate="false" closable="true" globalOnly="true"/>
+
+                            <p:panelGrid id="panelConsulta"  >
+                                <p:row>
+                                    <p:column style="width:640px;">
+                                        <p:panelGrid id="pnlParamsBusqueda" style="width:100%" columns="1">
+                                            <p:fieldset id="fstPalabraClave" legend="#{labelscs.legendFieldSet1}" 
+                                                         widgetVar="wfstPalabraClave" update="pnlBotones">
+
+                                                <p:outputLabel value="Parámetro de búsqueda:   "/>
+
+                                                <p:remoteCommand name="test" action="#{mbBusquedaIceps.buscar2}" update="tblIcepsEncontrados msjsBusqueda msjClaveBusqueda"
+                                                process="txtClaveBusqueda @this" />
+
+                                                <p:inputText id="txtClaveBusqueda" value="#{mbBusquedaIceps.claveBusqueda}"
+                                                         style="text-transform: uppercase; width:200px"
+                                                         maxlength="15"
+                                                         styleClass="upperCase"
+                                                         onkeypress="if (event.keyCode == 13) { test(); return false; }">
+                                                </p:inputText>
+                                                <br/>
+                                                <p:message for="txtClaveBusqueda" display="text" id="msjClaveBusqueda"/>
+                                                <p:watermark for="txtClaveBusqueda" value="#{labelscs.marcaAguaTextParamBusq}" id="wtmPalabraClave"/>
+                                            </p:fieldset>
+
+                                        </p:panelGrid>
+                                    </p:column>
+                                        <p:column style="width:120px;">
+                                            <p:panelGrid id="pnlBotones" style="" columns="1">
+
+                                                <!--p:commandButton value="#{msgValidacion.cbBotAdi}" style="width:100px;"
+                                                immediate="true" action="#{mbBusquedaIceps.dirigirRegistrarIcep}"/-->
+
+                                                <p:commandButton value="Buscar" 
+                                                                 id="btnBuscar" 
+                                                                 action="#{mbBusquedaIceps.buscar2}" style="width:100px;"
+                                                                  process="txtClaveBusqueda @this" update="tblIcepsEncontrados msjsBusqueda msjClaveBusqueda"
+                                                                  rendered="#{mbBusquedaIceps.fieldsetActivo == 1}"/>
+
+                                                <p:commandButton value="Buscar"
+                                                                 id="btnBuscarXIcep2" 
+                                                                 action="#{mbBusquedaIceps.buscarXIcep}" style="width:100px;"
+                                                                 process="rfcCont cmbImpuesto cmbConcepto cmbTipoPeriodo cmbPeriodo cmbEjercicio cmbTipoSaldo @this"
+                                                                 update="panelConsulta tblIcepsEncontrados msjsBusqueda"
+                                                                 rendered="#{mbBusquedaIceps.fieldsetActivo == 2}"/>
+
+                                                <p:commandButton value="Limpiar" process="@this"
+                                                                 update="fstPalabraClave tblIcepsEncontrados msjsBusqueda"
+                                                                 action="#{mbBusquedaIceps.limpiar}" style="width:100px;"/>
+
+                                            </p:panelGrid>
+                                            </p:column>
+                                     </p:row>
+                                     <p:row>
+                                        <p:column colspan="2">
+                                            <p:dataTable id="tblIcepsEncontrados" value="#{mbBusquedaIceps.icepsEncontrados}" var="icep"
+                                                         selection="#{mbBusquedaIceps.icepSeleccionado}" selectionMode="single"
+                                                         style="font-size:13.5px; text-align:center"
+                                                         lazy="true"
+                                                         paginator="true"
+                                                         paginatorPosition="bottom" rows="10" 
+                                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                         rowIndexVar="rowIndex" 
+                                                         rowStyleClass="#{(rowIndex mod 2) eq 0 ? 'highlightA' : 'highlightB'}"
+                                                         emptyMessage="No se encontraron registros" update=""
+                                                         rowKey="#{icep.id}">
+
+                                                <p:ajax event="rowSelect" update="btnVerDetalleIcep"/> 
+
+                                                <f:facet name="header">
+                                                    <p:toolbar>
+                                                        <p:toolbarGroup align="left" valign="center">
+                                                            <p:outputLabel value="#{mbBusquedaIceps.resultadoBusqueda}"/>
+                                                        </p:toolbarGroup>
+
+                                                        <p:toolbarGroup align="right">
+                                                            <p:commandButton id="btnVerDetalleIcep" update="" process="tblIcepsEncontrados @this"
+                                                                             action="#{mbBusquedaIceps.irADetalle}" icon="ui-icon-search"
+                                                                             title="#{labelscs.tooltipBtnVerDetalleIcep}"
+                                                                             disabled="#{empty mbBusquedaIceps.icepSeleccionado}"/>
+
+                                                            <p:commandButton id="btnAgregarIcep" icon="ui-icon-document" title="#{labelscs.tooltipBtnAgregarIcep}" 
+                                                                                action="#{mbBusquedaIceps.manejarAgregarIcep}" process="@this"
+                                                                                update=":formBusquedaIceps:tabView:msjClaveBusqueda :formIcep:dlgDetalleIcep"/>
+
+                                                        </p:toolbarGroup>
+                                                    </p:toolbar>
+                                                </f:facet>
+
+                                                <p:column headerText="#{msgValidacion.liRfc}" style="width:50px">
+                                                    <h:outputText value="#{icep.rfc}"/>
+                                                </p:column>
+                                                <p:column headerText="#{msgValidacion.liImp}" style="width:180px">
+                                                    <h:outputText value="#{icep.impuesto}"/>
+                                                </p:column>
+                                                <p:column headerText="#{msgValidacion.liCon}" style="width:180px">
+                                                    <h:outputText value="#{icep.concepto}"/>
+                                                </p:column>
+                                                <p:column headerText="#{msgValidacion.liPer}" style="width:120px">
+                                                    <h:outputText value="#{icep.periodo}"/>
+                                                </p:column>
+                                                <p:column headerText="#{msgValidacion.liEje}" style="width:50px">
+                                                    <h:outputText value="#{icep.ejercicio}"/>
+                                                </p:column>
+                                                <p:column headerText="Origen del saldo" style="width:80px">
+                                                    <h:outputText value="#{icep.tipoSaldo}"/>
+                                                </p:column>
+                                            </p:dataTable>
+                                        </p:column>
+                                    </p:row>
+                                </p:panelGrid>
+                        </p:tab>
+
+                        <c:if test="#{sesionControlSaldos.esAdminCentral}">
+                            <p:tab id="tabAdmPermisosAjuste" title="Administrar permisos ajuste">                     
+                                <p:panelGrid id="pnlGridPermisosAjustes" style="width: 100%; height:98%;">
+                                    <p:row>
+                                        <p:column>
+                                            <p:messages id="msjsDlgPermisosAjustes" showDetail="true" autoUpdate="false" closable="true" globalOnly="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <p:column>
+                                            <p:dataTable    id="tbUsuariosActivos" var="usuario" value="#{mbPermisosAjustes.filas}" 
+                                                            rowKey="#{usuario.numEmpleado}" style="width:100%; padding:0; font-size:13.5px;" rowIndexVar="rowIndex"
+                                                            rowStyleClass="#{(rowIndex mod 2) eq 0 ?'highlightA':'highlightB'}"
+                                                            emptyMessage="#{msgValidacion.tblEmpty}"
+                                                            selectionMode="single" selection="#{mbPermisosAjustes.permisoSelec}">
+
+                                                <f:facet name="header">
+                                                    <p:toolbar>
+                                                        <p:toolbarGroup align="left" valign="center">
+                                                            <h:outputText value="Usuarios que actualmente cuentan con privilegios de ajuste ... "/>
+                                                        </p:toolbarGroup>
+                                                        <p:toolbarGroup align="right">
+                                                            <p:commandButton id="btnAgregarPermiso" icon="ui-icon-key" 
+                                                                            title="Otorgar priveligios de ajuste a un usuario"
+                                                                            update=":formDetallePermiso"
+                                                                            action="#{mbPermisosAjustes.mostrarDlgAgregarPermiso}"/>
+
+                                                            <p:commandButton id="btnQuitarPermiso" icon="ui-icon-cancel"   
+                                                                            disabled="false"
+                                                                            title="Revocar privilegios de ajuste a usuario seleccionado"
+                                                                            update=":frmConfirmarRevocacion"
+                                                                            action="#{mbPermisosAjustes.mostrarDlgConfirmRevocar}"
+                                                                           />
+                                                        </p:toolbarGroup>
+                                                    </p:toolbar>
+                                                </f:facet>
+
+                                                <p:column headerText="#{labelscs.numeroEmpleado}" width="70">
+                                                    <h:outputText value="#{usuario.numEmpleado}"/>
+                                                </p:column>
+                                                <p:column headerText="RFC" sortBy="#{usuario.rfc}" width="70">
+                                                    <h:outputText value="#{usuario.rfc}"/>
+                                                </p:column>
+                                                <p:column headerText="Nombre completo" width="150">
+                                                    <h:outputText value="#{usuario.nombre}"/>
+                                                </p:column>
+                                                <p:column headerText="Unidad administrativa" width="150">
+                                                    <h:outputText value="#{usuario.unidadAdmva}"/>
+                                                </p:column>
+                                                <p:column headerText="Fecha privilegio" sortBy="#{accion.fechaPrivilegio}" width="80">
+                                                    <h:outputText value="#{usuario.fechaPrivilegio}">
+                                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                                    </h:outputText>
+                                                </p:column>
+                                            </p:dataTable>                    
+                                        </p:column>
+                                    </p:row>
+                                </p:panelGrid>
+                            </p:tab>
+
+                            <p:tab id="tabBitacora" title="#{labelscs.titleTabBitacora}">
+                                <p:panelGrid id="pnlGridBitacora" style="width: 100%; height:98%;">
+                                    <p:row>
+                                        <p:column>
+                                            <p:messages id="msjsDlgBitacoraAjustes" showDetail="true" autoUpdate="false" closable="true" globalOnly="true"/>
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <p:column>
+                                            <p:dataTable    id="tbAcciones" var="accion" value="#{mbBitacoraAjustes.filas}" 
+                                                            rowKey="#{accion.idAccionMovSal}" style="width:100%; padding:0; font-size:13.5px;" rowIndexVar="rowIndex"
+                                                            rowStyleClass="#{(rowIndex mod 2) eq 0 ?'highlightA':'highlightB'}"
+                                                            emptyMessage="#{msgValidacion.tblEmpty}">
+                                                
+                                                 <f:facet name="header">
+                                                    <p:toolbar>
+                                                        <p:toolbarGroup align="left" valign="center">
+                                                            <h:outputText value="#{labelscs.headerGridBitacoraGral}"/>
+                                                        </p:toolbarGroup>
+                                                    </p:toolbar>
+                                                </f:facet>
+
+                                                <p:column headerText="#{labelscs.headerAccion}" width="70">
+                                                    <div title="#{accion.tipoAccion}">
+                                                        <h:panelGroup styleClass="#{accion.styleClass}" />
+                                                    </div>
+                                                </p:column>
+                                                <p:column headerText="Movimiento" sortBy="#{accion.movimiento}" width="70">
+                                                    <h:outputText value="#{accion.movimiento}"/>
+                                                </p:column>
+                                                <p:column headerText="Monto" style="text-align: right;" width="120">
+                                                    <h:outputText value="#{accion.monto}">
+
+                                                    </h:outputText>
+                                                </p:column>
+                                                <p:column headerText="idSaldoIcep" width="85">
+                                                    <h:outputText value="#{accion.idSaldoIcep}"/>
+                                                </p:column>
+                                                <p:column headerText="Responsable" width="200">
+                                                    <h:outputText value="#{accion.responsable}"/>
+                                                </p:column>
+                                                <p:column headerText="#{labelscs.headerJustificacion}" width="200">
+                                                    <h:outputText value="#{accion.justificacion}"/>
+                                                </p:column>
+
+                                                <p:column headerText="Fecha" sortBy="#{accion.fecha}" width="80">
+                                                    <h:outputText value="#{accion.fecha}">
+                                                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm 'hrs'"/>
+                                                    </h:outputText>
+                                                </p:column>
+                                            </p:dataTable>                    
+                                        </p:column>
+                                    </p:row>
+
+                                    <f:facet name="footer">
+                                        <p:row>
+                                            <p:column>
+                                                <div align="center">
+                                                    <p:commandButton    value="Refrescar" update="pnlGridBitacora" actionListener="#{mbBitacoraAjustes.cargarBitacoraGeneral}"
+                                                                        process="@this" icon="ui-icon-refresh"/>
+                                                </div>
+                                            </p:column>
+                                        </p:row>
+                                    </f:facet>
+                                </p:panelGrid>
+                            </p:tab>
+                        </c:if>                                                 
+                    </p:tabView>
+                </p:panel>
+                <p:outputLabel value=" #{msg['build.version']}, #{msg['build.timestamp']}"
+                               style="float:left;color:#A4A4A4"></p:outputLabel>
+            </h:form>
+            
+            <ui:insert name="editarIcep">
+                <ui:include src="editarIcep.jsf"/>
+            </ui:insert>
+
+            <ui:insert name="permisosAjuste">
+                <ui:include src="permisosAjuste.xhtml"/>
+            </ui:insert>
+
+        </h:body>
+    </html>
+</f:view>

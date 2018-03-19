@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:p="http://primefaces.org/ui">
+    <html>
+        <h:head> 
+            <title>
+                #{msgValidacion.L0000023}
+            </title>
+            <meta http-equiv="X-UA-Compatible" content="IE=8"/>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <h:outputStylesheet library="css/" name="formato.css"/>
+            <h:outputScript library="js" name="calendarioIdiomaEs.js"/>
+            <style type="text/css">
+                .fileupload-content {
+                    border: none !important;
+                    padding: 0px;
+                    display: none;
+                }
+
+                .fileupload-buttonbar {
+                    border: none !important;
+                    padding: 0px;
+                   background: white;
+                }
+               span .ui-button-icon-only .ui-icon, .ui-button-text-icon-left .ui-icon, .ui-button-text-icon-right .ui-icon{
+                    display: none;
+                }
+            </style>
+        </h:head>
+        <h:body>
+
+            <table border="0">
+                <tr>
+                    <td>
+                        <p:panel id="pnlCargaDescargae" header="Carga Masiva Autorizada Total" style="width:976px !important;">
+                            <p:messages id="messages" closable="true" autoUpdate="false" globalOnly="true" />
+                            <div align="left" style="height: 10px;font-size:10px;">
+                                <p style="color: Red;">
+                                    #{msgValidacion.L0000019}
+                                </p>
+                            </div>
+                            <br/>
+
+                            <p:tabView dynamic="true" id="tabGestionPago02" effect="fade" effectDuration="fast"
+                                       orientation="top">
+                                <p:tab title="Cargar archivo" id="tabCarga">
+                                    <h:form id="form1" enctype="multipart/form-data">
+                                        <ui:include src="/resources/pages/common/inactividad.jsf"></ui:include>
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <!--   <p:message for="fileDoc" display="text"/> -->
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <h:panelGrid columns="6" style="border-style:hidden;">
+                                                        <h:outputText value="#{msgValidacion.asEtiRuta}"/>
+                                                        <h:outputText value="#{msgValidacion.asRequerido}"
+                                                                      style="color:red"/>
+                                                        <p:spacer width="30"/>
+  <h:inputText value="#{cargaMasivaAutorizadaMB.nombreArchivo}" id="rutaa" disabled="true"/>
+                                                        <p:fileUpload value="#{cargaMasivaAutorizadaMB.uploadDocumento}" 
+                                                                        auto="true" 
+                                                                      id="fileDoc"  label="Examinar.." 
+
+                                                                         update=":messages @form" 
+                                                                         fileUploadListener ="#{cargaMasivaAutorizadaMB.handleFileUpload}"
+                                                                      
+                                                                      validator="ArchivoValidator"
+                                                                      />
+                                                   <p:commandButton id="enviarDoc" value="#{msgValidacion.B0000007}"
+                                                             style="width:150px" update=":messages @form" ajax="true"
+                                                             oncomplete="if (!args.validationFailed){pbAjax.start(); dlgBarraEstadoArchivos.show();  cargaDeArchivos();}"
+                                                             >
+                                              
+                                                   </p:commandButton>
+                                                    </h:panelGrid>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        <div>
+                                             <p:remoteCommand name="cargaDeArchivos"  action="#{cargaMasivaAutorizadaMB.cargarDocumento}" update=":dialogoBarra :messages "/>
+                                                <p:remoteCommand name="actualizarPagina" update="@form @this"/>
+                                             
+                                            <p:spacer height="35"/> 
+                                        </div>
+                                    </h:form>
+                                </p:tab>
+
+                                <p:tab title="Generar reporte" id="tabGeneraReporte">
+                                    <ui:include src="/resources/pages/cargaautomaticas/generacionReporteMasivoAutomaticas.jsf"></ui:include>
+                                </p:tab>
+                            </p:tabView>
+                        </p:panel>                            
+                    </td>
+                </tr>
+
+                <p:dialog header="Cargando Archivo"
+                          widgetVar="dlgBarraEstadoArchivos"
+                          draggable="false"
+                          closable="false"
+                          resizable="false"
+                          modal="true"
+                          id="dialogoBarra">
+                    <h:outputText value="Cargando archivo, por favor espere..."/>
+                    <p:progressBar widgetVar="pbAjax"
+                                   ajax="true"
+                                   value="#{cargaMasivaAutorizadaMB.progress}"
+                                   labelTemplate="{value}%"
+                                   styleClass="animated"
+                                   interval="3000">
+                        <p:ajax event="complete"
+                                oncomplete="dlgBarraEstadoArchivos.hide();pbAjax.setValue(0); actualizarPagina();" />
+                    </p:progressBar>
+                </p:dialog>
+
+            </table>
+
+        </h:body>
+    </html>
+</f:view>

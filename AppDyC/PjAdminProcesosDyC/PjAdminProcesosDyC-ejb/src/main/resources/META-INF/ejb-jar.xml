@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ejb-jar xmlns = "http://java.sun.com/xml/ns/javaee" 
+         version = "3.0" 
+         xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation = "http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/ejb-jar_3_0.xsd">
+    
+    <description>Ejemplo de EJB</description>
+    <enterprise-beans>
+        <session>
+            <display-name>Bean HolaMundo</display-name>
+            <ejb-name>HolaMundo</ejb-name>
+            <home>mx.gob.sat.siat.dyc.pjadminprocesosdyc.ejb.helloTest.HolaMundoHome</home>
+            <remote>mx.gob.sat.siat.dyc.pjadminprocesosdyc.ejb.helloTest.HolaMundoRemote</remote>
+            <ejb-class>mx.gob.sat.siat.dyc.pjadminprocesosdyc.ejb.helloTest.HolaMundoBean</ejb-class>
+            <session-type>Stateless</session-type>
+            <transaction-type>Bean</transaction-type>
+        </session>
+    </enterprise-beans>
+
+</ejb-jar>

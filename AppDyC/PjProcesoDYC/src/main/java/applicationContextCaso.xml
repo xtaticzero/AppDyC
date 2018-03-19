@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+                           http://www.springframework.org/schema/tx
+                           http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context-3.0.xsd" >
+
+    <bean id="nativeJdbcExtractor" class="org.springframework.jdbc.support.nativejdbc.C3P0NativeJdbcExtractor"/>
+    <tx:annotation-driven />
+        <!-- ::::::::::::::::::::::::::: CONTEXTO DAO BATCH ::::::::::::::::::::::::::: -->
+    <import resource="classpath:applicationContextDAODyCBatch.xml"/>
+        <import resource="classpath:diaHabilContextBatch.xml"/>
+    <import resource="classpath:applicationContextActualizadorBatch.xml"/>
+    <bean id="dataSourceSIATDYC" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value='${driverClassNameS}'/>
+        <property name="jdbcUrl" value='${urlS}'/>
+        <property name="user" value='${usernameS}'/>
+        <property name="password" value='${passwordS}'/>
+    </bean>
+    <bean id="TMdataSourceSIATDYC" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSourceSIATDYC"/>
+    </bean>
+
+    <bean id="dataSourceDWHDYP" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value='${driverDWHDYP}'/>
+        <property name="jdbcUrl" value='${urlDWHDYP}'/>
+        <property name="user" value='${usernameDWHDYP}'/>
+        <property name="password" value='${passwordDWHDYP}'/>
+    </bean>
+    <bean id="TMdataSourceDWHDYP" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSourceDWHDYP"/>
+        <qualifier value="TMdataSourceDWHDYP"/>
+    </bean>
+
+  <!--INFORMIX-->
+    <bean id="dataSourceInformixDYC" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value='${driverClassNameIn}'/>
+        <property name="jdbcUrl" value='${urlIn}'/>
+        <property name="user" value='${usernameIn}'/>
+        <property name="password" value='${passwordIn}'/>
+        <property name="acquireIncrement" value="5" />
+        <property name="minPoolSize" value="2" />
+        <property name="maxPoolSize" value="10" />
+        <property name="maxStatementsPerConnection" value="100" />
+        <property name="testConnectionOnCheckout" value="false"/>
+        <property name="testConnectionOnCheckin" value="false"/>
+        <property name="idleConnectionTestPeriod" value="420"/>
+        <property name="preferredTestQuery" value=""/>
+        <property name="maxIdleTime" value="1200"/>
+        <property name="maxIdleTimeExcessConnections" value="600"/>
+        <property name="maxConnectionAge" value="420"/>
+    </bean>
+    <bean id="TMdataSourceInformixDYC" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSourceInformixDYC"/>
+        <qualifier value="TMdataSourceInformixDYC"/>
+    </bean>
+    <!--RFC AMPLIADO-->
+    <bean id="dataSourceRFCDYC" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value='${driverClassNameRFC}'/>
+        <property name="jdbcUrl" value='${urlRFC}'/>
+        <property name="user" value='${usernameRFC}'/>
+        <property name="password" value='${passwordRFC}'/>
+    </bean>
+    <bean id="TMdataSourceRFCDYC" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSourceRFCDYC"/>
+    </bean>
+    <bean id="dataSourceDYC" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value='${driverClassNameD}'/>
+        <property name="jdbcUrl" value='${urlD}'/>
+        <property name="user" value='${usernameD}'/>
+        <property name="password" value='${passwordD}'/>
+    </bean>
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSourceDYC"/>
+    </bean>
+
+    <!--DWHORA 2 se configuro asi solo para dependencias, no se usa-->
+    <bean id="dataSourceDwhOra2DYC" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value='${driverClassNameS}'/>
+        <property name="jdbcUrl" value='${urlS}'/>
+        <property name="user" value='${usernameS}'/>
+        <property name="password" value='${passwordS}'/>
+    </bean>
+     <bean id="dataSourceDYCDB2" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+       <property name="driverClass"  value='${driverClassNameDB2}'/>
+     <property name="jdbcUrl" value='${urlDB2}'/>
+        <property name="user" value='${usernameDB2}'/>
+        <property name="password" value='${passwordDB2}'/>   
+    </bean>
+    <bean id="TMdataSourceDwhOra2DYC" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSourceDwhOra2DYC"/>
+    </bean>
+
+    <context:property-placeholder location="file:/siat/dyc/configuraciondyc/parametrosdyc.properties"/>
+   
+    <!---NAMED PARAMETER PARA JDBC TEMPLATE se configuro asi solo para dependencias, no se usan-->
+    <bean id="namedParameterJdbcTemplate" class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+        <constructor-arg ref="dataSourceSIATDYC"></constructor-arg>
+    </bean>
+    <bean id="namedParameterJdbcTemplateSIAT"
+          class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+        <constructor-arg ref="dataSourceSIATDYC"></constructor-arg>
+    </bean>
+    <bean id="namedParameterJdbcTemplateSIAT2012"
+          class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+        <constructor-arg ref="dataSourceSIATDYC"></constructor-arg>
+    </bean>
+    <bean id="namedParameterJdbcTemplateDwhOra2"
+          class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+        <constructor-arg ref="dataSourceDwhOra2DYC"></constructor-arg>
+    </bean>
+    <bean id="namedParameterJdbcTemplateDYC" 
+          class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+        <constructor-arg ref="dataSourceDYC"></constructor-arg>
+    </bean>
+
+<!--jdbctemplates algunos no se usan pero se configuro asi por compatibilidad y dependencias-->
+    <bean id="jdbcTemplateSIAT" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceSIATDYC"></property>
+    </bean>
+    <bean id="jdbcTemplateDWHDYP" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceDWHDYP"></property>
+    </bean>
+    <bean id="jdbcTemplateInformix" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceInformixDYC"></property>
+    </bean>
+    <bean id="jdbcTemplateDYCRFC" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceRFCDYC"></property>
+    </bean>
+    <bean id="jdbcTemplateDYC" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceDYC"></property>
+    </bean>
+    <bean id="jdbcTemplateDwhOra2" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceDwhOra2DYC"></property>
+    </bean>
+    <bean id="jdbcTemplateDYCDB2" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceDYCDB2"></property>
+      
+    </bean>
+
+    <!-- ::::::::::::::::::::::::::: TRANSACCION PARA PROCESO DYC ::::::::::::::::::::::::::: -->
+    <!--bean id="transactionManagerProcesoDYC" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+          scope="singleton">
+        <property name="dataSource" ref="dataSourceDYCBatch"/>
+    </bean>
+    <tx:annotation-driven transaction-manager="transactionManagerProcesoDYC" proxy-target-class="true"/ -->
+
+
+
+
+    <context:component-scan base-package="mx.gob.sat.siat.dyc"/>
+    <context:component-scan base-package="mx.gob.sat.mat.dyc.compensaciones"/>
+    <context:component-scan base-package="mx.gob.sat.mat.dyc.controlsaldos"/>
+    <context:component-scan base-package="mx.gob.sat.mat.dyc.integrarexpediente.service"/>
+    <context:component-scan base-package="mx.gob.sat.mat.dyc.registro.util.validador.service"/>
+
+    
+
+
+</beans>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

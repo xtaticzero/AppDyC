@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns="http://www.w3.org/1999/xhtml" 
+        xmlns:f="http://java.sun.com/jsf/core" 
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+         locale="es_MX">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <title>archivosHistorico</title>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <meta http-equiv="pragma" content="no-cache"/>
+            <meta http-equiv="cache-control" content="no-cache"/>
+            <meta http-equiv="expires" content="0"/>
+        </h:head>
+        <h:body>
+            <h:form>
+                <ui:include src="/resources/pages/common/sessionPage.jsf"></ui:include>
+                <ui:include src="/resources/pages/common/inactividad.jsf"></ui:include>
+                <p:panel id="pnlListado" header="Revisión de movimiento de archivos" styleClass="gmxAutoAjustable">
+                    <p:panelGrid id="idPanelGrid" style="width:100%" columns="3">
+                        
+                        <h:outputText value="Seleccionar fecha de consulta:" />
+                        <p:calendar id="idCalendario" 
+                                    required="true"
+                                    requiredMessage="Campo requerido"
+                                    showOn="button" 
+                                    value="#{archivosHistoricoMB.fecha}">
+                            <p:ajax event="dateSelect" listener="#{archivosHistoricoMB.onDateSelect}" update="idPanelGrid" />
+                        </p:calendar>
+                        <p:message for="idCalendario" />
+                    
+                        <h:outputText rendered="#{archivosHistoricoMB.bandera}" value="No de registros movidos correctamente:" />
+                        <h:outputText rendered="#{archivosHistoricoMB.bandera}" value="#{archivosHistoricoMB.noRegistrosExitosos}" />
+                        <h:outputText rendered="#{archivosHistoricoMB.bandera}" value="" />
+                        
+                        <h:outputText rendered="#{archivosHistoricoMB.bandera}" value="No de registros que prsentaron errores:" />
+                        <h:outputText rendered="#{archivosHistoricoMB.bandera}" value="#{archivosHistoricoMB.noRegistrosFallidos}" />
+                        <p:commandButton rendered="#{archivosHistoricoMB.bandera}" id="idBoton" ajax="false" process="@form" icon="ui-icon-arrowthick-1-s" value="Descargar">
+                            <p:fileDownload value="#{archivosHistoricoMB.archivoConRegistrosFallidos}"/>
+                        </p:commandButton>
+                    </p:panelGrid>
+                </p:panel>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

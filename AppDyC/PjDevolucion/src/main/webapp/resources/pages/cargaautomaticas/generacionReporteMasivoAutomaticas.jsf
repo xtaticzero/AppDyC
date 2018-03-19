@@ -1,0 +1,243 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+            <h:outputStylesheet library="css/" name="formato.css"/>
+            <h:outputScript library="js" name="calendarioIdiomaEs.js"/>
+
+            <style type="text/css">
+                .fileupload-content {
+                    border: none !important;
+                    padding: 0px;
+                }
+
+                .fileupload-buttonbar {
+                    border: none !important;
+                    padding: 0px;
+                }
+
+                .ui-paginator {
+                    font-size: 12px !important;
+                }
+
+                .ui-datatable tbody td {
+                    white-space: normal;
+                    font-size: 9px;
+                }
+
+                .ui-datatable thead th {
+                    white-space: normal;
+                    font-size: 10px;
+                }
+
+                .panelgridLine > .ui-panel-content {
+                    padding: 0px 0px 0px 0px;
+                }
+
+                .ui-column-filter {
+                    width: 10px;
+                }
+
+                .ui-selectcheckboxmenu {
+                    padding-right: 10px;
+                }
+
+
+
+            </style>
+     
+
+            <h:form id="form2" enctype="multipart/form-data">
+          
+                <p:fieldset id="confirmReportes">
+
+                    <br/>
+                    <table>
+                        <tr>
+                            <td>
+                                <strong>Fecha de Carga</strong>
+
+                                <a style="color:red">*</a>
+                            </td>
+                            <td>&nbsp; &nbsp;&nbsp; &nbsp;</td>
+
+
+                            <td>
+                                <p:calendar id="fechCargaInicio"
+                                            style="width:10px;height:20px;"
+                                            value="#{generacionReporteMasivoAutMB.fechaPagoInicio}"
+                                            navigator="true" pattern="dd/MM/yyyy" locale="es"
+                                            readonlyInput="true" required="false" mindate="01/08/2017" maxdate="#{now}"
+                                            title="Feha de Carga"
+                                            requiredMessage="#{msgValidacion.msjCampoRequerido}"
+                                            disabledWeekends="true">
+                                    <p:ajax event="dateSelect"
+
+                                            update="@form :messages"/>
+                                </p:calendar>
+
+                                <p:message for="fechCargaInicio" display="text"
+                                           showDetail="true" id="msgfechCargaInicio"/>
+
+                                <p:watermark for="fechCargaInicio" value="dd/mm/aaaa"
+                                             id="wfechCargaInicio"/>
+                            </td>
+                            <td></td>
+                            <td>
+                                <strong>a</strong>
+
+                                <a style="color:red">*</a>
+                            </td>
+                            <td></td>
+                            <td>
+                                <p:calendar id="fechCargaFin" 
+                                            style="width:10px;height:20px;"
+                                            value="#{generacionReporteMasivoAutMB.fechaPagoFin}" 
+                                            navigator="true"
+                                            pattern="dd/MM/yyyy" 
+                                            locale="es"
+                                            readonlyInput="true" 
+                                            required="false"
+                                            mindate="01/08/2017" maxdate="#{now}" title="Fecha de carga"
+                                            requiredMessage="#{msgValidacion.msjCampoRequerido}"
+
+                                            disabledWeekends="true">
+                                    <p:ajax event="dateSelect"
+
+                                            update="@form :messages"
+                                            />
+                                </p:calendar>
+                                <p:watermark for="fechCargaFin" value="dd/mm/aaaa" id="wfechCargaFin"/>
+                                <p:message id="msjfechCargaFin" for="fechCargaFin"/>
+                            </td>
+                            <td></td>
+                        </tr>
+                    </table>
+                    <div>
+                        <p:column style="width: 45%;">
+                            <p:commandButton    value="Buscar"     update="@form :messages" ajax="true"
+                                                actionListener="#{generacionReporteMasivoAutMB.buscarPorFecha}" process="@this"
+                                                icon="ui-icon-search"/>
+
+                            <p:commandButton title="Limpiar formulario" actionListener="#{generacionReporteMasivoAutMB.limpiaformulario}"
+                                             update="@form :messages"
+                                             icon="ui-icon-trash"/>
+                        </p:column>
+
+                    </div>
+                </p:fieldset>
+                <p:separator/>
+                <table width="100%">
+                    <tr>
+                        <td align="left" width="100%">
+                            <div align="left">
+                                <p:dataTable id="dtARchivos"  
+                                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                             paginator="true" rows="20"
+                                             emptyMessage="#{msgValidacion.tblEmpty}" var="arc"
+                                             value="#{generacionReporteMasivoAutMB.listaRegistros}">
+                                    <f:facet name="header">
+                                        <p:outputLabel value="Reportes" />
+                                    </f:facet>
+                                    <p:column headerText="Fecha de Carga"  style="width:25px;">
+                                        <h:outputText value="#{arc.fechaCarga}"/>
+                                    </p:column>
+                                    <p:column headerText="Responsable">
+                                        <h:outputText value="#{arc.responsable}"/>
+                                    </p:column>
+                                    <p:column headerText="Fecha de inicio del Proceso">
+                                        <h:outputText value="#{arc.fechaInicioProceso}"/>
+                                    </p:column>
+                                    <p:column headerText="Fecha de t&eacute;rmino del Proceso">
+                                        <h:outputText value="#{arc.fechaTerminoProceso}"/>
+                                    </p:column>
+                                    <p:column headerText="N&uacute;mero de solicitudes a procesar"  style="width:25px;">
+                                        <table style=" border-style: none !important;" cellspacing="0" cellpadding="0">
+                                            <tr style=" border-style: none !important">
+                                                <td style=" border-style: none !important" colspan="2" align="center" >
+                                                    <h:outputText value="#{arc.numeroSolicitudesProcesar}"/>
+                                                </td> </tr>
+                                            <tr style=" border-style: none !important;">
+                                                <td align="center" style=" border-style: none !important;">
+                                                    <p:commandLink immediate="true" 
+                                                                   style="height:30px"  title="Descargar TXT"
+                                                                   actionListener="#{generacionReporteMasivoAutMB.descargarDocumentoGenerado}"
+                                                                   ajax="false" >
+                                                        <h:graphicImage name="images/txt1.png"  style="height:30px;width:30px"/>
+                                                        <f:attribute name="archivoDocumento" value="#{arc.rutaArchivoProcesar}" />
+                                                        <p:fileDownload value="#{generacionReporteMasivoAutMB.file}" />
+                                                    </p:commandLink>  </td>   <td align="center" style=" border-style: none !important;">
+                                                    <p:commandLink immediate="true"                             
+                                                                   style="height:30px"   title="Descargar EXCEL"
+                                                                   actionListener="#{generacionReporteMasivoAutMB.descargarExcelGenerado}"
+                                                                   ajax="false">
+                                                        <h:graphicImage name="images/excel1.png"  style="height:30px;width:30px"/>
+                                                        <f:attribute name="archivoDocumento" value="#{arc.rutaArchivoProcesar}" />
+                                                        <p:fileDownload value="#{generacionReporteMasivoAutMB.file}" />
+                                                    </p:commandLink> 
+
+                                                </td> </tr>  </table>
+                                    </p:column>
+                                    <p:column headerText="N&uacute;mero de solicitudes procesadas exitosamente">
+                                        <table style="border: none;border-style: none !important;" cellspacing="0" cellpadding="0">
+                                            <tr style=" border-style: none !important;">
+                                                <td colspan="2" align="center" style=" border-style: none !important;" >
+                                                    <h:outputText value="#{arc.numeroSolicitudesExitosas}"/>
+                                                </td> </tr>
+                                            <tr style=" border-style: none !important;">
+                                                <td align="center" style=" border-style: none !important;">
+                                                    <p:commandLink  immediate="true"
+                                                                    style="height:30px"  title="Descargar TXT"
+                                                                    actionListener="#{generacionReporteMasivoAutMB.descargarDocumentoGenerado}"
+                                                                    ajax="false" >
+                                                        <h:graphicImage name="images/txt1.png"  style="height:30px;width:30px"/>
+                                                        <f:attribute name="archivoDocumento" value="#{arc.rutaArchivoExitoso}" />
+                                                        <p:fileDownload value="#{generacionReporteMasivoAutMB.file}" />
+                                                    </p:commandLink> </td>   <td align="center" style=" border-style: none !important;">
+                                                    <p:commandLink immediate="true"
+                                                                   style="height:30px"   title="Descargar EXCEL"
+                                                                   actionListener="#{generacionReporteMasivoAutMB.descargarExcelGenerado}"
+                                                                   ajax="false" >
+                                                        <h:graphicImage name="images/excel1.png"  style="height:30px;width:30px"/>
+                                                        <f:attribute name="archivoDocumento" value="#{arc.rutaArchivoExitoso}" />
+                                                        <p:fileDownload value="#{generacionReporteMasivoAutMB.file}" />
+                                                    </p:commandLink>               
+                                                </td> </tr>  </table>
+                                    </p:column>
+                                    <p:column headerText="N&uacute;mero de solicitudes fallidas">
+                                        <table style="border: none;border-style: none !important;" cellspacing="0" cellpadding="0">
+                                            <tr style=" border-style: none !important;">
+                                                <td colspan="2" align="center" style=" border-style: none !important;">
+                                                    <h:outputText value="#{arc.numeroSolicitudesFallidas}"/>
+                                                </td> </tr>
+                                            <tr style=" border-style: none !important;">
+                                                <td align="center" style=" border-style: none !important;">
+                                                    <p:commandLink  immediate="true"
+                                                                    style="height:30px"  title="Descargar TXT"
+                                                                    actionListener="#{generacionReporteMasivoAutMB.descargarDocumentoGenerado}"
+                                                                    ajax="false" >
+                                                        <h:graphicImage name="images/txt1.png"  style="height:30px;width:30px"/>
+                                                        <f:attribute name="archivoDocumento" value="#{arc.rutaArchivoFallido}" />
+                                                        <p:fileDownload value="#{generacionReporteMasivoAutMB.file}" />
+                                                    </p:commandLink> </td>   <td align="center" style=" border-style: none !important;">
+                                                    <p:commandLink immediate="true"
+                                                                   style="height:30px"  title="Descargar EXCEL"
+                                                                   actionListener="#{generacionReporteMasivoAutMB.descargarExcelGenerado}"
+                                                                   ajax="false" >
+                                                        <h:graphicImage name="images/excel1.png"  style="height:30px;width:30px"/>
+                                                        <f:attribute name="archivoDocumento" value="#{arc.rutaArchivoFallido}" />
+                                                        <p:fileDownload value="#{generacionReporteMasivoAutMB.file}" />
+                                                    </p:commandLink>                  
+                                                </td> </tr>  </table>
+                                    </p:column>
+
+
+                                </p:dataTable>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </h:form>
+
+   </ui:composition>

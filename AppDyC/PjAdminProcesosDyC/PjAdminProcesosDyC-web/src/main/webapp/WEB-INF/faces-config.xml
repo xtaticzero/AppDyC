@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config version="2.0" xmlns="http://java.sun.com/xml/ns/javaee">
+    <application>
+        <el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
+        <resource-bundle>
+            <base-name>mx.gob.sat.siat.dyc.pjadminprocesosdyc.processmanageradmin.web.properties.internacionalizacion</base-name>
+            <var>mensajes</var>
+        </resource-bundle>
+    </application>   
+    
+    <managed-bean>
+        <managed-bean-name>currentDate</managed-bean-name>
+        <managed-bean-class>java.util.Date</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
+</faces-config>

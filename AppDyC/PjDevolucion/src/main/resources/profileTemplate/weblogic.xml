@@ -1,0 +1,23 @@
+<?xml version = '1.0' encoding = 'windows-1252'?>
+<weblogic-web-app xmlns="http://xmlns.oracle.com/weblogic/weblogic-web-app"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.oracle.com/weblogic/weblogic-web-app http://www.oracle.com/technology/weblogic/weblogic-web-app/1.1/weblogic-web-app.xsd">
+
+	<container-descriptor>
+		<prefer-web-inf-classes>true</prefer-web-inf-classes>
+	</container-descriptor>
+	<session-descriptor>
+		<cookie-path>/ </cookie-path>
+		<persistent-store-type>replicated_if_clustered</persistent-store-type>
+	</session-descriptor>
+	<context-root>${pathApplicacion}/devoluciones</context-root>
+	<!-- :::::::::::::::::::::::::: INICIA COHERENCE :::::::::::::::::::::::::: -->
+	<library-ref>
+		<library-name>coherence-web-spi</library-name>
+	</library-ref>
+	<coherence-cluster-ref>
+		<coherence-cluster-name>CoherenceCluster</coherence-cluster-name>
+	</coherence-cluster-ref>
+	<!-- :::::::::::::::::::::::::: TERMINA COHERENCE :::::::::::::::::::::::::: -->
+</weblogic-web-app>
+

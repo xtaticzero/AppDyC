@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" 
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:p="http://primefaces.org/ui">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <title>Cat&aacute;logos para tipos de tr&aacute;mite</title>
+            <style type="text/css">
+                .ui-datatable tbody td {
+                    white-space: normal;
+                }
+
+                .ui-datatable thead th {
+                    white-space: normal;
+                }
+            </style>
+
+        </h:head>
+        <h:body>
+            <h:form id="formTipoTramite">
+                <p:messages id="mensajeResultado" showDetail="true" autoUpdate="true" closable="true" style="width:810px"
+                            globalOnly="true"/>
+                <p:toolbar style="width:892px" id="barraBotones">
+                    <p:toolbarGroup align="left">
+                        <p:commandButton actionListener="#{catalogoTipoTramite.selectTipoTramiteLitener}"
+                                         disabled="#{catalogoTipoTramite.banderaBotones}"
+                                         icon="ui-icon-search"
+                                         id="buscar"
+                                         title="Consultar" />
+                                         
+                        <p:commandButton disabled="#{catalogoTipoTramite.banderaBotones}"
+                                         icon="ui-icon-trash"
+                                         id="eliminar"
+                                         title="Activar &oacute; desactivar"
+                                         onclick="deleteConfirmDlg.show()"
+                                         />       
+                        <p:commandButton actionListener="#{catalogoTipoTramite.modifyTipoTramiteLitener}"
+                                         disabled="#{catalogoTipoTramite.banderaBotones}"
+                                         icon="ui-icon-pencil"
+                                         id="editar"
+                                         title="Editar"
+                                         />
+                        <p:commandButton action="#{catalogoTipoTramite.addTipoTramiteListener}"
+                                         icon="ui-icon-plus"
+                                         id="agregar"
+                                         title="Agregar"/>
+                    </p:toolbarGroup>
+                </p:toolbar>
+                
+                <p:growl id="message" showDetail="true" />
+ 
+                <p:dataTable emptyMessage="No se encontraron registros" 
+                             id="tabla"
+                             paginator="true"
+                             paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                             rows="15" 
+                             rowKey="#{tipoTramite.dyccTipoTramiteDTO.idTipoTramite}" 
+                             selection="#{catalogoTipoTramite.tramiteSeleccionado}"
+                             selectionMode="single"
+                             style="width:900px;"
+                             var="tipoTramite" 
+                             value="#{catalogoTipoTramite.listaTiposTramite}"
+                             filteredValue="#{catalogoTipoTramite.listaFiltroTramite}"
+                             >
+                    <p:ajax event="rowSelect" update=":formTipoTramite:barraBotones, :formTipoTramite:deleteConfirmDialog" listener="#{catalogoTipoTramite.onRowSelect}"/>
+                    <p:column headerText="ID" filterBy="#{tipoTramite.dyccTipoTramiteDTO.idTipoTramite}" filterMatchMode="contains">
+                        <h:outputText value="#{tipoTramite.dyccTipoTramiteDTO.idTipoTramite}" />
+                    </p:column>
+                 
+                    <p:column headerText="Nombre">
+                        <h:outputText value="#{tipoTramite.dyccTipoTramiteDTO.descripcion}" />
+                    </p:column>
+                 
+                    <p:column headerText="Estado">
+                        <h:outputText value="#{tipoTramite.status}" />
+                    </p:column>
+                </p:dataTable>
+                <p:confirmDialog closable="true" id="deleteConfirmDialog" message="&iquest;Desea #{catalogoTipoTramite.headerDialog} el tr&aacute;mite?" header="#{catalogoTipoTramite.headerDialog}" severity="alert" widgetVar="deleteConfirmDlg" >
+                    <p:commandButton id="declineDelete" value="No" onclick="deleteConfirmDlg.hide()" type="button" styleClass="gmxNegativo"/>
+                    <p:commandButton actionListener="#{catalogoTipoTramite.removeTipoTramiteLitener}" 
+                                     id="confirmDelete" 
+                                     update="@form"
+                                     value="Si" styleClass="gmxPositivo"/>
+                </p:confirmDialog>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

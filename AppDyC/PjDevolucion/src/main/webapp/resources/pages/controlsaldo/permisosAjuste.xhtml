@@ -1,0 +1,161 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" 
+        xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions"
+        xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:form id="frmConfirmarRevocacion">
+        <p:dialog   id="dlgConfirmarRevocarPermiso" header="Confirmar"
+                    widgetVar="wdlgConfirmarRevocarPermiso" modal="true" width="500px" height="120px" resizable="false"
+                    closable="false" visible="#{mbPermisosAjustes.mostrarDlgConfirmRevocar}">
+            <table border="0" width="100%">
+                <tr>
+                    <td><p:outputLabel value="Esta seguro que desea revocar el permiso para ajustar saldos al usuario seleccionado?"/></td>
+                </tr>
+                <tr>
+                    <td align="right">
+                        <p:commandButton id="btnAceptarRevocarPermiso" value="Si"
+                                         action="#{mbPermisosAjustes.revocarPermiso}"
+                                         process="@this"
+                                         update="frmConfirmarRevocacion :formBusquedaIceps" />
+
+                        <p:commandButton value="No"
+                                         action="#{mbPermisosAjustes.cancelarRevocacion}"
+                                         update="frmConfirmarRevocacion"/>
+                    </td>
+                </tr>
+            </table>
+        </p:dialog>
+    </h:form>
+
+    <h:form id="formDetallePermiso">
+    <p:dialog widgetVar="dlgDetallePermiso" header="Otorgar permiso a usuario" draggable="true" resizable="false"
+          modal="true" closable="true" width="600px" visible="#{mbPermisosAjustes.mostrarDlgDetallePermiso}">
+    
+        <p style="color: Red;">Los datos con * son obligatorios</p>
+        <p:panelGrid id="pnlGrid" style="width: 100%; height:100%;" >
+            <p:row>
+                <p:column colspan="2">
+                    <p:messages id="msjsDlgDeclaraManual" showDetail="true" autoUpdate="false" closable="true" globalOnly="true"/>
+                </p:column>
+            </p:row>
+
+            <p:row>
+                <p:column colspan="2">
+                    <table border="1">
+                        <tr>
+                            <td><h:outputText value="Parámetro de búsqueda:"/>
+                            <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/></td>
+                            <td><p:inputText id="txtPalabraClave" style="width:100px"
+                                     value="#{mbPermisosAjustes.palabraClave}" required="false" 
+                                     maxlength="13"
+                                     disabled="#{mbPermisosAjustes.estatusDlgOtorgarPermiso != 'buscandoUsuario'}"/>
+                            </td>
+                            <td><p:commandButton   id="btnBuscarEmpleado" icon="ui-icon-search" 
+                                                    title="Buscar empleado"
+                                                    action="#{mbPermisosAjustes.buscarEmpleado}"
+                                                    update="pnlGrid"
+                                                    process="txtPalabraClave @this"
+                                                    rendered="#{mbPermisosAjustes.estatusDlgOtorgarPermiso == 'buscandoUsuario'}"/>
+
+                                <p:commandButton    id="btnCambiarUsuario" icon="ui-icon-pencil" 
+                                                    rendered="#{mbPermisosAjustes.estatusDlgOtorgarPermiso == 'usuarioCargado'}"
+                                                    title="Cambiar usuario" action="#{mbPermisosAjustes.manejarBtnCambiarUsuario}" update="pnlGrid"
+                                                    process="@this"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td><p:message id="msgTxtPalabraClave" for="txtPalabraClave" display="text"/></td>
+                        </tr>
+                    </table>
+                    <p:watermark for="txtPalabraClave" value="RFC, RFC_Corto o Num_empleado" id="wtmPalabraClave"/>
+                </p:column>
+            </p:row>
+
+            <p:row>
+                <p:column colspan="2">
+                    <c:choose>
+                        <c:when test="#{mbPermisosAjustes.estatusDlgOtorgarPermiso == 'usuarioCargado'}">
+                            <p:panelGrid id="pnlInfoCC" style="width: 80%;">
+                                <f:facet name="header">
+                                    <p:row>
+                                        <p:column colspan="2" style="font-weight:bold;">
+                                            Información del empleado
+                                        </p:column>
+                                    </p:row>
+                                </f:facet>
+                                <p:row>
+                                    <p:column style="width: 210px;">
+                                        <h:outputLabel value="Número empleado:"/>
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputLabel value="#{mbPermisosAjustes.numEmpleado}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width: 210px;">
+                                        <h:outputLabel value="RFC:"/>
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputLabel value="#{mbPermisosAjustes.rfc}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <h:outputLabel value="Nombre:"/>
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputLabel value="#{mbPermisosAjustes.nombre}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <h:outputLabel value="Unidad administrativa:"/>
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputLabel value="#{mbPermisosAjustes.unidadAdministrativa}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <h:outputLabel value="Rol en MAT-DYC:"/>
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputLabel value="#{mbPermisosAjustes.rolMatDyc}"/>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </c:when>
+                        <c:otherwise>
+                            <div style="background-color: #E6E6E6; color: black;">
+                                <table width="100%">
+                                    <tr><td height="190px" align="center">
+                                    No se ha cargado ningún usuario
+                                </td></tr></table>
+                            </div>
+                        </c:otherwise>
+                    </c:choose>
+                </p:column>
+            </p:row>
+            
+            <f:facet name="footer">
+                <p:row>
+                    <p:column colspan="2">
+                        <div align="center">
+                            <p:commandButton value="Aceptar" 
+                                             update="formDetallePermiso :formBusquedaIceps" 
+                                             action="#{mbPermisosAjustes.otorgarPermiso}"
+                                             disabled="#{mbPermisosAjustes.estatusDlgOtorgarPermiso != 'usuarioCargado'}"/>
+                             
+                            <p:commandButton    value="Cancelar" update="formDetallePermiso" 
+                                                actionListener="#{mbPermisosAjustes.cerrarDlgAgregarPermiso}"
+                                                process="@this" />
+                        </div>
+                    </p:column>
+                </p:row>
+            </f:facet>
+        </p:panelGrid>
+    
+</p:dialog>
+    </h:form>
+</f:view>

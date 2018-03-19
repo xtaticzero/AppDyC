@@ -1,0 +1,19 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="icepSioUrucple1DTO">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="rfc" type="xs:string"/>
+                <xs:element minOccurs="0" name="periodo" type="xs:string"/>
+                <xs:element minOccurs="0" name="ejercicio" type="xs:string"/>
+                <xs:element minOccurs="0" name="concepto" type="xs:string"/>
+                <xs:element minOccurs="0" name="tipoTramite" type="xs:string"/>
+                <xs:element minOccurs="0" name="usuario" type="xs:string"/>
+                <xs:element minOccurs="0" name="estatus" type="xs:string"/>
+                <xs:element minOccurs="0" name="tipoDeclaracion" type="xs:string" nillable="true"/>
+                <xs:element minOccurs="0" name="fechPresentacion" type="xs:string"/>
+                <xs:element minOccurs="0" name="numOper" type="xs:string"/>    
+                <xs:element minOccurs="0" name="saldoFavor" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema> 

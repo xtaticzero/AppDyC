@@ -1,0 +1,30 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:element name="consultarContribuyenteAltamenteExportadorXML">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="contribuyenteAltamenteExportador"/>
+             </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="contribuyenteAltamenteExportador" >
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="naltex" type="xs:int"/>
+                <xs:element minOccurs="0" name="axoaltex" type="xs:int"/>
+                <xs:element minOccurs="0" name="apepat_rsint" type="xs:string"/>
+                <xs:element minOccurs="0" name="delegacion" type="xs:string"/>
+                <xs:element minOccurs="0" name="cp" type="xs:int"/>
+                <xs:element minOccurs="0" name="calle" type="xs:string"/>
+                <xs:element minOccurs="0" name="tel" type="xs:string"/>
+                <xs:element minOccurs="0" name="fax" type="xs:string"/>
+                <xs:element minOccurs="0" name="colonia" type="xs:string"/>
+                <xs:element minOccurs="0" name="estado" type="xs:string"/>
+                <xs:element minOccurs="0" name="no_interior" type="xs:string"/>
+                <xs:element minOccurs="0" name="no_exterior" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+</xs:schema> 

@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+        >
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <h:outputScript library="js" name="casosCompensacion.js"/>
+            <h:outputStylesheet library="css/" name="formato.css"/>
+        </h:head>
+        <h:body>
+            <p:dialog modal="true" widgetVar="statusDialog" header="#{msgValidacion.ajaxLoading}" draggable="false"
+                      resizable="false" closable="false">
+                <h:graphicImage library="images/" name="ajaxloadingbar.gif"/>
+            </p:dialog>
+            <h:form>
+                <p:panelGrid id="pnlEmitirResolucionCC" style="width:800px; height:300px; valign:top;">
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column>Emitir resoluci&oacute;n caso de compensaci&oacute;n</p:column>
+                        </p:row>
+                    </f:facet>
+                    <p:row>
+                        <p:column colspan="3">
+                            Compensaci&oacute;n:
+                            <h:outputLabel value="#{admCasosComp.numControl}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <table border="0">
+                                <tr>
+                                    <td valign="middle">
+                                        <b>Resoluci&oacute;n caso de compensaci&oacute;n:</b>
+                                    </td>
+                                    <td>
+                                        <p:selectOneMenu id="cmbAccionRCC" style="width: 400px"
+                                                         widgetVar="cmbResolucion">
+                                            <f:selectItem itemValue="0" itemLabel="-- seleccione --"/>
+                                            <f:selectItem itemValue="1"
+                                                          itemLabel="Registrar aviso o caso de compensación"/>
+                                            <f:selectItem itemValue="2"
+                                                          itemLabel="Emitir liquidación aviso o caso de compensación"/>
+                                        </p:selectOneMenu>
+                                    </td>
+                                </tr>
+                            </table>
+                        </p:column>
+                    </p:row>
+                    <f:facet name="footer">
+                        <p:row>
+                            <p:column>
+                                <p:commandButton id="btnAceptarER" value="Aceptar"
+                                                 onclick="manejarClickAceptarEmitirRes(); return false;"
+                                                 style="float:right;" icon="ui-icon-check" widgetVar="btnAceptarERWV"/>
+                                <p:button id="btnCancelar" value="Cancelar" outcome="dictaminar" icon="ui-icon-close"
+                                          style="float:right;"/>
+                                <p:button id="btnLiquidar" outcome="emitirLiquidacion" style="display: none;"
+                                          widgetVar="btnLiquidar"/>
+                            </p:column>
+                        </p:row>
+                    </f:facet>
+                </p:panelGrid>
+                <p:dialog id="modalDialog" header="Enviar a Aprobación" widgetVar="dlgEnvAAprob" modal="true"
+                          width="650" height="100" resizable="false" closable="false">
+                    <table border="0" width="100%">
+                        <tr>
+                            <td>
+                                <table border="0">
+                                    <tr>
+                                        <td valign="middle">
+                                            <b>Jefe superior a quien se escala la aprobaci&oacute;n:</b>
+                                        </td>
+                                        <td>
+                                            <p:selectOneMenu id="cmbSuperiorAAprobar" style="width: 400px"
+                                                             value="#{pEmitirResolucionCCMB.idSuperior}"
+                                                             widgetVar="cmbSuperiorRegComp">
+                                                <f:selectItem itemValue="0" itemLabel="-- seleccione --"/>
+                                                <f:selectItems value="#{pEmitirResolucionCCMB.superiores}" var="supAux"
+                                                               itemValue="#{supAux.id}"
+                                                               itemLabel="#{supAux.descripcion}"/>
+                                            </p:selectOneMenu>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                         
+                        <tr>
+                            <td align="right">
+                                <p:commandButton id="cbtAceptarDEAAV" value="Aceptar"
+                                                 onclick="manejarBtnAceptarEAARC(); return false;"
+                                                 icon="ui-icon-check"/>
+                                 
+                                <p:commandButton id="cbtAceptarDEAAH" style="display: none;"
+                                                 action="#{pEmitirResolucionCCMB.registrarCompensacion}"
+                                                 oncomplete="dlgEnvAAprob.hide()" widgetVar="cbtAceptarDEAAH"/>
+                                 
+                                <p:commandButton value="Cancelar" oncomplete="dlgEnvAAprob.hide()"/>
+                            </td>
+                        </tr>
+                    </table>
+                </p:dialog>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

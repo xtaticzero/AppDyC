@@ -1,0 +1,123 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" 
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:p="http://primefaces.org/ui">
+    <html xmlns="http://www.w3.org/1999/xhtml"
+          xmlns:ui="http://java.sun.com/jsf/facelets">
+        <h:head>
+            <title>Par&aacute;metros Seguimiento</title>           
+        </h:head>
+        <h:outputScript library="js" name="calendarioIdiomaEs.js"/>
+        <h:body>
+            <h:outputStylesheet library="css/" name="estilos.css"/>
+            <ui:include src="/WEB-INF/templates/sessionTimeOut.xhtml"/>     
+            <h:form id="formaParams">
+                <p:panel styleClass="panel-principal" id="panelParams" header="Par&aacute;metros Seguimiento" visible="true"  >
+                    <h:panelGrid >
+                        <p:row>
+                            <p:column>
+                                <h:outputText value="Tipo Par&aacute;metro"/>
+                                <h:outputText value="*" style="color:red" />
+                            </p:column>
+                        </p:row>
+                        <p:selectOneMenu value="#{parametrosSeguimiento.valorCombo}"
+                                         styleClass="combos" 
+                                         style="width:300px;"
+                                         required="true"
+                                         requiredMessage="#{mensajes['msgRequerido']}"
+                                         id="catParametrosSgt">
+                            <p:ajax update="panelParams" listener="#{parametrosSeguimiento.longitudListener}" event="change" />   
+                            <f:selectItem itemLabel="#{mensajes['ui.catalogos.label.item.def']} "  
+                                          itemValue="#{null}" />
+                            <f:selectItems value="#{parametrosSeguimiento.parametrosSgt}" var="cat"
+                                           itemLabel="#{cat.nombre}"
+                                           itemValue="#{cat.idParametro}" />                                                       
+                        </p:selectOneMenu>
+                        <p:message for="catParametrosSgt" display="text"/> 
+                        <p:row>
+                            <p:column>
+                                <h:outputText value="Valor Par&aacute;metro"/>
+                                <h:outputText value="*" style="color:red" />
+                            </p:column>
+                        </p:row>        
+                        <p:selectOneMenu  id="B" style="width:300px;" 
+                                          styleClass="combos"
+                                          rendered="#{parametrosSeguimiento.booleanValue}"
+                                          value="#{parametrosSeguimiento.inputParameter}" 
+                                          required="true"
+                                          requiredMessage="#{mensajes['msgRequerido']}">
+                            <f:selectItem itemLabel="#{mensajes['ui.catalogos.label.item.def']}"    
+                                          itemValue="#{null}"/>
+                            <f:selectItems value="#{parametrosSeguimiento.catalogoValorBoolean}" var="cat"
+                                           itemLabel="#{cat.nombre=='Sí'?'Verdadero':'Falso'}"
+                                           itemValue="#{cat.id}" />
+                        </p:selectOneMenu>
+                        <p:calendar  value="#{parametrosSeguimiento.paramFecha}"
+                                     rendered="#{parametrosSeguimiento.dateValue}"    
+                                     pattern="dd/MM/yyyy"
+                                     locale="es"
+                                     required="true"
+                                     requiredMessage="#{mensajes['msgRequerido']}" 
+                                     id="popupButtonCal2" 
+                                     showOn="button" />  
+                        <p:inputMask id="txtValue" 
+                                     rendered="#{parametrosSeguimiento.numericValue}"
+                                     disabled="#{parametrosSeguimiento.disableCampoNumber}"
+                                     required="true"
+                                     value="#{parametrosSeguimiento.inputParameter}" 
+                                     requiredMessage="#{mensajes['msgRequerido']}"
+                                     maxlength="#{parametrosSeguimiento.precision}"
+                                     mask="#{parametrosSeguimiento.numberMask}"/>
+                        <p:inputTextarea rows="10" cols="55"  
+                                         value="#{parametrosSeguimiento.inputParameter}"
+                                         rendered="#{parametrosSeguimiento.stringValue}"
+                                         counter="counter"
+                                         counterTemplate="{0} caracteres restantes."
+                                         id="valorParam"
+                                         required="true"
+                                         maxlength="#{parametrosSeguimiento.longitudMaxima}"
+                                         requiredMessage="#{mensajes['msgRequerido']}"/>
+                        <h:outputText id="counter" />  
+                        <p:message display="text" for="valorParam"/>
+                        <p:message display="text" for="txtValue"/>
+                        <p:message display="text" for="popupButtonCal2"/>
+                        <p:message display="text" for="B"/>
+                        <p:commandButton 
+                            value="Actualizar Par&aacute;metro" 
+                            type="submit" ajax="false" 
+                            action="#{parametrosSeguimiento.guardarParametrosEF}">
+                        </p:commandButton>
+                    </h:panelGrid>
+                    <p:panel id="parametrosSgt"
+                             styleClass="panel-principal">
+                        <p:dataTable   var="detalle" 
+                                       value="#{parametrosSeguimiento.parametrosVigentesSgt}"
+                                       paginator="true"
+                                       rows="10"
+                                       paginatorPosition="bottom"
+                                       emptyMessage="No hay par&aacute;metros cargados a&uacute;n" id="paramSgt">
+                            <f:facet name="header">
+                                <h:outputText value="Par&aacute;metros Vigentes"/>
+                            </f:facet>
+                            <p:column style="text-align:center;">
+                                <f:facet name="header">
+                                    <h:outputText value="Nombre" />
+                                </f:facet>
+                                <h:outputText value="#{detalle.nombre}" />
+                            </p:column>
+                            <p:column style="text-align:center;">
+                                <f:facet name="header">
+                                    <h:outputText value="Valor:" />
+                                </f:facet>
+                                <h:outputText value="#{detalle.valor==0?'Falso':'Verdadero'}" rendered="#{detalle.tipoDato=='B'?'true':'false'}"/>
+                                <h:outputText value="#{detalle.valor}" rendered="#{detalle.tipoDato!='B'?'true':'false'}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel> 
+                </p:panel>    
+            </h:form>
+            
+        </h:body>
+    </html>
+</f:view>

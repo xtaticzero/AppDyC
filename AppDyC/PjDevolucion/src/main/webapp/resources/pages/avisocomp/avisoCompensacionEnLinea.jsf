@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+        >
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <meta http-equiv="X-UA-Compatible" content="IE=8"/>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <meta http-equiv="pragma" content="no-cache"/>
+            <meta http-equiv="cache-control" content="no-cache"/>
+            <meta http-equiv="expires" content="0"/>
+            <h:outputScript library="primefaces" name="primefaces.js"/>
+            <h:outputScript library="js" name="utils.js" target="head"/>
+            <h:outputScript library="js" name="posicion.js" target="head"/>
+            <h:outputScript library="js" name="general.js"/>
+            <h:outputStylesheet library="css/" name="formato.css"/>
+            <style type="text/css">
+                .ui-paginator {
+                    font-size: 12px !important;
+                }
+                
+                .ui-datatable tbody td {
+                    white-space: normal;
+                    font-size: 10px;
+                }
+
+                .ui-datatable thead th {
+                    white-space: normal;
+                    font-size: 11px;
+                    font-weight: bold;
+                }
+            </style>
+        </h:head>
+        <h:body>
+            <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+             
+            <p:dialog modal="true" widgetVar="statusDialog" header="#{msgValidacion.ajaxLoading}" draggable="false"
+                      resizable="false" closable="false">
+                <p:graphicImage value="../../images/ajaxloadingbar.gif"/>
+            </p:dialog>
+             
+            <h:form id="formAvisosCompensacionLinea">
+                <!-- *********************************************************************************************** -->
+                <!-- ******                               AVISO DE COMPENSACION EN LINEA                      ****** -->
+                <!-- *********************************************************************************************** -->
+                <p:panel id="pnlListado" style="text-align:center; width: 100%;">
+                    <p:messages id="msgGeneral" for="msgGeneral" showDetail="true" globalOnly="true" autoUpdate="true"
+                                closable="true"/>
+                    <p:messages id="noElectedAnyRows" for="noElectedAnyRows" showDetail="true" globalOnly="true"
+                                autoUpdate="true" closable="true"/>
+                    <p:messages id="existeCompensacion" for="existeCompensacion" showDetail="true" globalOnly="true"
+                                autoUpdate="true" closable="true"/>
+                    <p:panelGrid id="pnlGridReq" style="width:100%">
+                        <p:row>
+                            <p:column>
+                                <p:fieldset legend="#{msgValidacion.aclP1Titulo1}" style="text-align:left;">
+                                    <br/>
+                                    <p:scrollPanel style="width:100%;" mode="native">
+                                        
+                                    </p:scrollPanel>
+                                </p:fieldset>
+                            </p:column>
+                        </p:row>
+                        <f:facet name="footer">
+                            <p:row>
+                                <p:column colspan="2" style="text-align:center">
+                                    <p:commandButton id="btnConsultaAvisoCompensacion" value="#{msgValidacion.aclP2Btn}"
+                                                     action="#{avisoPendienteLoadMB.uploadedDatas}"
+                                                     style="margin-left:10px" styleClass="btn btn-default"
+                                                     rendered="#{avisoCompensacionCtrlMB.pendienteDataModel!=null?'true':'false'}">
+                                        <f:param name="opcionBoton" value="consultaAviso"/>
+                                    </p:commandButton>
+                                    <p:commandButton id="btnNuevoAvisoCompensacion" styleClass="btn btn-default" value="#{msgValidacion.aclP1Btn}"
+                                                     action="#{avisoCompensacionCtrlMB.redirecContribuyente}"></p:commandButton>
+                                </p:column>
+                            </p:row>
+                        </f:facet>
+                    </p:panelGrid>
+                </p:panel>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

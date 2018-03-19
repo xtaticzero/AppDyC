@@ -1,0 +1,37 @@
+.ui-picklist-list {
+    height: 120px !important;
+    width: 350px !important;
+}
+
+.old {
+    background-color: #ffffff !important;
+    background-image: none !important;
+    color: #D01818 !important;
+    font-weight: bold !important;
+}
+
+.ui-picklist-list li {
+    padding-bottom: 9px !important;
+    margin: 9px !important;
+    padding-top: 9px !important;
+}
+
+div.ui-helper-hidden[id$="_tabnoprimario"] {
+    display: none;
+}
+
+.decl-no-efectiva {
+    background-color: #FFFED1 !important;
+    background-image: none !important;
+    font-style: italic;
+}
+
+.con_fecha_fin {
+    background-color: #CCFFCC !important;
+    background-image: none !important;
+}
+
+.sin_fecha_fin {
+    background-color: #FF6666 !important;
+    background-image: none !important;
+}

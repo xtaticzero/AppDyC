@@ -1,0 +1,72 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+    <div class="gobmxContenedor8">
+        <h2>
+            <p:outputLabel value="#{msgValidacion.L0000024}"/>
+        </h2> 
+        <hr class="red" />
+    </div>
+        <p:messages id="messageAnexos" globalOnly="true" closable="true"/>
+        <div align="right" >
+                <p:commandButton id="descargaAnexo" value="#{msgValidacion.B0000010}" update="dtAnexos"
+                                 ajax="false"
+                                 disabled="#{adicionarSolicitudMB.flagsSolicitud.showUploadFile}">
+                    <p:fileDownload value="#{adicionarSolicitudMB.file}"/>
+                    <!-- adicionarSolicitudMB.download-->
+                </p:commandButton>
+
+                <p:commandButton id="buttonAnexo" icon="ui-icon-document" title="#{msgValidacion.B0000009}"
+                                 type="button" onclick="dlgAnexos.show();"
+                                 disabled="#{adicionarSolicitudMB.flagsSolicitud.showUploadFile}"/>
+        </div><br/><br/><br/>
+        <div align="left">
+            <p:dataTable id="dtAnexos" emptyMessage="#{msgValidacion.tblEmpty}" var="anexos" style="width: 100%"
+                         styleClass="table table-bordered"
+                         value="#{adicionarSolicitudMB.dataModelAnexo}" selection="#{adicionarSolicitudMB.anexo}"
+                         selectionMode="single" paginator="false">
+                <p:ajax event="rowSelect" listener="#{uploadScanCtrlMB.downloadPlantillaAnexo}"
+                        update=":form:messageAnexos, :form:dtAnexos, :form:buttonAnexo, :form:descargaAnexo"/>
+                <div align="right" style="display: none; border-color:#FFFFFF;">
+                        <p:commandButton id="descargaAnexo" value="#{msgValidacion.B0000010}" update="dtAnexos"
+                                         ajax="false"
+                                         disabled="#{adicionarSolicitudMB.flagsSolicitud.showUploadFile}">
+                            <p:fileDownload value="#{adicionarSolicitudMB.file}"/>
+                            <!-- adicionarSolicitudMB.download-->
+                        </p:commandButton>
+
+                        <p:commandButton id="buttonAnexo" icon="ui-icon-document" title="#{msgValidacion.B0000009}"
+                                         type="button" onclick="dlgAnexos.show();"
+                                         disabled="#{adicionarSolicitudMB.flagsSolicitud.showUploadFile}"/>
+                </div>
+
+                <p:column>
+                    <f:facet name="header">
+                        <div align="left">
+                            <h:outputText value="#{msgValidacion.L0000025}"/>
+                        </div>
+                    </f:facet>
+                    <h:outputText value="#{anexos.nombre}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <div align="left">
+                            <h:outputText value="#{msgValidacion.L0000026}"/>
+                        </div>
+                    </f:facet>
+                    <h:outputText value="#{anexos.estado}"/>
+                </p:column>
+            </p:dataTable>
+        </div>
+</ui:composition>
+
+
+
+
+
+
+
+
+
+
+

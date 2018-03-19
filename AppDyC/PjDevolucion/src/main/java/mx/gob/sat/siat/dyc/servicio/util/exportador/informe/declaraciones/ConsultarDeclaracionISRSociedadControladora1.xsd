@@ -1,0 +1,209 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    
+    <xs:element name="consultarCaratulaDeclaracionSociedadIntegradora3XML">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="consultarDeclaracionISRSociedadControladora1"/>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="consultarDeclaracionISRSociedadControladora2"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="consultarDeclaracionISRSociedadControladora1">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="v_n_numero_operacion" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_iapidne1" type="xs:int"/>
+                <xs:element minOccurs="0" name="v_cplearv1" type="xs:int"/>
+                <xs:element minOccurs="0" name="v_tdiepco1" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_fperceh1" type="xs:dateTime" nillable="true"/>
+                <xs:element minOccurs="0" name="v_i_111025" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111026" type="xs:int"/>
+                <xs:element minOccurs="0" name="v_i_111027" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111028" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111029" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_3100302" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_3100402" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_3110202" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_3110602" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_3110302" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_111030" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_3101702" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_111031" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111032" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111033" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111034" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111035" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111036" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111037" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_3102402" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_3102502" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_3102702" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_3102802" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_111038" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111039" type="xs:int"/>
+                <xs:element minOccurs="0" name="v_i_111040" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111041" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111042" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111043" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111044" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111045" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_3103702" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_111003" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111004" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111046" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111005" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111006" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111007" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_3107302" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_3107402" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_3104602" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_111008" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111009" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111047" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111048" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_3105002" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_3107502" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_3110502" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_3107602" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_111049" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111050" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111013" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111051" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111052" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111014" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111053" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111054" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111055" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111056" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111017" type="xs:int"/>
+                <xs:element minOccurs="0" name="v_i_111057" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_3110702" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_3110802" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_3110902" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_3106502" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_3106602" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_3107702" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_3111002" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_111058" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_3108002" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_3110402" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_111018" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111019" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_3111202" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_3107202" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_111020" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111904" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111021" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111022" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_11109" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_3111102" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_111024" type="xs:decimal"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="consultarDeclaracionISRSociedadControladora2">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="v_n_numero_operacion" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_fecha_causacion" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_fperceh1" type="xs:dateTime" nillable="true"/>
+                <xs:element minOccurs="0" name="v_impidee1" type="xs:int"/>
+                <xs:element minOccurs="0" name="v_iapidne1" type="xs:int"/>
+                <xs:element minOccurs="0" name="v_c_900000" type="xs:int"/>
+                <xs:element minOccurs="0" name="v_c_205001" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_n_numero_operacion" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_iapidne1" type="xs:int"/>
+                <xs:element minOccurs="0" name="v_cplearv1" type="xs:int"/>
+                <xs:element minOccurs="0" name="v_tdiepco1" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_fperceh1" type="xs:dateTime" nillable="true"/>
+                <xs:element minOccurs="0" name="v_i_111025" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111026" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_111027" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111028" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111029" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_3100302" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_3100402" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_3110202" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_3110602" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_3110302" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_111030" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_3101702" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_111031" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111032" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111033" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111034" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111035" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111036" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111037" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_3102402" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_3102502" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_3102702" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_3102802" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_111038" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111039" type="xs:int"/>
+                <xs:element minOccurs="0" name="v_i_111040" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111041" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111042" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111043" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111044" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111045" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_3103702" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_111003" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111004" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111046" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111005" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111006" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111007" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_3107302" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_3107402" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_3104602" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_111008" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_111009" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_111047" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111048" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_3105002" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_3107502" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_3110502" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_3107602" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_111049" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111050" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111013" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111051" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_111052" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_111014" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_111053" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111054" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111055" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111056" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_111017" type="xs:int"/>
+                <xs:element minOccurs="0" name="v_i_111057" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_i_3110702" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_3110802" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_3110902" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_3106502" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_3106602" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_3107702" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_3111002" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_111058" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_3108002" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_3110402" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_111018" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_111019" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_3111202" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_3107202" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_111020" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_111904" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_111021" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_111022" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_11109" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_3111102" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_i_111024" type="xs:decimal"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+</xs:schema>
+
+

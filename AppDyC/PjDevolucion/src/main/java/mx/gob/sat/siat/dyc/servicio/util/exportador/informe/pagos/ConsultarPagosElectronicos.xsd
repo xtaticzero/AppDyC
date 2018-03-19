@@ -1,0 +1,60 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:element name="consultarPagosElectronicosXML">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="consultarPagosElectronicosAnio"/>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="informacionDePagoInf01"/>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="informacionDePagoInf02"/>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="informacionDePagoORA"/>
+             </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="consultarPagosElectronicosAnio">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="v_fecha_causacion" type="xs:string"/>
+                <xs:element minOccurs="0" name="v_fperceh1" type="xs:dateTime" nillable="true"/>
+                <xs:element minOccurs="0" name="v_iapidne1" type="xs:int"/>
+                <xs:element minOccurs="0" name="v_iapfdne1" type="xs:int"/>    
+                <xs:element minOccurs="0" name="v_importe_acargo" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_compensacion" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_importe_afavor" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_n_numero_operacion" type="xs:decimal"/>
+                <xs:element minOccurs="0" name="v_tdiepco1" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="informacionDePagoInf01">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="c_sti_rpeangg1" type="xs:int"/>                                
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="informacionDePagoInf02">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="n_dec_impidee1" type="xs:int"/>
+                <xs:element minOccurs="0" name="n_dec_impfdee1" type="xs:int"/>                
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="informacionDePagoORA">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="f_dec_fcieamc1" type="xs:dateTime" nillable="true"/>
+                <xs:element minOccurs="0" name="f_dec_fperceh1" type="xs:dateTime" nillable="true"/>
+                <xs:element minOccurs="0" name="i_pag_icmapru1" type="xs:int"/>
+                <xs:element minOccurs="0" name="i_pag_ifmapvu1" type="xs:int"/>
+                <xs:element minOccurs="0" name="i_pag_acpolmi1" type="xs:int"/>
+                <xs:element minOccurs="0" name="c_dec_ctdliea1" type="xs:int"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+</xs:schema> 

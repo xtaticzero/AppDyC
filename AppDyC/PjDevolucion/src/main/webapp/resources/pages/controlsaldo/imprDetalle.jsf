@@ -1,0 +1,390 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+        >
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+            <meta http-equiv="X-UA-Compatible" content="IE=8"/>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <h:outputStylesheet library="css/" name="formato.css"/>
+            <style type="text/css">
+                .ui-datatable tbody td {
+                    white-space: normal;
+                    font-size: 9px;
+                }
+
+                .ui-datatable thead th {
+                    white-space: normal;
+                    font-size: 10px;
+                }
+
+                .panelgridLine > .ui-panel-content {
+                    padding: 0px 0px 0px 0px;
+                }
+            </style>
+            <title>Impresion del Reporte</title>
+        </h:head>
+        <h:body>
+            <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+             
+            <p:dialog modal="true" widgetVar="statusDialog" header="#{msgValidacion.ajaxLoading}" draggable="false"
+                      closable="false">
+                <p:graphicImage value="../../images/ajaxloadingbar.gif"/>
+            </p:dialog>
+             
+            <h:form id="detalleIcep">
+                <p:panel id="pnlImpresion" style="width:836px;border:0px;">
+                    <div align="center">
+                        <p:panel header="Datos del Contribuyente" style="width:350px; border:0px; text-align:left">
+                            <p:panelGrid id="pnlRazonSocial" style="width:350px;">
+                                <p:row>
+                                    <p:column style="width:175px; text-align:left;">
+                                        <h:outputLabel value="#{msgValidacion.deIRaz}"/>
+                                    </p:column>
+                                    <p:column style="width:175px;text-align:left;">
+                                        <h:outputLabel value="#{detalleIcepMB.razonSocial} #{detalleIcepMB.nombre}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width:175px;text-align:left;">
+                                        <h:outputLabel value="#{msgValidacion.deIRfc}"/>
+                                    </p:column>
+                                    <p:column style="width:175px;text-align:left;">
+                                        <p:outputLabel value="#{detalleIcepMB.dyctSaldoIcepAuxDTO.rfc}"/>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </p:panel>
+                    </div>
+                    <div align="center">
+                        <p:panel header="Datos del ICEP" style="width:350px; border:0px; text-align:left">
+                            <p:panelGrid id="pnlDatosIcep" style="width:350px;">
+                                <p:row>
+                                    <p:column style="width:175px;text-align:left;">
+                                        <h:outputLabel value="#{msgValidacion.cbImp}"/>
+                                    </p:column>
+                                    <p:column style="width:175px;text-align:left;">
+                                        <p:outputLabel value="#{detalleIcepMB.dyctSaldoIcepAuxDTO.impuesto}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width:175px;text-align:left;">
+                                        <h:outputLabel value="#{msgValidacion.cbConc}"/>
+                                    </p:column>
+                                    <p:column style="width:175px;text-align:left;">
+                                        <p:outputLabel value="#{detalleIcepMB.dyctSaldoIcepAuxDTO.concepto}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width:175px;text-align:left;">
+                                        <h:outputLabel value="#{msgValidacion.cbPer}"/>
+                                    </p:column>
+                                    <p:column style="width:175px;text-align:left;">
+                                        <p:outputLabel value="#{detalleIcepMB.dyctSaldoIcepAuxDTO.periodo}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width:175px;text-align:left;">
+                                        <h:outputLabel value="#{msgValidacion.cbEjer}"/>
+                                    </p:column>
+                                    <p:column style="width:175px;text-align:left;">
+                                        <p:outputLabel value="#{detalleIcepMB.dyctSaldoIcepAuxDTO.ejercicio}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width:175px;text-align:left;">
+                                        <h:outputLabel value="#{msgValidacion.cbTipSal}"/>
+                                    </p:column>
+                                    <p:column style="width:175px;text-align:left;">
+                                        <p:outputLabel value="#{detalleIcepMB.dyctSaldoIcepAuxDTO.tipoSaldo}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width:175px;text-align:left;">
+                                        <h:outputLabel value="#{msgValidacion.cbRemanente}"/>
+                                    </p:column>
+                                    <p:column style="width:175px;text-align:left;">
+                                        <h:outputLabel value="#{detalleIcepMB.dyctSaldoIcepAuxDTO.remanente}">
+                                            <f:convertNumber  currencySymbol="$" type="currency" locale="es_MX"/>
+                                        </h:outputLabel>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width:175px;text-align:left;">
+                                        <h:outputLabel value="#{msgValidacion.cbBloqueado}"/>                                                                                            
+                                    </p:column>
+                                    <p:column style="width:175px;text-align:left;">
+                                        <h:outputText value="#{detalleIcepMB.bloqueado}"/>                                                
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </p:panel>
+                    </div>
+                    <br/>
+                    <div align="center">
+                        <p:panel id="pnlDeclaraciones" style="width:550px; border:0px">
+                            <p:dataTable id="tbDeclaraciones" value="#{detalleIcepMB.declaraciones}"
+                                         var="tbDeclaracion" style="text-align:center"
+                                         emptyMessage="#{msgValidacion.tblEmpty}">
+                                <f:facet name="header">
+                                    <div align="left">
+                                        <h:outputText value="#{msgValidacion.deIDec}"/>
+                                    </div>
+                                </f:facet>
+                                <p:column headerText="#{msgValidacion.deIFecPre}" style="width:135px">
+                                    <h:outputText value="#{tbDeclaracion.fechaPresentacion}"/>
+                                </p:column>
+                                <p:column headerText="#{msgValidacion.deINumOpe}" style="width:135px">
+                                    <h:outputText value="#{tbDeclaracion.numOperacion}"/>
+                                </p:column>
+                                <p:column headerText="#{msgValidacion.deITipDec}" style="width:135px">
+                                    <h:outputText value="#{tbDeclaracion.dyccTipoDeclaracionDTO.descripcion}"/>
+                                </p:column>
+                                <p:column headerText="#{msgValidacion.deIImpDec}" style="width:135px">
+                                    <h:outputText value="#{tbDeclaracion.saldoAfavor}">
+                                        <f:convertNumber  currencySymbol="$" type="currency" locale="es_MX"/>
+                                    </h:outputText>
+                                </p:column>
+                            </p:dataTable>
+                        </p:panel>
+                    </div>
+                    <br/>
+                    <div align="center">
+                        <p:panel id="pnlCompensaciones" style="width:820px; border:0px">
+                            <p:dataTable id="tbMovCompensaciones" value="#{detalleIcepMB.compensaciones}"
+                                         var="tbMovComp" style="text-align:center;"
+                                         emptyMessage="#{msgValidacion.tblEmpty}">
+                                <f:facet name="header">
+                                    <div align="left">
+                                        <h:outputText value="#{msgValidacion.deIMovComp}"/>
+                                    </div>
+                                </f:facet>
+                                <p:column headerText="#{msgValidacion.deINumCont}" style="width:120px">
+                                    <h:outputText value="#{tbMovComp.numControl}"/>
+                                </p:column>
+                                <p:column headerText="#{msgValidacion.deIFecApli}" style="width:150px">
+                                    <h:outputText value="#{tbMovComp.fechaAplicacion}"/>
+                                </p:column>
+                                <p:column headerText="#{msgValidacion.deIOriSal}" style="width:140px">
+                                    <h:outputText value="#{tbMovComp.origenSaldo}"/>
+                                </p:column>
+                                <p:column headerText="#{msgValidacion.deIPerSalFav}" style="width:140px">
+                                    <h:outputText value="#{tbMovComp.periodoSaldo}"/>
+                                </p:column>
+                                <p:column headerText="#{msgValidacion.deIPerImpCom}" style="width:130px">
+                                    <h:outputText value="#{tbMovComp.periodoImporte}"/>
+                                </p:column>
+                                <p:column headerText="#{msgValidacion.deIImpCom}" style="width:40px">
+                                    <h:outputText value="#{tbMovComp.importeCompensado}">
+                                        <f:convertNumber  currencySymbol="$" type="currency" locale="es_MX"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="#{msgValidacion.deIImpComHis}" style="width:50px">
+                                    <h:outputText value="#{tbMovComp.importeComphist}">
+                                        <f:convertNumber  currencySymbol="$" type="currency" locale="es_MX"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="#{msgValidacion.deIImpLiq}" style="width:40px">
+                                    <h:outputText value="#{tbMovComp.importeLiquidado}">
+                                        <f:convertNumber  currencySymbol="$" type="currency" locale="es_MX"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="#{msgValidacion.deIRes}" style="width:50px">
+                                    <h:outputText value="#{tbMovComp.resolucion}"/>
+                                </p:column>
+                                <p:column headerText="#{msgValidacion.deIFecRes}" style="width:50px     ">
+                                    <h:outputText value="#{tbMovComp.fechaResolucion}"/>
+                                </p:column>
+                            </p:dataTable>
+                        </p:panel>
+                    </div>
+                    <br/>
+                    <div align="center">
+                        <!--<p:panel id="pnlDevoluciones" style="width:820px; border:0px">
+                            <p:dataTable id="tbMovDevoluciones" value="#{detalleIcepMB.movDevolucionList}"
+                                         var="tbMovDev" style="text-align:center;"
+                                         emptyMessage="#{msgValidacion.tblEmpty}">
+                                <f:facet name="header">
+                                    <div align="left">
+                                        <h:outputText value="#{msgValidacion.deIMovDev}"/>
+                                    </div>
+                                </f:facet>
+                                <p:column headerText="#{msgValidacion.deINumCont}" style="width:130px">
+                                    <h:outputText value="#{tbMovDev.numControl}"/>
+                                </p:column>
+                                <p:column headerText="#{msgValidacion.deIRes}" style="width:60px">
+                                    <h:outputText value="#{tbMovDev.resolucion}"/>
+                                </p:column>
+                                <p:column headerText="#{msgValidacion.deIFecRes}" style="width:140px">
+                                    <h:outputText value="#{tbMovDev.fechaResolucion}"/>
+                                </p:column>
+                                <p:column headerText="#{msgValidacion.deIImpDecl}" style="width:120px">
+                                    <h:outputText value="#{tbMovDev.importeDeclarado}">
+                                        <f:convertNumber  currencySymbol="$" type="currency" locale="es_MX"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="#{msgValidacion.deIImpAut}" style="width:120px">
+                                    <h:outputText value="#{tbMovDev.importeAutorizado}">
+                                        <f:convertNumber  currencySymbol="$" type="currency" locale="es_MX"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="#{msgValidacion.deIImpNeg}" style="width:120px">
+                                    <h:outputText value="#{tbMovDev.importeNegado}">
+                                        <f:convertNumber  currencySymbol="$" type="currency" locale="es_MX"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="#{msgValidacion.deIAct}" style="width:50px">
+                                    <h:outputText value="#{tbMovDev.actualizacion}">
+                                        <f:convertNumber  currencySymbol="$" type="currency" locale="es_MX"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="#{msgValidacion.deIInte}" style="width:50px">
+                                    <h:outputText value="#{tbMovDev.intereses}">
+                                        <f:convertNumber  currencySymbol="$" type="currency" locale="es_MX"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="#{msgValidacion.deIImpTotAct}" style="width:70px">
+                                    <h:outputText value="#{tbMovDev.importeTotalAct}">
+                                        <f:convertNumber  currencySymbol="$" type="currency" locale="es_MX"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="#{msgValidacion.deIRemFavCar}" style="width:70px">
+                                    <h:outputText value="#{tbMovDev.remanenteFavor}">
+                                        <f:convertNumber  currencySymbol="$" type="currency" locale="es_MX"/>
+                                    </h:outputText>
+                                </p:column>
+                            </p:dataTable>
+                        </p:panel>-->
+                        <p:panel id="pnlDevoluciones" style="width:820px; border:0px; align: left">
+                                <p:dataTable id="tbMovDevoluciones" value="#{detalleIcepMB.movResolucionDevolucionList}"
+                                             var="tbMovDev" style="text-align:center;"
+                                             emptyMessage="#{msgValidacion.tblEmpty}">
+                                    <f:facet name="header">
+                                        <div align="left">
+                                            <h:outputText value="#{msgValidacion.deIMovDev}"/>
+                                        </div>
+                                    </f:facet>
+                                    <p:column headerText="Tipo" >
+                                        <h:outputText value="#{tbMovDev.tipoMovimiento}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgValidacion.deINumCont}" >
+                                        <h:outputText value="#{tbMovDev.dycpSolicitudDTO.numControl}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgValidacion.deIRes}" >
+                                        <h:outputText value="#{tbMovDev.dyccTipoResolDTO.descripcion}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgValidacion.deIFecRes}">
+                                        <h:outputText value="#{tbMovDev.fechaRegistroRes}">
+                                            <f:convertDateTime pattern="dd-MM-yy" type="date"/>
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="#{msgValidacion.deIImpDecl}" >
+                                        <h:outputText value="#{tbMovDev.importeSolicitado}">
+                                            <f:convertNumber  currencySymbol="$" type="currency" locale="es_MX"/>
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="#{msgValidacion.deIImpAut}" >
+                                        <h:outputText value="#{tbMovDev.impAutorizado}">
+                                            <f:convertNumber  currencySymbol="$" type="currency" locale="es_MX"/>
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="#{msgValidacion.deIImpNeg}" >
+                                        <h:outputText value="#{tbMovDev.importeNegado}">
+                                            <f:convertNumber  currencySymbol="$" type="currency" locale="es_MX"/>
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="#{msgValidacion.deIAct}" >
+                                        <h:outputText value="#{tbMovDev.impActualizacion}">
+                                            <f:convertNumber  currencySymbol="$" type="currency" locale="es_MX"/>
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="#{msgValidacion.deIInte}">
+                                        <h:outputText value="#{tbMovDev.intereses}">
+                                            <f:convertNumber  currencySymbol="$" type="currency" locale="es_MX"/>
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="#{msgValidacion.deIImpTotAct}">
+                                        <h:outputText value="#{tbMovDev.impActualizado}">
+                                            <f:convertNumber  currencySymbol="$" type="currency" locale="es_MX"/>
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="#{msgValidacion.deIRemFavCar}">
+                                        <h:outputText value="#{tbMovDev.dyctSaldoIcepDTO.remanente}">
+                                            <f:convertNumber  currencySymbol="$" type="currency" locale="es_MX"/>
+                                        </h:outputText>
+                                    </p:column>
+                                </p:dataTable>
+                            </p:panel>
+                    </div>
+                    <br/>
+                    <div align="right" style="width:820px; border:0px">
+                        <p:panelGrid id="pnlCalculos">
+                            <p:row>
+                                <p:column style="width:130px; text-align:right;">
+                                    <h:outputText value="#{msgValidacion.deIUltImpDec}"/>
+                                </p:column>
+                                <p:column style="width:60px; text-align:right;">
+                                    <h:outputText value="#{detalleIcepMB.ultimoImpDecl}">
+                                        <f:convertNumber  currencySymbol="$" type="currency" locale="es_MX"/>
+                                    </h:outputText>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width:130px; text-align:right;">
+                                    <h:outputText value="#{msgValidacion.deIImpRes}"/>
+                                </p:column>
+                                <p:column style="width:60px; text-align:right;">
+                                    <h:outputText value="#{detalleIcepMB.importeResuelto}">
+                                        <f:convertNumber  currencySymbol="$" type="currency" locale="es_MX"/>
+                                    </h:outputText>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width:130px; text-align:right;">
+                                    <h:outputText value="#{msgValidacion.deIRemFavCar}"/>
+                                </p:column>
+                                <p:column style="width:60px; text-align:right;color:red;">
+                                    <h:outputText value="#{detalleIcepMB.remanenteFavCargo}">
+                                        <f:convertNumber  currencySymbol="$" type="currency" locale="es_MX"/>
+                                    </h:outputText>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                    </div>
+                    <p:panelGrid id="pnlNota" style="width:790px; border:0px">
+                        <p:row>
+                            <p:column>
+                                <h:outputText value="#{msgValidacion.deINotas}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:inputTextarea value="#{detalleIcepMB.notas}" rows="3" cols="100" queryDelay="750"
+                                                 minQueryLength="4" disabled="true"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <br/>
+                    <div align="center">
+                        <p:panelGrid id="pnlButtons">
+                            <p:row>
+                                <p:column style="width:50px;">
+                                    <p:commandButton value="#{msgValidacion.cbBotImp}" icon="ui-icon-print"
+                                                     ajax="false">
+                                        <p:printer target="pnlImpresion"/>
+                                    </p:commandButton>
+                                </p:column>
+                                <p:column style="width:50px;">
+                                    <p:commandButton value="#{msgValidacion.cbBotReg}" icon="ui-icon-arrowreturn-1-w"
+                                                     action="#{detalleIcepMB.dirigirADetalle}"/>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                    </div>
+                </p:panel>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

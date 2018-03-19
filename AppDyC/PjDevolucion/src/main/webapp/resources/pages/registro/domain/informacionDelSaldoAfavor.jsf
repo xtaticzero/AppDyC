@@ -1,0 +1,512 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions">
+       <script>
+        $cboTipodeclaracion = $("#form\\:cboTipodeclaracion").hasClass('ui-state-error');
+        $fechPresentracion_input = $("#form\\:fechPresentracion_input").hasClass('ui-state-error');
+        $numOperacion = $("#form\\:numOperacion").hasClass('ui-state-error');
+        
+                $fechaPresentacionDec_input = $("#form\\:fechaPresentacionDec_input").hasClass('ui-state-error');
+        $decNormalNumOper = $("#form\\:decNormalNumOper").hasClass('ui-state-error');
+        $decSaldoFav_input = $("#form\\:decSaldoFav_input").hasClass('ui-state-error');
+        
+        $numDocumento = $("#form\\:numDocumento").hasClass('ui-state-error');
+        
+        
+         if($numDocumento || $cboTipodeclaracion ||  $fechPresentracion_input || $numOperacion || $fechaPresentacionDec_input || $decNormalNumOper  || $decSaldoFav_input){
+             document.getElementById("error1").innerHTML="Todos los campos marcados con * son requeridos";
+            document.getElementById("error1").style.display="inherit";  
+             
+         }
+    
+    </script>
+    <style>
+        .ui-datepicker {background: white;z-index: 1000 !important;}
+        .ui-widget-content{border: 0px solid #e2e2e2!important;}
+       .ui-messages-info, .ui-message-info{
+    text-align: center;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    border-radius: 3px 3px 3px 3px;
+    -moz-border-radius: 3px 3px 3px 3px;
+    -webkit-border-radius: 3px 3px 3px 3px;
+    border: 2px solid #BCE8F1;
+}
+.ui-messages-info-icon{
+    display: none;
+}
+#form\:salirProtesta2{
+    margin-bottom: 20px;
+}
+.ui-button-text-only .ui-button-text {
+    font-size: 14px !important;
+}
+.ui-button-text-icon-left .ui-button-text{
+    margin-left: -10px;
+    width: 133px;
+}
+        
+    </style>
+    <div style="width:777px">
+      <div class="gob-dat-cont">
+        <h2 style="margin-left: 0px!important;">
+            <p:outputLabel value="#{msgValidacion.L0000011}"/>
+        </h2> 
+        <hr class="red" />
+    </div>
+    <div style="position: relative; left: 0px; top: -12px;">
+       <style type="text/css">
+       .ui-panelgrid td {
+                        width: 50%;
+                    }
+                    .gmxNoborde1  .ui-widget-content td{
+                        
+                        padding-bottom: 0px;
+                    }
+                    
+                    .tablaCampos  td {
+                        padding-bottom: 22px !important;
+                    }
+                         .tablaCampos2  td {
+                        padding-bottom: 25px !important;
+                    }
+                    #dvBtnSalir{
+            left: -533px !important;
+            top: -50px !important;
+        }
+        #form\:test{
+            left: -533px !important;
+            top: -50px !important;
+        }
+         </style>
+        <div class="gob-dat-cont">
+            <div id="error1"></div>
+            <div>
+                <p:messages id="msmtabInfoSaldo" closable="true" globalOnly="true" />
+            </div>
+        </div>
+        
+        <!---->
+        <div style="clear: both;">
+            <div style="width:373.33px !important;float: left;display: inline-block;">
+                    <p:row rendered="#{adicionarSolicitudMB.flagsSolicitud.rowTipoDeclaracion}">
+                    <p:column>
+                    <div>
+                        #{msgValidacion.L0000076}<p:outputLabel value="" for="cboTipodeclaracion"/>: 
+                    </div>
+                    </p:column>
+                    <p:column>
+                        <p:selectOneMenu style="width: 373.33px"
+                                         value="#{adicionarSolicitudMB.tramite.saldoFavor.tipoDeclaracion}"
+                                         id="cboTipodeclaracion" required="true"
+                                         requiredMessage="#{msgValidacion.msjCampoRequerido}"
+                                         disabled="#{adicionarSolicitudMB.tramite.saldoFavor.saldoICEP}">
+                            <f:selectItem itemLabel="#{msgValidacion.comboSeleccion}" itemValue="#{null}"/>
+                            <f:selectItem itemLabel="#{msgValidacion.L0000045}" itemValue="1"/>
+                            <f:selectItem itemLabel="#{msgValidacion.L0000051}" itemValue="2"/>
+                            <p:ajax update="form:formSaldo form:soliDecNormal form:tabViewAdicionarSolicitud"
+                                    event="change" listener="#{solicitudDevolicionUtilsMB.validaTipoDeclaracion}"></p:ajax>
+                        </p:selectOneMenu>
+                        <p:message id="msjccboTipodeclaracion" for="cboTipodeclaracion" display="text"/>
+                    </p:column>
+                </p:row>
+            </div>
+            
+            <div style="width:373.33px !important;float: left;;margin-left:30px !important;">
+                    <p:row rendered="#{adicionarSolicitudMB.flagsSolicitud.rowFechaPresentacion}">
+                    <p:column> 
+                    <div>
+                        #{msgValidacion.L0000077}<p:outputLabel value="" for="fechPresentracion"/>: 
+                    </div>
+                    </p:column>
+                    <p:column>
+                        <p:calendar value="#{adicionarSolicitudMB.tramite.saldoFavor.fechaPresentacion}"
+                                    requiredMessage="#{msgValidacion.msjCampoRequerido}" id="fechPresentracion"
+                                    style="width:10px;height:20px;" navigator="true" locale="es"
+                                    pattern="dd/MM/yyyy" readonlyInput="true" required="true" maxdate="#{now}"
+                                    disabled="#{adicionarSolicitudMB.tramite.saldoFavor.saldoICEP}">
+                            <p:ajax event="dateSelect" listener="#{adicionarSolicitudMB.validaFechaPeresentacion}"
+                                    update="msmtabInfoSaldo fechPresentracion fechaPresentacionDec"/>
+                        </p:calendar>
+                        <p:message id="msjfechPresentracion" for="fechPresentracion" display="text"/>
+                        <p:watermark for="fechPresentracion" value="dd/mm/aaaa"/>
+                    </p:column>
+                </p:row>
+            </div>
+        </div>
+        <!---->
+        <!---->
+        <div style="clear: both; margin-top: 10px;display: inline-block;">
+            <div style="width:373.33px !important;float: left;">
+                    <p:row rendered="#{adicionarSolicitudMB.flagsSolicitud.rowFechaCaucion}">
+                    <p:column> 
+                    <div>
+                        #{msgValidacion.L0000035}<p:outputLabel value="" for="fechCausacion"/>: 
+                    </div>
+                    </p:column>
+                    <p:column>
+                            <p:calendar id="fechCausacion"
+                                        value="#{adicionarSolicitudMB.tramite.saldoFavor.fechaCaucion}" maxdate="#{now}"
+                                        requiredMessage="#{msgValidacion.msjCampoRequerido}" navigator="true"
+                                        locale="es" readonlyInput="true" style="width:10px;height:20px;"
+                                        pattern="dd/MM/yyyy" required="true">
+                                <p:ajax event="dateSelect" listener="#{adicionarSolicitudMB.validaFechaCausacion}"
+                                        update="msmtabInfoSaldo fechCausacion msjfechCausacion"/>
+                            </p:calendar>
+                            <p:message id="msjfechCausacion" for="fechCausacion" display="text"/>
+                            <p:watermark for="fechCausacion" value="dd/mm/aaaa" id="maskFechCausacion"/>
+                    </p:column>
+                </p:row>
+            </div>
+
+            <div style="width:373.33px !important;float: left; margin-left:30px !important;">
+            </div>
+        </div>
+        <!---->
+        <!---->
+        <div style="clear: both; margin-top: 10px;display: inline-block;">
+            <div style="width:373.33px !important;float: left;">
+                    <p:row rendered="#{adicionarSolicitudMB.flagsSolicitud.rowNumeroOperacion}">
+                    <p:column> 
+                    <div>
+                        #{msgValidacion.L0000078}<p:outputLabel value="" for="numOperacion"/>: 
+                    </div>
+                    </p:column>
+                    <p:column>
+                            <p:inputText maxlength="18" id="numOperacion" required="true" 
+                                         requiredMessage="#{msgValidacion.msjCampoRequerido}"
+                                         value="#{adicionarSolicitudMB.tramite.saldoFavor.numeroOperacion}"
+                                         onkeypress="return justNumbers( event )"
+                                         readonly="#{adicionarSolicitudMB.tramite.saldoFavor.saldoICEP}"
+                                         validatorMessage="#{msgValidacion.L0000100}">
+                                <f:validateLength minimum="1" maximum="18" />
+                                <f:validateRegex pattern="^([1-9]{1}+)(\d*)$" />
+                            </p:inputText>
+                            <p:message id="msjnumOperacion" for="numOperacion" display="text"/>
+                            <p:watermark for="numOperacion" value=""/>
+                    </p:column>
+                </p:row>
+            </div>
+ 
+            <div style="width:373.33px !important;float: left;margin-left:30px !important;">
+                <p:row rendered="#{adicionarSolicitudMB.flagsSolicitud.rowSaldoFavor}">
+                    <p:column> 
+                    <div>
+                        #{adicionarSolicitudMB.tramite.saldoFavor.etiquetaSaldo}<p:outputLabel value="*" for="labelSaldoFavor"/>: 
+                    </div>
+                    </p:column>
+                    <p:column>
+                            <pe:inputNumber id="labelSaldoFavor" decimalSeparator="." thousandSeparator=","
+                                            value="#{adicionarSolicitudMB.tramite.saldoFavor.importeSaldoFavor}"
+                                            symbol="$ " maxValue="9999999999.99" 
+                                            readonly="#{adicionarSolicitudMB.tramite.saldoFavor.saldoICEP}"
+                                            converter="ImporteConverter" onKeyPress="return soloNumeros( event )">
+                                <p:ajax event="blur" update="importeSolEnDev labelSaldoFavor msmtabInfoSaldo"
+                                        listener="#{adicionarSolicitudMB.validaImporteSolDev}"/>
+                            </pe:inputNumber>
+                            <p:message id="msjlabelSaldoFavor" for="labelSaldoFavor" display="text"/>
+                            <p:watermark for="labelSaldoFavor" value="$0.00"/>
+                    </p:column>
+                </p:row>
+            </div>
+        </div>
+        <!---->
+        <!---->
+        <div style="clear: both;margin-top: 10px;display: inline-block;">
+            <div style="width:373.33px !important;float: left;">
+                    <p:row rendered="#{adicionarSolicitudMB.flagsSolicitud.rowNumeroDocumento}">
+                    <p:column> 
+                    <div>
+                        #{msgValidacion.L0000079}<p:outputLabel value="" for="numDocumento"/>: 
+                    </div>
+                    </p:column>
+                    <p:column>
+                            <p:inputText maxlength="18" id="numDocumento"
+                                         value="#{adicionarSolicitudMB.tramite.saldoFavor.numeroDocumento}"
+                                         required="true" requiredMessage="#{msgValidacion.msjCampoRequerido}"
+                                         onkeypress="return justNumbers( event )"></p:inputText>
+                            <p:message id="msjnumDocumento" for="numDocumento" display="text"/>
+                            
+                    </p:column>
+                </p:row>
+            </div>
+
+            <div style="width:373.33px !important;float: left; margin-left:30px !important;">
+            </div>
+        </div>
+        <!---->
+        <!---->
+        <div style="clear: both;margin-top: 10px;display: inline-block;">
+            <div style="width:373.33px !important;float: left;">
+                <p:row rendered="#{adicionarSolicitudMB.flagsSolicitud.rowImporteDevComEfectuadas}">
+                    <p:column> 
+                        <div>
+                         #{msgValidacion.L0000036}<span for="importeDevCom">*</span>:
+                        </div>
+                    </p:column>
+                    <p:column>
+                            <pe:inputNumber id="importeDevCom" decimalSeparator="." thousandSeparator=","
+                                            value="#{adicionarSolicitudMB.tramite.saldoFavor.importeAcreditramientoEfectuado}"
+                                            symbol="$ " maxValue="9999999999.99" 
+                                            onKeyPress="return soloNumeros( event )" converter="ImporteConverter">
+                                <p:ajax event="blur"
+                                        update="importeDevCom importeSolEnDev labelSaldoFavor msmtabInfoSaldo"
+                                        listener="#{adicionarSolicitudMB.validaImporteSolDev}"/>
+                            </pe:inputNumber>
+                        <p:watermark for="importeDevCom" value="$ 0.0"/>
+                    </p:column>
+                </p:row>
+            </div>
+            
+            <div style="width:373.33px !important;float: left;margin-left:30px !important;">
+                   
+            </div>
+        </div>
+        <!---->
+       <!---->
+        <div style="clear: both;margin-top: 10px;display: inline-block;">
+            <div style="width:373.33px !important;float: left;">
+                <p:row>
+                    <p:column> 
+                    <div>
+                        #{msgValidacion.tooltop50}<p:outputLabel value=""/>: 
+                    </div>
+                    </p:column>
+                    <p:column>
+                            <pe:inputNumber id="importeSolEnDev" required="true" decimalSeparator="."
+                                            thousandSeparator="," 
+                                            readonly="#{adicionarSolicitudMB.flagsSolicitud.activo}"
+                                            requiredMessage="#{msgValidacion.msjCampoRequerido}"
+                                            value="#{adicionarSolicitudMB.tramite.saldoFavor.importeSolicitadoDevolucion}"
+                                            symbol="$ " maxValue="9999999999.99" minValue="0"
+                                            onKeyPress="return soloNumeros( event )" converter="ImporteConverter"/>
+                            <p:message id="msjimporteSolEnDev" for="importeSolEnDev" display="text"/>
+                    </p:column>
+                </p:row>
+            </div>
+            
+            <div style="width:373.33px !important;float: left;margin-left:30px !important;">
+                    
+            </div>
+        </div>
+        <!---->
+        
+        <!---->
+        <div style="clear: both;display: inline-block;">
+            <div style="width:373.33px !important;float: left;">
+                <p:row rendered="#{adicionarSolicitudMB.flagsSolicitud.rowImporteAcreditamiento}">
+                    <p:column> 
+                    <div>
+                        #{msgValidacion.L0000037}<p:outputLabel value="" for="importeAcreditamiento"/>: 
+                    </div>
+                    </p:column>
+                    <p:column>
+                            <pe:inputNumber id="importeAcreditamiento" decimalSeparator="." thousandSeparator=","
+                                            value="#{adicionarSolicitudMB.tramite.saldoFavor.importeEfectuados}"
+                                            symbol="$ " maxValue="9999999999.99" minValue="0" 
+                                            onKeyPress="return soloNumeros( event )" converter="ImporteConverter">
+                                <p:ajax event="blur"
+                                        update="importeAcreditamiento importeSolEnDev importeDevCom labelSaldoFavor msmtabInfoSaldo"
+                                        listener="#{adicionarSolicitudMB.validaImporteSolDev}"/>
+                            </pe:inputNumber>
+                        <p:watermark for="importeAcreditamiento" value="$ 0.0"/>
+                    </p:column>
+                </p:row>
+            </div>
+           
+            <div style="width:373.33px !important;float: left;margin-left:30px !important;">
+                
+            </div>
+            
+        </div>
+        <!---->
+        
+        <br/>
+    <p:panel id="formSaldo" styleClass="gmxNoborde">
+        
+       
+        </p:panel>
+        <!--- TODO-->
+        <style>
+            .gmxNoborde td{
+                width: inherit !important;
+            }
+            .ui-panelgrid td{
+                padding-right: inherit !important;  ;
+            }
+            #error0 {
+                    display: none;
+                    border-radius: 3px 3px 3px 3px;
+                    -moz-border-radius: 3px 3px 3px 3px;
+                    -webkit-border-radius: 3px 3px 3px 3px;
+                    border: 2px solid #D0021B ;
+                    background-color: #F2DEDE;
+                     text-align: center;
+                     color:#545454 ;
+                     margin-top:30px;
+                    margin-bottom: 30px;
+                    padding-top:30px;
+                    padding-bottom: 30px;
+                }
+        </style>
+        <script>
+            $fechaPresentacionDec=($('#form\\:fechaPresentacionDec_input').hasClass('ui-state-error'));
+            $decNormalNumOper=($('#form\\:decNormalNumOper').hasClass('ui-state-error'));
+            $decSaldoFav=($('#form\\:decSaldoFav_input').hasClass('ui-state-error'));
+
+            if($fechaPresentacionDec || $decNormalNumOper || $decSaldoFav){
+                document.getElementById("error0").innerHTML="Todos los campos marcados con * son requeridos";
+                document.getElementById("error0").style.display="inherit";  
+            }
+        </script>
+            <p:panel id="soliDecNormal" rendered="#{adicionarSolicitudMB.flagsSolicitud.bloqDeclaracionNormal}" style="width: 777px;  border: 0px !important;">
+                <h2><p:outputLabel value="#{msgValidacion.L0000039}" style="margin-top:45px;margin-left: -28px !important;display: block;"/></h2>
+                <hr class="red" style="margin-bottom: 30px!important; width: 777px;margin-left: -15px !important;"/>
+                <div id="error0"></div>
+                <p:panelGrid  styleClass="tablaCampos2 gmxNoborde " style="width: 777px; padding: 0px;margin-left: -15px !important;">
+                <p:row style="width:777px !important;">
+                    <p:column style="width:373.33px !important;">
+                        <p:outputLabel value="#{msgValidacion.L0000076}"/>:
+                    </p:column>
+                    <p:column>
+                            <p:outputLabel value="#{msgValidacion.L0000045}"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column> 
+                    <div>
+                        #{msgValidacion.L0000077}<p:outputLabel value="" for="fechaPresentacionDec"/>: 
+                    </div>
+                    </p:column>
+                    <p:column>
+                            <p:calendar value="#{adicionarSolicitudMB.tramite.saldoFavor.normalFechaPresentacion}"
+                                        id="fechaPresentacionDec" style="width:10px;height:20px;" maxdate="#{now}"
+                                        requiredMessage="#{msgValidacion.msjCampoRequerido}" navigator="true"
+                                        locale="es" readonlyInput="true" pattern="dd/MM/yyyy" required="true">
+                                <p:ajax event="dateSelect"
+                                        listener="#{adicionarSolicitudMB.validaFechaPeresentacionNormal}"
+                                        update="msmtabInfoSaldo fechaPresentacionDec fechPresentracion"/>
+                            </p:calendar>
+                        <p:message id="msjfechaPresentacionDec" for="fechaPresentacionDec" display="text"
+                                   showSummary="false"/>
+                        <p:watermark for="fechaPresentacionDec" value="dd/mm/aaaa"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column> 
+                    <div style="width:373.33px !important;">
+                        #{msgValidacion.L0000078}<p:outputLabel value="" for="decNormalNumOper"/>: 
+                    </div>
+                    </p:column>
+                    <p:column>
+                            <p:inputText maxlength="18" id="decNormalNumOper"
+                                         value="#{adicionarSolicitudMB.tramite.saldoFavor.normalNumOperacion}"
+                                         required="true" requiredMessage="#{msgValidacion.msjCampoRequerido}"
+                                         onkeypress="return justNumbers(event);"/>
+                        <p:message id="msjdecNormalNumOper" for="decNormalNumOper" display="text"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column> 
+                    <div>
+                        #{msgValidacion.L0000052}<p:outputLabel value="" for="decSaldoFav"/>: 
+                    </div>
+                    </p:column>
+                    <p:column>
+                            <pe:inputNumber id="decSaldoFav" required="true"
+                                            requiredMessage="#{msgValidacion.msjCampoRequerido}" 
+                                            value="#{adicionarSolicitudMB.tramite.saldoFavor.normalSaldoFavor}"
+                                            symbol="$ " maxValue="9999999999.99" decimalSeparator="."
+                                            thousandSeparator=","/>
+                        <p:message id="msjdecSaldoFav" for="decSaldoFav" display="text"/>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+            </p:panel>
+    
+        
+        <p:fieldset id="confrimICEP" rendered="#{adicionarSolicitudMB.flagsSolicitud.confirmarICEP}">
+            <p:panelGrid  styleClass="gmxNoborde gmxfhorizontal">
+                <p:row>
+                    <p:column > 
+                    <div>
+                        #{msgValidacion.M0000010}<p:outputLabel value="" for="sorSaldoAFavor"/>: 
+                    </div>
+                    </p:column>
+                    <p:column>
+                        <p:selectOneRadio id="sorSaldoAFavor"
+                                          value="#{adicionarSolicitudMB.tramite.saldoFavor.datosCorrectos}"
+                                          required="true" requiredMessage="#{msgValidacion.msjCampoRequerido}">
+                            <p:ajax listener="#{adicionarSolicitudMB.datosCorrectos}" update="confrimICEP,numOperacion,importeSolEnDev,labelSaldoFavor,importeAcreditamiento,importeDevCom,cboTipodeclaracion,fechPresentracion"/>
+                            <f:selectItem itemLabel="#{msgValidacion.rsSi}" itemValue="Si"/>
+                            <f:selectItem itemLabel="#{msgValidacion.rsNo}" itemValue="No"/>
+                        </p:selectOneRadio>
+                        <p:message id="msjOptions" for="sorSaldoAFavor" display="text"/>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+        </p:fieldset>
+        <style type="text/css">
+                 .tamDiv
+                 {
+                     width: 10px!important;
+                 }
+        </style>
+        <div style="#{adicionarSolicitudMB.flagsSolicitud.flagOperaciones == 'false' ? 'display:none;' : 'display:block;'} width: 777px; position: relative; margin-top:15px;">
+            <style>
+                .gmxNoborde td {
+                    padding-left: 0px !important;
+                    padding-right: 0px !important;
+                }
+            </style>
+            <table border="0" align="center">
+                    <tr valign="middle">
+                        <td align="justify" style="text-align: justify;">
+                            #{adicionarSolicitudMB.flagsSolicitud.messageProtestaOperaciones}
+                        </td>
+                    </tr>
+            </table>
+            <style type="text/css">
+                 .ui-selectoneradio
+                 {
+                     width: 10px!important;
+                 }
+                 .ui-selectoneradio td
+                 {
+                 
+                    padding: 0px!important;
+                     border-color:#FFFFFF;
+                 }
+                 .ui-selectoneradio label 
+                 {
+                     padding-left: 5px!important;
+                     padding-right: 1px!important;
+                 }
+                 #confrimProtesta
+                {
+                   border-color:#FFFFFF;
+                }
+            </style>
+           <p:fieldset id="confrimProtesta" rendered="#{adicionarSolicitudMB.flagsSolicitud.flagOperaciones}" style="border-color: #FFFFFF !important;">
+             <p:panelGrid styleClass="gmxNoborde1">
+                <p:row>
+                    <p:column> 
+                    <div align="center">
+                        <p:selectOneRadio id="sorProtesta" value="#{adicionarSolicitudMB.flagsSolicitud.protesta}"
+                                          required="true" requiredMessage="#{msgValidacion.msjCampoRequerido}">
+                            <p:ajax listener="#{datosSolicitudCtrlMB.validaResProtesta}"
+                                    update="form:messageProtesta2"/>
+                            <f:selectItem itemLabel="#{msgValidacion.rsSi}" itemValue="Si"/>
+                            <f:selectItem itemLabel="#{msgValidacion.rsNo}" itemValue="No"/>
+                        </p:selectOneRadio>
+                        <p:message id="msjOptProtesta" for="sorProtesta" display="text"/>
+                    </div>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+      </p:fieldset>
+        </div>
+    </div>
+                         </div>
+</ui:composition>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+             xmlns:tns="http://ws.dyc.mat.sat.gob.mx/" 
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+             xmlns="http://schemas.xmlsoap.org/wsdl/" 
+             targetNamespace="http://ws.dyc.mat.sat.gob.mx/" 
+             name="DictaminacionAut">    
+    
+    <types>
+        <xs:schema targetNamespace="http://ws.dyc.mat.sat.gob.mx/" 
+                   xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+                   elementFormDefault="unqualified" 
+                   attributeFormDefault="unqualified">
+            
+            <xs:element name="obtenerResulDictAut">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Dictaminacion" type="tns:Dictaminacion" maxOccurs="1" minOccurs="1"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>            
+            <xs:element name="obtenerResulDictAutResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="Notificacion" type="tns:Notificacion" maxOccurs="1" minOccurs="1"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+    
+            <xs:complexType name="Dictaminacion">
+                <xs:sequence>
+                    <xs:element name="NumControl" type="xs:string"/>
+                    <xs:element name="NumLote" type="xs:integer" nillable="true"/>
+                    <xs:element name="RFC" type="xs:string"/>
+                    <xs:element name="Impuesto" type="xs:string"/>
+                    <xs:element name="Concepto" type="xs:integer"/>
+                    <xs:element name="NumOperacion" type="xs:string"/>
+                    <xs:element name="ImporteSaldoF" type="xs:decimal"/>
+                    <xs:element name="FechaProcModelo" type="xs:date"/>
+                    <xs:element name="Modelo" type="xs:string"/>
+                    <xs:element name="MarcResultado" type="xs:string"/>
+                    <xs:element name="MotRiesgo" type="xs:integer" nillable="true"/>
+                </xs:sequence>
+            </xs:complexType>
+            
+            <xs:complexType name="Notificacion">
+                <xs:sequence>
+                    <xs:element name="Estatus" type="xs:string"/>
+                    <xs:element name="Codigo" type="xs:string"/>
+                    <xs:element name="Descripcion" type="xs:string"/>
+                </xs:sequence>
+            </xs:complexType>            
+            
+        </xs:schema>
+    </types>
+    
+    <message name="obtenerResulDictAut">
+        <part name="parameters" element="tns:obtenerResulDictAut"/>
+    </message>
+    <message name="obtenerResulDictAutResponse">
+        <part name="return" element="tns:obtenerResulDictAutResponse"/>
+    </message>
+    
+    <portType name="DictaminacionAut">
+        <operation name="obtenerResulDictAut">
+            <input message="tns:obtenerResulDictAut"/>
+            <output message="tns:obtenerResulDictAutResponse"/>
+        </operation>
+    
+    </portType>
+    <binding name="DictaminacionAutImplPortBinding" type="tns:DictaminacionAut">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <operation name="obtenerResulDictAut">
+            <soap:operation soapAction="obtenerResulDictAut"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    
+    </binding>
+    <service name="DictaminacionAut">
+        <port name="DictaminacionAutImplPort" binding="tns:DictaminacionAutImplPortBinding">
+            <soap:address location="http://localhost:7001/ws/PjDictaminacionAut/DictaminacionAut"/>
+        </port>
+    </service>
+</definitions>

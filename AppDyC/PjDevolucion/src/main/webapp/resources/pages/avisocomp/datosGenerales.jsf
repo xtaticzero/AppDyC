@@ -1,0 +1,864 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:c="http://java.sun.com/jsp/jstl/core"
+        xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <meta http-equiv="X-UA-Compatible" content="IE=8"/>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <meta haclP6Campo15ttp-equiv="pragma" content="no-cache"/>
+            <meta http-equiv="cache-control" content="no-cache"/>
+            <meta http-equiv="expires" content="0"/>
+            <h:outputScript library="js" name="general.js"/>
+            <style type="text/css">
+                     
+                body {font-family: 'Open Sans';}
+                .gmxNoborde1 td{border-color:#FFFFFF;}
+                .gmxNoborde td{padding-left: 0px!important;}
+                .ui-selectonemenu{margin-top: 0px!important;}     
+                hr.red {margin: 3px auto !important;border-top-color: #DCE0E0 !important;position: relative !important;margin-left: 2px !important; } 
+                hr.red:before { content: " "!important;width: 35px!important;height: 6px!important;background-color: #D0021B!important;display: block!important;position: absolute!important;} 
+                h2 {font-size: 38px!important;margin-bottom: 0px!important; margin-left: -3px !important; }
+                .ui-panelgrid {margin-left: 0px !important;} 
+                h1 {margin-bottom: 0px !important;font-size: 54px !important;margin-left: 0px !important;line-height: 1.1 !important;margin-top: -20px!important;}
+                .ui-selectoneradio td{padding: 0px!important;border-color:#FFFFFF;}
+                .ui-selectoneradio label{padding-left: 5px!important;padding-right: 1px!important;}
+                .gmxfhorizontal td:nth-child(odd) {text-align: right !important;width: 398px!important;}
+                .gmxfhorizontal td:nth-child(even) {text-align: left !important;width: 398px!important;}
+                .gmxfhorizontal .ui-outputlabel{font-weight: normal !important;}
+                .ui-selectoneradio{width: 10px!important;}
+                .ui-selectoneradio td{padding: 0px!important;border-color:#FFFFFF;}
+                .ui-selectoneradio label{padding-left: 5px!important;padding-right: 1px!important;}
+                .tab_D{ width:373px!important;border: 0px solid!important;float:left; }
+                .tab_I{width:373px!important;border: 0px solid!important;float:left;margin-left: 30px; }
+                #formDetalleCuadro\:j_idt116 {
+                        display: initial!important;
+                    }
+            </style>
+        </h:head>
+        <h:body>
+            <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+             
+            <p:dialog modal="true" widgetVar="statusDialog" header="#{msgValidacion.ajaxLoading}" draggable="false"
+                      resizable="false" closable="false">
+                <p:graphicImage value="../../images/ajaxloadingbar.gif"/>
+            </p:dialog>
+             
+            <h:form id="formCargarArchivo" enctype="multipart/form-data" prependId="false">
+                <!-- *********************************************************************************************** -->
+                <!-- ******                         DATOS GENERALES DEL AVISO DE COMPENSACION                 ****** -->
+                <!-- *********************************************************************************************** -->
+               
+                <div class="gobmxContenedor8">
+                    <h1><p:outputLabel value="#{msgValidacion.aclP6Titulo1}" /></h1>
+                    <h2><p:outputLabel value="#{msgValidacion.aclP6Titulo2}" /></h2>
+                    <hr class="red" />
+                </div>
+                <p:panelGrid styleClass="gobmxContenedor8 gmxfhorizontal" style="margin-top: 25px!important;margin-bottom: 40px !important;">
+                    <p:row>
+                        <p:column>
+                                <p:outputLabel value="#{msgValidacion.aclP2Campo1}"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel value="#{avisoDatosContriCompensacionMB.contribuyente.rfcVigente}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row rendered="#{avisoDatosContriCompensacionMB.contribuyente.personaIdentificacion.tipoPersona == 'F'}">
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.aclP2Campo4}"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel value="#{avisoDatosContriCompensacionMB.contribuyente.personaIdentificacion.nombre}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row rendered="#{avisoDatosContriCompensacionMB.contribuyente.personaIdentificacion.tipoPersona == 'F'}">
+                        <p:column>
+                                <p:outputLabel value="#{msgValidacion.aclP2Campo2}"/>
+                        </p:column>
+                        <p:column>
+                             <p:outputLabel value="#{avisoDatosContriCompensacionMB.contribuyente.personaIdentificacion.apPaterno}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row rendered="#{avisoDatosContriCompensacionMB.contribuyente.personaIdentificacion.tipoPersona == 'F'}">
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.aclP2Campo3}"/>
+                        </p:column>
+                        <p:column>
+                             <p:outputLabel value="#{avisoDatosContriCompensacionMB.contribuyente.personaIdentificacion.apMaterno}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row rendered="#{avisoDatosContriCompensacionMB.contribuyente.personaIdentificacion.tipoPersona == 'M'}"> 
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.L0000008}"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel value="#{avisoDatosContriCompensacionMB.contribuyente.personaIdentificacion.razonSocial}"/>
+                        </p:column>
+                    </p:row> 
+                </p:panelGrid>
+                <div class="gobmxContenedor8">
+                    <h2><p:outputLabel value="#{msgValidacion.aclP6Titulo3}" /></h2>
+                    <hr class="red" />
+                </div>
+                <p:panelGrid styleClass="gobmxContenedor8 gmxfhorizontal" style="margin-top: 25px!important;margin-bottom: 40px !important;">
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.aclP2Campo10}"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel value="#{avisoDatosContriCompensacionMB.contribuyente.domicilio.codigoPostal}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.aclP2Campo12}"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel value="#{avisoDatosContriCompensacionMB.contribuyente.domicilio.entFed}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.aclP2Campo9}"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel value="#{avisoDatosContriCompensacionMB.contribuyente.domicilio.municipio}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.aclP2Campo11}"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel value="#{avisoDatosContriCompensacionMB.contribuyente.domicilio.localidad}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.aclP2Campo8}"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel value="#{avisoDatosContriCompensacionMB.contribuyente.domicilio.colonia}"/>
+                        </p:column>
+                    </p:row>
+                   <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.aclP2Campo5}"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel value="#{avisoDatosContriCompensacionMB.contribuyente.domicilio.calle}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column> 
+                            <p:outputLabel value="#{msgValidacion.aclP2Campo6}"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel value="#{avisoDatosContriCompensacionMB.contribuyente.domicilio.numeroExt}"/>
+                            <p:outputLabel value="#{msgValidacion.aclP2Campo7}"
+                                           style="#{avisoDatosContriCompensacionMB.contribuyente.domicilio.numeroInt == '' ? 'display:disabled' : 'display:none'}"/>
+                            <p:outputLabel value="#{avisoDatosContriCompensacionMB.contribuyente.domicilio.numeroInt}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.aclP2Campo13}"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel value="#{avisoDatosContriCompensacionMB.contribuyente.domicilio.claveAdmonLocal}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.aclP2Campo14}"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel value="#{avisoDatosContriCompensacionMB.contribuyente.domicilio.admonLocal}"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+                <div class="gobmxContenedor8">
+                    <h2><p:outputLabel value="#{msgValidacion.aclP6Titulo4}" /></h2>
+                    <hr class="red" />
+                </div>
+                    
+                <p:panelGrid styleClass="gobmxContenedor8 gmxfhorizontal" style="margin-top: 25px!important;margin-bottom: 40px !important;">
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.aclP6Campo15}"/>
+                        </p:column>
+                        <p:column>
+                                <p:outputLabel value="#{avisoCompensacionEnLineaMB.cuadroDescripcionTipoAviso}"/>
+                        </p:column>
+                        <p:column rendered="#{avisoCompensacionEnLineaMB.dyccTipoAvisoDTO.idTipoAviso==2?'true':'false'}">
+                            <p:outputLabel value="#{msgValidacion.aclP3Campo2}"/>
+                        </p:column>
+                        <p:column rendered="#{avisoCompensacionEnLineaMB.dyccTipoAvisoDTO.idTipoAviso==2?'true':'false'}">
+                                <p:outputLabel value="#{avisoCompensacionEnLineaMB.dycpAvisoCompDTO.dycpAvisoCompNormalDTO.folioAviso}"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+                <div class="gobmxContenedor8">
+                    <h2><p:outputLabel value="#{msgValidacion.aclP6Titulo5}" /></h2>
+                    <hr class="red" />
+                </div>
+                <p:panelGrid styleClass="gobmxContenedor8 gmxfhorizontal " style="margin-top: 25px!important;margin-bottom: 40px !important;">
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.aclP6Campo36}"/>
+                        </p:column>
+                        <p:column>
+                                <p:outputLabel value="#{avisoCompensacionEnLineaMB.cuadroDescripcionTipoDeclaracion}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.aclP6Campo17}"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel value="#{avisoCompensacionEnLineaMB.cuadroDescripcionConcepto}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.aclP6Campo18}"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel value="#{avisoCompensacionEnLineaMB.cuadroDescripcionTipoPeriodo}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.aclP6Campo19}"/>
+                        </p:column>
+                        <p:column>
+                             <p:outputLabel value="#{avisoCompensacionEnLineaMB.cuadroDescripcionPeriodo}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.aclP6Campo20}"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel value="#{avisoCompensacionEnLineaMB.dyccEjercicioDTO.idEjercicio}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.aclP6Campo21}"/>
+                        </p:column>
+                        <p:column>
+                                <h:outputText value="#{avisoCompensacionEnLineaMB.dycpCompensacionDTO.fechaPresentaDec}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.aclP6Campo28}"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel value="#{avisoCompensacionEnLineaMB.dycpCompensacionDTO.numOperacionDec}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column >
+                            <p:outputLabel value="#{msgValidacion.aclP6Campo23}"/>
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{avisoCompensacionEnLineaMB.dycpCompensacionDTO.importeCompensado}">
+                                <f:convertNumber minFractionDigits="2" currencySymbol="$ " 
+                                                 type="currency" locale="es-MX" pattern="¤#,##0.00"/>
+                            </h:outputText>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+               <!--SALDOS-->
+               <ui:repeat value="#{avisoCompensacionEnLineaMB.listaCuadros}" var="cua">
+                   <div class="gobmxContenedor8">
+                        <h2><p:outputLabel value="Saldo #{cua.numCuadro}" /></h2>
+                        <hr class="red" />
+                    </div>
+                    <div class="gobmxContenedor8">
+                        <h3><p:outputLabel value="#{msgValidacion.aclP6Titulo6}" style="margin-left: -11px;"/></h3>
+                    </div>
+                   <p:panelGrid styleClass="gobmxContenedor8 gmxfhorizontal " style="margin-top: 25px!important;margin-bottom: 40px !important;">
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.aclP6Campo24}"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{cua.descOrigenSaldo}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.aclP6Campo25}"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{cua.dycctipoTramiteDTO.descripcion}"/>
+                            </p:column>
+                        </p:row>
+                     </p:panelGrid> 
+                    <c:if test="#{cua.dycpServicioDTO.dycaOrigenTramiteDTO.dyccTipoTramiteDTO.idTipoTramite==201}">
+                          <div class="gobmxContenedor8">
+                       <h2><p:outputLabel value="#{msgValidacion.aclP6Titulo7}"/></h2>
+                       <hr class="red" /> 
+                    </div>
+                    </c:if>
+                    <p:panelGrid styleClass="gobmxContenedor8 gmxfhorizontal " rendered="#{cua.dycpServicioDTO.dycaOrigenTramiteDTO.dyccTipoTramiteDTO.idTipoTramite==201?'true':'false'}" style="margin-top: 25px!important;">
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.aclP6Campo28}"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{cua.strDiotNumOperacion}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.aclP6Campo29}"/>
+                            </p:column>
+                            <p:column>
+                                    <h:outputText value="#{cua.dyctOrigenAvisoDTO.diotFechaPresenta}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                    </h:outputText>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <div class="gobmxContenedor8">
+                      <h3><p:outputLabel value="#{msgValidacion.aclP6Titulo8}" style="margin-left: -11px;"/></h3>
+                    </div>                     
+                    <p:panelGrid styleClass="gobmxContenedor8 gmxfhorizontal" style="margin-top: 25px!important;margin-bottom: 40px !important;">
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.aclP6Campo30}"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{cua.descTipoPeriodo}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.aclP6Campo31}"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{cua.descPeriodo}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.aclP6Campo32}"/>
+                            </p:column>
+                            <p:column>
+                                    <p:outputLabel value="#{cua.descEjercicio}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{avisoCompensacionEnLineaMB.diConcepto==true?'true':'false'}">
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.aclP6Campo33}"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{cua.descConceptoOrigen}"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                     <div class="gobmxContenedor8">
+                      <h3><p:outputLabel value="#{msgValidacion.aclP6Titulo9}" style="margin-left: -11px;"/></h3>
+                    </div>
+                    <div class="gobmxContenedor8 gmxfhorizontal" style="margin-top: 25px!important;">
+                        <div class="tab_I">
+                            <p:outputLabel value="#{msgValidacion.aclP6Campo34}"/>
+                        </div>
+                        <div class="tab_D">
+                             <p:outputLabel value="#{msgValidacion.aclP6Campo35}"/>
+                        </div>
+                    </div>
+                    <p:panelGrid styleClass="gobmxContenedor8 gmxfhorizontal" style="margin-top: 25px!important;margin-bottom: 40px !important;">
+                        <p:row>
+                            <p:column >
+                               
+                            </p:column>
+                            <p:column >
+                                <p:outputLabel value="#{cua.dyctOrigenAvisoDTO.esRemanente==1?'Si':'No'}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{cua.dyctOrigenAvisoDTO.esRemanente==1?'true':'false'}">
+                            <p:column>
+                               
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{cua.dyctOrigenAvisoDTO.numControlRem}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.aclP6Campo36}"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{cua.descTipoDeclaracion}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column >
+                                <p:outputLabel value="#{msgValidacion.aclP6Campo37}"/>
+                            </p:column>
+                            <p:column >
+                                    <h:outputText value="#{cua.dyctDeclaracionDTO.fechaPresentacion}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                    </h:outputText>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column >
+                                <p:outputLabel value="#{msgValidacion.aclP6Campo38}"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{cua.dyctDeclaraTempDTO.numOperacion}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column >
+                                <p:outputLabel value="#{msgValidacion.aclP3Campo26}"/>
+                            </p:column>
+                            <p:column>
+                                    <p:outputLabel value="#{cua.ddNumDocumento}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.aclP6Campo39}"/>
+                            </p:column>
+                            <p:column >
+                                    <h:outputText value="#{cua.dyctDeclaraTempDTO.saldoAFavor}">
+                                        <f:convertNumber minFractionDigits="2"
+                                                         currencySymbol="$ " type="currency"
+                                                         locale="es-MX" pattern="¤#,##0.00"/>
+                                    </h:outputText>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                   <div class="gobmxContenedor8">
+                      <h3><p:outputLabel value="#{msgValidacion.aclP6Titulo11}" style="margin-left: -11px;"/></h3>
+                    </div>
+                   <p:panelGrid  styleClass="gobmxContenedor8 gmxfhorizontal" style="margin-top: 25px!important;margin-bottom: 40px !important;">
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.aclP6Campo44}"/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{cua.dyctOrigenAvisoDTO.impActualizado}">
+                                        <f:convertNumber minFractionDigits="2"
+                                                         currencySymbol="$ " type="currency"
+                                                         locale="es-MX" pattern="¤#,##0.00"/>
+                                    </h:outputText>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.aclP6Campo45}"/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{cua.dyctOrigenAvisoDTO.importeSolicitado}">
+                                    <f:convertNumber minFractionDigits="2"
+                                                     currencySymbol="$ " type="currency"
+                                                    locale="es-MX" pattern="¤#,##0.00"/>
+                                </h:outputText>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.aclP6Campo46}"/>
+                            </p:column>
+                            <p:column>
+                                    <h:outputText value="#{cua.dyctOrigenAvisoDTO.impRemanente}">
+                                        <f:convertNumber minFractionDigits="2"
+                                                         currencySymbol="$ " type="currency"
+                                                         locale="es-MX" pattern="¤#,##0.00"/>
+                                    </h:outputText>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <style>
+                     #error0 {
+                                display: none;
+                                border-radius: 3px 3px 3px 3px;
+                                -moz-border-radius: 3px 3px 3px 3px;
+                                -webkit-border-radius: 3px 3px 3px 3px;
+                                border: 2px solid #D0021B ;
+                                background-color: #F2DEDE;
+                                 text-align: center;
+                                 color:#545454 ;
+                                 margin-top:30px;
+                                margin-bottom: 30px;
+                                padding-top:30px;
+                                padding-bottom: 30px;
+                            }
+                    </style>                   
+                    <script>
+                        $fechaPresentacionDec=($('#form\\:fechaPresentacionDec_input').hasClass('ui-state-error'));
+                        $decNormalNumOper=($('#form\\:decNormalNumOper').hasClass('ui-state-error'));
+                        $decSaldoFav=($('#form\\:decSaldoFav_input').hasClass('ui-state-error'));
+
+                        if($fechaPresentacionDec || $decNormalNumOper || $decSaldoFav){
+                            document.getElementById("error0").innerHTML="Todos los campos marcados con * son requeridos";
+                            document.getElementById("error0").style.display="inherit";  
+                        }
+                    </script>
+                     <c:if test="#{cua.ddIdTipoDeclaracion == 2}">
+                        <div class="gobmxContenedor8">
+                           <h2><p:outputLabel value="#{msgValidacion.aclP6Titulo10}"/></h2>
+                           <hr class="red" />
+                           <div id="error0"></div>
+                         </div>
+                     </c:if>
+                    <p:panelGrid styleClass="gobmxContenedor8 gmxfhorizontal" rendered="#{cua.ddIdTipoDeclaracion==2?'true':'false'}" style="margin-top: 25px!important;margin-bottom: 40px !important;">
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.aclP6Campo40}"/>
+                            </p:column>
+                            <p:column>
+                                    <p:outputLabel value="Normal"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.aclP6Campo41}"/>
+                            </p:column>
+                            <p:column>
+                                    <h:outputText value="#{cua.dyctDeclaraTempDTO.normalFechapres}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                    </h:outputText>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.aclP6Campo42}"/>
+                            </p:column>
+                            <p:column>
+                                    <p:outputLabel value="#{cua.dyctDeclaraTempDTO.normalNumoperacion}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.aclP6Campo43}"/>
+                            </p:column>
+                            <p:column>
+                                    <h:outputText value="#{cua.dyctDeclaraTempDTO.normalImportesaf}">
+                                        <f:convertNumber minFractionDigits="2"
+                                                         currencySymbol="$ " type="currency"
+                                                         locale="es-MX" pattern="¤#,##0.00"/>
+                                    </h:outputText>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </ui:repeat>
+                <div class="gobmxContenedor8">
+                   <h2><p:outputLabel value="#{msgValidacion.aclP6Titulo12}"/></h2>
+                   <hr class="red" />
+                 </div>
+                <div class="gobmxContenedor8 gmxNoborde1" style="margin-top: 25px!important;margin-bottom: 40px !important;">
+                   <p:scrollPanel style="width:100%!important;height: auto!important;" mode="native">
+                        <p:dataTable id="dtlInconsistencias" var="inconsistencia"
+                                     value="#{avisoCompensacionEnLineaMB.listaDeInconsistencias}"
+                                     scrollWidth="715" paginator="true"
+                                     paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                     rowsPerPageTemplate="5,10,15" rows="10"
+                                     style="text-align:left;width:100%" resizableColumns="true"
+                                     liveResize="true" rowIndexVar="rowIndex"
+                                     rowStyleClass="#{(rowIndex mod 2) eq 0 ?'highlightA':'highlightB'}"
+                                     emptyMessage="No se encontraron registros.">
+                            <p:column headerText="#{msgValidacion.aclP6Tbl1Col1}"
+                                      style="width:200px;text-align:center;">
+                                <strong>
+                                    <h:outputText value="#{avisoCompensacionEnLineaMB.fechaActual}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                    </h:outputText></strong>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.aclP6Tbl1Col2}">
+                                <strong>
+                                    <h:outputText value="#{inconsistencia.descripcion}"/></strong>
+                            </p:column>
+                            <f:facet name="footer">
+                                <p:outputLabel value="#{fn:length(avisoCompensacionEnLineaMB.listaDeInconsistencias)} Resultados"/>
+                            </f:facet>
+                        </p:dataTable>
+                    </p:scrollPanel>
+                </div>
+                 <div class="gobmxContenedor8">
+                    <h2><p:outputLabel value="#{msgValidacion.aclP6Titulo13}"/></h2>
+                    <hr class="red" />
+                    <p:messages id="msgListaAnexos" for="msgListaAnexos" showDetail="true"  globalOnly="true" autoUpdate="true" closable="true"/>
+                 </div>
+                 <div class="gobmxContenedor8" style="margin-top: 25px!important;margin-bottom: 40px !important;">
+                        <p:scrollPanel style="width:100%;" mode="native">
+                               <p:dataTable id="dtlAnexos" var="anexo"
+                                            value="#{avisoCompensacionEnLineaMB.cuadroListaAnexos}"
+                                            scrollWidth="715" paginator="true"
+                                            paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                            rowsPerPageTemplate="5,10,15" rows="10"
+                                            style="text-align:left;width:100%" resizableColumns="true"
+                                            liveResize="true" rowIndexVar="rowIndex"
+                                            rowStyleClass="#{(rowIndex mod 2) eq 0 ?'highlightA':'highlightB'}"
+                                            emptyMessage="No se encontraron registros.">
+                                   <p:column headerText="Saldo" >
+                                       <h:outputText value="#{anexo.cuadroSaldo}"/>                                                </p:column>
+                                   <p:column headerText="#{msgValidacion.aclP6Tbl2Col1}">
+                                       <h:outputText value="#{anexo.descripcionAnexo}"/>
+                                   </p:column>
+                                   <p:column headerText="#{msgValidacion.aclP5TblCol3}">
+                                       <p:commandButton ajax="false" icon="ui-icon-arrowthick-1-s">
+                                           <f:setPropertyActionListener value="#{anexo}"
+                                                                        target="#{avisoCompensacionEnLineaMB.seleccionoAnexoDescargar}"/>
+                                           <p:fileDownload value="#{avisoCompensacionEnLineaMB.descargarAnexo}"/>
+                                       </p:commandButton>
+                                   </p:column>
+                                   <p:column headerText="#{msgValidacion.aclP5TblCol4}">
+                                       <p:commandButton ajax="true" icon="ui-icon-arrowthick-1-n"
+                                                        oncomplete="dlgCargarAnexo.show();">
+                                           <f:setPropertyActionListener value="#{anexo}"
+                                                                        target="#{avisoCompensacionEnLineaMB.seleccionoAnexoDescargar}"/>
+                                       </p:commandButton>
+                                   </p:column>
+                                   <p:column headerText="#{msgValidacion.aclP5TblCol6}">
+                                       <center>
+                                           <h:outputText styleClass="#{anexo.adjuntado == 'PA' ? 'ui-icon ui-icon-alert' : 'ui-icon ui-icon-check'}"/>
+                                       </center>
+                                   </p:column>
+                                   <f:facet name="footer">
+                                       <p:outputLabel value="#{fn:length(avisoCompensacionEnLineaMB.cuadroListaAnexos)} Resultados"/>
+                                   </f:facet>
+                               </p:dataTable>
+                       </p:scrollPanel>
+                 </div>
+                <div class="gobmxContenedor8">
+                    <h2><p:outputLabel value="#{msgValidacion.aclP6Titulo14}"/></h2>
+                    <hr class="red" />
+                     <p:messages id="msgDocumentosAnexos" for="msgDocumentosAnexos" showDetail="true"
+                                 globalOnly="true" autoUpdate="true" closable="false"/>
+               </div>
+                <div class="gobmxContenedor8" style="margin-top: 25px!important;margin-bottom: 40px !important;">
+                    <p:scrollPanel style="width:100%;" mode="native">
+                            <p:dataTable id="dtlDocumentos" var="documento"
+                                         value="#{avisoCompensacionEnLineaMB.cuadroListaDocumentos}"
+                                         scrollWidth="715" paginator="true"
+                                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                         rowsPerPageTemplate="5,10,15" rows="10"
+                                         style="text-align:left;width:100%" resizableColumns="true"
+                                         liveResize="true" rowIndexVar="rowIndex"
+                                         rowStyleClass="#{(rowIndex mod 2) eq 0 ?'highlightA':'highlightB'}"
+                                         emptyMessage="No se encontraron registros.">
+                                <p:column headerText="#{msgValidacion.aclP6Tbl3Col2}">
+                                    <strong>
+                                        <h:outputText value="#{documento.nombreArchivo}"/></strong>
+                                </p:column>
+                                <p:column headerText="#{msgValidacion.aclP6Tbl3Col1}">
+                                    <strong>
+                                        <h:outputText value="#{documento.descripcion}"/></strong>
+                                </p:column>
+                                <f:facet name="footer">
+                                    <p:outputLabel value="#{fn:length(avisoCompensacionEnLineaMB.cuadroListaDocumentos)} Resultados"/>
+                                </f:facet>
+                            </p:dataTable>
+                    </p:scrollPanel>
+                </div>
+               <p:panelGrid styleClass="gobmxContenedor8 gmxfhorizontal">
+                        <p:row rendered="#{avisoCompensacionEnLineaMB.diConcepto==true?'true':'false'}">
+                            <p:column colspan="2">
+                                <p:outputLabel value="#{avisoCompensacionEnLineaMB.mensajeInconsist}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.aclP6Campo47}" />
+                            </p:column>
+                            <p:column>
+                                <p:selectOneRadio id="options"  value="#{avisoCompensacionEnLineaMB.cuadroDatosGenerales}">
+                                    <f:selectItem itemLabel="Si" itemValue="true"/>
+                                    <f:selectItem itemLabel="No" itemValue="false"/>
+                                    <p:ajax update="@all" />
+                                </p:selectOneRadio>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <div class="gobmxContenedor8">
+                    <p:panelGrid id="pnlDatosgenerales">
+                        <f:facet name="footer" >
+                            <p:row>
+                                <p:column>
+                                    <p:commandButton id="btnEnviar" value="Enviar"
+                                                     actionListener="#{avisoCompensacionEnLineaMB.validaArchivoTemporal}"
+                                                     styleClass="gmxPositivo" style="margin-top: 15px!important; margin-left: 5px!important;"
+                                                     rendered="#{avisoCompensacionEnLineaMB.cuadroDatosGenerales}"
+                                                     immediate="true" ajax="false" onclick="statusDialog.show();"/>
+                                    <div style="display:none">
+                                        <h:commandLink id="pruebaPrint"
+                                                       style="margin-top: 15px!important; margin-left: 5px!important;"
+                                                       action="#{avisoCompensacionEnLineaMB.downloadPDF}"
+                                                       target="_blank"></h:commandLink>
+                                    </div>
+                                    <p:commandButton id="btnPrint" value="Imprimir" action="#"
+                                                     style="margin-top: 15px!important; margin-left: 5px!important;"
+                                                     rendered="#{avisoCompensacionEnLineaMB.cuadroDatosGenerales}"
+                                                     onclick="$('#pruebaPrint').click();"/>
+                                                     
+                                    <p:commandButton id="btnRegresar" value="Anterior" process="@this"
+                                                     style="margin-top: 15px!important; margin-left: 5px!important;"
+                                                     action="#{avisoCompensacionEnLineaMB.regresarListaDocumentos}"
+                                                     rendered="#{avisoCompensacionEnLineaMB.muestraBotonesReg and avisoCompensacionEnLineaMB.cuadroDatosGenerales}"/>
+                                                     
+                                    <p:commandButton id="btnCancelar" value="Regresar" process="@this"
+                                                     action="avisoCompensacionEnLinea.jsf"
+                                                     style="margin-top: 15px!important; margin-left: 5px!important;"
+                                                     rendered="#{!avisoCompensacionEnLineaMB.muestraBotonesReg and avisoCompensacionEnLineaMB.cuadroDatosGenerales}"           />
+                                                     
+                                    <p:commandButton id="btnModificarAviso" value="#{msgValidacion.aclP7Campo2}"
+                                                     process="@this"
+                                                     style="margin-top: 15px!important; margin-left: 5px!important;"
+                                                     action="#{avisoCompensacionEnLineaMB.modificarAviso}"
+                                                     rendered="#{!avisoCompensacionEnLineaMB.cuadroDatosGenerales}"/>
+                                </p:column>
+                            </p:row>
+                        </f:facet>
+                    </p:panelGrid>
+                <!-- *********************************************************************************************** -->
+                <!-- ******                     NUMERO DE CONTROL ASIGNADO E IMPRESION DE ACUSE               ****** -->
+                <!-- *********************************************************************************************** -->
+                <p:dialog id="imprimirAcuse" widgetVar="dlgImprimirAcuse" closable="false" resizable="false"
+                          modal="true" width="500" height="200" header="#{msgValidacion.aclP1Titulo1}">
+                    <p:fieldset id="imprimirFinalizar" legend="#{msgValidacion.adycNumControl}"
+                                style="width:450px;height:180px;text-align:center;"> 
+                        <p:panelGrid>
+                            <p:row>
+                                <p:column>
+                                    <strong>
+                                        <p:outputLabel value="#{msgValidacion.aclP10Campo1} "/></strong>
+                                    <p:outputLabel value="#{avisoCompensacionEnLineaMB.folioAviso} "/>
+                                    <strong> 
+                                        <p:outputLabel value="#{msgValidacion.aclP10Campo2} "/></strong>
+                                    <p:outputLabel value="#{avisoCompensacionEnLineaMB.numerosDeControl}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <p:spacer width="5"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="text-align:center">
+                                    <p:commandButton value="#{msgValidacion.aclP10Btn1}"
+                                                     action="#{avisoCompensacionEnLineaMB.terminarCasoDeUso}"
+                                                     process="@this"/>
+                                    <p:commandButton id="btnImprimir" value="Ver Acuse" update="@form" ajax="false"/>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                    </p:fieldset>
+                </p:dialog>
+                <!-- *********************************************************************************************** -->
+                <!-- ******                                     CARGAR ANEXO                                  ****** -->
+                <!-- *********************************************************************************************** -->
+                <p:dialog id="cargarAnexo" widgetVar="dlgCargarAnexo" header="Adjuntar Anexo" closable="true"
+                          resizable="false" modal="true" width="55%" height="70%">
+                    <p:fieldset legend="#{msgValidacion.aclP5Titulo2}" style="text-align:left;">
+                        <p:panelGrid id="pgCargarDoc">
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel value="#{msgValidacion.aclP5Campo1}"/>
+                                    <p:outputLabel value=" *" style="color:red"/>
+                                </p:column>
+                                <p:column>
+                                    <p:fileUpload id="fileCarga" value="#{avisoCompensacionEnLineaMB.file}"
+                                                  mode="simple" style="width:300px;"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column colspan="2" style="text-align:center">
+                                    <p:commandButton value="#{msgValidacion.aclP5Btn5}" process="@this"
+                                                     onsuccess="dlgCargarAnexo.hide()"
+                                                     actionListener="#{avisoCompensacionEnLineaMB.cancelarArchivo}"
+                                                     style="width:100px" styleClass="gmxNegativo"/>
+                                    <p:commandButton value="#{msgValidacion.asBtnGuardar}" ajax="false"
+                                                     actionListener="#{avisoCompensacionEnLineaMB.uploadAnexo}"
+                                                     styleClass="gmxPositivo"/>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                    </p:fieldset>
+                </p:dialog>
+                <!-- *********************************************************************************************** -->
+                <!-- ******                                   CARGAR DOCUMENTO                                ****** -->
+                <!-- *********************************************************************************************** -->
+                <p:dialog id="cargarDocumento" widgetVar="dlgCargarDocConsul" header="Adjuntar Documento"
+                          closable="true" resizable="false" modal="true" width="60%" height="5%0">
+                      <h3>
+                        <p:outputLabel value="#{msgValidacion.aclP4Titulo3}" />
+                      </h3>
+                        <p:panelGrid id="pgCargarDocumento">
+                            <p:row>
+                                <p:column colspan="2">
+                                    <p:messages id="msgCargarDocumentosAnexos" for="msgCargarDocumentosAnexos"
+                                                showDetail="true" globalOnly="true" autoUpdate="true" closable="false"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel value="#{msgValidacion.aclP4Campo3}" for="fileCargaDoc"/>:
+                                </p:column>
+                                <p:column>
+                                    <p:fileUpload id="fileCargaDoc" value="#{avisoCompensacionEnLineaMB.file}"  mode="simple"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel value="#{msgValidacion.aclP4Campo4}" for="fileIdUpload"/>:
+                                </p:column>
+                                <p:column>
+                                    <p:inputText id="fileIdUpload" value="#{avisoCompensacionEnLineaMB.cuadroNombreDocumento}" styleClass="upperCase"/>
+                                    <p:watermark for="fileIdUpload" value="Ingresar #{msgValidacion.aclP4Campo4}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column colspan="2">
+                                    <p:outputLabel value="#{msgValidacion.mcCamposObligatorios}" style="color:#545454!important; float:left!important; "/>
+                                    <p:commandButton value="#{msgValidacion.aclP4Btn7}" process="@this"
+                                                     update="pgCargarDocumento" onsuccess="dlgCargarDocConsul.hide()"
+                                                     actionListener="#{avisoCompensacionEnLineaMB.cancelarArchivo}"
+                                                     styleClass="gmxNegativo"/>
+                                    <p:commandButton value="#{msgValidacion.aclP4Btn6}" ajax="false"
+                                                     actionListener="#{avisoCompensacionEnLineaMB.uploadDocumento}"
+                                                     styleClass="gmxPositivo"/>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                </p:dialog>
+                <!-- *********************************************************************************************** -->
+                <!-- ******                                  ELIMINAR DOCUMENTO                               ****** -->
+                <!-- *********************************************************************************************** -->
+                <p:dialog id="eliminarDocumento" widgetVar="dlgEliminarDocConsulta" header="#{msgValidacion.tooltop11}"
+                          closable="true" resizable="false" modal="true">
+                    <p:panelGrid>
+                        <p:row>  
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.tooltop10}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:center">
+                                <p:commandButton value="No" oncomplete="dlgEliminarDocConsulta.hide();"
+                                                 style="width:100px" styleClass="gmxNegativo"/>
+                                <p:commandButton value="Si"
+                                                 actionListener="#{avisoCompensacionEnLineaMB.eliminarDocumento}"
+                                                 update="dtlDocumentos" oncomplete="dlgEliminarDocConsulta.hide();"
+                                                 style="width:100px" styleClass="gmxPositivo"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:dialog>
+                </div>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

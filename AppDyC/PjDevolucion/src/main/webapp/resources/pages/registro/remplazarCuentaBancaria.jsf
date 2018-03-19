@@ -1,0 +1,236 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+        >
+    <html>
+        <h:head>
+            <title>
+                #{msgValidacion.aicBTituloRemplaza}
+            </title>
+            <h:outputStylesheet library="css/" name="dyc.css"/>
+            <style type="text/css">
+                .ui-paginator {
+                    font-size: 12px !important;
+                }
+
+                .ui-datatable tbody td {
+                    white-space: normal;
+                }
+
+                .ui-datatable thead th {
+                    white-space: normal;
+                }
+            </style>
+        </h:head>
+         <h:body>
+             <f:metadata>
+                <f:event type="preRenderView" listener="#{cuentaBancariaCtrl.prerenderView}" />
+            </f:metadata>
+            <h:form id="formRemplaza" style="width: 100%;">
+                <ui:include src="/resources/pages/common/sessionPage.jsf"></ui:include>
+                <ui:include src="/resources/pages/common/inactividad.jsf"></ui:include>
+                
+                <p:panel id="panelInfo" header="#{msgValidacion.aicBTituloRemplaza}" style="width: 100%;">
+                    <table align="center">
+                        <tr>
+                            <td align="right">
+                                <p:outputLabel id="Num" value="Numero de Control"/>
+                            </td>
+                            <td>
+                                <p:outputLabel id="numcontrol"
+                                               value="#{cuentaBancariaCtrl.dyctCuentaBancoDTO.dycpSolicitudDTO.numControl}"/>
+                            </td>
+                        </tr>
+                         
+                        <tr>
+                            <td align="right">
+                                <p:outputLabel value="#{msgValidacion.aicBCuentaClabe} :"/>
+                            </td>
+                            <td>
+                                <p:outputLabel id="txtCuenta" value="#{cuentaBancariaCtrl.dyctCuentaBancoDTO.clabe}"/>
+                            </td>
+                        </tr>
+                         
+                        <tr>
+                            <td align="right">
+                                <p:outputLabel value="#{msgValidacion.aicBBanco} :"/>
+                            </td>
+                            <td>
+                                <p:outputLabel id="txtBanco"
+                                               value="#{cuentaBancariaCtrl.dyctCuentaBancoDTO.dyccInstCreditoDTO.descripcion}"/>
+                            </td>
+                        </tr>
+                         
+                        <tr>
+                            <td align="right">
+                                <p:outputLabel value="#{msgValidacion.aicBFechaRegistro} :"/>
+                            </td>
+                            <td>
+                                <p:outputLabel id="txtFechaR"
+                                               value="#{cuentaBancariaCtrl.dyctCuentaBancoDTO.fechaRegistro}"/>
+                            </td>
+                        </tr>
+                         
+                        <tr>
+                            <td align="right">
+                                <p:outputLabel value="#{msgValidacion.aicBFechaUltMod} :"/>
+                            </td>
+                            <td>
+                                <p:outputLabel id="txtFechaM"
+                                               value="#{cuentaBancariaCtrl.dyctCuentaBancoDTO.fechaUltimaMod}"/>
+                            </td>
+                        </tr>
+                         
+                        <tr>
+                            <td align="right">
+                                <p:outputLabel value="#{msgValidacion.aicBCuentaClabe} :"/>
+                            </td>
+                            <td>
+                                <p:outputLabel id="txtCuentaValida" value="#{cuentaBancariaCtrl.estadoCuentaA}"/>
+                            </td>
+                        </tr>
+                    </table>
+                    <p:messages id="msg" for="msg" closable="true"/>
+                    <!--p:messages id="msgT" for="msgT" closable="true"/ -->
+                    <p:scrollPanel style="width:100%;" mode="native">
+                        <p:dataTable id="tableRemplaza" scrollWidth="100%" paginator="true"
+                                     paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                     rowsPerPageTemplate="5,10,15,20" rows="10" style="text-align:left;width:100%;"
+                                     liveResize="true" rowIndexVar="rowIndex"
+                                     rowStyleClass="#{(rowIndex mod 2) eq 0 ?'highlightA':'highlightB'}"
+                                     emptyMessage="#{msgValidacion.tblEmpty}"
+                                     value="#{cuentaBancariaCtrl.reemplazaCuentaBancariaMB.dataModel}" var="variable"
+                                     rowKey="#{variable.cuenta}" selection="#{cuentaBancariaCtrl.remplazaCuentaClabeVO}"
+                                     selectionMode="single">
+                            <!--f:facet name="header">
+                                <p:toolbar style="border-style:none;">
+                                    <p:toolbarGroup align="rigth">
+                                        <p:commandButton id="btnMuesta" icon="ui-icon-pencil"
+                                                         title="Muestra informacion a actualizar"
+                                                         action="#{cuentaBancariaCtrl.actualizaInfoSeleccionada}"
+                                                         disabled="#{cuentaBancariaCtrl.botonInfoaActualizar}"/>
+                                    </p:toolbarGroup>
+                                </p:toolbar>
+                            </f:facet -->
+                            <p:ajax event="rowSelect" listener="#{cuentaBancariaCtrl.actualizaInfoSeleccionada}" update="tableRemplaza"/>
+                            <!--p:column selectionMode="single" style="width:2%"/-->
+                            <p:column headerText="#{msgValidacion.aicBCuentaClabe}">
+                                <h:outputText value="#{variable.cuenta}"/>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.aicBBanco}" >
+                                <h:outputText value="#{variable.banco}"/>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.aicBFechaRegistro}">
+                                <h:outputText value="#{variable.fechaRegistro}"/>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.aicBFechaUltMod}">
+                                <h:outputText value="#{variable.fechaUltima}"/>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.aicBCuentaValida}">
+                                <h:outputText value="#{cuentaBancariaCtrl.estadoCuentaList}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:scrollPanel>
+                    <table align="center">
+                        <tr>
+                            <td>
+                                <p:commandButton id="acept" value="#{msgValidacion.Aceptar}"
+                                                 actionListener="#{cuentaBancariaCtrl.accionesCuentaBanco}"
+                                                 title="Reemplaza cuenta con la seleccionada"
+                                                 disabled="#{cuentaBancariaCtrl.botonActuaInfo}"
+                                                 update=":opcionEdo:dlgOpcion, :formRemplaza:msg">
+                                    <f:param name="opcionBoton" value="actualizarRempla"/>
+                                </p:commandButton>
+                            </td>
+                            <td>
+                                <p:commandButton id="cancel" value="#{msgValidacion.Cancelar}"
+                                                 action="informacionCuentaClabe.jsf"></p:commandButton>
+                            </td>
+                        </tr>
+                    </table>
+                </p:panel>
+            </h:form>
+             
+            <!--             CUADRO DE DIALOGO QUE MUESTRA LA OPCION DE ADJUNTAR ESTADO DE CUENTA                 -->
+             
+            <h:form id="opcionEdo">
+                <p:dialog id="dlgOpcion" widgetVar="opcion" header="Aceptar Cuenta Bancaria" showEffect="fade"
+                          hideEffect="fade" modal="true" width="300" closable="false"
+                          visible="#{cuentaBancariaCtrl.opcionEstadoCta}">
+                    <table>
+                        <tr align="center">
+                            <td>
+                                <p:outputLabel value="#{cuentaBancariaCtrl.textoMSG10}"/>
+                            </td>
+                        </tr>
+                         
+                        <tr align="center">
+                            <td>
+                                <p:commandButton value="Aceptar" action="#{cuentaBancariaCtrl.dialogAdjuntaZip}"
+                                                 update=":opcionEdo:dlgOpcion, :formFile:dlgFile"/>
+                            </td>
+                        </tr>
+                    </table>
+                </p:dialog>
+            </h:form>
+             
+            <!--                   CUADRO DE DIALGO PARA ADJUNTAR ESTADO DE CUENTA ZIP                            -->
+             
+            <h:form id="formFile" enctype="multipart/form-data">
+                <p:dialog id="dlgFile" widgetVar="file" header="#{msgValidacion.aicBEtiquetaAdjunta}" showEffect="fade"
+                          hideEffect="fade" modal="true" width="450" visible="#{cuentaBancariaCtrl.opcionAdjuntaZip}"
+                          closable="false">
+                    <table>
+                        <tr>
+                            <td>
+                                <p:outputLabel value="#{msgValidacion.aicBEligeArchivo}"/>
+                            </td>
+                            <td>
+                                <p:fileUpload value="#{cuentaBancariaCtrl.file}" mode="simple" dragDropSupport="true"/>
+                            </td>
+                        </tr>
+                    </table>
+                    <p:commandButton value="#{msgValidacion.aicBAdjunta}" ajax="false"
+                                     actionListener="#{cuentaBancariaCtrl.subirArchivo}"
+                                     update=":formRespCta:dlgRespCta, :formFile:dlgFile">
+                        <f:param name="remplaAdjunta" value="adjuntaRempla"/>
+                    </p:commandButton>
+                </p:dialog>
+            </h:form>
+             
+            <!--                 CUADRO DE DIALOGO DE ACEPTA SER EL RESPONSABLE DE ESTADO DE CUENTA               -->
+             
+            <h:form id="formRespCta">
+                <p:dialog id="dlgRespCta" widgetVar="respCta" header="Conformidad" showEffect="fade" hideEffect="fade"
+                          modal="true" width="400" visible="#{cuentaBancariaCtrl.opcionConformidad}" closable="false">
+                    <table>
+                        <tr>
+                            <td>
+                                <p align="justify">
+                                    #{cuentaBancariaCtrl.textoMSG8}
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                    <table align="center">
+                        <tr>
+                            <td>
+                                <p:commandButton value="#{msgValidacion.Si}" action="informacionCuentaClabe.jsf"
+                                                 update=":formRespCta:dlgRespCta">
+                                    <f:param name="conformiSI" value="SI"/>
+                                </p:commandButton>
+                            </td>
+                            <td>
+                                <p:commandButton value="#{msgValidacion.No}" action="informacionCuentaClabe.jsf"
+                                                 update=":formRespCta:dlgRespCta">
+                                    <f:param name="conformiSI" value="NO"/>
+                                </p:commandButton>
+                            </td>
+                        </tr>
+                    </table>
+                </p:dialog>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

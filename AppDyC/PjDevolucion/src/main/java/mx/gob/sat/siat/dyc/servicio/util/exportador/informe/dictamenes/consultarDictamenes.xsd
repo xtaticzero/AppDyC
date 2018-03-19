@@ -1,0 +1,26 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:element name="consultarDictamenesXML">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element  minOccurs="0" maxOccurs="unbounded" ref="consultarDictamenes"/>
+             </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="consultarDictamenes" >
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="ejercicio_fiscal" type="xs:int"/>
+                <xs:element minOccurs="0" name="id_sector" type="xs:string"/>
+                <xs:element minOccurs="0" name="tipo_dictamen" type="xs:string"/>
+                <xs:element minOccurs="0" name="fecha_recepcion" type="xs:dateTime" nillable="true"/>
+                <xs:element minOccurs="0" name="obligado" type="xs:string"/>
+                <xs:element minOccurs="0" name="no_cpr" type="xs:string"/>
+                <xs:element minOccurs="0" name="rfc_cpr" type="xs:string"/>
+                <xs:element minOccurs="0" name="nombre_cpr" type="xs:string"/>                
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+</xs:schema> 

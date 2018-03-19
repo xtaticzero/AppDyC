@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" 
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:ui="http://java.sun.com/jsf/facelets">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            
+        </h:head>
+        <style>
+            .ui-datatable thead th, .ui-datatable tbody td, .ui-datatable tfoot td{
+                white-space: inherit;
+                font-size: 10px;
+            }
+        </style> 
+        <h:body>
+            <h:form id="idFormPrincipal3">
+                <p:panel id="pnlBusqueda1" header="#{msgValidacion.detalleTramiteGenerarReporte}" style="width: 100%" >
+                    <p:toolbar id="idToolBar">
+                        <p:toolbarGroup align="right">
+                                <p:commandButton title="Imprimir formato PDF" icon="ui-icon-print" process="@this" ajax="false">
+                                    <p:dataExporter type="pdf" target="idTablaLista" fileName="Detalle" encoding="ISO-8859-1" preProcessor="#{generarReporteMB.preProcessPDF}"/>
+                                </p:commandButton>                          
+                        </p:toolbarGroup>
+                        <p:toolbarGroup align="right">
+                                <p:commandButton title="Imprimir formato Excel" icon="ui-icon-calculator" process="@this" ajax="false">
+                                    <p:dataExporter type="xls" target="idTablaLista" fileName="Detalle" encoding="ISO-8859-1"/>
+                                </p:commandButton>                          
+                        </p:toolbarGroup>
+                    </p:toolbar>
+                </p:panel>   
+                <p:panel id="pnlBusqueda2"  style="width: 100%" >
+                    <p:dataTable id="idTablaLista" var="varListaDetalle" value="#{generarReporteMB.listaDetalleGPLazy}"
+                                 rowKey="#{varListaDetalle.numEmpleado}" style="width:100%"
+                                 paginator="true" rows="20" lazy="true" rowsPerPageTemplate="5,10,15,20"
+                                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                 emptyMessage="No se encontraron solicitudes de devolucion o casos de compensacion con los criterios ingresados" >
+                        
+                        <p:column  sortBy="#{varListaDetalle.numEmpleado}" style="width:100px">
+                            <f:facet name="header">
+                                <h:outputText value="#{msgValidacion.adycDictamina}" />
+                            </f:facet>
+                                <h:outputText value="#{varListaDetalle.numEmpleado} - 
+                                              #{varListaDetalle.nombre} #{varListaDetalle.apellidoPaterno} #{varListaDetalle.apellidoMaterno}"/>
+                        </p:column>
+                        <p:column sortBy="#{varListaDetalle.numControl}" >
+                            <f:facet name="header">
+                                <h:outputText value="#{msgValidacion.adycNumControl}" />
+                            </f:facet>
+                            <h:outputText value="#{varListaDetalle.numControl}"/>
+                        </p:column>
+                        <p:column  sortBy="#{varListaDetalle.rfc}" >
+                            <f:facet name="header">
+                                <h:outputText value="#{msgValidacion.adycRfc}" />
+                            </f:facet> 
+                            <h:outputText value="#{varListaDetalle.rfc}"/>
+                        </p:column>
+                        <p:column  sortBy="#{varListaDetalle.tramite}" >
+                            <f:facet name="header">
+                                <h:outputText value="#{msgValidacion.adycTram}"/>
+                            </f:facet>
+                            <h:outputText value="#{varListaDetalle.tramite}"/>
+                        </p:column>
+                        <p:column sortBy="#{varListaDetalle.tipoTramite}" >
+                            <f:facet name="header">
+                                <h:outputText value="#{msgValidacion.adycTipo}" />
+                            </f:facet>
+                            <h:outputText value="#{varListaDetalle.tipoTramite}"/>
+                        </p:column>
+                        <p:column sortBy="#{varListaDetalle.estadoTramite}" >
+                            <f:facet name="header">
+                                <h:outputText value="#{msgValidacion.adycEdo}" />
+                            </f:facet>
+                            <h:outputText value="#{varListaDetalle.estadoTramite}"/>
+                        </p:column>
+                        <p:column sortBy="#{varListaDetalle.fechaInicioTramite}" >
+                            <f:facet name="header">
+                                <h:outputText value="#{msgValidacion.adycFecha}" />
+                            </f:facet>
+                            <h:outputText value="#{varListaDetalle.fechaInicioTramite}"/>
+                        </p:column>
+                        <p:column sortBy="#{varListaDetalle.importeSaldoF}" >
+                            <f:facet name="header">
+                                <h:outputText value="#{msgValidacion.adycMonto}" />
+                            </f:facet>
+                                <h:outputText value="#{varListaDetalle.importeSaldoF}">
+                                    <f:convertNumber currencySymbol="$ " type="currency" locale="es_MX"/>
+                                </h:outputText>
+                        </p:column>                        
+                    </p:dataTable>
+                        <p:toolbar id="toolbar2">
+                            <p:toolbarGroup align="right">                                
+                                    <p:commandButton value="Regresar" actionListener="#{generarReporteMB.regresar}">
+                                        <f:param name="regresar" value="generarReporte"/>
+                                    </p:commandButton>                                
+                            </p:toolbarGroup>
+                        </p:toolbar>                        
+                </p:panel>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>
+

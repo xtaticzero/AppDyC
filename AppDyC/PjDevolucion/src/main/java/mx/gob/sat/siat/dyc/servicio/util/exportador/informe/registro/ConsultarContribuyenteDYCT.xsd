@@ -1,0 +1,107 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="PersonaDTO">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="rfc" type="xs:string"/>
+                <xs:element minOccurs="0" name="rfcVigente" type="xs:string"/>
+                <xs:element minOccurs="0" name="rfcSolicitado" type="xs:string"/>
+                <xs:element minOccurs="0" name="boId" type="xs:string"/>
+                <xs:element minOccurs="0" name="idPersona" type="xs:string"/>
+                <xs:element name="PersonaIdentificacionDTO">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element minOccurs="0" name="tipoPersona" type="xs:string"/>
+                            <xs:element minOccurs="0" name="curp" type="xs:string"/>
+                            <xs:element minOccurs="0" name="claveSegmento" type="xs:string"/>
+                            <xs:element minOccurs="0" name="descripcionSegmento" type="xs:string"/>
+                            <xs:element minOccurs="0" name="nit" type="xs:string"/>
+                            <xs:element minOccurs="0" name="nombre" type="xs:string"/>
+                            <xs:element minOccurs="0" name="apPaterno" type="xs:string"/>
+                            <xs:element minOccurs="0" name="apMaterno" type="xs:string"/>
+                            <xs:element minOccurs="0" name="nombreComercial" type="xs:string"/>
+                            <xs:element minOccurs="0" name="fNacimiento" type="xs:dateTime" nillable="true"/>
+                            <xs:element minOccurs="0" name="razonSocial" type="xs:string"/>
+                            <xs:element minOccurs="0" name="tipoSociedad" type="xs:string"/>
+                            <xs:element minOccurs="0" name="fConstitucion" type="xs:dateTime" nillable="true"/>
+                            <xs:element minOccurs="0" name="nacionalidad" type="xs:string"/>
+                            <xs:element minOccurs="0" name="fInicioOperacion" type="xs:dateTime" nillable="true"/>
+                            <xs:element minOccurs="0" name="claveSitContribuyente" type="xs:string"/>
+                            <xs:element minOccurs="0" name="claveDetSitCont" type="xs:string"/>
+                            <xs:element minOccurs="0" name="descSitContribuyente" type="xs:string"/>
+                            <xs:element minOccurs="0" name="fechaSitContribuyente" type="xs:dateTime" nillable="true"/>
+                            <xs:element minOccurs="0" name="claveSitDomicilio" type="xs:string"/>
+                            <xs:element minOccurs="0" name="descSitDomicilio" type="xs:string"/>
+                            <xs:element minOccurs="0" name="claveSitContDom" type="xs:string"/>
+                            <xs:element minOccurs="0" name="descSitContDom" type="xs:string"/>
+                            <xs:element minOccurs="0" name="paisOrigen" type="xs:string"/>
+                            <xs:element minOccurs="0" name="dfTipo" type="xs:string"/>
+                            <xs:element minOccurs="0" name="dfFolio" type="xs:string"/>
+                            <xs:element minOccurs="0" name="dfFInicio" type="xs:dateTime" nillable="true"/>
+                            <xs:element minOccurs="0" name="dfFFin" type="xs:dateTime" nillable="true"/>
+                            <xs:element minOccurs="0" name="email" type="xs:string"/>
+                            <xs:element minOccurs="0" name="idPersona" type="xs:string"/>
+                            <xs:element minOccurs="0" name="denominacion" type="xs:string"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="PersonaUbicacionDTO">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element minOccurs="0" name="claveAdmonLocal" type="xs:int"/>
+                            <xs:element minOccurs="0" name="admonLocal" type="xs:string"/>
+                            <xs:element minOccurs="0" name="calle" type="xs:string"/>
+                            <xs:element minOccurs="0" name="numeroExt" type="xs:string"/>
+                            <xs:element minOccurs="0" name="numeroInt" type="xs:string"/>
+                            <xs:element minOccurs="0" name="claveColonia" type="xs:string"/>
+                            <xs:element minOccurs="0" name="colonia" type="xs:string"/>
+                            <xs:element minOccurs="0" name="claveLocalidad" type="xs:string"/>
+                            <xs:element minOccurs="0" name="localidad" type="xs:string"/>
+                            <xs:element minOccurs="0" name="entreCalle1" type="xs:string"/>
+                            <xs:element minOccurs="0" name="entreCalle2" type="xs:string"/>
+                            <xs:element minOccurs="0" name="refAdicionales" type="xs:string"/>
+                            <xs:element minOccurs="0" name="tipoInmueble" type="xs:string"/>
+                            <xs:element minOccurs="0" name="descInmueble" type="xs:string"/>
+                            <xs:element minOccurs="0" name="tipoVialidad" type="xs:string"/>
+                            <xs:element minOccurs="0" name="descVialidad" type="xs:string"/>
+                            <xs:element minOccurs="0" name="codigoPostal" type="xs:string"/>
+                            <xs:element minOccurs="0" name="claveMunicipio" type="xs:string"/>
+                            <xs:element minOccurs="0" name="municipio" type="xs:string"/>
+                            <xs:element minOccurs="0" name="claveEntFed" type="xs:string"/>
+                            <xs:element minOccurs="0" name="entFed" type="xs:string"/>
+                            <xs:element minOccurs="0" name="telefono1" type="xs:string"/>
+                            <xs:element minOccurs="0" name="tipoTelefono1" type="xs:string"/>
+                            <xs:element minOccurs="0" name="telefono2" type="xs:string"/>
+                            <xs:element minOccurs="0" name="tipoTelefono2" type="xs:string"/>
+                            <xs:element minOccurs="0" name="email" type="xs:string"/>
+                            <xs:element minOccurs="0" name="fechaAltaDomicilio" type="xs:dateTime" nillable="true"/>
+                            <xs:element minOccurs="0" name="pais" type="xs:string" nillable="true"/>
+                            <xs:element minOccurs="0" name="caracDomicilio" type="xs:string"/>
+                            <xs:element minOccurs="0" name="centroRegional" type="xs:string"/>
+                            <xs:element minOccurs="0" name="descCentroRegional" type="xs:string"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 

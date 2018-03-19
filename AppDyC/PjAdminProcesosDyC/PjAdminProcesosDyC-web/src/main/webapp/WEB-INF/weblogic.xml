@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<weblogic-web-app xmlns="http://xmlns.oracle.com/weblogic/weblogic-web-app" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.oracle.com/weblogic/weblogic-web-app http://xmlns.oracle.com/weblogic/weblogic-web-app/1.1/weblogic-web-app.xsd">
+  <container-descriptor>
+    <prefer-web-inf-classes>true</prefer-web-inf-classes>
+  </container-descriptor>
+  <context-root>/app/PE/devoluciones/dycAdmin</context-root>
+  <session-descriptor>
+    <cookie-path>/</cookie-path>
+    <persistent-store-type>replicated_if_clustered</persistent-store-type>
+  </session-descriptor>
+  <!-- CONF COHERENCE -->
+  <session-descriptor>
+    <cookie-path>/</cookie-path>
+  </session-descriptor>
+  <!--Descomenta solo cuando se genere el WAR para pruebas de coherence-->
+    <library-ref>
+            <library-name>coherence-web-spi</library-name>
+    </library-ref>
+    <coherence-cluster-ref>
+            <coherence-cluster-name>CoherenceCluster</coherence-cluster-name>
+    </coherence-cluster-ref>
+</weblogic-web-app>

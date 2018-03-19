@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+        >
+    <h:form id="frmEnviarAprob" enctype="multipart/form-data">
+        <p:dialog id="dlgEnviarAprob" dynamic="false" header="Enviar a aprobación" widgetVar="dlgEnviarAprob"
+                  modal="true" style="max-width: 680px; min-height: 150px;" resizable="true" closable="true" draggable="true" >
+
+            <div style="text-align:left;width:360px;height:20px;font-size:11px;">
+                <p:outputLabel value="#{msgValidacion.asdCamposRequeridos}" style="color:red;"/>
+            </div>
+
+            <p:panelGrid id="pnlEnviarAprob" style="width:100%;" styleClass="gmxNoborde">
+                <p:row>
+                    <p:column colspan="2">
+                        <p:messages id="msgAResol" showDetail="false" closable="true"/>
+                    </p:column>
+                </p:row>
+                <p:row rendered="#{admCasosComp.estatus == 'D' || admCasosComp.estatus == 'E'}">
+                    <p:column>
+                        <h:outputLabel value="#{msgValidacion.acc00052}"/>
+                        <h:outputLabel value="*" style="color:red; width: 10px;"/>
+                    </p:column>
+                    <p:column>
+                        <p:fileUpload id="hddFileCarga" fileUploadListener="#{admCasosComp.validaArchivoJSF}"
+                                      rendered="#{admCasosComp.estatus == 'D'}" mode="advanced" auto="true"
+                                      oncomplete="statusDialog.hide();" required="true" styleClass="gmxNoborde"
+                                      label="Examinar..." update="pnlEnviarAprob"/>
+                        <h:outputLabel id="lblArchivo" value="#{admCasosComp.nombreArchivo}" style="font-weight: bold"
+                                       rendered="#{admCasosComp.estatus == 'E'}"/>
+                    </p:column>
+                </p:row>
+                <p:row rendered="#{admCasosComp.estatus == 'E'}">
+                    <p:column>
+                        <h:outputLabel value="#{msgValidacion.acc00049}"/>
+                        <h:outputLabel value="*" style="color:red; width: 10px;"/>
+                    </p:column>
+                    <p:column>
+                        <p:selectOneMenu id="numAprobador" value="#{admCasosComp.idNumAprob}" required="true"
+                                         label="Jefe superior" validatorMessage="#{msgValidacion.acc00061}"
+                                         requiredMessage="#{msgValidacion.acc00061}">
+                            <f:selectItem itemValue="" itemLabel="-- Seleccione una opción --"/>
+                            <f:selectItems value="#{admCasosComp.aprobadores}" var="aprob" itemValue="#{aprob.idLong}"
+                                           itemLabel="#{aprob.descripcion}"/>
+                        </p:selectOneMenu>
+                        <p:message for="numAprobador" display="text"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column style="text-align:left;" colspan="2">
+                        <h:inputHidden value="#{aprobarResolucionComp.claveResolucion}" id="claveResolucion"/>
+                        <p:button id="btnCancelarResol" value="#{msgValidacion.Cancelar}" styleClass="gmxNegativo"
+                                  outcome="bandejaCompensaciones" onclick="dlgEnviarAprob.hide();"/>
+                        <p:commandButton id="btnSiguienteDlg" value="#{msgValidacion.acc00062}"
+                                         actionListener="#{admCasosComp.vistaCargaArchivo}" process="@this"
+                                         oncomplete="return false;" update="pnlEnviarAprob"
+                                         rendered="#{admCasosComp.estatus == 'C'}"/>
+                        
+                        <!-- onsuccess="if(!args.validationFailed) dlgEnviarAprob.hide()" -->
+                        
+                        <p:commandButton id="btnAceptarResol" value="#{msgValidacion.asBtnAprobar}"
+                                         widgetVar="btnAceptarResol" styleClass="gmxPositivo"
+                                         rendered="#{admCasosComp.estatus == 'E' and admCasosComp.accButton == 'C'}"
+                                         action="#{emitirCartaContMB.enviarAAprobacion}"
+                                         process="pnlEnviarAprob" update="msgAResol"/>
+                        <p:commandButton id="btnAceptarRequerir" value="#{msgValidacion.asBtnAprobar}"
+                                         rendered="#{admCasosComp.estatus == 'E' and admCasosComp.accButton == 'R'}"
+                                         action="#{pEmitirReqCCMB.enviarAAprobacion}" styleClass="gmxPositivo"
+                                         process="pnlEnviarAprob" update="msgAResol"/>
+                        <p:commandButton id="btnAceptarLiquida" value="#{msgValidacion.asBtnAprobar}"
+                                         rendered="#{admCasosComp.estatus == 'E' and admCasosComp.accButton == 'L'}"
+                                         action="#{emitirLiquidacionMB.enviarAAprobacion}" styleClass="gmxPositivo"
+                                         process="pnlEnviarAprob, :frmLiquida" update="msgAResol"/>
+                        <p:commandButton id="btnAceptarProv" value="#{msgValidacion.asBtnAprobar}"
+                                         rendered="#{admCasosComp.estatus == 'E' and admCasosComp.accButton == 'F'}"
+                                         action="#{facturasProvCCMB.enviarAAprobacion}" styleClass="gmxPositivo"
+                                         process="pnlEnviarAprob" update="msgAResol, :frmFacturas"/>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+        </p:dialog>
+    </h:form>
+</f:view>

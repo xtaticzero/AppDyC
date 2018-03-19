@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<wsdl:definitions name="IdCInterno" targetNamespace="http://www.sat.gob.mx/IdCInterno/wsdl" xmlns:tns="http://www.sat.gob.mx/IdCInterno/wsdl" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msg="http://www.sat.gob.mx/IdCInterno/messages" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://www.sat.gob.mx/IdCInterno/messages" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.sat.gob.mx/IdCInterno/messages" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <xsd:element name="datosEntrada">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="rfc" type="xsd:string"/>
+				<xsd:element minOccurs="0" name="curp" type="xsd:string"/>
+				<xsd:element minOccurs="0" name="nit" type="xsd:string"/>
+				<xsd:element maxOccurs="unbounded" minOccurs="0" name="secciones" type="xsd:string"/>
+				<xsd:element maxOccurs="unbounded" minOccurs="0" name="seccionesHistoricas" type="xsd:string"/>
+				<xsd:element minOccurs="0" name="id_sucursal" type="xsd:string"/>
+				<xsd:element name="usuario" type="xsd:string"/>
+				<xsd:element name="password" type="xsd:string"/>
+				<!-- Datos de entrada adicionales -->
+				<xsd:element maxOccurs="unbounded" minOccurs="0" name="t_relacion" type="xsd:string"/>
+				<xsd:element minOccurs="0" name="t_ubicacion" type="xsd:string"/>
+				<xsd:element maxOccurs="1" minOccurs="0" name="ef_ubic_especifica" type="string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+   <xsd:element name="IdCInterno">
+		<xsd:complexType>
+			<xsd:sequence>
+			   <xsd:element minOccurs="0" name="RFC_Original" type="xsd:string"/>
+			   <xsd:element minOccurs="0" name="RFC_Vigente" type="xsd:string"/>
+			   <xsd:element minOccurs="0" name="RFC_Solicitado" type="xsd:string"/>
+			   <xsd:element minOccurs="0" name="boid" type="xsd:string"/>
+			   <xsd:element minOccurs="0" name="personid" type="xsd:string"/>
+			   <xsd:element minOccurs="0" name="Identificacion" type="tns:identificacion"/>
+			   <xsd:element minOccurs="0" name="Ubicacion" type="tns:ubicacion"/>
+			   <xsd:element maxOccurs="unbounded" minOccurs="0" name="Obligaciones" type="tns:obligacion"/>
+			   <xsd:element maxOccurs="unbounded" minOccurs="0" name="Regimenes" type="tns:regimen"/>
+			   <xsd:element maxOccurs="unbounded" minOccurs="0" name="Roles" type="tns:rol"/>
+			   <xsd:element maxOccurs="unbounded" minOccurs="0" name="Actividades" type="tns:actividad"/>
+			   <xsd:element maxOccurs="unbounded" minOccurs="0" name="Rep_Legales" type="tns:rep_legal"/>
+			   <xsd:element maxOccurs="unbounded" minOccurs="0" name="Sucursales" type="tns:sucursal"/>
+			   <xsd:element minOccurs="0" name="Mensajes" type="tns:mensajes"/>
+			   <!-- Nuevos Atributos -->
+			   <xsd:element maxOccurs="unbounded" minOccurs="0" name="GrupoEmpresas" type="tns:grupoEmpresa"/>		
+			   <xsd:element maxOccurs="unbounded" minOccurs="0" name="Relaciones" type="tns:relacion"/>
+			   <xsd:element maxOccurs="unbounded" minOccurs="0" name="UbicacionEspecifica" type="tns:ubicacion"/>
+			   <xsd:element maxOccurs="unbounded" minOccurs="0" name="RFCHistoricos" type="tns:rfcHistorico"/>
+			   <!-- Nuevos Atributos PI-->
+			   <xsd:element maxOccurs="unbounded" minOccurs="0" name="Patentes" type="tns:patente"/>
+			   <xsd:element maxOccurs="unbounded" minOccurs="0" name="Sectores" type="tns:sector"/>
+
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+		 <xsd:complexType name="mensajes">
+		  <xsd:sequence>
+				<xsd:element maxOccurs="unbounded" minOccurs="0" name="aviso" type="xsd:string"/>
+				<xsd:element maxOccurs="unbounded" minOccurs="0" name="error" type="xsd:string"/>
+		  </xsd:sequence>
+		 </xsd:complexType>
+		 <xsd:complexType name="identificacion">
+		  <xsd:sequence>
+				<xsd:element minOccurs="0" name="t_persona" type="xsd:string"/>
+				<xsd:element minOccurs="0" name="c_Segmento" type="xsd:string"/>
+				<xsd:element minOccurs="0" name="d_Segmento" type="xsd:string"/>
+				<xsd:element minOccurs="0" name="CURP" type="xsd:string"/>
+				<xsd:element name="NIT" type="xsd:string"/>
+				<xsd:element minOccurs="0" name="Razon_Soc" type="xsd:string"/>
+				<xsd:element minOccurs="0" name="t_Sociedad" type="xsd:string"/>
+				<xsd:element minOccurs="0" name="Nombre" type="xsd:string"/>
+				<xsd:element minOccurs="0" name="Ap_Paterno" type="xsd:string"/>
+				<xsd:element minOccurs="0" name="Ap_Materno" type="xsd:string"/>
+				<xsd:element minOccurs="0" name="Nom_Comercial" type="xsd:string"/>
+				<xsd:element minOccurs="0" name="f_Nacimiento" type="xsd:string"/>
+				<xsd:element minOccurs="0" name="f_Constitucion" type="xsd:string"/>
+				<xsd:element minOccurs="0" name="Nacionalidad" type="xsd:string"/>
+				<xsd:element name="f_Ini_Opers" type="xsd:string"/>
+				<xsd:element name="c_Sit_Cont" type="xsd:string"/>
+				<xsd:element name="c_det_Sit_Cont" type="xsd:string"/>
+				<xsd:element name="d_Sit_Cont" type="xsd:string"/>
+				<xsd:element name="f_Sit_Cont" type="xsd:string"/>
+				<xsd:element name="c_Sit_Dom" type="xsd:string"/>
+				<xsd:element name="d_Sit_Dom" type="xsd:string"/>
+				<xsd:element name="c_Sit_Cont_Dom" type="xsd:string"/>
+				<xsd:element name="d_Sit_Cont_Dom" type="xsd:string"/>
+				<xsd:element name="Pais_Origen" type="xsd:string"/>
+				<xsd:element name="DF_Tipo" type="xsd:string"/>
+				<xsd:element name="DF_Folio" type="xsd:string"/>
+				<xsd:element name="DF_F_Inicio" type="xsd:string"/>
+				<xsd:element name="DF_F_Fin" type="xsd:string"/>
+				<!-- email contribuyente -->
+				<xsd:element minOccurs="0" name="email" type="xsd:string"/>
+		  </xsd:sequence>
+		 </xsd:complexType>
+
+   		<xsd:complexType name="ubicacion">
+			<xsd:sequence>
+			    <xsd:element minOccurs="0" name="n_Establecimiento" type="xsd:string"/>
+				<xsd:element name="c_ALR" type="xsd:string"/>
+				<xsd:element name="d_ALR" type="xsd:string"/>
+				<xsd:element name="Calle" type="xsd:string"/>
+				<xsd:element name="n_Exterior" type="xsd:string"/>
+				<xsd:element name="n_Interior" type="xsd:string"/>
+				<xsd:element name="c_Colonia" type="xsd:string"/>
+				<xsd:element name="d_Colonia" type="xsd:string"/>
+				<xsd:element name="c_Localidad" type="xsd:string"/>
+				<xsd:element name="d_Localidad" type="xsd:string"/>
+				<xsd:element name="d_EntreCalle1" type="xsd:string"/>
+				<xsd:element name="d_EntreCalle2" type="xsd:string"/>
+				<xsd:element name="d_Referencia" type="xsd:string"/>
+				<xsd:element name="t_Inmueble" type="xsd:string"/>
+				<xsd:element name="d_Inmueble" type="xsd:string"/>
+				<xsd:element name="t_Vialidad" type="xsd:string"/>
+				<xsd:element name="d_Vialidad" type="xsd:string"/>
+				<xsd:element name="cp" type="xsd:string"/>
+				<xsd:element name="c_Municipio" type="xsd:string"/>
+				<xsd:element name="d_Municipio" type="xsd:string"/>
+				<xsd:element name="c_Ent_Fed" type="xsd:string"/>
+				<xsd:element name="d_Ent_Fed" type="xsd:string"/>
+				<xsd:element name="Telefono1" type="xsd:string"/>
+				<xsd:element name="t_Tel1" type="xsd:string"/>
+				<xsd:element name="Telefono2" type="xsd:string"/>
+				<xsd:element name="t_Tel2" type="xsd:string"/>
+				<xsd:element name="Email" type="xsd:string"/>
+				<xsd:element name="f_Alta_Dom" type="xsd:string"/>
+				<xsd:element name="Pais_Residencia" type="xsd:string"/>
+				
+				<!-- caracteristicas del domicilio -->
+				<xsd:element minOccurs="0" name="caract_domicilio" type="xsd:string"/>
+				<!-- crh ubicacion -->
+				<xsd:element minOccurs="0" name="c_CRH" type="xsd:string"/>
+				<xsd:element minOccurs="0" name="d_CRH" type="xsd:string"/>
+   			</xsd:sequence>
+		</xsd:complexType>
+
+   		<xsd:complexType name="obligacion">
+			<xsd:sequence>
+				<xsd:element name="c_Obligacion" type="xsd:string"/>
+				<xsd:element name="d_Obligacion" type="xsd:string"/>
+				<xsd:element name="f_Alta_Oblig" type="xsd:string"/>
+				<xsd:element name="f_Baja_Oblig" type="xsd:string"/>
+				<xsd:element name="f_Efec_A_Oblig" type="xsd:string"/>
+				<xsd:element name="f_Efec_B_Oblig" type="xsd:string"/>
+				<xsd:element minOccurs="0" name="f_ini_Legal" type="xsd:string"/>
+				<xsd:element minOccurs="0" name="f_fin_Legal" type="xsd:string"/>
+				<xsd:element minOccurs="0" name="t_Contribucion" type="xsd:string"/>
+				<xsd:element minOccurs="0" name="cve_pago" type="xsd:string"/>
+				<xsd:element minOccurs="0" name="d_oblig_lc" type="xsd:string"/>
+   			</xsd:sequence>
+		</xsd:complexType>
+
+   		<xsd:complexType name="regimen">
+			<xsd:sequence>
+				<xsd:element name="c_Regimen" type="xsd:string"/>
+				<xsd:element name="d_Regimen" type="xsd:string"/>
+				<xsd:element name="f_Alta_Reg" type="xsd:string"/>
+				<xsd:element name="f_Baja_Reg" type="xsd:string"/>
+				<xsd:element name="f_Efec_A_Reg" type="xsd:string"/>
+				<xsd:element name="f_Efec_B_Reg" type="xsd:string"/>
+   			</xsd:sequence>
+		</xsd:complexType>
+
+
+   		<xsd:complexType name="rol">
+			<xsd:sequence>
+				<xsd:element minOccurs="0" name="c_Rol" type="xsd:string"/>
+				<xsd:element minOccurs="0" name="d_Rol" type="xsd:string"/>
+				<xsd:element minOccurs="0" name="d_Tipo" type="xsd:string"/>
+				<xsd:element minOccurs="0" name="f_Alta_Rol" type="xsd:string"/>
+				<xsd:element minOccurs="0" name="f_Baja_Rol" type="xsd:string"/>				
+			</xsd:sequence>
+		</xsd:complexType>
+
+
+
+
+   		<xsd:complexType name="actividad">
+			<xsd:sequence>
+				<xsd:element name="c_Actividad" type="xsd:string"/>
+				<xsd:element name="d_Actividad" type="xsd:string"/>
+				<xsd:element name="Orden" type="xsd:string"/>
+				<xsd:element name="Porcentaje" type="xsd:string"/>
+				<xsd:element name="f_Alta_Act" type="xsd:string"/>
+				<xsd:element name="f_Baja_Act" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+
+   		<xsd:complexType name="rep_legal">
+			<xsd:sequence>
+				<xsd:element name="RFC" type="xsd:string"/>
+				<xsd:element name="Nombre" type="xsd:string"/>
+				<xsd:element name="Ap_Paterno" type="xsd:string"/>
+				<xsd:element name="Ap_Materno" type="xsd:string"/>
+				<xsd:element name="Tipo" type="xsd:string"/>
+				<xsd:element name="CURP" type="xsd:string"/>
+				<xsd:element name="f_Inicio" type="xsd:string"/>
+				<xsd:element name="f_Fin" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+
+   		<xsd:complexType name="sucursal">
+			<xsd:sequence>
+				<xsd:element name="n_Establecimiento" type="xsd:string"/>
+				<xsd:element name="c_ALR" type="xsd:string"/>
+				<xsd:element name="d_ALR" type="xsd:string"/>
+				<xsd:element name="Calle" type="xsd:string"/>
+				<xsd:element name="n_Exterior" type="xsd:string"/>
+				<xsd:element name="n_Interior" type="xsd:string"/>
+				<xsd:element name="c_Colonia" type="xsd:string"/>
+				<xsd:element name="d_Colonia" type="xsd:string"/>
+				<xsd:element name="c_Localidad" type="xsd:string"/>
+				<xsd:element name="d_Localidad" type="xsd:string"/>
+				<xsd:element name="d_EntreCalle1" type="xsd:string"/>
+				<xsd:element name="d_EntreCalle2" type="xsd:string"/>
+				<xsd:element name="d_Referencia" type="xsd:string"/>
+				<xsd:element name="t_Vialidad" type="xsd:string"/>
+				<xsd:element name="d_Vialidad" type="xsd:string"/>
+				<xsd:element name="t_Inmueble" type="xsd:string"/>
+				<xsd:element name="d_Inmueble" type="xsd:string"/>
+				<xsd:element name="cp" type="xsd:string"/>
+				<xsd:element name="c_Municipio" type="xsd:string"/>
+				<xsd:element name="d_Municipio" type="xsd:string"/>
+				<xsd:element name="c_Ent_Fed" type="xsd:string"/>
+				<xsd:element name="d_Ent_Fed" type="xsd:string"/>
+				<xsd:element name="Telefono1" type="xsd:string"/>
+				<xsd:element name="t_Tel1" type="xsd:string"/>
+				<xsd:element name="Telefono2" type="xsd:string"/>
+				<xsd:element name="t_Tel2" type="xsd:string"/>
+				<xsd:element name="email" type="xsd:string"/>
+				<xsd:element name="c_Sit_Suc" type="xsd:string"/>
+				<xsd:element name="d_Sit_Suc" type="xsd:string"/>
+				<xsd:element name="c_Sit_Cont_Suc" type="xsd:string"/>
+				<xsd:element name="d_Sit_Cont_Suc" type="xsd:string"/>
+				<xsd:element name="f_Alta_Suc" type="xsd:string"/>
+				<xsd:element name="Pais_Residencia" type="xsd:string"/>
+				
+				<!-- caracteristicas del domicilio -->
+				<xsd:element minOccurs="0" name="caract_domicilio" type="xsd:string"/>
+				<!-- crh sucursal -->
+				<xsd:element minOccurs="0" name="c_CRH" type="xsd:string"/>
+				<xsd:element minOccurs="0" name="d_CRH" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	
+		<!-- Grupo Empresa -->
+		<xsd:complexType name="grupoEmpresa">
+			<xsd:sequence>
+				<xsd:element name="rfc_soc_controladora" type="xsd:string"/>
+				<xsd:element name="nom_soc_controladora" type="xsd:string"/>
+				<xsd:element name="rfc_soc_controlada" type="xsd:string"/>
+				<xsd:element name="nom_soc_controlada" type="xsd:string"/>
+				<xsd:element name="num_gpo_consol" type="xsd:string"/>
+				<xsd:element name="f_cons_soc_control" type="xsd:string"/>	
+				<xsd:element name="f_inc_soc_control" type="xsd:string"/>										
+			</xsd:sequence>
+		</xsd:complexType>
+		
+		<!-- Relaciones -->
+		<xsd:complexType name="relacion">
+			<xsd:sequence>
+				<xsd:element name="t_Relacion" type="xsd:string"/>				
+				<xsd:element name="f_inicio_rfc_Vig" type="xsd:string"/>				
+				<xsd:element name="rfc_Relacionado" type="xsd:string"/>
+				<xsd:element name="nombre_Relacionado" type="xsd:string"/>
+				<xsd:element name="Ap_Paterno_Relacionado" type="xsd:string"/>
+				<xsd:element name="Ap_Materno_Relacionado" type="xsd:string"/>				
+				<xsd:element name="Razon_Soc_Relacionado" type="xsd:string"/>
+				<xsd:element name="t_Soc_Relacionado" type="xsd:string"/>		
+				<xsd:element name="f_inicio_Relacionado" type="xsd:string"/>	
+				<xsd:element name="f_fin_Relacionado" type="xsd:string"/>	
+				<xsd:element name="c_Rol_Relacionante" type="xsd:string"/>	
+				<xsd:element name="d_Rol_Relacionante" type="xsd:string"/>				
+				<xsd:element name="c_Rol_Relacionado" type="xsd:string"/>
+				<xsd:element name="d_Rol_Relacionado" type="xsd:string"/>				
+			</xsd:sequence>
+		</xsd:complexType>
+		<xsd:complexType name="rfcHistorico">
+				<xsd:sequence>
+					<xsd:element maxOccurs="unbounded" minOccurs="0" name="rfc_anterior" type="xsd:string"/>
+					<xsd:element maxOccurs="unbounded" minOccurs="0" name="nombre_anterior" type="xsd:string"/>
+				</xsd:sequence>
+				<xsd:attribute name="rfc" type="xsd:string" use="optional"/>
+				<xsd:attribute name="seccion" type="xsd:string" use="optional"/>
+		</xsd:complexType>
+
+	<xsd:complexType name="patente">
+			<xsd:sequence>
+				<xsd:element name="patente" type="xsd:string"/>				
+				<xsd:element name="rfc_agente" type="xsd:string"/>				
+				<xsd:element name="n_agente" type="xsd:string"/>
+				<xsd:element name="f_ini_vigencia" type="xsd:string"/>
+				<xsd:element name="f_fin_vigencia" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+
+	<xsd:complexType name="sector">
+			<xsd:sequence>
+				<xsd:element name="sector_especifico" type="xsd:string"/>				
+				<xsd:element name="nombre_sector" type="xsd:string"/>				
+				<xsd:element name="f_ini_vigencia" type="xsd:string"/>
+				<xsd:element name="f_fin_vigencia" type="xsd:string"/>
+			</xsd:sequence>
+		</xsd:complexType>
+
+
+ </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IdCInterno">
+    <wsdl:part name="parameters" element="msg:IdCInterno">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="datosEntrada">
+    <wsdl:part name="parameters" element="msg:datosEntrada">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="IdCInterno">
+    <wsdl:operation name="getIdCInterno">
+      <wsdl:input message="tns:datosEntrada">
+    </wsdl:input>
+      <wsdl:output message="tns:IdCInterno">
+    </wsdl:output>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="IdCInternoSOAP" type="tns:IdCInterno">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="getIdCInterno">
+      <soap:operation soapAction="http://www.sat.gob.mx/IdCInterno/wsdl/getIdCInterno"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="IdCInterno">
+    <wsdl:port name="IdCInternoSOAP" binding="tns:IdCInternoSOAP">
+      <soap:address location="http://172.20.16.133:9080/axis2/services/IdCInterno"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

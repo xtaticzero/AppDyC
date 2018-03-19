@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xs:schema xmlns:tns="http://ws.dyc.mat.sat.gob.mx/" 
+           xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+           xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+           version="1.0" 
+           targetNamespace="http://ws.dyc.mat.sat.gob.mx/">
+
+    <xsd:element name="consultarSolCompIRSDevAut" >
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="BusquedaTramitesManuales" type="tns:BusquedaTramitesManuales" maxOccurs="1" minOccurs="1"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="consultarSolCompIRSDevAutResponse">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="NotificacionConsulSolIRS" type="tns:NotificacionConsulSolIRS" maxOccurs="1" minOccurs="1"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>    
+
+    <xsd:complexType name="BusquedaTramitesManuales">
+       <xsd:sequence>
+            <xsd:element name="DatosContribuyente" type="tns:DatosContribuyente"/>
+            <xsd:element name="DatosICEP" type="tns:DatosICEP"/>
+        </xsd:sequence>
+    </xsd:complexType>
+            
+    <xsd:complexType name="NotificacionConsulSolIRS">
+        <xsd:sequence>
+            <xsd:element name="DatosContribuyente" type="tns:DatosContribuyente"/>
+            <xsd:element name="DatosRegistroMATDYC" type="tns:DatosRegistroMATDYC"/>
+            <xsd:element name="DatosSolicitud" type="tns:DatosSolicitud"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="DatosContribuyente">
+        <xsd:sequence>
+            <xsd:element name="RFC" type="xsd:string"/>
+            <xsd:element name="nombre" type="xsd:string" nillable="true"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="DatosICEP">
+        <xsd:sequence>
+            <xsd:element name="impuesto" type="xsd:integer"/>
+            <xsd:element name="concepto" type="xsd:integer"/>
+            <xsd:element name="ejercicio" type="xsd:integer"/>
+            <xsd:element name="periodo" type="xsd:string"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="DatosRegistroMATDYC">
+        <xsd:sequence>
+            <xsd:element name="folioMATDYC" type="xsd:string" nillable="true"/>
+            <xsd:element name="IDICEP" type="xsd:integer" nillable="true"/>
+            <xsd:element name="saldoICEP" type="xsd:decimal" nillable="true"/>            
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="DatosSolicitud">
+        <xsd:sequence>
+            <xsd:element name="estadoRegistro" type="xsd:integer"/>
+            <xsd:element name="motivo" type="xsd:integer" nillable="true"/>
+        </xsd:sequence>
+    </xsd:complexType>
+</xs:schema>

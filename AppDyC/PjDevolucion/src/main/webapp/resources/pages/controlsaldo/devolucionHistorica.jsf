@@ -1,0 +1,190 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    
+    <h:form id="formDevolucion2">
+    <p:dialog   id="dlgDetalleDevolucion" header="Agregar devolución histórica" draggable="true" resizable="false"
+                widgetVar="wDlgDetalleDevolucion" modal="true" closable="true" width="650px" visible="#{devolucionManualMB.mostrarDlg}">
+
+            <p:messages id="msgs" showDetail="true" autoUpdate="true" closable="true" globalOnly="true"/>
+
+            <p style="color: Red;">Los datos con * son obligatorios</p>
+            <p:panelGrid id="pnlDevolucionManual" columns="2">
+                <p:row>
+                    <h:outputText value="Número de control:"/>
+                    <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                </p:row>
+                <p:row>
+                    <p:inputText    id="idDevNumControl" value="#{devolucionManualMB.numControl}" 
+                                    maxlength="14" style="width:190px;" 
+                                    styleClass="upperCase" required="true"
+                                    requiredMessage="El número de control es requerido"
+                                    disabled="#{devolucionManualMB.estadoPantalla == 'captDatosFinales'}">
+                    </p:inputText>
+                    <p:message id="msgDevNumControl" for="idDevNumControl" display="text"/>
+                </p:row>
+
+                <p:row>
+                    <h:outputText value="Fecha de resolucion:"/>
+                    <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                </p:row>
+                <p:row>
+                    <p:calendar value="#{devolucionManualMB.fechaResolucion}" 
+                                maxdate="#{now}" mindate="#{devolucionManualMB.fechaMinResolucion}" id="dateDevRes" style="width: 300px"
+                                navigator="true" readonlyInput="true" showOn="button" pattern="dd/MM/yyyy" required="true"
+                                requiredMessage="La fecha de resolución es requerida" locale="es"
+                                disabled="#{devolucionManualMB.estadoPantalla == 'captDatosFinales'}" yearRange="c-12:c+12"/>
+                    <p:message id="msgDateDevRes" for="dateDevRes" display="text"/>                    
+                </p:row>
+                
+                <p:row>
+                    <h:outputText value="Importe solicitado:"/>
+                    <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                </p:row>
+                <p:row>
+                    <pe:inputNumber id="inumImporteSolicitado" style="width:190px;"
+                                    value="#{devolucionManualMB.importeSolicitado}" 
+                                    symbol="$ " maxValue="9999999999.99" required="true"
+                                    requiredMessage="#{msgValidacion.mcRequerido}"
+                                    disabled="#{devolucionManualMB.estadoPantalla == 'captDatosFinales'}"/>
+                    <p:message id="msgInumImporteSolicitado" for="inumImporteSolicitado" display="text"/>
+                </p:row>
+
+                <p:row>
+                    <h:outputText value="Tipo de resolución:"/> 
+                    <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                </p:row>
+                <p:row>
+                    <p:selectOneMenu id="cmbResDevolucion"
+                                     value="#{devolucionManualMB.idTipoResActiva}"
+                                     style="width:200px;" 
+                                     required="true"
+                                     requiredMessage="#{msgValidacion.mcRequerido}"
+                                     disabled="#{devolucionManualMB.estadoPantalla == 'captDatosFinales'}">
+                        <f:selectItem itemLabel="#{msgValidacion.comboSeleccion}" itemValue=""/>
+                        <f:selectItems value="#{devolucionManualMB.tiposResolucion}" var="resDevolucion"
+                                       itemLabel="#{resDevolucion.descripcion}"
+                                       itemValue="#{resDevolucion.id}"/>
+                    </p:selectOneMenu>
+                    <p:message id="msgCmbResDevolucion" for="cmbResDevolucion" display="text"/>
+                </p:row>
+
+                <p:row rendered="#{devolucionManualMB.idTipoResActiva == 1 || devolucionManualMB.idTipoResActiva == 2 || devolucionManualMB.idTipoResActiva == 3}">
+                    <h:outputText value="Importe autorizado:"/>
+                    <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                </p:row>
+                <p:row rendered="#{devolucionManualMB.idTipoResActiva == 1 || devolucionManualMB.idTipoResActiva == 2 || devolucionManualMB.idTipoResActiva == 3}">
+                    <pe:inputNumber id="impAutorizadoDev" style="width:190px;"
+                                    value="#{devolucionManualMB.importeAutorizado}"
+                                    symbol="$ " minValue="0" maxValue="9999999999.99" 
+                                    requiredMessage="#{msgValidacion.mcRequerido}"
+                                    readonly="#{devolucionManualMB.idTipoResActiva == 1}">
+                        <p:ajax update="pnlDevolucionManual" event="change" process="pnlDevolucionManual" listener="#{devolucionManualMB.manejarChangeTxtImporteAutorizado}"></p:ajax>
+                    </pe:inputNumber>
+                    <p:message id="msgImpAutorizadoDev" for="impAutorizadoDev" display="text"/>
+                </p:row>
+                
+                <p:row rendered="#{devolucionManualMB.idTipoResActiva == 2 || devolucionManualMB.idTipoResActiva == 4}">
+                    <h:outputText value="Importe Negado:"/>
+                    <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                </p:row>
+                <p:row rendered="#{devolucionManualMB.idTipoResActiva == 2 || devolucionManualMB.idTipoResActiva == 4}">
+                    <pe:inputNumber id="inumImporteNegado" style="width:190px;"
+                                    symbol="$ "
+                                    maxValue="9999999999.99" 
+                                    readonly="true"
+                                    value="#{devolucionManualMB.importeNegado}"/>
+                    <p:message id="msgInumImporteNegado" for="inumImporteNegado" display="text"/>
+                </p:row>
+
+                <p:row rendered="#{devolucionManualMB.idTipoResActiva == 1 || devolucionManualMB.idTipoResActiva == 2 || devolucionManualMB.idTipoResActiva == 3}">
+                    <h:outputText value="Actualización:" rendered="true"/>
+                    <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                </p:row>
+                <p:row rendered="#{devolucionManualMB.idTipoResActiva == 1 || devolucionManualMB.idTipoResActiva == 2 || devolucionManualMB.idTipoResActiva == 3}">
+                    <pe:inputNumber id="inumActualizacion" style="width:190px;"
+                                    value="#{devolucionManualMB.actualizacion}"
+                                    symbol="$ "
+                                    maxValue="9999999999.99" 
+                                    requiredMessage="#{msgValidacion.mcRequerido}" rendered="true">
+                        <p:ajax update="pnlDevolucionManual" event="change" process="pnlDevolucionManual" listener="#{devolucionManualMB.calcularImpNetoDev}"></p:ajax>
+                    </pe:inputNumber>
+                    <p:message id="msgInumActualizacion" for="inumActualizacion" display="text"/>
+                </p:row>
+
+                <p:row rendered="#{devolucionManualMB.idTipoResActiva == 1 || devolucionManualMB.idTipoResActiva == 2 || devolucionManualMB.idTipoResActiva == 3}">
+                    <h:outputText value="Intereses:" />
+                    <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                </p:row>
+                <p:row rendered="#{devolucionManualMB.idTipoResActiva == 1 || devolucionManualMB.idTipoResActiva == 2 || devolucionManualMB.idTipoResActiva == 3}">
+                    <pe:inputNumber id="impInteresDev" style="width:190px;"
+                                    value="#{devolucionManualMB.intereses}"
+                                    symbol="$ "
+                                    maxValue="9999999999.99" 
+                                    required="false"
+                                    requiredMessage="#{msgValidacion.mcRequerido}">
+                        <p:ajax update="pnlDevolucionManual" event="change" process="pnlDevolucionManual" listener="#{devolucionManualMB.calcularImpNetoDev}"></p:ajax>
+                    </pe:inputNumber>
+                    <p:message id="msgImpInteresDev" for="impInteresDev" display="text"/>
+                </p:row>
+                
+                <p:row rendered="#{devolucionManualMB.idTipoResActiva == 1 || devolucionManualMB.idTipoResActiva == 2 || devolucionManualMB.idTipoResActiva == 3}">
+                    <h:outputText value="Retención de intereses:" />
+                    <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                </p:row>
+                <p:row rendered="#{devolucionManualMB.idTipoResActiva == 1 || devolucionManualMB.idTipoResActiva == 2 || devolucionManualMB.idTipoResActiva == 3}">
+                    <pe:inputNumber id="inumRetIntereses" style="width:190px;"
+                                    value="#{devolucionManualMB.retIntereses}"
+                                    symbol="$ "
+                                    maxValue="9999999999.99" 
+                                    required="false"
+                                    requiredMessage="#{msgValidacion.mcRequerido}">
+                        <p:ajax update="pnlDevolucionManual" event="change" process="pnlDevolucionManual" listener="#{devolucionManualMB.calcularImpNetoDev}"></p:ajax>
+                    </pe:inputNumber>
+                    <p:message id="msgInumRetIntereses" for="impInteresDev" display="text"/>
+                </p:row>
+                
+                <p:row rendered="#{devolucionManualMB.idTipoResActiva == 1 || devolucionManualMB.idTipoResActiva == 2 || devolucionManualMB.idTipoResActiva == 3}">
+                    <h:outputText value="Compensación de oficio:" />
+                    <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                </p:row>
+                <p:row rendered="#{devolucionManualMB.idTipoResActiva == 1 || devolucionManualMB.idTipoResActiva == 2 || devolucionManualMB.idTipoResActiva == 3}">
+                    <pe:inputNumber id="inumCompOficio" style="width:190px;"
+                                    value="#{devolucionManualMB.importeCompensado}"
+                                    symbol="$ " maxValue="9999999999.99" 
+                                    required="false" requiredMessage="#{msgValidacion.mcRequerido}">
+                        <p:ajax update="pnlDevolucionManual" event="change" process="pnlDevolucionManual" listener="#{devolucionManualMB.calcularImpNetoDev}"></p:ajax>
+                    </pe:inputNumber>
+                    <p:message id="msgInumCompOficio" for="impInteresDev" display="text"/>
+                </p:row>
+
+                <p:row rendered="#{devolucionManualMB.idTipoResActiva == 1 || devolucionManualMB.idTipoResActiva == 2 || devolucionManualMB.idTipoResActiva == 3 || devolucionManualMB.idTipoResActiva == 4}">
+                    <h:outputText value="Importe neto devuelto:"/>
+                </p:row>
+                <p:row rendered="#{devolucionManualMB.idTipoResActiva == 1 || devolucionManualMB.idTipoResActiva == 2 || devolucionManualMB.idTipoResActiva == 3 || devolucionManualMB.idTipoResActiva == 4}">
+                    <pe:inputNumber id="idCalculoImporteTotalAct" readonly="true" style="width:190px;"
+                                    symbol="$ " maxValue="9999999999.99"
+                                    value="#{devolucionManualMB.importeNetoDevolver}"/>
+                </p:row>
+
+                <f:facet name="footer">
+                    <div align="center">
+                        <p:commandButton value="Siguiente"  rendered="#{devolucionManualMB.estadoPantalla == 'captDatosPrim'}"
+                                         update="formDevolucion2"
+                                         actionListener="#{devolucionManualMB.avanzarRegistro}"
+                                         oncomplete="wDlgDetalleDevolucion.show();"/>
+
+                        <p:commandButton value="Aceptar" rendered="#{devolucionManualMB.estadoPantalla == 'captDatosFinales'}"
+                                         update=":formDetalleIcep dlgDetalleDevolucion"
+                                         actionListener="#{devolucionManualMB.insertar}"/>
+
+                        <p:commandButton value="Cancelar" update="formDevolucion2"
+                                         action="#{devolucionManualMB.limpiar}" process="@this" />
+                    </div>
+                </f:facet>
+
+            </p:panelGrid>
+        </p:dialog>
+    </h:form>
+
+</f:view>       

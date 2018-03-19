@@ -1,0 +1,495 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view contentType="text/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:pe="http://primefaces.org/ui/extensions" xmlns:ui="http://java.sun.com/jsf/facelets">
+    <html xmlns="http://www.w3.org/1999/xhtml" xmlns:p="http://primefaces.org/ui">
+        <h:head>
+            <title>emitirResolucion</title>
+            <h:outputStylesheet library="css/" name="formato.css"/>
+            <style type="text/css">
+                .ui-wizard-nav-back {
+                    display: none !important;
+                }
+
+                .ui-radiobutton-icon {
+                    background-position: -64px -144px;
+                }
+
+                .ui-messages-error-icon {
+                    background-image: none;
+                }
+            </style>
+            <script type="text/javascript">
+              function otraCaptura() {
+                  otraCapturaMotivo();
+              };
+            </script>
+        </h:head>
+        <h:body>
+            <h:form id="emitirResolucion" prependId="false">
+                <ui:include src="/resources/pages/common/inactividad.jsf"/>
+                <table id="tabla" border="0" width="100%">
+                    <tr valign="top">
+                        <td align="center">
+                            <p:panel id="pnlEmitirResolucion" style="text-align:left;width:870px">
+                                <p:wizard id="wiz" nextLabel="Siguiente" backLabel="Atras" showNavBar="true"
+                                          style="width:100%" flowListener="#{emitirResolucionMB.onFlowProcess}"
+                                          step="#{emitirResolucionMB.idTab}">
+                                    <p:tab id="tipos" title="#{msgValidacion.erTabTipo}" titleStyle="font-weight:bold"
+                                           rendered="true">
+                                        <p:panelGrid style="width:100%">
+                                            <p:row>
+                                                <p:column>
+                                                    <p:outputLabel value="#{msgValidacion.diCamposObligatorios}"
+                                                                   style="color:red;"/>
+                                                </p:column>
+                                            </p:row>
+                                        </p:panelGrid>
+                                        <p:messages id="mess" globalOnly="true" closable="true"/>
+                                        <p:scrollPanel id="elementos" style="width:100%;" mode="native">
+                                            <p:panelGrid style="width:100%;">
+                                                <p:row>
+                                                    <p:column style="width:70px;text-align:left">
+                                                        <p:outputLabel value="#{msgValidacion.asOpciones}"/>
+                                                        <p:spacer width="5px"/>
+                                                        <p:outputLabel value="#{msgValidacion.asRequerido}"
+                                                                       style="color:red"/>
+                                                    </p:column>
+                                                    <p:column style="width:730px;text-align:left">
+                                                        <p:selectOneMenu id="comboOpcion" style="width:290px;"
+                                                                         value="#{emitirResolucionMB.opcionCombo}"
+                                                                         required="true"
+                                                                         requiredMessage="#{msgValidacion.diRequerido}"
+                                                                         disabled="#{emitirResolucionMB.renderedCombo}">
+                                                            <f:selectItem itemLabel="Seleccione una opción"
+                                                                          itemValue=""/>
+                                                            <f:selectItems value="#{emitirResolucionMB.listaTiposResolucion}"
+                                                                           var="tipos" itemLabel="#{tipos.descripcion}"
+                                                                           itemValue="#{tipos.idTipoResol}"/>
+                                                            <p:ajax event="change"
+                                                                    update="arbolito,men,gridMotivo,radioDesistidas,arb1,desistidas"
+                                                                    listener="#{emitirResolucionMB.metodoCombo}"/>
+                                                        </p:selectOneMenu>
+                                                    </p:column>
+                                                </p:row>
+                                                <p:row>
+                                                    <p:column>
+                                                        <p:outputLabel/>
+                                                    </p:column>
+                                                    <p:column id="men" style="text-align:left">
+                                                        <div style="width:290px">
+                                                            <p:message id="idcomboOpcion" for="comboOpcion"
+                                                                       display="text"/>
+                                                        </div>
+                                                    </p:column>
+                                                </p:row>
+                                            </p:panelGrid>
+                                            <p:remoteCommand name="otraCapturaMotivo"
+                                                             actionListener="#{emitirResolucionMB.pruebaOtro}"/>
+                                            <h:panelGrid id="arbolito" style="text-align:left;width:100%;">
+                                                <p:tree value="#{emitirResolucionMB.root}" var="node" id="arb1"
+                                                        rendered="#{emitirResolucionMB.varSeleccionCombo1}"
+                                                        style="width:100%;" selectionMode="checkbox"
+                                                        selection="#{emitirResolucionMB.selectedNodes}"
+                                                        onNodeClick="otraCaptura();">
+                                                    <p:ajax event="select" update=":emitirResolucion:gridMotivo"
+                                                            listener="#{emitirResolucionMB.onNodeSelect}"/>
+                                                    <p:ajax event="unselect" update=":emitirResolucion:gridMotivo"
+                                                            listener="#{emitirResolucionMB.onNodeUnselect}"/>
+                                                    <p:treeNode expandedIcon="ui-icon-plus">
+                                                        <p:outputLabel value="#{node.leyendaSeleccion}"/>
+                                                    </p:treeNode>
+                                                </p:tree>
+                                            </h:panelGrid>
+                                            <h:panelGrid id="radioDesistidas" style="text-align:left;width:100%">
+                                                <p:selectOneRadio id="desistidas"
+                                                                  value="#{emitirResolucionMB.seleccionDesistida}"
+                                                                  layout="pageDirection"
+                                                                  rendered="#{emitirResolucionMB.varSeleccionCombo2}"
+                                                                  style="width:70%;">
+                                                    <f:selectItems value="#{emitirResolucionMB.listaMotivosResolucionDesistida}"
+                                                                   var="c" itemLabel="#{c.leyendaSeleccion}"
+                                                                   itemValue="#{c.idMotivoRes}"/>
+                                                </p:selectOneRadio>
+                                            </h:panelGrid>
+                                            <h:panelGrid id="gridMotivo" columns="2" style="text-align:left;width:100%">
+                                                <p:spacer style="width:6px"/>
+                                                <p:column>
+                                                    <p:outputLabel value="#{msgValidacion.erEtiMotivo}"
+                                                                   rendered="#{emitirResolucionMB.descMotivo}"/>
+                                                    <p:outputLabel value=" #{msgValidacion.generalRequerido}"
+                                                                   style="color:red;"
+                                                                   rendered="#{emitirResolucionMB.descMotivo}"/>
+                                                </p:column>
+                                                <p:spacer style="width:6px"/>
+                                                <p:inputTextarea style="text-transform:uppercase;width:324px;height:52px"
+                                                                 autoResize="true"
+                                                                 value="#{emitirResolucionMB.valorMotivo}"
+                                                                 rendered="#{emitirResolucionMB.areaMotivo}"
+                                                                 counter="counterM"                                         
+                                                                 counterTemplate="Quedan {0} caracteres"
+                                                                 maxlength="250"/>
+                                                
+                                                <p:spacer style="width:6px"/>
+                                                <h:outputText id="counterM"/>
+                          
+                                            </h:panelGrid>
+                                        </p:scrollPanel>
+                                    </p:tab>
+                                    <p:tab id="importes" title="#{msgValidacion.erTabDatos}"
+                                           titleStyle="font-weight:bold">
+                                        <p:messages id="mess2" globalOnly="true" closable="true"/>
+                                        <p:panelGrid style="width:100%;text-align:left" id="panImportes">
+                                             <p:row>
+                                                <p:column style="width:220px;text-align:left">
+                                                    <p:outputLabel value="#{msgValidacion.lblNumControl}"/>
+                                                </p:column>
+                                                <p:column style="text-align:left">
+                                                    <p:outputLabel value="#{emitirResolucionMB.numControl}"/>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column style="width:220px;text-align:left">
+                                                    <p:outputLabel value="#{msgValidacion.erEtiImporte1}"/>
+                                                </p:column>
+                                                <p:column style="text-align:left">
+                                                    <pe:inputNumber id="imp1" style="width:180px;border-color:black;"
+                                                                    value="#{emitirResolucionMB.importeSolicitado}"
+                                                                    symbol="$ " maxValue="9999999999.99"
+                                                                    readonly="true"/>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column style="width:220px;text-align:left">
+                                                    <p:outputLabel value="#{msgValidacion.erEtiImporte2}"/>
+                                                    <p:outputLabel value="#{msgValidacion.asRequerido}"
+                                                                   style="color:red; #{emitirResolucionMB.opcionCombo == 1 || emitirResolucionMB.opcionCombo == 4 || emitirResolucionMB.opcionCombo == 5 ? 'display:none' : 'display:disabled;'}"/>
+                                                </p:column>
+                                                <p:column style="text-align:left;">
+                                                    <pe:inputNumber id="imp2" style="width:180px;border-color:black;"
+                                                                    value="#{emitirResolucionMB.impAutorizado}"
+                                                                    readonly="#{emitirResolucionMB.importe2}"
+                                                                    symbol="$ " maxValue="9999999999.99" minValue="0"/>
+                                                    <div style="width:400px">
+                                                        <p:messages id="msgImp2" globalOnly="true" for="mgImp2"
+                                                                    closable="true"/>
+                                                    </div>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column style="width:220px;text-align:left">
+                                                    <p:outputLabel value="#{msgValidacion.erEtiImporte5}"/>
+                                                </p:column>
+                                                <p:column style="text-align:left">
+                                                    <pe:inputNumber id="imp5" style="width:180px;border-color:black;"
+                                                                    value="#{emitirResolucionMB.impTotalActualizacion}"
+                                                                    readonly="#{!emitirResolucionMB.condicionRetIntereses}"
+                                                                    symbol="$ " maxValue="9999999999.99" minValue="0"/>
+                                                    <div style="width:285px">
+                                                        <p:message id="msgImp5" for="imp5" display="text"/>
+                                                    </div>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column style="width:220px;text-align:left">
+                                                    <p:outputLabel value="#{msgValidacion.erEtiIntereses}"/>
+                                                </p:column>
+                                                <p:column style="text-align:left">
+                                                    <pe:inputNumber id="inte" style="width:180px;border-color:black;"
+                                                                    value="#{emitirResolucionMB.valIntereses}"
+                                                                    readonly="#{!emitirResolucionMB.condicionRetIntereses}"
+                                                                    symbol="$ " maxValue="9999999999.99" minValue="0">
+                                                    </pe:inputNumber>
+                                                    <div style="width:285px">
+                                                        <p:message id="msgInte" for="inte" display="text"/>
+                                                    </div>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column style="width:220px;text-align:left">
+                                                    <p:outputLabel value="#{msgValidacion.erEtiRetIntereses}"/>
+                                                </p:column>
+                                                <p:column style="text-align:left">
+                                                    <pe:inputNumber id="retInte" style="width:180px;border-color:black;"
+                                                                    value="#{emitirResolucionMB.valRetIntereses}"
+                                                                    readonly="#{!emitirResolucionMB.condicionRetIntereses}"
+                                                                    symbol="$ " maxValue="9999999999.99" minValue="0"/>
+                                                    <div style="width:285px">
+                                                        <p:message id="msgRetInte" for="retInte" display="text"/>
+                                                    </div>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column style="width:220px;text-align:left">
+                                                    <p:outputLabel value="#{msgValidacion.erEtiImporte6}"/>
+                                                </p:column>
+                                                <p:column style="text-align:left">
+                                                    <pe:inputNumber id="imp6" style="width:180px;border-color:black;"
+                                                                    value="#{emitirResolucionMB.impTotalCompensado}"
+                                                                    readonly="#{!emitirResolucionMB.condicionRetIntereses}"
+                                                                    symbol="$ " maxValue="9999999999.99" minValue="0"/>
+                                                    <div style="width:285px">
+                                                        <p:message id="msgImp6" for="imp6" display="text"/>
+                                                    </div>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column style="width:220px;text-align:left">
+                                                    <p:outputLabel value="#{msgValidacion.erEtiImporte7}"/>
+                                                </p:column>
+                                                <p:column style="text-align:left">
+                                                    <pe:inputNumber id="imp7" style="width:180px;border-color:black;"
+                                                                    value="#{emitirResolucionMB.impNetoDevolver}"
+                                                                    readonly="#{emitirResolucionMB.importe7}"
+                                                                    symbol="$ " maxValue="9999999999.99"/>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column style="width:220px;text-align:left; #{emitirResolucionMB.opcionCombo == 1 || emitirResolucionMB.opcionCombo == 5 ? 'display:none' : 'display:disabled;'}">
+                                                    <p:outputLabel value="#{msgValidacion.erEtiFundamentacion}"/>
+                                                </p:column>
+                                                <p:column style="text-align:left; #{emitirResolucionMB.opcionCombo == 1 || emitirResolucionMB.opcionCombo == 5 ? 'display:none' : 'display:disabled;'}">
+                                                    <p:inputTextarea id="fund" cols="65" counter="counter"
+                                                                     counterTemplate="Quedan {0} caracteres"
+                                                                     maxlength="3000"
+                                                                     style="height:100px;border-color:black;"
+                                                                     value="#{emitirResolucionMB.fundamentacion}"
+                                                                     autoResize="true"
+                                                                     readonly="false"/>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column>
+                                                    <p:outputLabel/>
+                                                </p:column>
+                                                <p:column style="#{emitirResolucionMB.opcionCombo == 1 || emitirResolucionMB.opcionCombo == 5 ? 'display:none' : 'display:disabled;'}">
+                                                    <h:outputText id="counter"/>
+                                                </p:column>
+                                            </p:row>
+                                        </p:panelGrid>
+                                        <p:panelGrid id="grid" style="width:100%;text-align:center;">
+                                            <p:row>
+                                                <p:column>
+                                                    <p:commandButton value="#{msgValidacion.iaBtnCancelar}"
+                                                                     immediate="true"
+                                                                     action="#{emitirResolucionMB.cancelarResolucion}"
+                                                                     update="arbolito"/>
+                                                    <p:commandButton value="Cargar documento"
+                                                                     rendered="#{emitirResolucionMB.documentoCargar}"
+                                                                     onclick="dlgCargar.show();"/>
+                                                    <p:commandButton id="aprob" value="Enviar a aprobación"
+                                                                     oncomplete="dlgJefesSup.show();"
+                                                                     rendered="#{emitirResolucionMB.enviarAprob}"
+                                                                     disabled="#{emitirResolucionMB.disabledEnviarAprob}"
+                                                                     action="#{emitirResolucionMB.comboJefesSup}"
+                                                                     update=":emitirResolucion3:gridJefes"/>
+                                                    <p:commandButton id="genDoc" value="Generar documento"
+                                                                     action="#{emitirResolucionMB.generarDocumentacion}"
+                                                                     rendered="#{emitirResolucionMB.generarDoc}"
+                                                                     update=":emitirResolucion2:dlgDoc,imp1,imp2,imp5,imp6,imp7,inte,fund,grid,docGen,mess2"/>
+                                                    <p:commandButton value="Siguiente"
+                                                                     action="#{emitirResolucionMB.calcularResolucion2}"
+                                                                     rendered="#{emitirResolucionMB.calcularResol2}"
+                                                                     update="mess2,grid,imp2,inte,imp6,imp7,imp5,fund,retInte"/>
+                                                    <p:commandButton value="Siguiente"
+                                                                     action="#{emitirResolucionMB.actualizarCalculos1}"
+                                                                     rendered="#{emitirResolucionMB.actuCalculos}"
+                                                                     update="mess2,grid,imp2,inte,imp6,imp7,imp5,fund,retInte"/>
+                                                    <p:commandButton value="Calcular"
+                                                                     action="#{emitirResolucionMB.calcularResolucion}"
+                                                                     rendered="#{emitirResolucionMB.calcularResol}"
+                                                                     disabled="#{emitirResolucionMB.disabledCalcularResol}"
+                                                                     update="mess2,grid,panImportes"/>
+                                                    <div style="display:none">
+                                                        <p:commandButton id="docGen"
+                                                                         actionListener="#{emitirResolucionMB.downloadDocumentos}"
+                                                                         ajax="false">
+                                                            <p:fileDownload value="#{emitirResolucionMB.fileResolucion}"/>
+                                                        </p:commandButton>
+                                                    </div>
+                                                </p:column>
+                                            </p:row>
+                                        </p:panelGrid>
+                                    </p:tab>
+                                </p:wizard>
+                            </p:panel>
+                             
+                            <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                             
+                            <p:dialog id="statusBar" modal="true" widgetVar="statusDialog"
+                                      header="#{msgValidacion.ajaxLoading}" draggable="false" width="250"
+                                      closable="false" resizable="false">
+                                <p:graphicImage value="/resources/images/ajaxloadingbar.gif"/>
+                            </p:dialog>
+                        </td>
+                    </tr>
+                </table>
+            </h:form>
+             
+            <h:form id="emitirResolucion5">
+            <ui:include src="/resources/pages/common/inactividad.jsf"/>
+                <p:confirmDialog message="¿Se realizó el Comité de Devoluciones y Compensaciones (CODECOM)?"
+                                 header="Confirmar proceso" width="400" height="80" severity="alert" closable="false"
+                                 widgetVar="confirmation" visible="#{emitirResolucionMB.confirmarArchivo}">
+                    <div align="right">
+                        <p:commandButton value="No" action="#{emitirResolucionMB.respuestaNegativa}" ajax="false"/>
+                         
+                        <p:commandButton value="Si" actionListener="#{emitirResolucionMB.antesCarga}"
+                                         oncomplete="nuevaCarga.show();" update=":emitirResolucion6:carga2"/>
+                    </div>
+                </p:confirmDialog>
+            </h:form>
+             
+            <h:form id="emitirResolucion6" enctype="multipart/form-data" prependId="false">
+            <ui:include src="/resources/pages/common/inactividad.jsf"/>
+                <p:dialog id="carga2" widgetVar="nuevaCarga" modal="true" resizable="false" draggable="false"
+                          closable="true" header="Cargar documento" width="670"
+                          visible="#{emitirResolucionMB.visibleCarga}">
+                    <p:messages id="mesCarga" globalOnly="true" closable="true" for="msgCarga"/>
+                    <p:panelGrid style="width:100%">
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.diCamposObligatorios}" style="color:red;"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <br/>
+                    <p:panelGrid columns="3" style="border-style:hidden;">
+                        <h:outputText value="#{msgValidacion.asEtiRuta}"/>
+                        <p:outputLabel value="#{msgValidacion.asRequerido}" style="color:red"/>
+                        <p:fileUpload value="#{emitirResolucionMB.file2}" mode="simple" dragDropSupport="true"
+                                      style="width:411px;"/>
+                        <p:outputLabel value="Nombre del documento: "/>
+                        <p:outputLabel value="#{msgValidacion.asRequerido}" style="color:red"/>
+                        <p:inputText id="documento" maxlength="200" style="width:400px; text-transform:uppercase"
+                                     value="#{emitirResolucionMB.nombreDocumento}"/>
+                        <p:outputLabel/>
+                    </p:panelGrid>
+                    <p:panelGrid style="width:100%;text-align:center;">
+                        <p:row>
+                            <p:column>
+                                <p:commandButton value="#{msgValidacion.asBtnCancelar}" ajax="false" immediate="true"
+                                                 oncomplete="dlgCargar2.hide();"
+                                                 actionListener="#{emitirResolucionMB.cancelarCarga}" update="carga2"/>
+                                <p:commandButton id="chartBtn" value="Cargar" action="#{emitirResolucionMB.fileUpload2}"
+                                                 ajax="false" update="carga2 :emitirResolucion5"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:dialog>
+            </h:form>
+             
+            <h:form id="emitirResolucion4" enctype="multipart/form-data">
+            <ui:include src="/resources/pages/common/inactividad.jsf"/>
+                <p:dialog id="carga" widgetVar="dlgCargar" modal="true" resizable="false" draggable="false"
+                          closable="true" header="Cargar documento generado" width="670">
+                    <p:panelGrid style="width:100%">
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.diCamposObligatorios}" style="color:red;"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <br/>
+                    <p:panelGrid columns="3" style="border-style:hidden;">
+                        <h:outputText value="#{msgValidacion.asEtiRuta}"/>
+                        <p:outputLabel value="#{msgValidacion.asRequerido}" style="color:red"/>
+                        <p:fileUpload value="#{emitirResolucionMB.file}" mode="simple" dragDropSupport="true"
+                                      style="width:411px;" validator="ArchivoValidator"/>
+                        <p:outputLabel/>
+                    </p:panelGrid>
+                    <p:panelGrid style="width:100%;text-align:right;">
+                        <p:row>
+                            <p:column>
+                                <p:commandButton value="#{msgValidacion.asBtnCancelar}" ajax="false" immediate="true"
+                                                 onclick="dlgCargar.hide();"/>
+                                <p:commandButton id="chartBtn2" value="Cargar" action="#{emitirResolucionMB.fileUpload}"
+                                                 style="width:90px" ajax="false"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:dialog>
+            </h:form>
+             
+            <h:form id="emitirResolucion2">
+            <ui:include src="/resources/pages/common/inactividad.jsf"/>
+                <p:dialog id="dlgDoc" widgetVar="dlgMantenerDocumento" modal="true" closable="false" resizable="false"
+                          header="#{msgValidacion.asDlgMantenerDoc}" width="300" height="150">
+                    <p:panelGrid style="width:100%;text-align:left">
+                        <p:row>
+                            <p:column style="width:100px;text-align:left">
+                                <h:outputText value="Plantilla:"/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <h:outputText value="#{emitirResolucionMB.plantilla}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:100px;text-align:left">
+                                <h:outputText value="Numero de control:"/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <h:outputText value="#{emitirResolucionMB.numControl}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:100px;text-align:left; #{emitirResolucionMB.opcionCombo == 1 || emitirResolucionMB.opcionCombo == 5 ? 'display:none' : 'display:disabled;'}">
+                                <h:outputText value="Otros Campos:"/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <h:outputText value="#{emitirResolucionMB.fundamentacion}"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <div align="center">
+                        <br/>
+                         
+                        <br/>
+                         
+                        <p:commandButton value="#{msgValidacion.iaBtnCerrar}" onclick="dlgMantenerDocumento.hide();"/>
+                    </div>
+                </p:dialog>
+            </h:form>
+             
+            <h:form id="emitirResolucion3">
+                <ui:include src="/resources/pages/common/inactividad.jsf"/>
+                <p:dialog widgetVar="dlgJefesSup" modal="true" closable="false" resizable="false"
+                          header="#{msgValidacion.asDlgJefesSup}" width="660" min-height="180">
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                    <p:panelGrid style="width:100%">
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.diCamposObligatorios}" style="color:red;"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <br/>
+                    <p:panelGrid id="gridJefes" columns="3">
+                        <p:outputLabel value="#{msgValidacion.asLblJefes}"/>
+                        <p:outputLabel value="*" style="color:red"/>
+                        <p:selectOneMenu id="comboJefes" style="width:290px;" required="true"
+                                         requiredMessage="#{msgValidacion.diRequerido}"
+                                         value="#{emitirResolucionMB.numEmp}">
+                            <f:selectItem itemLabel="Seleccione una opción" itemValue=""/>
+                            <f:selectItems value="#{emitirResolucionMB.listaJefesSup}" var="jefes"
+                                           itemLabel="#{jefes.nombre} #{jefes.apellidoPaterno} #{jefes.apellidoMaterno}"
+                                           itemValue="#{jefes.numEmpleado}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel/>
+                        <p:outputLabel/>
+                        <p:message id="idMsgJefes" for="comboJefes" display="text"/>
+                    </p:panelGrid>
+                    <p:panelGrid style="width:100%;text-align:center;">
+                        <p:row>
+                            <p:column>
+                                <p:commandButton value="#{msgValidacion.iaBtnCancelar}" onclick="dlgJefesSup.hide();"/>
+                                <p:commandButton value="#{msgValidacion.asBtnAceptar}" update="idMsgJefes,comboJefes"
+                                                 actionListener="#{emitirResolucionMB.accionGuardarJefes}"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:dialog>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

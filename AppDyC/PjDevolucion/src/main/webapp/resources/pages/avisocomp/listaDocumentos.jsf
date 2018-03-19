@@ -1,0 +1,379 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+        xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <meta http-equiv="pragma" content="no-cache"/>
+            <meta http-equiv="cache-control" content="no-cache"/>
+            <meta http-equiv="expires" content="0"/>
+            <h:outputScript library="js" name="general.js"/>
+            <style type="text/css">
+                .ui-panelgrid {
+                    margin-left: 0px !important;
+                }
+                        .alert {
+                                border-width: 2px !important;
+                                text-align: center !important;
+                                padding: 20px 15px !important;
+                            }
+                            
+                         .alert-info {
+                            background-color: #d9edf7 !important;
+                            border-color: #bce8f1 !important;
+                            color: #31708f !important;
+                        }
+                        
+                        .alert-warning {
+                            background-color: #fcf8e3 !important;
+                            border-color: #faebcc !important;
+                            color: #8a6d3b !important;
+                        }
+                         hr.red {
+                        margin: 0px 0 0px !important;border-top-color: #DCE0E0 !important;position: relative !important; margin-left: 2px !important;} 
+                hr.red:before {
+                    content: " "!important;width: 35px!important;height: 6px!important;background-color: #D0021B!important;
+                    display: block!important;  position: absolute!important;} 
+                 .ui-selectonemenu{margin-top: 0px!important;}
+                  h1 {
+                    margin-bottom: 0px !important;
+                    font-size: 54px !important;
+                    margin-left: 0px !important;
+                    line-height: 1.1 !important;
+                }
+                h2 {
+                    font-size: 38px!important;
+                    margin-bottom: 0px!important;
+                    margin-left: -3px !important;
+                }
+                .ui-widget-content {
+                    border: 0px solid #e2e2e2!important;
+                }
+                .ui-dialog-content {
+                    margin: 0px 0px 0px 0px!important;
+                    width: 100%!important;}
+                  .gmxNoborde1 td {border-color:#FFFFFF;}
+                  
+                .ui-dialog .ui-dialog-title {
+                    white-space: inherit !important;
+                    overflow: inherit !important;
+                    text-overflow:inherit !important;
+                    font-size: 18px !important;
+
+                }
+                .ui-icon.ui-icon-close{
+                    display: none !important;
+                }
+                .ui-messages-info.ui-corner-all {
+                    border-radius: 3px 3px 3px 3px;
+                    -moz-border-radius: 3px 3px 3px 3px;
+                    -webkit-border-radius: 3px 3px 3px 3px;
+                    border: 2px solid #bce8f1;
+                    background-color: #d9edf7;
+                    color: #3a87ad;
+                    margin-bottom: 30px;
+                    padding-top: 30px;
+                    padding-bottom: 30px;
+                    text-align: center;
+                    width: 777px;
+                    font-weight: normal;
+                }
+                .alert.alert-info{
+                    border-radius: 3px 3px 3px 3px;
+                    -moz-border-radius: 3px 3px 3px 3px;
+                    -webkit-border-radius: 3px 3px 3px 3px;
+                    border: 2px solid #BCE8F1;
+                    font-weight: normal;
+                    width: 777px;
+                    color: #31708F !important;
+                    background-color: #D9EDF7 !important;
+                }
+                .ui-messages-info-summary, .ui-messages-fatal-summary, .ui-message-info-summary, .ui-message-warn-summary, .ui-message-error-summary, .ui-message-fatal-summary{
+                     font-weight: normal;
+                     color: #31708F !important;
+                }
+                .ui-messages-warn-summary, .ui-messages-error-summary{
+                     font-weight: normal;
+                     color: #545454 !important;
+                }
+                .ui-messages-info-icon{
+                    display: none;
+                }
+                .ui-messages-error, .ui-message-error {
+                    color: #b94a48;
+                    background-color: #f2dede;
+                    border-color: #eed3d7;
+                    display: block;
+                    position: relative !important;
+                    top: 0;
+                    margin-left: 10px;
+                    width: 777px;
+                    text-align: center;
+                    color: #545454;
+                    margin-top: 30px;
+                    margin-bottom: 30px;
+                    padding-top: 30px;
+                    padding-bottom: 30px;
+                    border: 2px solid #D0021B;
+                }
+            </style>
+        </h:head>
+        <h:body>
+            <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+            
+            <p:messages  id="msgGeneral" closable="true" showDetail="true" autoUpdate="true" globalOnly="true" />
+               
+            <p:dialog modal="true" widgetVar="statusDialog" header="#{msgValidacion.ajaxLoading}" draggable="false"
+                      resizable="false" closable="false">
+                <p:graphicImage value="../../images/ajaxloadingbar.gif"/>
+            </p:dialog>
+             
+            <h:form id="formCargarArchivo" enctype="multipart/form-data">
+                <div class="gobmxContenedor8">
+                    <!-- *********************************************************************************************** -->
+                    <!-- ******                            DOCUMENTOS DEL AVISO DE COMPENSACION                   ****** -->
+                    <!-- *********************************************************************************************** -->
+                    <p:panelGrid id="pnlListado" styleClass="gmxNoborde">
+                        <p:row>
+                            <p:column style="    padding-left: 19px !important;    padding-right: 19px !important;">
+                                 <p:messages id="msgDocumentosAnexos" for="msgDocumentosAnexos" showDetail="true" globalOnly="true"
+                                             autoUpdate="true" closable="false"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                 <p:panelGrid id="pnlGridReq">
+                                    <p:row>
+                                        <p:column>
+                                            <div class="alert alert-info">
+                                                Nota: 
+                                                <p:outputLabel value="#{msgValidacion.aclP4Campo2}"/>
+                                            </div>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                           <p:column>
+                                                <p:commandButton value="#{msgValidacion.aclP4Btn3}" style="margin-top: 20px !important;" styleClass="gmxPositivo" oncomplete="dlgCargarDocumento.show();"/>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row rendered="#{avisoCompensacionEnLineaMB.adjuntoRequerido}">
+                                        <p:column>
+                                            <div class="alert alert-warning"  style="margin-top: 20px !important;">
+                                               <p:outputLabel value="#{msgValidacion.archivoF}"/>
+                                            </div>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column style="display:block;width: 100% !important" >
+                                             <h2><p:outputLabel value="#{msgValidacion.archivoF_1}" /></h2>
+                                             <hr class="red" /> 
+                                             <p:scrollPanel mode="native" style="width:100%; height: 100%;margin-top: 25px!important">
+                                                        <p:dataTable id="dtlDocumentos" var="archivoDocumento"
+                                                                     value="#{avisoCompensacionEnLineaMB.cuadroListaDocumentos}"
+                                                                     scrollWidth="100%" paginator="true"
+                                                                     paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                                                     rowsPerPageTemplate="5,10,15" rows="10"
+                                                                     style="text-align:left;width:100%;" resizableColumns="true"
+                                                                     liveResize="true" rowIndexVar="rowIndex"
+                                                                     rowStyleClass="#{(rowIndex mod 2) eq 0 ?'highlightA':'highlightB'}"
+                                                                     emptyMessage="No se encontraron registros.">
+                                                            <p:column headerText="#{msgValidacion.aclP4TblCol1}">
+                                                                <h:outputText value="#{archivoDocumento.nombreArchivo}"/>
+                                                            </p:column>
+                                                            <p:column headerText="#{msgValidacion.aclP4TblCol2}">
+                                                                <h:outputText value="#{archivoDocumento.descripcion}"/>
+                                                            </p:column>
+                                                            <p:column headerText="#{msgValidacion.aclP4TblCol4}"
+                                                                      style="text-align:center">
+                                                                <p:commandButton oncomplete="dlgEliminarDocumento.show();"
+                                                                                 title="#{archivoDocumento.nombreArchivo}"
+                                                                                 icon="ui-icon-circle-close">
+                                                                    <f:setPropertyActionListener value="#{archivoDocumento}"
+                                                                                                 target="#{avisoCompensacionEnLineaMB.seleccionoDocDescargar}"/>
+                                                                </p:commandButton>
+                                                            </p:column>
+                                                            <f:facet name="footer">
+                                                                <p:outputLabel value="#{fn:length(avisoCompensacionEnLineaMB.cuadroListaDocumentos)} Resultados"
+                                                                               style="text-align:left"/>
+                                                            </f:facet>
+                                                        </p:dataTable>
+                                            </p:scrollPanel>  
+                                        </p:column>
+                                    </p:row>
+                                    <f:facet name="footer">
+                                        <p:row>
+                                            <p:column colspan="2">
+                                               
+                                                <p:column >
+                                                    <p:commandButton id="btnRegresarCompletar" value="Siguiente"
+                                                                     actionListener="#{avisoCompensacionEnLineaMB.irDatosGenerales}"
+                                                                     process="@this" style="margin-left: 5px!important;"
+                                                                     styleClass="gmxPositivo">
+                                                        <f:param value="siguiente" name="opcionDoc"/>
+                                                    </p:commandButton>
+                                                    <p:commandButton id="btnSalir" value="Salir"
+                                                                     actionListener="#{avisoCompensacionEnLineaMB.salir}"
+                                                                     process="@this"  style="margin-left: 5px!important;"
+                                                                     styleClass="gmxNegativo">
+                                                        <f:param value="salir" name="opcionDoc"/>
+                                                    </p:commandButton>
+                                                    <p:commandButton id="btnRegresar" value="Anterior" process="@this"
+                                                                     action="#{avisoCompensacionEnLineaMB.regresarListaAnexos}"
+                                                                    style="margin-left: 5px!important;" />
+                                                </p:column>
+                                            </p:column>
+                                        </p:row>
+                                    </f:facet>
+                                 </p:panelGrid>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                <!-- *********************************************************************************************** -->
+                <!-- ******                                  ELIMINAR DOCUMENTO                               ****** -->
+                <!-- *********************************************************************************************** -->
+                <p:dialog id="eliminarDocumento" widgetVar="dlgEliminarDocumento" header="#{msgValidacion.tooltop09}"
+                          closable="true" resizable="false" modal="true">
+                    <p:panelGrid styleClass="gmxNoborde1">
+                        <p:row>
+                            <p:column> 
+                                <p:outputLabel value="#{msgValidacion.tooltop10}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:center">
+                                <p:commandButton value="Si"
+                                                 actionListener="#{avisoCompensacionEnLineaMB.eliminarDocumento}"
+                                                 update="dtlDocumentos" oncomplete="dlgEliminarDocumento.hide();"
+                                                 style="width:100px" styleClass="gmxPositivo"/>
+                                 <p:commandButton value="No" oncomplete="dlgEliminarDocumento.hide();"
+                                                 style="width:100px" styleClass=""/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:dialog>
+                <!-- *********************************************************************************************** -->
+                <!-- ******                                   CARGAR DOCUMENTO                                ****** -->
+                <!-- *********************************************************************************************** -->
+                <p:dialog id="cargarDocumento" widgetVar="dlgCargarDocumento" header="Adjuntar documento"
+                          closable="true" resizable="false" modal="true" width="70%" height="50%"> 
+                      <h3>
+                        <p:outputLabel value="#{msgValidacion.aclP4Titulo3}" />
+                      </h3>
+                        <p:panelGrid id="pgCargarDoc" styleClass="gmxNoborde1">
+                            <p:row>
+                                <p:column colspan="2">
+                                    <p:messages id="msgCargarDocumentosAnexos" for="msgCargarDocumentosAnexos"
+                                                showDetail="true" globalOnly="true" autoUpdate="true" closable="false"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel value="#{msgValidacion.aclP4Campo3}" for="fileCarga"/>:
+                                </p:column>
+                                <p:column>
+                                    <p:fileUpload id="fileCarga" widgetVar="wfileCarga" value="#{avisoCompensacionEnLineaMB.file}"
+                                                  mode="simple"  validator="ArchivoValidator"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel value="#{msgValidacion.aclP4Campo4}" for="txtNombreDoctoAdd"/>:
+                                </p:column>
+                                <p:column>
+                                    <p:inputText id="txtNombreDoctoAdd" widgetVar="wtxtNombreDoctoAdd" value="#{avisoCompensacionEnLineaMB.cuadroNombreDocumento}" 
+                                                 styleClass="upperCase" maxlength="150" />
+                                       <p:watermark for="txtNombreDoctoAdd" value="Ingresar #{msgValidacion.aclP4Campo4}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column colspan="2">
+                                    <p:panelGrid>
+                                        <p:row>
+                                            <p:column>
+                                                 
+                                            </p:column>
+                                            <p:column>
+                                                    
+                                                    <p:commandButton value="#{msgValidacion.aclP4Btn6}" 
+                                                                    onclick="var filesUp = document.getElementById(wfileCarga.id); 
+                                                                            var noFiles = filesUp.files.length; 
+                                                                            if(noFiles != 0) { 
+                                                                                var val = wtxtNombreDoctoAdd.jq.val(); 
+                                                                                if(val.length != 0) { 
+                                                                                    wbtnCargaDoctoAdd.jq.click(); 
+                                                                                } else { 
+                                                                                    wbtnValidaDoctoAdd.jq.click(); 
+                                                                                } 
+                                                                            } else { 
+                                                                                wbtnCargaDoctoAdd.jq.click(); 
+                                                                            }" styleClass="gmxPositivo"/>
+                                                    <p:commandButton value="#{msgValidacion.aclP4Btn7}" process="@this"
+                                                        update="pgCargarDoc" onsuccess="dlgCargarDocumento.hide()"
+                                                        actionListener="#{avisoCompensacionEnLineaMB.cancelarArchivo}"
+                                                        styleClass=""/>
+                                                    <p:commandButton ajax="false" id="btnValidaDoctoAdd" widgetVar="wbtnValidaDoctoAdd" 
+                                                                     actionListener="#{avisoCompensacionEnLineaMB.validarCampoNombreArchivo}"
+                                                                     style="display:none"/>
+                                                    <p:remoteCommand name="rc" actionListener="#{avisoCompensacionEnLineaMB.validarCampoNombreArchivo}" />
+                                                    <p:commandButton ajax="false" id="btnCargaDoctoAdd" widgetVar="wbtnCargaDoctoAdd" 
+                                                                     actionListener="#{avisoCompensacionEnLineaMB.uploadDocumento}"
+                                                                     style="display:none"/>
+                                            </p:column>
+                                        </p:row>
+                                    </p:panelGrid>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                </p:dialog>
+                <!-- *********************************************************************************************** -->
+                <!-- ******                            CONFIRMAR GUARDAR POR 72 HRS                           ****** -->
+                <!-- *********************************************************************************************** -->
+                <p:dialog id="confirmarGuardadoTemp" widgetVar="dlgConfirmarGuardadoTempDoc" header="Confirmar"
+                          closable="true" resizable="false" modal="true" width="50%" height="50%">
+                    <p:panelGrid id="pgConfirmarGuardadoTemp" style="width:100%;text-align:center;">
+                        <p:row>
+                            <p:column>
+                                <p:messages id="msgGuardadoTemp" for="msgGuardadoTemp" showDetail="true"
+                                            globalOnly="true" autoUpdate="true" closable="false"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:commandButton value="#{msgValidacion.No}"
+                                                 actionListener="#{avisoCompensacionEnLineaMB.confirmarPerderDatos}"
+                                                 onsuccess="dlgConfirmarGuardadoTempDoc.hide()" style="width:100px"
+                                                 styleClass="gmxNegativo"/>
+                                <p:commandButton value="#{msgValidacion.Si}"
+                                                 action="#{avisoCompensacionEnLineaMB.guardarTemporal}"
+                                                 onsuccess="dlgConfirmarGuardadoTempDoc.hide()" style="width:100px"
+                                                 styleClass="gmxPositivo"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:dialog>
+                <!-- *********************************************************************************************** -->
+                <!-- ******                                 CONFIRMAR PERDER DATOS                            ****** -->
+                <!-- *********************************************************************************************** -->
+                <p:dialog id="confirmarPerderDatos" widgetVar="dlgConfirmarPerderDatos" header="#{msgValidacion.aclP1Salir}"
+                          closable="true" resizable="false" modal="true" width="50%" height="50%">
+                  
+                    <p:panelGrid id="pgConfirmarPerderDatos" style="width:100%;text-align:center;">
+                            
+                        <p:row>
+                            <p:column>
+                                <p:commandButton value="#{msgValidacion.Aceptar}" ajax="false"
+                                                 action="#{avisoCompensacionEnLineaMB.terminarCasoDeUso}"
+                                                 style="width:102px" styleClass="gmxPositivo"/>
+                                 <p:commandButton value="#{msgValidacion.Cancelar}"
+                                                 onsuccess="dlgConfirmarPerderDatos.hide()" style="width:110px"
+                                                 styleClass="gmxNegativo"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:dialog>
+                </div>                        
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

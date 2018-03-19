@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view contentType="text/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+    <html xmlns="http://www.w3.org/1999/xhtml" xmlns:p="http://primefaces.org/ui">
+        <h:head><title>Datos de la FIEL</title>
+         <h:outputStylesheet library="css/" name="formato.css"/>
+        </h:head>
+        <h:body>
+            <h:form>            
+                <p:panelGrid style="width:810px; border: 1;margin-left:305px;text-align: center;" columns="2" >
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+                </p:panelGrid>
+                <p:panel header="Datos de la FIEL" style="width:810px; border: 1;margin-left:305px;text-align: center;" id="datosFIEL"
+                    rendered="#{aprobarDocMB.esDatosFIEL}">                                                       
+                    <p:panelGrid columns="2" >
+                        <h:outputLabel value=""/>
+                        <h:inputHidden value="#{aprobarDocMB.step}" />
+                        
+                        <h:outputLabel value="Cadena Original:"/>
+                        <p:outputLabel size="30" value="#{aprobarDocMB.cadenaOriginal}"/>
+                      
+                        <h:outputLabel value="Sello digital:"/>
+                        <p:outputLabel size="30" value="#{aprobarDocMB.selloDigital}"/>                                                                    
+                    </p:panelGrid>
+                    <h:panelGrid columns="2" id="pnlGrdAcc" style="text-align: center;" >
+                        <p:spacer width="370" height="0"/>                    
+                        <p:commandButton value="Aceptar" id="btnAceptar" action="#{aprobarDocMB.regresarBandeja}" ajax="false"/>                         
+                    </h:panelGrid>
+                </p:panel>                
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

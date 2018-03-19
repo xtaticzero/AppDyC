@@ -1,0 +1,117 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	version="2.5">
+	<display-name>devoluciones</display-name>
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<listener>
+		<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+	</listener>
+	<servlet>
+		<servlet-name>Faces Servlet</servlet-name>
+		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>/faces/*</url-pattern>
+	</servlet-mapping>
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/applicationContextDyC.xml
+        </param-value>
+	</context-param>
+	<context-param>
+		<param-name>javax.faces.CONFIG_FILES</param-name>
+		<param-value>
+            /WEB-INF/faces-config.xml,
+            /WEB-INF/faces-config/avisocomp/faces-config.xml,
+            /WEB-INF/faces-config/matrizanexos/faces-config.xml
+        </param-value>
+	</context-param>
+	<context-param>
+		<param-name>javax.faces.FACELETS_VIEW_MAPPINGS</param-name>
+		<param-value>*.jsf;*.xhtml</param-value>
+	</context-param>
+	<context-param>
+		<param-name>primefaces.THEME</param-name>
+		<param-value>satgobmx</param-value>
+	</context-param>
+	<context-param>
+		<param-name>javax.faces.FACELETS_SKIP_COMMENTS</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	<!-- :::::::::::::::::::::::::: INICIA COHERENCE :::::::::::::::::::::::::: -->
+	<context-param>
+		<param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+		<param-value>client</param-value>
+	</context-param>
+	<context-param>
+		<param-name>coherence-scopecontroller-class</param-name>
+		<param-value>com.tangosol.coherence.servlet.AbstractHttpSessionCollection$GlobalScopeController</param-value>
+	</context-param>
+	<context-param>
+		<param-name>coherence-session-strict-spec</param-name>
+		<param-value>false</param-value>
+	</context-param>
+	<context-param>
+		<param-name>coherence-session-member-locking</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	<context-param>
+		<param-name>coherence-sticky-sessions</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	<context-param>
+		<param-name>coherence-distributioncontroller-class</param-name>
+		<param-value>mx.gob.sat.siat.controlador.impl.CustomSessionDistributionController</param-value>
+	</context-param>
+	<!-- :::::::::::::::::::::::::: TERMINA COHERENCE :::::::::::::::::::::::::: -->
+	<filter>
+		<filter-name>PrimeFaces FileUpload Filter</filter-name>
+		<filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
+		<init-param>
+			<param-name>thresholdSize</param-name>
+			<param-value>51200</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>PrimeFaces FileUpload Filter</filter-name>
+		<servlet-name>Faces Servlet</servlet-name>
+	</filter-mapping>
+	<filter>
+		<filter-name>filtroSolicitudesDevolucion</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+		<init-param>
+			<param-name>targetFilterLifecycle</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>filtroSolicitudesDevolucion</filter-name>
+		<url-pattern>/faces/resources/pages/registro/*</url-pattern>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>REQUEST</dispatcher>
+	</filter-mapping>
+	<mime-mapping>
+		<extension>png</extension>
+		<mime-type>image/png</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>pdf</extension>
+		<mime-type>application/pdf</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>xlsx</extension>
+		<mime-type>application/vnd.openxmlformats-officedocument.spreadsheetml.sheet</mime-type>
+	</mime-mapping>
+	<welcome-file-list>
+		<welcome-file>/resources/pages/index.jsf</welcome-file>
+		<welcome-file>/resources/pages/admcat/matrizAprobador.jsf</welcome-file>
+	</welcome-file-list>
+	<session-config>
+		<session-timeout>20</session-timeout>
+	</session-config>
+</web-app>

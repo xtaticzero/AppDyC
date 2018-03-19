@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+    
+    <import resource="classpath*:contexto_wrapper_base.xml"/>
+    
+    <bean id="log4jInitializer"
+          class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="targetClass"
+              value="org.springframework.util.Log4jConfigurer" />
+        <property name="targetMethod" value="initLogging" />
+        <property name="arguments">
+            <list>
+                <!--TODO descomentar para mover la configuracion al directorio especificado-->
+                <!--<value>file:/siat/log4j/log4j-PjAdminProcesosDyC-Back.xml</value>-->
+                <value>classpath:log4j-PjAdminProcesosDyC-Back.xml</value>
+            </list>
+        </property>
+    </bean>
+    
+    <!--TODO importar el contexto del proyecto a usar para alta disponibilidad-->
+    <!--<import resource="classpath*:contextExterno.xml"/>-->    
+    
+</beans>

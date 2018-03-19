@@ -1,0 +1,119 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+        <script>
+        $diotnumAltex= $("#form\\:numAltex").hasClass('ui-state-error');
+      
+         if($diotnumAltex ){
+             document.getElementById("error1").innerHTML="Todos los campos marcados con * son requeridos";
+            document.getElementById("error1").style.display="inherit";  
+             
+         }
+    
+    </script>
+    <div style="width: 777px">
+      <div class="gob-dat-cont">
+         
+        <h2 style="margin-left: 0px !important;">
+            <p:outputLabel value="#{msgValidacion.L0000012}"/>
+        </h2> 
+        <hr class="red" style="margin-left: 0px !important;"/>
+    </div>
+    <style type="text/css">
+        .ui-panelgrid td {width: 50%;}
+        .gmxNoborde1 .ui-widget-content td div{width: 373.33px;}   
+        .gmxNoborde1 .ui-widget-content td input{width: 373.33px;}
+        .gmxNoborde1 .ui-widget-content td{padding-bottom: 22px !important;}
+        #dvBtnSalir {
+                left: -536px !important;
+                position: relative;
+            }         
+         </style>
+        <div id="error1" style=" margin-left: 0px;"></div>
+	<div style="position:relative; top: 15px;">
+     <p:messages id="msmtabDIOT" globalOnly="true" closable="true" autoUpdate="true"/>
+        
+        
+      
+        
+            <p:panel id="datos" style="border:none;text-align: left;"
+                    >
+                <div class="gobmxContenedor8" style="padding: 0px !important;  #{adicionarSolicitudMB.flagsSolicitud.rowDIOT == 'false' ? 'display:none;' : 'display:block;'}">
+                    <h3 style="margin-left: -20px !important;">
+                        <p:outputLabel value="#{msgValidacion.L0000047}"/>
+                    </h3> 
+                </div>
+                <p:fieldset id="diot" rendered="#{adicionarSolicitudMB.flagsSolicitud.rowDIOT}" style="border:none;">
+                    <p:focus context="diot"/>
+                    <p:panelGrid styleClass="gobmxContenedor8 gmxNoborde1" style="position:relative; left: -37px;">
+                     <p:row>
+                            <p:column style="text-align: right !important;"> 
+                            <div style="text-align: right; ">
+                                #{msgValidacion.L0000078}<p:outputLabel value="" for="diotNumOpe"/>:
+                            </div>
+                            </p:column>
+                            <p:column>
+                                <p:inputText maxlength="10" id="diotNumOpe" style="text-transform: uppercase;"
+                                             value="#{adicionarSolicitudMB.tramite.infoDeclarativa.diotNumOperacion}"
+                                             required="true" requiredMessage="#{msgValidacion.msjCampoRequerido}">
+                                    
+                                </p:inputText>
+                                  
+                                 <p:watermark for="diotNumOpe" value="Ingresa #{msgValidacion.L0000078}"/>
+                                <p:message id="msjdiotNumOpe" for="diotNumOpe" display="text"/>
+                            </p:column>
+                        </p:row>
+                         
+                        <p:row>
+                            <p:column style="text-align: right !important;"> 
+                                <div style="text-align: right;">
+                                    #{msgValidacion.tooltop59}<p:outputLabel value="" for="fechDiot"/>:
+                                </div>
+                            </p:column>
+                            <p:column>
+                                <p:calendar value="#{adicionarSolicitudMB.tramite.infoDeclarativa.diotFechPrecentacion}"
+                                            id="fechDiot" style="width:10px;height:20px;" navigator="true"
+                                            pattern="dd/MM/yyyy" maxdate="#{now}" locale="es" readonlyInput="true"
+                                    required="true" requiredMessage="#{msgValidacion.msjCampoRequerido}"
+                                   >
+                                    
+                                 
+                                </p:calendar>
+                                <p:message id="msjdiotFechDiot" for="fechDiot" display="text"/>
+                                <p:watermark for="fechDiot" value="dd/mm/aaaa"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:fieldset>
+                <div class="gobmxContenedor8" style="#{adicionarSolicitudMB.flagsSolicitud.rowALTEX == 'false' ? 'display:none;' : 'display:block;'}">
+                    <h3>
+                        <p:outputLabel value="#{msgValidacion.L0000041}"/>
+                    </h3> 
+                </div>
+                <p:fieldset rendered="#{adicionarSolicitudMB.flagsSolicitud.rowALTEX}" style="border:none;">
+                    <p:panelGrid styleClass="gobmxContenedor8 gmxNoborde1" style="position:relative; left: -37px;">
+                     <p:row>
+                            <p:column style="text-align: right !important;"> 
+                            <div style="text-align: right; ">
+                                #{msgValidacion.tooltop58}<p:outputLabel value="" for="numAltex"/>:
+                            </div>
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="numAltex" maxlength="4"
+                                             value="#{adicionarSolicitudMB.tramite.infoDeclarativa.altexNumConstancia}"
+                                             converterMessage="Ingrese un valor entero"
+                                             onkeypress="return justNumbers(event);"
+                                    requiredMessage="#{msgValidacion.msjCampoRequerido}" required="true">
+                                    <p:ajax event="blur" update="numAltex msmtabDIOT"
+                                            listener="#{datosSolicitudCtrlMB.consultaDatosAltex}"/>
+                                </p:inputText>
+                                 <p:watermark for="numAltex" value="Ingresa #{msgValidacion.tooltop58}"/>
+                                <p:message id="msjnumAltex" for="numAltex" display="text"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:fieldset>
+            </p:panel>
+		</div>
+                                  </div>
+</ui:composition>

@@ -1,0 +1,161 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <h:outputStylesheet library="css/" name="icon.css"/>
+    </h:head>
+    <h:body>
+        <h:form id="frmMenuIndex">
+
+            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
+            <h:panelGroup id="pgrGlobal">
+                <p:panel id="pnlSession" rendered="#{!MenuIndexMB.dibujarMenu}" style="height:700px;">
+                    <table id="tblMenu" style="" border="0">
+                        <tbody>
+                            <tr>
+                                <td>Usuarios Predefinidos</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p:dataTable id="idTblTSession" var="acc" value="#{MenuIndexMB.dataModel}"
+                                                 styleClass="ui-widget-header" rowKey="#{acc.usuario}"
+                                                 style="width:100%;" resizableColumns="true"
+                                                 selection="#{MenuIndexMB.accesoSeleccionado}" selectionMode="single">
+                                        <p:ajax event="rowSelect" listener="#{MenuIndexMB.actualizaFrm}"
+                                                update=":frmMenuIndex:txtNumEmpleado"/>
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="ADM"/>
+                                            </f:facet>
+                                            <h:outputText value="#{acc.claveSir}"/>
+                                        </p:column>
+                                        <p:column headerText="RFC Corto">
+                                            <h:outputText value="#{acc.rfcCorto}"/>
+                                        </p:column>
+                                    </p:dataTable>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="height:60px;" valign="bottom">N&uacute;mero Empleado o RFC:</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p:watermark for="txtNumEmpleado" value="ID EMPLEADO"/>
+                                     
+                                    <p:inputText id="txtNumEmpleado" value="#{MenuIndexMB.idUsuario}" size="20"
+                                                 style="width:95%;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p:password id="txt2" value="#{MenuIndexMB.txt2}" size="20"
+                                                 style="width:95%;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="text-align:center !important; height:100px;">
+                                    <p:commandButton value="Iniciar"
+                                                     update=":frmMenuIndex:lblTituloMenu pgrGlobal :frmMenuIndex:lblRFC"
+                                                     action="#{MenuIndexMB.registraSession}" icon="ui-icon-person"
+                                                     style="margin:0"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </p:panel>
+                <p:scrollPanel id="pnlMenu" rendered="#{MenuIndexMB.dibujarMenu}" style="height:100%">
+                    <table style="width:100%;" class="ui-widget-header">
+                        <tr>
+                            <td colspan="2" style=" font-size: 15px; height:25px" align="center">
+                                <p:outputLabel id="lblTituloMenu" value="#{MenuIndexMB.tituloMenu}"/>
+                            </td>
+                        </tr>
+                         
+                        <tr>
+                            <td style="text-align:right;">RFC:</td>
+                            <td style="width:100%;">
+                                <p:outputLabel id="lblRFC" value="#{MenuIndexMB.accesoUsr.usuario}"/>
+                            </td>
+                        </tr>
+                         
+                        <c:if test="${not empty MenuIndexMB.accesoUsr.nombreCompleto}">
+                            <tr>
+                                <td style="text-align:right;">Nombre:</td>
+                                <td>
+                                    <p:outputLabel id="lblNombre" value="#{MenuIndexMB.accesoUsr.nombreCompleto}"
+                                                   style="font-weight: bold;"/>
+                                </td>
+                            </tr>
+                        </c:if>
+                         
+                        <c:if test="#{MenuIndexMB.tituloMenu eq 'DICTAMINADOR' || MenuIndexMB.tituloMenu eq 'APROBADOR'}">
+                            <tr>
+                                <td style="text-align:right;">Adm&oacute;n:</td>
+                                <td>
+                                    <p:outputLabel id="lblAdm" value="#{MenuIndexMB.accesoUsr.centroCosto}"
+                                                   style="font-weight: bold;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:right;">N&uacute;mero de Empleado:</td>
+                                <td>
+                                    <p:outputLabel id="lblNumEmpleado" value="#{MenuIndexMB.accesoUsr.numeroEmp}"
+                                                   style="font-weight: bold;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:right;">RFC Corto:</td>
+                                <td>
+                                    <p:outputLabel id="lblRFCCorto" value="#{MenuIndexMB.accesoUsr.rfcCorto}"
+                                                   style="font-weight: bold;"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:right;">Clave ADM:</td>
+                                <td>
+                                    <p:outputLabel id="lblClaveAdm" value="#{MenuIndexMB.accesoUsr.claveSir}"
+                                                   style="font-weight: bold;"/>
+                                </td>
+                            </tr>
+                        </c:if>
+                         
+                        <tr>
+                            <td colspan="2" style="text-align:center; height:40px;">
+                                <p:commandButton value="Salir" process="@this" action="#{MenuIndexMB.salir}" ajax="true"
+                                                 icon="ui-icon-power" style="margin:0"/>
+                            </td>
+                        </tr>
+                    </table>
+                    <table width="140px" border="0">
+                        <tr>
+                            <td class="ui-icon-proceso"></td>
+                        </tr>
+                         
+                        <tr>
+                            <td style="overflow: auto;">
+                                <p:tree value="#{MenuIndexMB.arbol}" var="node" id="tree" type="width:140px;">
+                                    <p:treeNode expandedIcon="ui-icon-carpeta-a" collapsedIcon="ui-icon-carpeta-c">
+                                        <h:outputLink id="m_#{node.id}" value="#{node.uri}" styleClass="mhref"
+                                                      target="contenido">
+                                            #{node.nombre}
+                                        </h:outputLink>
+                                        <br/>
+                                    </p:treeNode>
+                                    <p:treeNode type="opcion">
+                                        <h:graphicImage library="images/" name="proceso.png" width="18" height="18"/>
+                                        <h:outputLink id="o_#{node.id}" value="#{node.uri}" styleClass="mhref"
+                                                      target="contenido">
+                                            #{node.nombre}
+                                        </h:outputLink>
+                                    </p:treeNode>
+                                </p:tree>
+                            </td>
+                        </tr>
+                    </table>
+                </p:scrollPanel>
+            </h:panelGroup>
+        </h:form>
+    </h:body>
+</html>

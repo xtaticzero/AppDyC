@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+        >
+    <html>
+        <h:head>
+            <title>bandejaDocumentos</title>
+            <h:outputStylesheet library="css/" name="formato.css"/>
+            <style type="text/css">
+                .ui-datatable tbody td {
+                    white-space: normal;
+                }
+
+                .ui-datatable thead th {
+                    white-space: normal;
+                }
+
+                .ui-paginator {
+                    font-size: 12px !important;
+                }
+
+                .ui-panel .ui-panel-content {
+                    padding-left: 0px !important;
+                    padding-right: 0px !important;
+                }
+            </style>
+            <script type="text/javascript">
+              $(document).ready(function () {
+                  limpieza();
+              });
+            </script>
+        </h:head>
+        <h:body>
+            <h:form id="bandejaDocumentos">
+                <ui:include src="/resources/pages/common/inactividad.jsf"></ui:include>
+                <p:panelGrid style="align:center; width:100%" columns="2">
+                    <p:messages id="messages" showDetail="true" autoUpdate="false" closable="true"/>
+                    <p:remoteCommand name="limpieza" actionListener="#{bandejaDocMB.recargar}"
+                                     update="documentos :bandejaDocumentos:documentos:btnConsultar" ajax="true"/>
+                </p:panelGrid>
+                <p:panel header="#{msgValidacion.asPanelDocumentos}"
+                         style="padding-right:0px!important;font-size:9;text-align:center; width:100%">
+                    <p:scrollPanel style="width:100%" mode="native">
+                        <p:dataTable emptyMessage="#{msgValidacion.tblEmpty}" id="documentos" paginator="true" rows="5"
+                                     rowsPerPageTemplate="5,10,15" liveScroll="true" lazy="true"
+                                     selection="#{bandejaDocMB.bandejaDocumentosSolDTO}" selectionMode="single"
+                                     rowIndexVar="rowIndex" rowKey="#{sol.numControl}"
+                                     style="font-size:13.5px;" value="#{bandejaDocMB.listaBandejaDoc}" var="sol">
+                            <p:ajax event="rowSelect" update="btnConsultar"/>
+                            <f:facet name="header">
+                                <input type="hidden" name="date" value="23092014"/>
+                                <div style="height:49px;">
+                                    <p:commandButton id="btnConsultar" icon="ui-icon-search"
+                                                     action="#{bandejaDocMB.irAresumenDevolucion}" ajax="false"
+                                                     disabled="#{bandejaDocMB.varBotonCon}"
+                                                     style="background: #4A90E2"/>
+                                </div>
+                            </f:facet>
+
+                            <p:column headerText="#{msgValidacion.asNumControl}" filterBy="#{sol.numControl}" filterMaxLength="14" >
+                                <h:outputText value="#{sol.numControl}"/>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asRFC}" filterBy="#{sol.rfcContribuyente}" filterMaxLength="13" >
+                                <h:outputText value="#{sol.rfcContribuyente}"/>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asTipTramite}">
+                                <h:outputText value="#{sol.tipoTramite}"/>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asFechaRecepcionTramite}">
+                                <h:outputText value="#{sol.fechaPresentacion}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asNomDocumento}">
+                                <h:outputText value="#{sol.nombreDocumento}"/>
+                            </p:column>
+                            <p:column headerText="Fecha de vencimiento">
+                                <div align="left">
+                                    <h:outputText value="#{sol.fechaFinalizacion}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                    </h:outputText>
+                                </div>
+                            </p:column>
+                            <p:column headerText="Dictaminador">
+                                <div align="left">
+                                    <h:outputText value="#{sol.nombreDictaminador}"/>
+                                </div>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asMonto}">
+                                <div align="right">
+                                    <h:outputText value="#{sol.importeSolicitado}">
+                                        <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                                    </h:outputText>
+                                </div>
+                            </p:column>
+                        </p:dataTable>
+                    </p:scrollPanel>
+                </p:panel>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

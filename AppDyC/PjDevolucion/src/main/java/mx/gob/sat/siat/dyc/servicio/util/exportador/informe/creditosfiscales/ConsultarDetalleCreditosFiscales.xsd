@@ -1,0 +1,20 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:element name="consultarDetalleCreditosFiscalesXML">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" ref="creditosFiscales"/>
+             </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="creditosFiscales" >
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" name="ncurmee1" type="xs:int"/>
+                <xs:element minOccurs="0" name="ipmapgo1" type="xs:decimal"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+</xs:schema> 

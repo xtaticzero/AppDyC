@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!-- <f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"> -->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <h:outputScript library="js" name="general.js"/>
+        <h:outputStylesheet library="css/" name="formato.css"/>
+        <title>DyC</title>
+        <style type="text/css">
+            html, body {
+                border-collapse: collapse;
+                padding-top: 0px;
+                padding-left: 0px;
+            }
+
+            .ui-datatable tbody td {
+                white-space: normal;
+                font-size: 9px;
+            }
+
+            .ui-datatable thead th {
+                white-space: normal;
+                font-size: 10px;
+            }
+
+            #menu {
+                float: left;
+                width: 240px;
+                height: 600px;
+                /* overflow: auto;  */
+
+                background-color: #EDEEEC;
+                border: solid 1px White;
+            }
+
+            #contenido {
+                float: left;
+                max-height: 1200px;
+                min-height: 800px; 
+                max-width: 1210px;
+                min-width: 950px;       
+                overflow: auto;
+                border: solid 0px transparent;
+                margin-left: 0px;
+                margin-right: 0px;
+            }
+
+            .mhref {
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 10pt;
+                color: rgb(0, 33, 115);
+            }
+
+            .fntMenu {
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 9pt;
+            }
+
+            .panelgrid {
+                background-color: Fuchsia;
+                padding: 1px 1px 1px 1px;
+            }
+
+            a[id='frmMenuIndex:pnlSession_content'] {
+                background-color: Fuchsia;
+                padding: 1px 1px 1px 1px;
+            }
+
+            #frame, #contenido, #tblMenu, #pnlMenu {
+                border: solid 1px Gray;
+            }
+        </style>
+        <script type="text/javascript">
+          jQuery(document).ready(function () {
+              /* $("a[name*='frmMenuIndex:linkM']") */
+              $('a').click(function () {
+                  if ($(this).attr('href').indexOf('index.jsf') ==  - 1) {
+                      $("#contenido").load($(this).attr('href'));
+                  }
+                  return false;
+              });
+          });
+
+          function handleRequest(xhr, status, args) {
+              $var = $("input[name*='frmMenuIndex:idTblTSession_selection']").val();
+              return $var != "" ? true : false;
+          }
+        </script>
+    </h:head>
+    <h:body>
+        <table id="frame">
+            <tr>
+                <td style="width: 235px" valign="top">
+                    <ui:insert name="menu">
+                        <ui:include src="menuIndex.jsf"/>
+                    </ui:insert>
+                </td>
+                <td>
+                    <iframe id="contenido" name="contenido" src="inicio.jsf"/>
+                </td>
+            </tr>
+        </table>
+    </h:body>
+</html>

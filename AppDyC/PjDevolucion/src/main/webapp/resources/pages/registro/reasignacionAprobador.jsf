@@ -1,0 +1,251 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:panelGrid columns="2" style="margin: 0 auto" id="searchParams">
+        <h:outputLabel for="nombre" value="#{msgValidacion.rsNombre}"/>
+        <p:inputText id="nombre" required="false"
+                     value="#{reasignarManSolicDevolucionyCasosCompMB.dictaminadorSearchParams.nombre}"
+                     label="nombre"/>
+        <p:outputLabel for="aPaterno" value="#{msgValidacion.rsApellidoPaterno}"/>
+        <p:inputText id="aPaterno" required="false"
+                     value="#{reasignarManSolicDevolucionyCasosCompMB.dictaminadorSearchParams.APaterno}"
+                     label="aPaterno"/>
+        <p:outputLabel for="aMaterno" value="#{msgValidacion.rsApellidoMaterno}"/>
+        <p:inputText id="aMaterno" required="false"
+                     value="#{reasignarManSolicDevolucionyCasosCompMB.dictaminadorSearchParams.AMaterno}"
+                     label="aMaterno"/>
+        <p:outputLabel for="cveDictamin" value="#{msgValidacion.rsNumeroEmpleado}"/>
+        <p:inputText id="cveDictamin" required="false"
+                     value="#{reasignarManSolicDevolucionyCasosCompMB.dictaminadorSearchParams.cveDictaminador}"
+                     label="cveDictamin"/>
+    </h:panelGrid>
+    <br></br>
+    <h:panelGrid columns="2" cellspacing="0" width="20%" style="margin-left:40%;">
+        <p:commandButton value="#{msgValidacion.rsCancelar}" update="tblDictaminadores,searchParams"
+                         action="#{reasignarManSolicDevolucionyCasosCompMB.clearForm}"/>
+        <p:commandButton value="#{msgValidacion.rsBuscar}" id="btnConsulta" ajax="true"
+                         update="tblDictaminadores"
+                         action="#{reasignarManSolicDevolucionyCasosCompMB.consultarDictaminadores}"
+                         process="@this,searchParams"></p:commandButton>
+    </h:panelGrid>
+    <br></br>
+    <p:dataTable id="tblDictaminadores" var="dictaminadores"
+                 value="#{reasignarManSolicDevolucionyCasosCompMB.dictaminadoresList}"
+                 rowKey="#{dictaminadores.numEmpleado}" scrollWidth="100%" paginator="true" rows="10"
+                 rendered="true" style="width:100%;margin: 0 auto;" resizableColumns="true"
+                 liveResize="true" selectionMode="single"
+                 selection="#{reasignarManSolicDevolucionyCasosCompMB.selectedDictaminador}"
+                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                 paginatorPosition="bottom" emptyMessage="#{msgValidacion.tblEmpty}">
+        <p:ajax event="rowSelect" update="selectButton"
+                listener="#{reasignarManSolicDevolucionyCasosCompMB.onRowSelectDictaminador}"/>
+        <f:facet name="header">
+            <p:toolbar style="border-style:none;">
+                <p:toolbarGroup align="left" valign="center">
+                    <h:outputText value="Subalternos con carga de trabajo"/>
+                </p:toolbarGroup>
+                <p:toolbarGroup align="rigth">
+                    <h:panelGrid columns="4" cellspacing="0" width="60%">
+                        <p:outputLabel value=" De: "/>
+                        <p:calendar value="#{reasignarManSolicDevolucionyCasosCompMB.fechaInicio}"
+                                    locale="es" pattern="dd/MM/yyyy" id="popupButtonCalIni"
+                                    yearRange="2000" navigator="true" styleClass="myClass">
+                            <p:ajax event="dateSelect"
+                                    listener="#{reasignarManSolicDevolucionyCasosCompMB.setFechas}"
+                                    update="popupButtonCalFin"
+                                    process="@this, popupButtonCalIni, popupButtonCalFin"/>
+                        </p:calendar>
+                        <p:outputLabel value=" a: "/>
+                        <p:calendar value="#{reasignarManSolicDevolucionyCasosCompMB.fechaFin}"
+                                    locale="es" pattern="dd/MM/yyyy" id="popupButtonCalFin"
+                                    yearRange="2000" navigator="true" styleClass="myClass"
+                                    style="margin-left:10%">
+                            <p:ajax event="dateSelect"
+                                    listener="#{reasignarManSolicDevolucionyCasosCompMB.setFechas}"
+                                    update="popupButtonCalFin"
+                                    process="@this, popupButtonCalIni, popupButtonCalFin"/>
+                        </p:calendar>
+                    </h:panelGrid>
+                    <p:commandButton id="selectButton" icon="ui-icon-search"
+                                     update=":subOrigenDeSaldos:multiSolDictamin"
+                                     action="#{reasignarManSolicDevolucionyCasosCompMB.listarSolicitudesDelDictamin}"
+                                     oncomplete="listarSolicitudesDialog.show()"
+                                     title="#{msgValidacion.rsBotonListado}"
+                                     disabled="#{reasignarManSolicDevolucionyCasosCompMB.varBotonSearch}"></p:commandButton>
+                </p:toolbarGroup>
+            </p:toolbar>
+        </f:facet>
+        <p:column headerText="#{msgValidacion.rsNumeroEmpleadoC}"
+                  style="text-align: center; font-size:12px;">
+            <h:outputText value="#{dictaminadores.numEmpleado}"/>
+        </p:column>
+        <p:column headerText="RFC" style="text-align: center; font-size:14px;">
+            <h:outputText value="#{dictaminadores.rfc}"/>
+        </p:column>
+        <p:column headerText="#{msgValidacion.rsNombreC}" style="font-size:14px;">
+            <h:outputText value="#{dictaminadores.nombre}"/>
+        </p:column>
+        <p:column headerText="#{msgValidacion.rsAPaterno}" style="font-size:14px;">
+            <h:outputText value="#{dictaminadores.apellidoPaterno}"/>
+        </p:column>
+        <p:column headerText="#{msgValidacion.rsMaterno}" style="font-size:14px;">
+            <h:outputText value="#{dictaminadores.apellidoMaterno}"/>
+        </p:column>
+        <p:column headerText="#{msgValidacion.rsCargaTrabajo}"
+                  style="text-align: center; font-size:14px;">
+            <h:outputText value="#{dictaminadores.cargaTrabajo}"/>
+        </p:column>
+    </p:dataTable>
+    <!-- Dialogo de solicitudes a reasignar-->
+    <p:dialog header="#{msgValidacion.rsDialogReasignarSolHeader}" widgetVar="listarSolicitudesDialog"
+              resizable="false" id="listSolDlg" showEffect="fade" hideEffect="fade" modal="true"
+              closable="false" closeOnEscape="false" style="width:100%;">
+        <p:messages id="generalErrorActDictamin" autoUpdate="true" showDetail="true" closable="true"/>
+        <div style="width: 780px;height: 200px;overflow-y:scroll  ">
+            <p:dataTable id="multiSolDictamin" var="solicitud"
+                         value="#{reasignarManSolicDevolucionyCasosCompMB.solDictaminDataModel}"
+                         paginator="true" rows="10"
+                         selection="#{reasignarManSolicDevolucionyCasosCompMB.selectedSolicitudesArrList}"
+                         style="width:100%">
+                <p:ajax event="rowSelectCheckbox" process="@this" update="@this"/>
+                <p:ajax event="rowUnselectCheckbox" process="@this" update="@this"/>
+                <p:ajax event="toggleSelect" update="@this" process="@this"/>
+                <p:column selectionMode="multiple" style="width:2%"/>
+                <p:column headerText="#{msgValidacion.rsDialogReasignarSolDlgNumCtrl}"
+                          style="width:15%">
+                    <h:outputText value="#{solicitud.numControl}"/>
+                </p:column>
+                <p:column headerText="#{msgValidacion.rsDialogReasignarSolDlgRfcCont}"
+                          style="width:15%">
+                    <h:outputText value="#{solicitud.rfcContribuyente}"/>
+                </p:column>
+                <p:column headerText="#{msgValidacion.rsDialogReasignarSolDlgImporteTramite}"
+                          style="width:15%; text-align:right;">
+                    <h:outputText value="#{solicitud.importeTramite}">
+                        <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="#{msgValidacion.rsDialogReasignarSolDlgTTramite}"
+                          style="width:100%">
+                    <h:outputText value="#{solicitud.tipoTramite}"/>
+                </p:column>
+                <p:column headerText="#{msgValidacion.rsDialogReasignarSolFechaRegistro}"
+                          style="width:15%">
+                    <h:outputText value="#{solicitud.fechaRegistro}">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </h:outputText>
+                </p:column>
+            </p:dataTable>
+        </div>
+        <h:panelGrid columns="2" style="margin: auto; text-align: center;">
+            <p:commandButton value="#{msgValidacion.rsDialogReasignarSolAceptarBtn}" id="btnAceptarDlg"
+                             ajax="true"
+                             action="#{reasignarManSolicDevolucionyCasosCompMB.consultaDictaminadoresOnDlgListTodos}"
+                             onsuccess="" update="tblDictaminadoresListReasig,confirmPG"
+                             process="@this,multiSolDictamin"/>
+            <p:commandButton value="#{msgValidacion.rsDialogReasignarSolCancelarBtn}"
+                             update="panel,tblDictaminadores" style="margin-right:20px;"
+                             onclick="listarSolicitudesDialog.hide()"
+                             action="#{reasignarManSolicDevolucionyCasosCompMB.clearFormOnReasigList}"/>
+        </h:panelGrid>
+    </p:dialog>
+    <!-- Dialogo de reasignacion de dictaminadores-->
+    <p:dialog header="#{msgValidacion.rsDialogReasinDictaminList}" widgetVar="listarDictaminReasig"
+              resizable="false" id="listDictaminReasigDlg" showEffect="fade" hideEffect="fade"
+              modal="true" style="width:700px" closable="false" closeOnEscape="false">
+        <p:messages id="generalErrorActReasig" autoUpdate="true" showDetail="true" closable="true"/>
+        <h:panelGrid columns="2" style="margin: 0 auto;" id="searchParamsDictaminList">
+            <h:outputLabel for="nombreD" value="#{msgValidacion.rsNombre}"/>
+            <p:inputText id="nombreD" required="false"
+                         value="#{reasignarManSolicDevolucionyCasosCompMB.dictaminadorSearchParamsdlg.nombre}"
+                         label="nombre"/>
+            <p:outputLabel for="aPaternoD" value="#{msgValidacion.rsApellidoPaterno}"/>
+            <p:inputText id="aPaternoD" required="false"
+                         value="#{reasignarManSolicDevolucionyCasosCompMB.dictaminadorSearchParamsdlg.APaterno}"
+                         label="aPaterno"/>
+            <p:outputLabel for="aMaternoD" value="#{msgValidacion.rsApellidoMaterno}"/>
+            <p:inputText id="aMaternoD" required="false"
+                         value="#{reasignarManSolicDevolucionyCasosCompMB.dictaminadorSearchParamsdlg.AMaterno}"
+                         label="aMaterno"/>
+            <p:outputLabel for="cveDictaminD" value="#{msgValidacion.rsNumeroEmpleado}"/>
+            <p:inputText id="cveDictaminD" required="false"
+                         value="#{reasignarManSolicDevolucionyCasosCompMB.dictaminadorSearchParamsdlg.cveDictaminador}"
+                         label="cveDictamin"/>
+        </h:panelGrid>
+        <br></br>
+        <h:panelGrid columns="2" style="margin: 0 auto;">
+            <p:commandButton value="#{msgValidacion.rsBuscar}" id="btnConsultaListDictamin" ajax="true"
+                             update="tblDictaminadoresListReasig"
+                             action="#{reasignarManSolicDevolucionyCasosCompMB.consultaDictaminadoresOnDlgListTodos}"
+                             process="@this,searchParamsDictaminList"></p:commandButton>
+            <p:commandButton value="#{msgValidacion.rsCancelar}" update="panel"
+                             style="margin-right:20px;"
+                             action="#{reasignarManSolicDevolucionyCasosCompMB.clearFormOnDlg}"/>
+        </h:panelGrid>
+        <br></br>
+        <div style="width: 780px;height: 100px;overflow-y:scroll  ">
+            <p:dataTable id="tblDictaminadoresListReasig" var="dictaminadoresListReasig"
+                         value="#{reasignarManSolicDevolucionyCasosCompMB.dictaminadoresListOnDlg}"
+                         rowKey="#{dictaminadoresListReasig.numEmpleado}" scrollWidth="100%"
+                         paginator="true" rows="10" style="margin: 0 auto; width:100%; "
+                         resizableColumns="true" liveResize="true" selectionMode="single"
+                         rendered="true"
+                         selection="#{reasignarManSolicDevolucionyCasosCompMB.selectedDictaminadorOnDlg}"
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                <p:column headerText="#{msgValidacion.rsNumeroEmpleadoC}" style="text-align: center">
+                    <h:outputText value="#{dictaminadoresListReasig.numEmpleado}"/>
+                </p:column>
+                <p:column headerText="RFC" style="text-align: center">
+                    <h:outputText value="#{dictaminadoresListReasig.rfc}"/>
+                </p:column>
+                <p:column headerText="#{msgValidacion.rsNombreC}">
+                    <h:outputText value="#{dictaminadoresListReasig.nombre}"/>
+                </p:column>
+                <p:column headerText="#{msgValidacion.rsAPaterno}">
+                    <h:outputText value="#{dictaminadoresListReasig.apellidoPaterno}"/>
+                </p:column>
+                <p:column headerText="#{msgValidacion.rsMaterno}">
+                    <h:outputText value="#{dictaminadoresListReasig.apellidoMaterno}"/>
+                </p:column>
+                <p:column headerText="#{msgValidacion.rsCargaTrabajo}" style="text-align: center">
+                    <h:outputText value="#{dictaminadoresListReasig.cargaTrabajo}"/>
+                </p:column>
+            </p:dataTable>
+
+            <h:panelGrid columns="2" style="margin: 0 auto;" id="confirmPG">
+                <p:commandButton value="#{msgValidacion.rsReasignar}"
+                                 action="#{reasignarManSolicDevolucionyCasosCompMB.reasignarSolicitud}"
+                                 id="btnReasignarSolunConfirmed" update="cfmCDID,confirmPG,panel"></p:commandButton>
+                <p:commandButton value="Cancelar" update="panel" style="margin-right:20px;"
+                                 action="#{reasignarManSolicDevolucionyCasosCompMB.clearFormOnDlg}"/>
+            </h:panelGrid>
+        </div>
+    </p:dialog>
+    <p:confirmDialog id="cfmCDID" widgetVar="cfmCDWv" global="true" showEffect="fade" hideEffect="fade"
+                     header="#{msgValidacion.rsConfirm}"
+                     message="#{msgValidacion.rsConfirmMessageP1} #{reasignarManSolicDevolucionyCasosCompMB.completo} #{msgValidacion.rsConfirmMessageP2} "
+                     closable="false" closeOnEscape="false">
+        <h:panelGrid columns="2" style="margin: 0 auto;">
+            <p:commandButton value="#{msgValidacion.rsSi}"
+                             update="tblDictaminadoresListReasig, multiSolDictamin"
+                             onclick="cfmCDWv.hide(); listarDictaminReasig.hide(); listarSolicitudesDialog.show();"
+                             action="#{reasignarManSolicDevolucionyCasosCompMB.reListarSolicitudesDelDictamin}"/>
+            <p:commandButton value="#{msgValidacion.rsNo}" oncomplete="cfmCDWv.hide();"
+                             action="#{reasignarManSolicDevolucionyCasosCompMB.asignarOtroDictaminador}"/>
+        </h:panelGrid>
+    </p:confirmDialog>
+    <p:confirmDialog id="cfmNoID" widgetVar="cfmNoWv" global="true" showEffect="fade" hideEffect="fade"
+                     header="#{msgValidacion.rsConfirm}" message="#{msgValidacion.rsConfirmMessage2} "
+                     closable="false" closeOnEscape="false">
+        <h:panelGrid columns="2" style="margin: 0 auto;">
+            <p:commandButton value="#{msgValidacion.rsSi}" process="@this,tblDictaminadoresListReasig"
+                             update="tblDictaminadores"
+                             onclick="cfmNoWv.hide(); cfmCDWv.hide(); listarDictaminReasig.hide(); listarSolicitudesDialog.hide();"
+                             action="#{reasignarManSolicDevolucionyCasosCompMB.consultarDictaminadores}"/>
+            <p:commandButton value="#{msgValidacion.rsNo}" update="tblDictaminadores"
+                             onclick="cfmNoWv.hide(); cfmCDWv.hide(); listarDictaminReasig.hide(); listarSolicitudesDialog.hide();"
+                             action="#{reasignarManSolicDevolucionyCasosCompMB.clearAllForm}"/>
+        </h:panelGrid>
+    </p:confirmDialog>
+</ui:composition>

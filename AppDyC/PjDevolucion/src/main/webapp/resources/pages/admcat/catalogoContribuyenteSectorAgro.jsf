@@ -1,0 +1,184 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+        >
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <title>Catalogo Padron Agropecuario</title>
+            <meta http-equiv="X-UA-Compatible" content="IE=8"/>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <h:outputStylesheet library="css/" name="formato.css"/>
+            <script type="text/javascript">
+              function cargar() {
+                  //document.getElementById("frmRFC:cmdInit").click();
+                  //jQuery("#frmRFC:cmdAdicionar").click();      
+              }
+            </script>
+            <style type="text/css">
+                .ui-paginator {
+                    font-size: 12px !important;
+                }
+            </style>
+        </h:head>
+        <h:body> <!-- onload="cargar();" -->
+            <h:form id="frmRFC">
+                <p:panel id="ListaAdministracion" header="Contribuyentes Sector Agropecuario" style="width:100%;">
+                    <p:messages id="msgDt" showDetail="true" autoUpdate="true" closable="true"/>
+                    <p:toolbar>
+                        <p:toolbarGroup align="right">
+                            <p:commandButton id="btnNuevo" oncomplete="dlgAgregarMD.show();" title="Agregar"
+                                             action="#{contribuyenteSectorAgroMB.cambiarTituloAgregar}"
+                                             update="dlgAgregarMD, cmdInit, btnEditar" icon="ui-icon-document" style="margin:0"></p:commandButton>
+                            <p:commandButton id="btnEditar" oncomplete="dlgModifMD.show();" title="Modificar"
+                                             update="dlgModifMD, txtRFCModif, txtNombreModif, radActivoModif, cmdInit, btnEditar"
+                                             action="#{contribuyenteSectorAgroMB.cambiarTituloModificar}"
+                                             disabled="#{contribuyenteSectorAgroMB.deshabilitarCmdModifElim}"
+                                             icon="ui-icon-pencil" style="margin:0"></p:commandButton>
+                            <p:commandButton id="btnConsulta" title="Bùsqueda" oncomplete="dlgBusqueda.show();"
+                                             action="#{contribuyenteSectorAgroMB.cambiarTituloConsultar}"
+                                             update="dlgBusqueda, cmdInit, btnEditar" icon="ui-icon-search" style="margin:0"></p:commandButton>
+                            <p:separator/>
+                        </p:toolbarGroup>
+                    </p:toolbar>
+                    <p:dataTable id="listaAgro" var="dec" value="#{contribuyenteSectorAgroMB.listaRFC}"
+                                 rowKey="#{dec.rfc}" paginator="#{contribuyenteSectorAgroMB.paginador}" rows="20"
+                                 rowsPerPageTemplate="5,10,15,20" emptyMessage="No hay resultados"
+                                 selectionMode="single" style="width:100%"
+                                 selection="#{contribuyenteSectorAgroMB.selectedRfcSectorAgroDTO}"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                        <p:ajax event="rowSelect" listener="#{contribuyenteSectorAgroMB.onRowSelected}"
+                                update=":frmRFC:btnEditar:"/>
+                        <p:column style="text-align: left;">
+                            <f:facet name="header">
+                                <div>
+                                    <h:outputText value="RFC"/>
+                                </div>
+                            </f:facet>
+                            <h:outputText value="#{dec.rfc}"/>
+                        </p:column>
+                        <p:column style="text-align: left;">
+                            <f:facet name="header">
+                                <div>
+                                    <h:outputText value="Nombre"/>
+                                </div>
+                            </f:facet>
+                            <h:outputText value="#{dec.nombre}"/>
+                        </p:column>
+                        <p:column style="text-align: center;">
+                            <f:facet name="header">
+                                <div>
+                                    <h:outputText value="Estado"/>
+                                </div>
+                            </f:facet>
+                            <h:outputText value="#{dec.activo == 1  ? 'Activo' :'Inactivo' }"/>
+                        </p:column>
+                    </p:dataTable>                    
+                    <h:panelGroup id="cmdInit">
+                        <!--<p:toolbarGroup align="right">-->
+                            <p:commandButton value="Regresar" actionListener="#{contribuyenteSectorAgroMB.getCatalogoSecAgro}" 
+                                update="listaAgro, cmdInit, btnEditar" rendered="#{contribuyenteSectorAgroMB.btnRegresar}"/>
+                            
+                        <!--</p:toolbarGroup>-->
+                    <!--</p:toolbar>-->
+                    </h:panelGroup>
+                </p:panel>
+                <p:dialog id="dlgAgregarMD" header="#{contribuyenteSectorAgroMB.titulo}" widgetVar="dlgAgregarMD"
+                          hideEffect="drop" width="700" height="320" modal="true">
+                    <p:panelGrid columns="3" width="700">
+                        <p:outputLabel value="*" style="color:red; font-weight:bold"/>
+                        <p:outputLabel value="RFC"/>
+                        <h:inputText id="txtRFCAgre" value="#{contribuyenteSectorAgroMB.rfc}"
+                                     style="text-transform:uppercase" maxlength="13"/>
+                        <p:outputLabel value="*" style="color:red; font-weight:bold"/>
+                        <p:outputLabel value="Nombre"/>
+                        <h:inputText id="txtNombreAgre" value="#{contribuyenteSectorAgroMB.nombre}"
+                                     style="width:510px; text-transform:uppercase" maxlength="100"/>
+                    </p:panelGrid>
+                    <p:spacer width="15"/>
+                    <div id="botones" align="center" width="500">
+                        <center>
+                            
+                            <p:commandButton id="cmdCancelar" value="Cancelar" oncomplete="dlgAgregarMD.hide();"
+                                             action="#{contribuyenteSectorAgroMB.limpiarCampos}"
+                                             update="txtRFCAgre, txtNombreAgre, cmdInit, btnEditar, listaAgro" 
+                                             styleClass="gmxNegativo"/>
+                            <p:commandButton id="cmdAgregar" value="Agregar"
+                                             action="#{contribuyenteSectorAgroMB.insert}"
+                                             update="listaAgro, txtRFCAgre, txtNombreAgre, cmdInit, btnEditar"
+                                             oncomplete="dlgAgregarMD.hide();" styleClass="gmxPositivo"/>
+                        </center>
+                    </div>
+                </p:dialog>
+                <p:dialog id="dlgModifMD" header="#{contribuyenteSectorAgroMB.titulo}" widgetVar="dlgModifMD"
+                          hideEffect="drop" width="700" height="320" modal="true">
+                    <p:panelGrid columns="2" width="700">
+                        <p:outputLabel value="RFC"/>
+                        <h:inputText id="txtRFCModif" value="#{contribuyenteSectorAgroMB.rfcModif}"
+                                     style="text-transform:uppercase" disabled="true" maxlength="13" disables="true"/>
+                        <p:outputLabel value="Nombre"/>
+                        <h:inputText id="txtNombreModif" value="#{contribuyenteSectorAgroMB.nombreModif}"
+                                     style="width:510px; text-transform:uppercase" disabled="true" maxlength="100"
+                                     disables="true"/>
+                        <p:outputLabel value="Estado"/>
+                        <h:selectOneRadio id="radActivoModif" value="#{contribuyenteSectorAgroMB.activoModif}">
+                            <f:selectItem itemValue="1" itemLabel="Activo"/>
+                            <f:selectItem itemValue="0" itemLabel="Inactivo"/>
+                        </h:selectOneRadio>
+                    </p:panelGrid>
+                    <div id="botones" align="center" width="500">
+                        <center>
+                            <p:commandButton id="cmdCancelarModif" value="Cancelar" oncomplete="dlgModifMD.hide();"
+                                             action="#{contribuyenteSectorAgroMB.limpiarCampos}"
+                                             update="txtRFCModif, txtNombreModif, radActivoModif, cmdInit, btnEditar, listaAgro" 
+                                             styleClass="gmxNegativo"/>
+                            <p:commandButton id="cmdGuardar" value="Guardar"
+                                             action="#{contribuyenteSectorAgroMB.update}"
+                                             update="listaAgro, txtRFCModif, txtNombreModif, radActivoModif, cmdInit, btnEditar"
+                                             oncomplete="dlgModifMD.hide();" styleClass="gmxPositivo"/>
+                        </center>
+                    </div>
+                </p:dialog>
+                <p:dialog id="dlgBusqueda" header="#{contribuyenteSectorAgroMB.titulo}" widgetVar="dlgBusqueda"
+                          hideEffect="drop" width="700" height="320" modal="true">
+                    <p:panelGrid columns="2" width="700">
+                        <p:outputLabel value="RFC"/>
+                        <h:inputText id="txtRFCBus" value="#{contribuyenteSectorAgroMB.rfcBus}"
+                                     style="text-transform:uppercase" maxlength="13"/>
+                        <p:outputLabel value="Nombre"/>
+                        <h:inputText id="txtNombreBus" value="#{contribuyenteSectorAgroMB.nombreBus}"
+                                     style="width:510px; text-transform:uppercase" maxlength="100"/>
+                        <p:outputLabel value="Estado"/>
+                        <h:selectOneRadio id="radActivoBus" value="#{contribuyenteSectorAgroMB.activoBus}">
+                            <f:selectItem itemValue="1" itemLabel="Activo"/>
+                            <f:selectItem itemValue="0" itemLabel="Inactivo"/>
+                            <f:selectItem itemValue="2" itemLabel="Todos"/>
+                        </h:selectOneRadio>
+                    </p:panelGrid>
+                    <div id="botones" align="center" width="500">
+                        <center>
+                            <p:commandButton id="cmdCancelarBus" value="Cancelar"
+                                             action="#{contribuyenteSectorAgroMB.limpiarCampos}"
+                                             oncomplete="dlgBusqueda.hide();"
+                                             update="txtRFCBus, txtNombreBus, radActivoBus, cmdInit, btnEditar, listaAgro" styleClass="gmxNegativo"/>
+                            <p:commandButton id="cmdConsultarBus" value="Buscar"
+                                             action="#{contribuyenteSectorAgroMB.consultar}"
+                                             oncomplete="dlgBusqueda.hide();"
+                                             update="listaAgro, txtRFCBus, txtNombreBus, radActivoBus, cmdInit, btnEditar"
+                                             styleClass="gmxPositivo"/>
+                        </center>
+                    </div>
+                </p:dialog>
+                <p:dialog modal="true" resizable="false" visible="#{contribuyenteSectorAgroMB.showRestriccion}"
+                          draggable="false" header="Aviso!..." width="450" closable="false">
+                    <table border="0">
+                        <tr align="justify">
+                            <td>No es competencia de esta autoridad realizar alguna acci&oacute;n en Contribuyentes
+                                Sector Agropecuario.</td>
+                        </tr>
+                    </table>
+                    <br/><br/>
+                </p:dialog>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

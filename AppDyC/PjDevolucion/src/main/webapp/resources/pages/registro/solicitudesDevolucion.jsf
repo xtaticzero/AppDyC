@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+        >
+    <html>
+        <h:head>
+            <title>
+                #{msgValidacion.L0000023}
+            </title>
+            <meta http-equiv="X-UA-Compatible" content="IE=8"/>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <h:outputStylesheet library="css/" name="dyc.css"/>
+            <h:outputStylesheet library="css/" name="formato.css"/>
+            <style type="text/css">
+                .ui-datatable tbody td {
+                    white-space: normal;
+                }
+
+                .ui-datatable thead th {
+                    white-space: normal;
+                }
+            </style>
+        </h:head>
+        <h:body>
+            <h:form>
+                <ui:include src="/resources/pages/common/sessionPage.jsf"></ui:include>
+                <ui:include src="/resources/pages/common/inactividad.jsf"></ui:include>
+                <table border="0">
+                    <tr valign="top">
+                        <td align="center">
+                            <table border="0">
+                                <tr valign="top">
+                                    <td align="center">
+                                        <p:panel id="pnlSolDevReg" header="#{msgValidacion.L0000005}"
+                                                 style="width:910px !important;">
+                                            <p:messages id="messageSolDev" globalOnly="true" autoUpdate="true"/>
+                                            <f:facet name="header">
+                                                <p:commandButton icon="ui-icon-search" title="#{msgValidacion.B0000004}"
+                                                                 action="#{datosSolicitudCtrlMB.recuperarSolicitudTemp}"/>
+                                                <p:commandButton icon="ui-icon-document"
+                                                                 title="#{msgValidacion.B0000003}"
+                                                                 action="datosContribuyente"
+                                                                 actionListener="#{solicitudesDevolucionMB.findContribuyente}"/>
+                                            </f:facet>
+                                            <p:dataTable id="dtSolicitudes" emptyMessage="#{msgValidacion.tblEmpty}"
+                                                         var="solicitudes" value="#{solicitudesDevolucionMB.dataModel}"
+                                                         selection="#{datosContribuyenteMB.solDevRegistro}" rows="10"
+                                                         rendered="#{solicitudesDevolucionMB.resultList}"
+                                                         selectionMode="single" style="width:100% !important">
+                                                <p:column width="55">
+                                                    <f:facet name="header">
+                                                        <h:outputText value="#{msgValidacion.diColumnaFecha}"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{solicitudes.fecha}"></h:outputText>
+                                                </p:column>
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <h:outputText value="#{msgValidacion.L0000006}"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{solicitudes.origenDevolucion}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <h:outputText value="#{msgValidacion.asTipoTramite}"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{solicitudes.tipoTramite}"/>
+                                                </p:column>
+                                                <p:column rendered="true">
+                                                    <f:facet name="header">
+                                                        <h:outputText value="#{msgValidacion.liImp}"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{solicitudes.impuesto}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <h:outputText value="#{msgValidacion.liCon}"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{solicitudes.consepto}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <h:outputText value="#{msgValidacion.liEje}"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{solicitudes.ejercicio}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <h:outputText value="#{msgValidacion.liPer}"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{solicitudes.periodo}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <f:facet name="header">
+                                                        <h:outputText value="#{msgValidacion.L0000055}"/>
+                                                    </f:facet>
+                                                    <h:outputText value="#{solicitudes.importeSolicitado}">
+                                                        <f:convertNumber pattern="¤#,##0.00" currencySymbol="$"
+                                                                         type="currency" locale="us"/>
+                                                    </h:outputText>
+                                                </p:column>
+                                            </p:dataTable>
+                                        </p:panel>
+                                    </td>
+                                </tr>
+                                 
+                                <tr>
+                                    <td align="left">
+                                        <p:separator></p:separator>
+                                        <div style="width:810px;font-size: 12px;">
+                                            <ul>
+                                                <li>
+                                                    <p>
+                                                        #{solicitudesDevolucionMB.messageInfo}
+                                                    </p>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                <p:dialog modal="true" resizable="false" visible="#{solicitudesDevolucionMB.error}" draggable="false"
+                          header="Verifique!..." width="350" closable="false">
+                    <table border="0">
+                        <tr align="justify">
+                            <td>Sus datos de sesion no son correctos con el tipo (acceso)</td>
+                        </tr>
+                    </table>
+                </p:dialog>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>
+

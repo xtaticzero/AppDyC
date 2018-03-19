@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view contentType="text/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+    <html xmlns="http://www.w3.org/1999/xhtml" xmlns:p="http://primefaces.org/ui"
+          xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+          xmlns:f="http://java.sun.com/jsf/core">
+        <h:head>
+            <title>Compensaci&oacute;n registrada</title>
+            <meta http-equiv="X-UA-Compatible" content="IE=8"/>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <meta http-equiv="pragma" content="no-cache"/>
+            <meta http-equiv="cache-control" content="no-cache"/>
+            <meta http-equiv="expires" content="0"/>
+            <h:outputStylesheet library="css/" name="dyc.css"/>
+            <style type="text/css">
+                /*
+                */
+            </style>
+        </h:head>
+        <h:body>
+            <p:dialog modal="true" widgetVar="statusDialog" header="#{msgValidacion.ajaxLoading}" draggable="false"
+                      resizable="false" closable="false">
+                <h:graphicImage library="images/" name="ajaxloadingbar.gif"/>
+            </p:dialog>
+             
+            <h:form id="frmCC">
+                <p:growl id="growl" showDetail="false" life="5000" globalOnly="false"/>
+                <f:event listener="#{bandCCMB.mostrarMensaje}" type="preRenderView"/>
+                <p:panel id="pnlEmitirRequerimiento" style="width:100%;" header="Bandeja casos de compensación">
+                    <p:toolbar>
+                        <p:toolbarGroup align="right">
+                            <p:commandButton id="cbtDictaminar" icon="ui-icon-search" title="Dictaminar" update="growl"
+                                             action="#{bandCCMB.dictaminar}"/>
+                        </p:toolbarGroup>
+                    </p:toolbar>
+                    <p:row>
+                        <p:column>
+                            <!-- scrollWidth="900"  -->
+                            <p:dataTable id="tblCC" var="cc" value="#{bandCCMB.casosCompensacion}"
+                                         selection="#{bandCCMB.casoCompSeleccionado}" widgetVar="dtbCompensaciones"
+                                         emptyMessage="No se encontraron Compensaciones"
+                                         rowStyleClass="#{cc.vencido ? 'old' : 'cuadriculado'}"
+                                         paginator="#{bandCCMB.frm.paginador}"
+                                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                         rowsPerPageTemplate="5,10,15,20" rows="#{bandCCMB.frm.rowsPaginador}"
+                                         scrollable="true" resizableColumns="true"
+                                         selectionMode="single">
+
+                                <p:column headerText="Número de control" width="180" filterBy="#{cc.numeroControl}" filterMaxLength="14">
+                                    <h:outputText value="#{cc.numeroControl}"/>
+                                </p:column>
+                                <p:column headerText="RFC" width="152" filterBy="#{cc.rfc}" filterMaxLength="13">
+                                    <h:outputText value="#{cc.rfc}"/>
+                                </p:column>
+                                <p:column headerText="Tipo trámite"
+                                          style="width:100px; white-space:normal; text-align: left;" width="250">
+                                    <h:outputText value="#{cc.tipoTramite}"/>
+                                </p:column>
+                                <p:column headerText="Fecha de presentación de la declaración"
+                                          style="width:100px; white-space:normal;text-align: center;" width="150">
+                                    <h:outputText value="#{cc.fechaPresDecl}"/>
+                                </p:column>
+                                <p:column headerText="Monto compensado" style="text-align: right;" width="180">
+                                    <h:outputText value="#{cc.montoCompensado}">
+                                        <f:convertNumber pattern="¤#,##0.00" currencySymbol="$" type="currency"
+                                                         locale="es-MX"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="Estado del caso de compensación"
+                                          style="width:100px; white-space:normal; text-align: center;" width="130">
+                                    <h:outputText value="#{cc.estadoCasoComp}"/>
+                                </p:column>
+                                <c:if test="#{admCasosComp.rol.nombre eq 'SAT_DYC_ADMIN_APRO'}">
+                                    <p:column headerText="Dictaminador asignado"
+                                              style="width:100px; white-space:normal; text-align: left;" width="220">
+                                        <h:outputText value="#{cc.dictaminador}"/>
+                                    </p:column>
+                                </c:if>
+                                <f:facet name="footer">
+                                    <p:outputLabel value="#{bandCCMB.frm.numResultados} Resultados"
+                                                   style="text-align:left"/>
+                                </f:facet>
+                            </p:dataTable>
+                        </p:column>
+                    </p:row>
+                </p:panel>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

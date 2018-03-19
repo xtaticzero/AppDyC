@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+        >
+    <html xmlns="http://www.w3.org/1999/xhtml" xmlns:p="http://primefaces.org/ui"
+          xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:ui="http://java.sun.com/jsf/facelets">
+        <h:head>
+            <meta http-equiv="X-UA-Compatible" content="IE=8"/>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <meta http-equiv="pragma" content="no-cache"/>
+            <meta http-equiv="cache-control" content="no-cache"/>
+            <meta http-equiv="expires" content="0"/>
+            <h:outputScript library="js" name="general.js"/>
+            <h:outputScript library="js" name="calendar-localization.js"/>
+            <h:outputStylesheet library="css/" name="formato.css"/>
+            <h:outputScript library="primefaces" name="primefaces.js"/>
+            <style type="text/css">
+                .ui-paginator {
+                    font-size: 12px !important;
+                }
+
+                .ui-datatable tbody td {
+                    white-space: normal;
+                }
+
+                .ui-datatable thead th {
+                    white-space: normal;
+                }
+            </style>
+        </h:head>
+        <h:body>
+            <p:dialog modal="true" widgetVar="statusDialog" header="#{msgValidacion.ajaxLoading}" draggable="false"
+                      resizable="false" closable="false">
+                <h:graphicImage library="images/" name="ajaxloadingbar.gif"/>
+            </p:dialog>
+            <h:form id="subOrigenDeSaldos">
+                <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                <!--Estatus de Ajax-->
+                <!--<ui:include src="/resources/pages/common/sessionPage.jsf"></ui:include>-->
+                <ui:include src="/resources/pages/common/inactividad.jsf"></ui:include>
+                <!--Fin estatus de Ajax-->
+                <p:panel id="panel" header="#{msgValidacion.rsHeader}" style="width: 100%" 
+                         rendered="#{reasignarManSolicDevolucionyCasosCompMB.verPnlAprobador}">
+                   <ui:include src="/resources/pages/registro/reasignacionAprobador.jsf"></ui:include>
+                </p:panel>
+                <p:panel id="panelAdmOrigen" header="#{reasignarManSolicDevolucionyCasosCompMB.frm.admCentral}" 
+                         style="width: 100%" rendered="#{reasignarManSolicDevolucionyCasosCompMB.verPnlUnidadesOrigen}">
+                    <ui:include src="/resources/pages/registro/admOrigenReasignacion.jsf"></ui:include>
+                </p:panel>
+                <p:panel id="panelCentral" header="#{reasignarManSolicDevolucionyCasosCompMB.selectAdmin.nombre}" 
+                         style="width: 100%" rendered="#{reasignarManSolicDevolucionyCasosCompMB.verPnlNoCentral}">
+                    <ui:include src="/resources/pages/registro/reasignacionCentral.jsf"></ui:include>
+                </p:panel>
+                         <p:commandButton id="regresarPnlCentral" action="#{reasignarManSolicDevolucionyCasosCompMB.regresarPanelAdmCentral}" 
+                                          value="#{msgValidacion.rsBtnRegresar}" rendered="#{reasignarManSolicDevolucionyCasosCompMB.verPnlNoCentral}"
+                                          update=":subOrigenDeSaldos :subOrigenDeSaldos:panelAdmOrigen"
+                                          style="float:right"/>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

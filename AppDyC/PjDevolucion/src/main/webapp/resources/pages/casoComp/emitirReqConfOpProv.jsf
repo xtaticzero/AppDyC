@@ -1,0 +1,216 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+        locale="ES" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:pe="http://primefaces.org/ui/extensions">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <meta http-equiv="X-UA-Compatible" content="IE=8"/>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <meta http-equiv="pragma" content="no-cache"/>
+            <meta http-equiv="cache-control" content="no-cache"/>
+            <meta http-equiv="expires" content="0"/>
+            <h:outputScript library="js" name="casosCompensacion.js"/>
+            <h:outputScript library="js" name="calendar-localization.js"/>
+            <!-- <h:outputStylesheet library="css/" name="formato.css"/> -->
+            <style type="text/css">
+                .fileupload-content {
+                    height: 0 !important;
+                    border: none !important;
+                }
+
+                .fileupload-buttonbar {
+                    border: none !important;
+                }
+            </style>
+            <script type="text/javascript">
+              jQuery(document).ready(function () {
+                  $("input[name*='frmFacturas:txtCapturaRFC']").keyup(function () {
+                      $(this).val($(this).val().toUpperCase());
+                  });
+              });
+            </script>
+        </h:head>
+        <h:body>
+            <h:form id="frmFacturas">
+                <ui:include src="/resources/pages/common/sessionPage.jsf"></ui:include>
+                <ui:include src="/resources/pages/common/inactividad.jsf"></ui:include>
+                <p:panelGrid id="pnlFacturas" style="width:100%; ">
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="4">
+                                <h:outputLabel value="#{msgValidacion.acc00060}"/>
+                            </p:column>
+                        </p:row>
+                    </f:facet>
+                    <p:row>
+                        <p:column colspan="4">
+                            <h:outputLabel value="#{msgValidacion.acc00021} #{admCasosComp.numControl}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="4" style="font-weight: bold;">
+                            <p:messages id="messages" globalOnly="true" closable="true"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column style="height: 60px; width: 100px;">
+                            <h:outputLabel value="#{msgValidacion.acc00023}"/>
+                        </p:column>
+                        <p:column style="width: 200px;">
+                            <p:inputText id="txtCapturaRFC" value="#{facturasProvCCMB.rfcProveedor}"
+                                         validator="RfcValidator" maxlength="13"
+                                         disabled="#{facturasProvCCMB.estadoPantalla != 'buscando'}"></p:inputText>
+                            <p:message for="txtCapturaRFC" id="msgConceptoc" display="text"/>
+                            <!-- onkeypress="return validarRFC(event);"  -->
+                        </p:column>
+                        <p:column style="width: 100px;">
+                            <p:commandButton id="btnBuscar" value="Buscar" action="#{facturasProvCCMB.buscar}"
+                                             icon="ui-icon-search" ajax="false"
+                                             disabled="#{facturasProvCCMB.estadoPantalla != 'buscando'}"
+                                             update="frmFacturas:pnlFacturas"/>
+                        </p:column>
+                        <p:column>
+                            <p:commandButton id="btnLimpiar" value="Limpiar" action="#{facturasProvCCMB.limpiar}"
+                                             disabled="#{facturasProvCCMB.estadoPantalla != 'editando' and facturasProvCCMB.estadoPantalla != 'gestionando' and facturasProvCCMB.estadoPantalla != 'consultando'}"
+                                             ajax="false"
+                                             update="txtCapturaRFC btnBuscar btnLimpiar gridFacturas pngBotones messages"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="4">
+                            <p:dataTable id="gridFacturas" widgetVar="dtbFacturas" var="factura"
+                                         value="#{facturasProvCCMB.facturas}" scrollHeight="455"
+                                         selection="#{facturasProvCCMB.facturaSeleccionada}" selectionMode="single"
+                                         emptyMessage="#{msgValidacion.tblEmpty}" style="min-height:450px;">
+                                <p:column headerText="No. factura" style="text-align: right;">
+                                    <h:outputText value="#{factura.numFactura}"/>
+                                </p:column>
+                                <p:column headerText="Fecha" style="text-align: center;">
+                                    <h:outputText value="#{factura.fecha}"/>
+                                </p:column>
+                                <p:column headerText="Concepto">
+                                    <h:outputText value="#{factura.concepto}"/>
+                                </p:column>
+                                <p:column headerText="Importe" style="text-align: right;">
+                                    <h:outputText value="#{factura.importe}"/>
+                                </p:column>
+                                <p:column headerText="IVA trasladado" style="text-align: right;">
+                                    <h:outputText value="#{factura.ivaTrasladado}"/>
+                                </p:column>
+                                <p:column headerText="Total" style="text-align: right;">
+                                    <h:outputText value="#{factura.total}"/>
+                                </p:column>
+                            </p:dataTable>
+                        </p:column>
+                    </p:row>
+                    <f:facet name="footer">
+                        <p:row>
+                            <p:column colspan="4" style="text-align:right;">
+                                <h:panelGroup id="pngBotones">
+                                    <p:button id="btnAtras" value="Anterior" outcome="dictaminar"/>
+                                    <p:commandButton id="btnEnviarAAprob" value="#{msgValidacion.asBtnAprobar}"
+                                                     rendered="#{facturasProvCCMB.estadoPantalla == 'gestionando'}"
+                                                     oncomplete="dlgEnviarAprob.show();"
+                                                     update="btnEnviarAAprob messages"/>
+                                    <p:commandButton id="btnGenerarDoc" value="Generar Documento"
+                                                     actionListener="#{facturasProvCCMB.generarDocumento}"
+                                                     rendered="#{facturasProvCCMB.estadoPantalla == 'editando'}"
+                                                     ajax="false"
+                                                     onclick="PrimeFaces.monitorDownload(null, stop3); statusDialog.show();">
+                                        <p:fileDownload value="#{facturasProvCCMB.streamedContArchGen}"/>
+                                        <p:remoteCommand name="stop3" update="messages pngBotones " process="@this"/>
+                                        <!-- :frmEnviarAAprob:cmbSuperiorAAprobar -->
+                                    </p:commandButton>
+                                    <p:commandButton id="btnAgregarFactura" value="Nueva factura"
+                                                     oncomplete="dlg2.show();" actionListener="#{facturasProvCCMB.foco}"
+                                                     style="width:150px"
+                                                     rendered="#{facturasProvCCMB.estadoPantalla == 'editando'}"/>
+                                    <p:commandButton id="btnEliminarFact" value="Eliminar factura"
+                                                     rendered="#{facturasProvCCMB.estadoPantalla == 'editando'}"
+                                                     onclick="manejarClickBtnEliminarFactura();"/>
+                                </h:panelGroup>
+                            </p:column>
+                        </p:row>
+                    </f:facet>
+                </p:panelGrid>
+                <p:dialog id="mddConfirmarElimFactura" header="¿Está seguro que desea eliminar la factura?"
+                          widgetVar="dlgConfirmarElimFactura" modal="true" width="350" height="100" resizable="false"
+                          closable="false">
+                    <table border="0" width="100%">
+                        <!--
+                        <tr>
+                            <td>&iquest;Est&aacute; seguro que desea eliminar la factura?</td>
+                        </tr>
+ -->
+                        <tr>
+                            <td align="right">
+                                <p:commandButton id="btnAceptarElimFactura" value="Aceptar"
+                                                 oncomplete="dlgConfirmarElimFactura.hide();"
+                                                 action="#{facturasProvCCMB.eliminarFactura}" update="gridFacturas"/>
+                                 
+                                <p:commandButton value="Cancelar" oncomplete="dlgConfirmarElimFactura.hide();"/>
+                            </td>
+                        </tr>
+                    </table>
+                </p:dialog>
+            </h:form>
+             
+            <h:form id="frmAddFactura">
+                <p:dialog id="mdldAgregarFactura" header="Agregar factura" widgetVar="dlg2" modal="true" width="425"
+                          height="480" resizable="false" closable="false">
+                    <p:panelGrid columns="3" id="pgdAddFact" styleClass="gmxNoborde">
+                        <h:outputLabel value="#{msgValidacion.asdRfc}"/>
+                        <h:outputLabel value="#{facturasProvCCMB.rfcProveedor}"/>
+                        <p:spacer/>
+                        No. factura:
+                        <p:inputText id="numFac" value="#{facturasProvCCMB.numFactura}" maxlength="15" required="true"
+                                     requiredMessage="requerido"/>
+                        <p:message for="numFac" id="msgnumFac" display="text"/>
+                        Fecha:
+                        <p:calendar value="#{facturasProvCCMB.fecha}" id="popupButtonCal" navigator="true" locale="es"
+                                    pattern="dd/MM/yyyy" readonlyInput="true" maxdate="#{now}" required="true"
+                                    requiredMessage="requerido"/>
+                        <p:message for="popupButtonCal" id="msgButtonCal" display="text"/>
+                        Concepto:
+                        <p:inputTextarea id="inpTConcepto" value="#{facturasProvCCMB.concepto}" maxlength="100"
+                                         required="true" requiredMessage="requerido" cols="35" rows="3"
+                                         autoResize="true"/>
+                        <p:message for="inpTConcepto" id="msgConceptoc" display="text"/>
+                        Importe:
+                        <pe:inputNumber id="inputImporte" value="#{facturasProvCCMB.importe}" maxlength="15" symbol="$"
+                                        required="true" requiredMessage="requerido" decimalSeparator="."
+                                        thousandSeparator="," onkeypress="return validar(event);"/>
+                        <p:message for="inputImporte" id="msgImporte" display="text"/>
+                        IVA Trasladado:
+                        <pe:inputNumber id="inputIva" value="#{facturasProvCCMB.ivaTrasladado}" maxlength="15"
+                                        symbol="$" required="true" requiredMessage="requerido" decimalSeparator="."
+                                        thousandSeparator="," onkeypress="return validar(event);"/>
+                        <!--
+                        <p:inputText id="inputIva" value="#{facturasProvCCMB.ivaTrasladado}" maxlength="15"
+                                     required="true" requiredMessage="requerido" onkeypress="return validar(event);"/>
+                        -->
+                        <p:message for="inputIva" id="msgIva" display="text"/>
+                        Total:
+                        <pe:inputNumber id="inputTotal" value="#{facturasProvCCMB.total}" maxlength="15" symbol="$"
+                                        required="true" requiredMessage="requerido" decimalSeparator="."
+                                        thousandSeparator="," onkeypress="return validar(event);"/>
+                        <!--
+                        <p:inputText id="inputTotal" value="#{facturasProvCCMB.total}" maxlength="15" required="true"
+                                     requiredMessage="requerido" onkeypress="return validar(event);"/>-->
+                        <p:message for="inputTotal" id="msgTotal" display="text"/>
+                    </p:panelGrid>
+                    <p:separator/>
+                    <p:commandButton id="btnCancelar" value="Cancelar" type="button" style="float:right;"
+                                     styleClass="gmxNegativo" onclick="dlg2.hide();"/>
+                    <p:commandButton id="btnAceptar" value=" Aceptar" styleClass="gmxPositivo"
+                                     actionListener="#{facturasProvCCMB.agregarFactura}" style="float:right;"
+                                     update=":frmFacturas:gridFacturas :frmFacturas:messages :frmAddFactura:pgdAddFact"/>
+                </p:dialog>
+            </h:form>
+             
+            <ui:insert name="enviarAprobacion">
+                <ui:include src="enviarAprobacion.jsf"/>
+            </ui:insert>
+        </h:body>
+    </html>
+</f:view>

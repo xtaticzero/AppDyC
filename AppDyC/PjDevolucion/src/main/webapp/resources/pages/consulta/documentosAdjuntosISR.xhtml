@@ -1,0 +1,211 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:c="http://java.sun.com/jsp/jstl/core"
+        xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+
+
+
+        <h:head>
+            <meta http-equiv="X-UA-Compatible" content="IE=8"/>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <meta http-equiv="pragma" content="no-cache"/>
+            <meta http-equiv="cache-control" content="no-cache"/>
+            <meta http-equiv="expires" content="0"/>
+
+            <style type="text/css">
+                .ui-panelgrid { margin-left: 0px !important;}
+                hr.red:before {content: " "!important;width: 35px!important;height: 6px!important;background-color: #D0021B!important;display: block!important;position: absolute!important;} 
+                .gmxNoborde1 td{border-color:#FFFFFF;}
+                .ui-selectoneradio{width: 10px!important;}
+                .ui-selectoneradio td{padding: 0px!important;border-color:#FFFFFF;}
+                .ui-selectoneradio label {padding-left: 5px!important;padding-right: 1px!important;}
+                hr.red {margin: 0px 0 70px !important;border-top-color: #DCE0E0 !important;position: relative !important;margin-left: 11px !important;}
+                .gmxfhorizontal td:nth-child(odd) {text-align: right !important;width: 398px!important;}
+                .gmxfhorizontal td:nth-child(even) {text-align: left !important;width: 398px!important;}
+                .gmxfhorizontal .ui-outputlabel{font-weight: normal !important;}
+                body {font-family: 'Open Sans';}
+                hr.red {margin: 0px 0px 25px !important;border-top-color: #DCE0E0 !important;position: relative !important;margin-left: 2px !important;} 
+                h2 {font-size: 38px!important;margin-bottom: 0px!important;margin-left: -2px !important;}
+                .ui-selectoneradio{width: 10px!important;}
+                .ui-selectoneradio td{padding: 0px!important;border-color:#FFFFFF;}  
+                .ui-selectoneradio label {padding-left: 5px!important;padding-right: 1px!important;}
+                .gmxfhorizontal .ui-selectoneradio td {padding-left: 0px !important;}
+
+                .ui-panelgrid td {border-color: #FFFFFF;}
+
+                .ui-datatable-header .ui-widget-header .ui-corner-top {border: 0px!important;}
+                .ui-panelgrid .ui-widget-header{text-align: center;}
+
+                .ui-datatable tbody td {
+                    white-space: normal;
+                }
+
+                .ui-datatable thead th {
+                    white-space: normal;
+                }
+            </style>
+
+
+        </h:head>
+
+        <h:body>
+            <h:form id="idISRdetalleDatosAdjuntos"  enctype="multipart/form-data">
+               
+               <p:column style="display:block;width: 100% !important" rendered="#{consultaDevautisrMB.instanciado}">
+                  <div style="width: 777px!important;">
+                          <h2>
+                              <p:outputLabel value="#{msgValidacion.L0000015}" />
+                          </h2>
+                            <hr class="red" /> 
+                            <p:messages id="messages"  showDetail="true" autoUpdate="true" closable="true" />
+                             <b><p:outputLabel value="#{msgValidacion.riaTipDocumento}" /></b>
+                              <p:commandButton id="adjuntarDocumento"  icon="ui-icon-circle-plus"            onclick="dlgAdjuntarArchivo.show()" title="Adjuntar" />
+                              <p:commandButton id="modificarDocumento"  icon="ui-icon-pencil"                onclick="dlgModificarArchivo.show()" title="Modificar" disabled="#{!consultaDevISRDetalleMB.mortrarAcciones}"/>                    
+                              <p:commandButton id="eliminarDocumento"  icon="ui-icon-trash" title="Eliminar" onclick="dlgEliminarArchivo.show()"  disabled="#{!consultaDevISRDetalleMB.mortrarAcciones}" />
+                              
+                             <p:scrollPanel mode="native" 
+                                            style="width:100%; height: 100%;margin-top: 25px!important">
+                                    <p:dataTable id="dtlDocumentos" 
+                                                 var="archivoDocumento"
+                                                 value="#{consultaDevISRDetalleMB.listaDocumentos}"
+                                                 scrollWidth="100%" 
+                                                 style="text-align:left;width:100%;" 
+                                                 resizableColumns="true"
+                                                 liveResize="true" 
+                                                 rowIndexVar="rowIndex"
+                                                 rowStyleClass="#{(rowIndex mod 2) eq 0 ?'highlightA':'highlightB'}"
+                                                 emptyMessage="No se encontraron registros."
+                                                 rowKey="#{archivoDocumento.tramite}"
+                                                 selection="#{consultaDevISRDetalleMB.archivoSelecionado}"
+                                                 selectionMode="single"
+                                                 rows="5" 
+                                                 paginator="true" 
+                                                 paginatorPosition="bottom" 
+                                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                                        <p:ajax event="rowSelect" 
+                                                update="@form"
+                                                listener="#{consultaDevISRDetalleMB.onRowSelect}"/>
+                                        <p:column headerText="Nombre Archivo" >
+                                            <p:outputLabel value="#{archivoDocumento.nombreArchivo}"  />                                                                     
+                                        </p:column>
+                                        <p:column headerText="Nombre Documento" >
+                                            <p:outputLabel value="#{archivoDocumento.nombre}"  />                                                                     
+                                        </p:column>                                                            
+                                    </p:dataTable>
+                            </p:scrollPanel>
+                              
+                <p:commandButton id="aceptarConsultaTramite" 
+                                 value="#{msgValidacion.B0000016}"    
+                                 styleClass="gmxPositivo" 
+                                 disabled="#{!consultaDevISRDetalleMB.habilitarEnviar}"
+                                 actionListener="#{consultaDevISRDetalleMB.pantallaCuentaBancaria}" 
+                                 update="@all" />
+                 <p:commandButton id="regresarConsultaTramite" 
+                                  value="#{msgValidacion.aiaRegresar}" 
+                                  actionListener="#{consultaDevISRDetalleMB.verISRDetalleNuevo}"  
+                                  update="@form" />  
+                  </div>
+          
+               </p:column>     
+               
+                
+                <p:dialog id="dlgAdjuntarArchivoId" 
+                          header="#{msgValidacion.aiaDialogHeader}" 
+                          modal="true" 
+                          widgetVar="dlgAdjuntarArchivo" 
+                          resizable="false" 
+                          closable="true"
+                          width="70%" 
+                          height="50%">
+                        <p style="color: Red;">#{msgValidacion.camposObligatorios}</p>
+                    
+                    <p:panelGrid columns="2">
+                        <h:outputLabel value="#{msgValidacion.aiaSeleccioneArchivo}"/>
+                        <p:fileUpload id="fileUp" 
+                                      value="#{consultaDevISRDetalleMB.file}" 
+                                      style="width : 400px;" 
+                                      mode="simple" />
+                        <h:outputLabel value="#{msgValidacion.aiaNombreDelDocumento}"/>
+                        <p:inputText id="txtNombreArchivo" 
+                                     maxlength="180" 
+                                     style="width: 400px;text-transform: uppercase;"
+                                     value="#{consultaDevISRDetalleMB.nombreArchivo}"/>
+                    </p:panelGrid>            
+
+                    <p:commandButton id="aceptarAdjuntarArchivo" 
+                                     value="#{msgValidacion.aiaAgregar}"  
+                                     actionListener="#{consultaDevISRDetalleMB.subirArchivo}" 
+                                     styleClass="gmxPositivo"
+                                     onsuccess="dlgAdjuntarArchivo.hide()" 
+                                     ajax="false"  
+                                     update="dtlDocumentos dlgAdjuntarArchivoId aceptarConsultaTramite"/>                                     
+                    <p:commandButton id="cerrarAdjuntarArchivo" 
+                                     value="#{msgValidacion.aiaCancelar}" 
+                                     onsuccess="dlgAdjuntarArchivo.hide()"  
+                                     actionListener="#{consultaDevISRDetalleMB.limpiarSubirArchivo}"
+                                     update="dtlDocumentos dlgAdjuntarArchivoId"/>                                         
+                </p:dialog>
+                
+                <p:dialog header="#{msgValidacion.aiaDialogEditarHeader}" 
+                          modal="true" 
+                          widgetVar="dlgModificarArchivo" 
+                          resizable="false" 
+                          closable="true"
+                          width="70%" height="50%">
+                    <p:panelGrid columns="2">
+                        <h:outputLabel value="#{msgValidacion.aiaEditarNombre}"/>
+                        <p:inputText id="txtModificarNombreArchivo" 
+                                     maxlength="180" 
+                                     style="width: 400px;text-transform: uppercase;"
+                                     value="#{consultaDevISRDetalleMB.nombreArchivoModificado}"/>
+                    </p:panelGrid>
+                    
+                    <p:commandButton id="aceptarModificarArchivo" 
+                                     value="#{msgValidacion.aiaAceptar}"  
+                                     actionListener="#{consultaDevISRDetalleMB.modificarArchivo}" 
+                                     styleClass="gmxPositivo"
+                                     onsuccess="dlgModificarArchivo.hide()" 
+                                     ajax="false" 
+                                     update="@form"/>                                     
+                    <p:commandButton id="cerrarModificarArchivo" 
+                                     value="#{msgValidacion.aiaCancelar}" 
+                                     onsuccess="dlgModificarArchivo.hide()"  
+                                     actionListener="#{consultaDevISRDetalleMB.cancelarModificarArchivo}" 
+                                     update="@form" />                                     
+                </p:dialog>
+                
+                <p:dialog header="#{msgValidacion.aiaTituloConfEliminacion}" 
+                          modal="true" 
+                          widgetVar="dlgEliminarArchivo" 
+                          resizable="false" 
+                          closable="true"
+                          width="70%" 
+                          height="50%">                
+                    <p:panelGrid columns="1">
+                        <h:outputLabel value="#{msgValidacion.aiaConfirmacionEliminar}"/>
+                    </p:panelGrid>
+
+                    <p:commandButton id="aceptarEliminarArchivo" 
+                                     value="Aceptar"  
+                                     actionListener="#{consultaDevISRDetalleMB.eliminarArchivo}" 
+                                     styleClass="gmxPositivo"
+                                     onsuccess="dlgEliminarArchivo.hide()" 
+                                     ajax="false" 
+                                     update="dtlDocumentos aceptarConsultaTramite" />                                     
+                    <p:commandButton id="cerrarEliminarArchivo" 
+                                     value="Cerrar" 
+                                     onsuccess="dlgEliminarArchivo.hide()"  />              
+                </p:dialog>
+  
+            </h:form> 
+            
+            <p:column id="idCuentaSig" style="display:block;width: 100% !important" rendered="#{consultaDevISRDetalleMB.mostrarCuentaBancaria}">
+                <ui:include src="informacionBancoConsulta.jsf" />
+            </p:column>
+            
+        </h:body>
+    </html>
+</f:view>  

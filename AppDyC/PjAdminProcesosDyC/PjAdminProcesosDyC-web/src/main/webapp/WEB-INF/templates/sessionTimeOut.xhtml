@@ -1,0 +1,34 @@
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <script type="text/javascript">
+           function cierraFrame(){
+               var url="${request.contextPath}";
+               var resLeft = url.replace("PM", "faces/paginaVacia.jsp");
+               var resHeader = url.replace("PM", "faces/Header.jsp");
+               top.frames['leftFrame'].location = resLeft;
+               top.frames['topFrame'].location = resHeader;
+           }
+    </script>
+    <p:idleMonitor onactive="sessionTimeOutDialog.show();cierraFrame();" timeout="#{redirectBean.timeOut}" />
+    <p:dialog header="#{mensajes['error.sessionTimeOut.header']}" widgetVar="sessionTimeOutDialog"
+              modal="true" closable="false" width="400" visible="false">
+        <table>
+            <tr>
+                <td>
+                    <div style="text-align: justify">
+                        <h:outputText value="#{mensajes['error.sessionTimeOut.text']}"/>    
+                    </div> 
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div style="text-align: center">
+                        <input id="confirmBackToLogin" type="button" value="#{mensajes['error.sessionTimeOut.button']}"
+                               onclick="window.location='#{redirectBean.urlRedirect}';" />
+                    </div>     
+                </td>
+            </tr>
+        </table>
+    </p:dialog> 
+</html>

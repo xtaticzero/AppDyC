@@ -1,0 +1,64 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xs:schema xmlns:tns="http://ws.dyc.mat.sat.gob.mx/" 
+           xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+           xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+           version="1.0" 
+           targetNamespace="http://ws.dyc.mat.sat.gob.mx/">
+
+    <xsd:element name="confirmarAutorizacionPago" >
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="PreparacionPagoDevAut" type="tns:PreparacionPagoDevAut" maxOccurs="1" minOccurs="1"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="confirmarAutorizacionPagoResponse">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="NotificacionConfirAutoPago" type="tns:NotificacionConfirAutoPago" maxOccurs="1" minOccurs="1"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>    
+
+    <xsd:complexType name="PreparacionPagoDevAut">
+       <xsd:sequence>
+            <xsd:element name="DatosContribuyente" type="tns:DatosContribuyente"/>
+            <xsd:element name="DatosRegistroMATDYC" type="tns:DatosRegistroMATDYC"/>
+            <xsd:element name="DatosDevolucionAut" type="tns:DatosDevolucionAut"/>
+            <xsd:element name="idResolucion" type="xsd:integer" />
+        </xsd:sequence>
+    </xsd:complexType>
+            
+    <xsd:complexType name="NotificacionConfirAutoPago">
+        <xsd:sequence>
+            <xsd:element name="EstadoActualizacion" type="tns:EstadoActualizacion"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="DatosContribuyente">
+        <xsd:sequence>
+            <xsd:element name="RFC" type="xsd:string" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="DatosRegistroMATDYC">
+        <xsd:sequence>
+            <xsd:element name="folioMATDYC" type="xsd:string"/>
+            <xsd:element name="IDICEP" type="xsd:integer" />
+            <xsd:element name="saldoICEP" type="xsd:decimal" nillable="true"/>            
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="DatosDevolucionAut">
+        <xsd:sequence>
+            <xsd:element name="montoAplicar" type="xsd:decimal" nillable="true"/>
+            <xsd:element name="accion" type="xsd:integer"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="EstadoActualizacion">
+        <xsd:sequence>
+            <xsd:element name="estadoActualizacion" type="xsd:integer"/>            
+        </xsd:sequence>
+    </xsd:complexType>    
+</xs:schema>

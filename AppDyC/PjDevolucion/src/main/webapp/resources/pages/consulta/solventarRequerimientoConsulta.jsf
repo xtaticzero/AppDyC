@@ -1,0 +1,309 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core" 
+        xmlns:h="http://java.sun.com/jsf/html"  
+        xmlns:p="http://primefaces.org/ui"> 
+    <html>
+        <h:head>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <meta http-equiv="pragma" content="no-cache"/>
+            <meta http-equiv="cache-control" content="no-cache"/>
+            <meta http-equiv="expires" content="0"/>
+            
+            <title>Solventar Requerimiento</title>
+             <style type="text/css">
+                .ui-panelgrid { margin-left: 0px !important;}
+                hr.red:before {content: " "!important;width: 35px!important;height: 6px!important;background-color: #D0021B!important;display: block!important;position: absolute!important;} 
+                .gmxNoborde1 td{border-color:#FFFFFF;}
+                .ui-selectoneradio{width: 10px!important;}
+                .ui-selectoneradio td{padding: 0px!important;border-color:#FFFFFF;}
+                .ui-selectoneradio label {padding-left: 5px!important;padding-right: 1px!important;}
+                hr.red {margin: 0px 0 70px !important;border-top-color: #DCE0E0 !important;position: relative !important;margin-left: 11px !important;}
+                .gmxfhorizontal td:nth-child(odd) {text-align: right !important;width: 398px!important;}
+                .gmxfhorizontal td:nth-child(even) {text-align: left !important;width: 398px!important;}
+                .gmxfhorizontal .ui-outputlabel{font-weight: normal !important;}
+                body {font-family: 'Open Sans';}
+                hr.red {margin: 0px 0px 25px !important;border-top-color: #DCE0E0 !important;position: relative !important;margin-left: 2px !important;} 
+                h2 {font-size: 38px!important;margin-bottom: 0px!important;margin-left: -2px !important;}
+                .ui-selectoneradio{width: 10px!important;}
+                .ui-selectoneradio td{padding: 0px!important;border-color:#FFFFFF;}  
+                .ui-selectoneradio label {padding-left: 5px!important;padding-right: 1px!important;}
+                .gmxfhorizontal .ui-selectoneradio td {padding-left: 0px !important;}
+                #idConsultaDevautisr\:tipoSolicitudId {width: 100%!important;}
+                #idConsultaDevautisr\:ejercicioId {width: 100%!important;}
+                #idConsultaDevautisr\:mostrarSolicitudId {width: 100%!important;}
+                .ui-panelgrid td {border-color: #FFFFFF;}
+                #idConsultaDevautisr\:j_idt37 {height: auto!important;border:0px!important;}
+                #idConsultaDevautisr\:dtlDocumentos\:j_idt38 {border: 0px !important;}
+                .ui-datatable-header .ui-widget-header .ui-corner-top {border: 0px!important;}
+                .datalist-altura .ui-widget-content {height: inherit;min-height:43px !important;}
+             </style>
+        </h:head>
+        <h:body>
+            <h:form id="solventaRequerimiento" prependId="false">
+                 <div style="width: 777px!important;">
+                        <h2>
+                            <p:outputLabel value="#{solventarRequerimientoMB.tituloSolventar}"/>
+                         </h2> 
+                        <hr class="red" />
+                        <p:panel id="pnlListado" styleClass="gmxAutoAjustable">
+                             <p:messages id="msgGeneral" showDetail="true" globalOnly="true" autoUpdate="true" closable="true"/>
+                             <p:panelGrid id="pnlGridReq" style="width:100%">
+                                <p:row>
+                                    <p:column>
+                                            <p:outputLabel value="#{msgValidacion.riaTipDocumento}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <h2>
+                                            <p:outputLabel value="#{msgValidacion.consulta_tooltop61}"/>
+                                        </h2> 
+                                        <hr class="red" />
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <p:dataTable id="dtlAnexos" var="documentoReq"
+                                                 value="#{solventarRequerimientoMB.lstDocumentosReqDTO}"
+                                                 rowIndexVar="indice"
+                                                 rowKey="#{documentoReq}"
+                                                 selection="#{solventarRequerimientoMB.selectDocumentoReqDTO}"
+                                                 selectionMode="single" paginator="true" rows="8"
+                                                 emptyMessage="#{msgValidacion.tblEmpty}" paginatorPosition="bottom"
+                                                 style="width:100%" scrollable="false">
+                                        <p:ajax event="rowSelect" update="dtlAnexos"/>
+                                        <f:facet name="header">
+                                            <p:toolbar>
+                                                <p:toolbarGroup align="left">
+                                                    <p:commandButton id="btnNuevo" icon="ui-icon-circle-plus"
+                                                                     oncomplete="dlgAdicionarDoc.show()"  
+                                                                     disabled="#{empty solventarRequerimientoMB.selectDocumentoReqDTO or solventarRequerimientoMB.estatusEnvio eq 'Enviado'}"
+                                                                     title="#{msgValidacion.consulta_tooltop62}"/>
+                                                    <p:commandButton id="btnEliminar" icon="ui-icon-trash"
+                                                                     oncomplete="dlgEliminarDoc.show()"
+                                                                     disabled="#{empty solventarRequerimientoMB.selectDocumentoReqDTO.archivoSol or solventarRequerimientoMB.estatusEnvio eq 'Enviado'}"
+                                                                      title="#{msgValidacion.consulta_tooltop63}"/>
+                                                </p:toolbarGroup>
+                                            </p:toolbar>
+                                        </f:facet>
+                                        <p:column headerText="#{msgValidacion.consulta_tooltop64}" width="">
+                                             <p:outputLabel value="#{indice+1}"/>
+                                        </p:column>
+                                        <p:column headerText="#{msgValidacion.consulta_tooltop65}" style="width:400px;white-space:normal">
+                                            <h:outputText value="#{documentoReq.descripcion}"/>
+                                        </p:column> 
+                                        <p:column headerText="#{msgValidacion.consulta_tooltop66}">
+                                            <div class="datalist-altura">
+                                                <p:dataList value="#{documentoReq.archivoSol}" var="archivo" itemType="number">
+                                                    <h:outputText value="#{archivo.nombre}"/>
+                                                </p:dataList>
+                                            </div>
+                                        </p:column>
+                                        <p:column headerText="#{msgValidacion.consulta_tooltop67}">
+                                            <div class="datalist-altura">
+                                                <p:dataList value="#{documentoReq.archivoSol}" var="archivo" itemType="none">
+                                                    <h:outputText value="#{archivo.estatus}"/>
+                                                </p:dataList>
+                                            </div>
+                                        </p:column>
+                                    </p:dataTable>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <h2>
+                                    <p:outputLabel value="#{msgValidacion.consulta_tooltop68}"/>
+                                </h2> 
+                                <hr class="red" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                    <p:dataTable emptyMessage="#{msgValidacion.tblEmpty}" 
+                                                 id="dtlAnexosDos" 
+                                                 paginator="true" 
+                                                 paginatorPosition="bottom"
+                                                 rowIndexVar="indice"
+                                                 rows="8"
+                                                 rowKey="#{anexoReq}"
+                                                 selection="#{solventarRequerimientoMB.selectAnexoReqDTO}"
+                                                 selectionMode="single" 
+                                                 style="width:100%"
+                                                 styleClass="estiloTabla"
+                                                 value="#{solventarRequerimientoMB.lstAnexosReqDTO}"
+                                                 var="anexoReq" >
+                                        <p:ajax event="rowSelect" update="dtlAnexosDos"/>
+                                         <p:column headerText="#{msgValidacion.consulta_tooltop64}" width="10px">
+                                             <h:outputText value="#{indice+1}"/>
+                                        </p:column>
+                                        <p:column headerText="#{msgValidacion.consulta_tooltop69}" style="white-space:normal">
+                                            <h:outputText value="#{anexoReq.descripcionAnexo}"/>
+                                        </p:column>
+                                        <p:column headerText="#{msgValidacion.aclP5TblCol3}" style="text-align:center; white-space:normal" >
+                                            <p:commandButton ajax="false" icon="ui-icon-arrowthick-1-s">
+                                                <f:setPropertyActionListener value="#{anexoReq}"  target="#{solventarRequerimientoMB.seleccionoAnexoDescargar}"/>
+                                                <p:fileDownload value="#{solventarRequerimientoMB.descargarAnexo}"/>
+                                            </p:commandButton>
+                                        </p:column>
+                                        <p:column headerText="#{msgValidacion.aclP5TblCol4}" style="text-align:center; white-space:normal">
+                                            <p:commandButton ajax="true" icon="ui-icon-arrowthick-1-n" oncomplete="dlgAdicionarAnexo.show()">
+                                                <f:setPropertyActionListener value="#{anexoReq}" target="#{solventarRequerimientoMB.selectAnexoReqDTO}"/>
+                                            </p:commandButton>
+                                        </p:column>
+                                        <p:column headerText="#{msgValidacion.consulta_tooltop66}">
+                                            <h:outputText value="#{anexoReq.archivoSol.nombre}"/>
+                                        </p:column>
+                                        <p:column headerText="#{msgValidacion.consulta_tooltop67}">
+                                            <h:outputText value="#{anexoReq.archivoSol.estatus}"/>
+                                        </p:column>
+                                        <p:column headerText="">
+                                            <p:commandButton id="btnEliminarD" icon="ui-icon-trash"
+                                                                     oncomplete="dlgEliminarAnexo.show()"
+                                                                     title="#{msgValidacion.consulta_tooltop70}">
+                                                <f:setPropertyActionListener value="#{anexoReq}" target="#{solventarRequerimientoMB.selectAnexoReqDTO}"/>
+                                            </p:commandButton>
+                                        </p:column>
+                                    </p:dataTable>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <h4>
+                                    <h:outputText value="#{msgValidacion.consulta_tooltop71}"/>
+                               </h4>
+                                <p:inputTextarea id="idNota" value="#{solventarRequerimientoMB.notasAclaratorias}"
+                                                 rows="5" cols="30" counter="counter"
+                                                 maxlength="3000" counterTemplate="Quedan {0} caracteres"
+                                                 style="width:100%;height:41px"/>
+                                <br />
+                                <h:outputText id="counter"/>
+                            </p:column>
+                        </p:row>
+                            <p:row>
+                                <p:column style="text-align: center">
+                                    <p:commandButton id="btnEnvio" value="Enviar..." disabled="#{solventarRequerimientoMB.btnEnviar}"
+                                                     update="@this,:solventaRequerimiento:pnlGridReq,:solventaRequerimiento:pnlListado,dtlAnexosDos"
+                                                     onclick="dlgConfirmarSolventacion.show();"/>
+                                    <p:commandButton value="Regresar" ajax="false"
+                                                     action="#{solventarRequerimientoMB.cancelar}"
+                                                     actionListener="#{solventarRequerimientoMB.limpiarDatos}"/>
+                                </p:column>
+                            </p:row>
+                    </p:panelGrid>
+                </p:panel>
+                <p:dialog id="statusBar" modal="true" widgetVar="statusDialog" header="#{msgValidacion.ajaxLoading}"
+                          draggable="false" width="250" closable="false" resizable="false">
+                    <p:graphicImage value="/resources/images/ajaxloadingbar.gif"/>
+                </p:dialog>
+                 </div>
+            </h:form>
+             
+            <p:dialog widgetVar="dlgAdicionarDoc" header="#{msgValidacion.consulta_tooltop72}" draggable="true" resizable="false"  modal="true" closable="true" width="550">
+                <h:form enctype="multipart/form-data">
+                    <p style="color: Red;">Los datos con * son obligatorios</p>
+                    <p:panelGrid columns="2">
+                        <h:outputLabel value="* Seleccione un archivo:"/>
+                        <p:fileUpload id="fileUp" value="#{solventarRequerimientoMB.file}" style="width : 400px;"
+                                      dragDropSupport="true" mode="simple" label="Buscar" 
+                                      validator="ArchivoValidator" />
+                            
+                        <f:facet name="footer">
+                            <div align="center">
+                                <p:commandButton value="#{msgValidacion.Cancelar}" ajax="false"
+                                                 update=":solventaRequerimiento:dtlAnexos"
+                                                 onclick="dlgAdicionarDoc.close();"/>
+                                <p:commandButton value="#{msgValidacion.Agregar}" ajax="false"
+                                                 update=":solventaRequerimiento:dtlAnexos"
+                                                 actionListener="#{solventarRequerimientoMB.agregarDocumento}"/>
+                            </div>
+                        </f:facet>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog>
+            <p:dialog widgetVar="dlgAdicionarAnexo" header="Adjuntar anexo" draggable="true" resizable="false"
+                      modal="true" closable="true" width="550">
+                <h:form enctype="multipart/form-data">
+                    <p style="color: Red;">Los datos con * son obligatorios</p>
+                    <p:panelGrid columns="2">
+                        <h:outputLabel value="* Seleccione un archivo:"/>
+                        <p:fileUpload id="fileUpAnexo" value="#{solventarRequerimientoMB.file}" style="width : 400px;"
+                                      dragDropSupport="true" mode="simple" label="Buscar" validator="ArchivoValidator"/>
+                        <f:facet name="footer">
+                            <div align="center">
+                                <p:commandButton value="#{msgValidacion.Cancelar}" ajax="false"
+                                                 update=":solventaRequerimiento:dtlAnexos"
+                                                 onclick="dlgAdicionarAnexo.close();"/>
+                                <p:commandButton value="#{msgValidacion.Agregar}" ajax="false"
+                                                 update=":solventaRequerimiento:dtlAnexos"
+                                                 actionListener="#{solventarRequerimientoMB.agregarAnexo}"/>
+                            </div>
+                        </f:facet>
+                    </p:panelGrid>
+                </h:form>
+            </p:dialog> 
+             
+            <p:confirmDialog id="idDialogoEnvio" message="#{msgValidacion.consulta_tooltop73}"
+                             header="#{msgValidacion.consulta_tooltop74}" severity="alert" widgetVar="dlgConfirmarSolventacion"
+                             closable="false">
+                <h:form>
+                    <div align="center">
+                        <p:commandButton value="Cancelar" ajax="false" oncomplete="dlgConfirmarSolventacion.hide()"
+                                         icon="ui-icon-cancel" title="#{msgValidacion.consulta_tooltop75}"/>
+                        <p:commandButton actionListener="#{solventarRequerimientoMB.solventarRequerimiento}"
+                                         ajax="false"
+                                         icon="ui-icon-check"
+                                         immediate="true" 
+                                         title="Guardar solventación"
+                                         update=":idDialogoEnvio"
+                                         process="@this"
+                                         onclick="dlgConfirmarSolventacion.hide(); statusDialog2.show()"
+                                         value="#{msgValidacion.Aceptar}"/>
+                    </div>
+                </h:form>
+            </p:confirmDialog>
+            
+            <p:confirmDialog message= "#{msgValidacion.consulta_tooltop76}"
+                             header="#{msgValidacion.consulta_tooltop77}" severity="alert" widgetVar="dlgEliminarDoc">
+                <h:form>
+                    <div align="center">
+                        <p:commandButton value="Cancelar" onclick="dlgEliminarDoc.hide()" type="button"/>
+                        <p:commandButton value="Aceptar" oncomplete="dlgEliminarDoc.hide()"
+                                         actionListener="#{solventarRequerimientoMB.borrarDocumento}"
+                                         update=":solventaRequerimiento:dtlAnexos:,:solventaRequerimiento:dtlAnexosDos"/>
+                    </div>
+                </h:form>
+            </p:confirmDialog>
+             
+            <p:confirmDialog message="#{msgValidacion.consulta_tooltop78}"
+                             header="#{msgValidacion.consulta_tooltop79}" severity="alert" widgetVar="dlgEliminarAnexo">
+                <h:form>
+                    <div align="center">
+                        <p:commandButton value="Cancelar" onclick="dlgEliminarAnexo.hide()" type="button"/>
+                        <p:commandButton value="Aceptar" oncomplete="dlgEliminarAnexo.hide()"
+                                         actionListener="#{solventarRequerimientoMB.borrarAnexo}"
+                                         update=":solventaRequerimiento:dtlAnexos:,:solventaRequerimiento:dtlAnexosDos"/>
+                    </div>
+                </h:form>
+            </p:confirmDialog>
+             
+            <p:confirmDialog id="idConfirmacion" message="#{solventarRequerimientoMB.mensajeConfirmacion}"
+                             header="#{msgValidacion.msjConfirmacion}" severity="alert" widgetVar="confirmationSave"
+                             rendered="true">
+                <h:form>
+                    <div align="center">
+                        <p:commandButton value="#{msgValidacion.Aceptar}" onclick="confirmationSave.hide()"
+                                         type="button"/>
+                    </div>
+                </h:form>
+            </p:confirmDialog>
+            
+            <p:dialog id="statusBar2" modal="true" widgetVar="statusDialog2" header="Procesando..." draggable="false"
+                      width="250" closable="false" resizable="false">
+                <p:graphicImage value="/resources/images/ajaxloadingbar.gif"/>
+            </p:dialog>
+        </h:body>
+    </html>
+</f:view>

@@ -1,0 +1,218 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui">
+    <html xmlns="http://www.w3.org/1999/xhtml" xmlns:p="http://primefaces.org/ui"
+          xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:ui="http://java.sun.com/jsf/facelets">
+        <h:head>
+            <meta http-equiv="X-UA-Compatible" content="IE=8" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta http-equiv="pragma" content="no-cache" />
+            <meta http-equiv="cache-control" content="no-cache" />
+            <meta http-equiv="expires" content="0" />
+          <h:outputScript library="primefaces" name="primefaces.js" />
+        </h:head>
+        <h:body>
+            <h:form id="subOrigenDeSaldos">
+                <p:panel id="pnlListaSuborigenes" style="width:810px">
+                    <p:outputLabel value="Mantener SubOrigenes del Saldo" style="font-size:2em; font-weight: bold;"/>
+                    <br/>
+                    <br/>
+                    <p:growl id="messages" showDetail="true" globalOnly="true"/>
+                    <p:panelGrid columns="3" cellpadding="6" id="frmBotones">
+                    
+                        <p:commandButton id="btnNuevo" 
+                                            oncomplete="dlgAdiciona.show();" 
+                                            icon="ui-icon-document" 
+                                            style="margin:0"  
+                                            process="@this" 
+                                            update="dlgAdiciona,multiTramites" 
+                                            ajax="true"></p:commandButton>
+                        
+                        <p:commandButton id="btnConsulta" 
+                                        oncomplete="dlgConsulta.show();" 
+                                        ajax="true"
+                                        update="dlgConsulta" 
+                                        action="#{MantenerSubOrigenDelSaldoMB.displaySelectedItem}"
+                                        icon="ui-icon-search" 
+                                        style="margin:0" 
+                                        process="@this,tblSuborigenes" ></p:commandButton>
+                        
+                        <p:commandButton id="btnModificar" 
+                                        oncomplete="dlgModifica.show();" 
+                                        ajax="true"
+                                        update="dlgModificar" 
+                                        action="#{MantenerSubOrigenDelSaldoMB.validateModifySelectedItem}"
+                                        icon="ui-icon-pencil" 
+                                        style="margin:0" 
+                                        process="@this,tblSuborigenes"></p:commandButton>
+                        
+                        <!-- ESTE BOTON NO SE OCUPARA POR EL MOMENTO YA QUE EL FLUJO DE MODIFICACION LE DA SOLUCION AL BORRADO LOGICO REQUERIDO
+                        <p:commandButton id="btnEliminar" icon="ui-icon-close" onclick="dlgDeleteTramite.show();" />
+                        *************************************************************************************************************************-->
+                    </p:panelGrid>
+                    
+                    <!-- Button tooltips
+                    <p:tooltip hidden="true" for="btnNuevo" value="Crear nuevo Sub-origen del saldo" showEffect="slide" hideEffect="slide" />
+                    <p:tooltip hidden="true" for="btnModificar" value="Editar Sub-origen del saldo seleccionado" showEffect="slide" hideEffect="slide" />
+                    <p:tooltip hidden="true" for="btnConsulta" value="Consultar Sub-origen del saldo seleccionado" showEffect="slide" hideEffect="slide" />
+                    Button tooltips-->
+                    
+                    <!-- ************************************ INICIA LISTA SUBORIGENES ************************************  -->
+                    <p:dataTable id="tblSuborigenes" var="suborigenDeSaldos"
+                                 value="#{MantenerSubOrigenDelSaldoMB.dyccSubOrigSaldoList}"
+                                 rowKey="#{suborigenDeSaldos.idSuborigenSaldo}" scrollWidth="750"
+                                 paginator="true" rows="10"
+                                 style="width:100%;" resizableColumns="true" liveResize="true"
+                                 rendered="true"
+                                 selection="#{MantenerSubOrigenDelSaldoMB.selectedDyccSubOrigSaldoDTO}"
+                                 selectionMode="single"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                    
+                        <p:column headerText="Sub-Origen del saldo" width="600" >  
+                            <h:outputText value="#{suborigenDeSaldos.descripcion}" />  
+                        </p:column>  
+                        <p:column headerText="Requiere captura de informaciòn adicional" >  
+                            <h:outputText value="#{suborigenDeSaldos.requiereCaptura}" />  
+                        </p:column>
+                    </p:dataTable> 
+                    <!-- ************************************ TERMINA LISTA SUBORIGENES ************************************  -->
+                    <!-- ************************************ DIALOGO DE CREACION ************************************  -->
+                    <p:dialog id="dlgAdiciona" header="Crear Sub-Origen" widgetVar="dlgAdiciona" hideEffect="drop" modal="true" width="830">
+                        <p:messages id="generalError" autoUpdate="true" />
+                        <p:panel id="pnlAdiciona" style="width:800;" visible="true">
+                            
+                            <p:outputLabel value="Los campos marcados con * son obligatorios" style="text-align:right"/>
+                            <h:panelGrid columns="3" style="margin-bottom:10px">
+                                
+                                    <p:outputLabel value="* Sub-origen del Saldo: "/>
+                                    <h:inputText id="iTxtDescripcion" value="#{MantenerSubOrigenDelSaldoMB.addedDyccSubOrigSaldoDTO.descripcion}"  required="true" requiredMessage="#{msgValidacion.msjCampoRequerido}"/>
+                                    <p:message for="iTxtDescripcion" display="text" />
+                                
+                                    <p:outputLabel value="* Requiere Captura : "/>
+                                    <p:selectOneRadio id="oneRadioCap" value="#{MantenerSubOrigenDelSaldoMB.addedDyccSubOrigSaldoDTO.requiereCaptura}" required="true" requiredMessage="#{msgValidacion.msjCampoRequerido}"> 
+                                        <f:selectItem itemLabel="Si" itemValue="1"/>  
+                                        <f:selectItem itemLabel="No" itemValue="2" />  
+                                        <p:ajax event="click" listener="#{MantenerSubOrigenDelSaldoMB.showList}" process="@this" update="iTxtInfoAd" />
+                                    </p:selectOneRadio>
+                                    <p:message for="oneRadioCap" display="text" />
+
+                                    <p:outputLabel id="iLblInfoAd" value="Informacion Adicional sub-Origen: "  />
+                                    <h:inputText id="iTxtInfoAd" value="#{MantenerSubOrigenDelSaldoMB.addedDyccSubOrigSaldoDTO.leyendaCaptura}" disabled="#{MantenerSubOrigenDelSaldoMB.isListEnabled}" required="true" requiredMessage="#{msgValidacion.msjCampoRequerido}"/>  
+                                    <p:message for="iTxtInfoAd" display="text" />
+                           
+                            </h:panelGrid>
+                            
+                            <p:dataTable id="multiTramites" var="tramite" value="#{MantenerSubOrigenDelSaldoMB.mediumTramiteModel}" paginator="true" rows="10" selection="#{MantenerSubOrigenDelSaldoMB.selectedTramites}">  
+                                 <p:column selectionMode="multiple" style="width:2%" />  
+                                 <p:column headerText="Tipo de tramite" style="width:98%">  
+                                     #{tramite.descripcion}
+                                 </p:column>  
+                            </p:dataTable>
+                            
+                            <p:commandButton id="btnCrear" value="Aceptar" action="#{MantenerSubOrigenDelSaldoMB.insertaTramite}" update="pnlAdiciona, messages" process="@this,pnlAdiciona" style="margin:0" ajax="true"></p:commandButton>
+                            <p:commandButton id="btnCancelar" value="Cancelar" action="#{MantenerSubOrigenDelSaldoMB.cleanDlg}" process="@this,pnlAdiciona" onclick="dlgAdiciona.hide()" style="margin:0" type="button" update="dlgAdiciona"></p:commandButton>
+                        
+                        </p:panel>
+                    </p:dialog>
+                    <!-- ************************************ TERMINA DIALOGO DE CREACION ************************************  -->
+                    <!-- ************************************ DIALOGO DE CONSULTA ********************************************  -->
+                    <p:dialog id="dlgConsulta" header="Consultar Sub-Origen" widgetVar="dlgConsulta" hideEffect="drop" modal="true" width="830">
+                        <p:panel id="pnlConsulta" style="width:800;" visible="true">
+                            
+                            <h:panelGrid columns="2" style="margin-bottom:10px">
+                                
+                                    <p:outputLabel value="Sub-origen del Saldo : " style="text-align:right; font-weight:bold"/>
+                                    <h:outputText value="#{MantenerSubOrigenDelSaldoMB.selectedDyccSubOrigSaldoDTO.descripcion}" />
+                                
+                                    <p:outputLabel value="Requiere Captura : " style="text-align:right; font-weight:bold"/>
+                                    <h:outputText value="#{MantenerSubOrigenDelSaldoMB.selectedDyccSubOrigSaldoDTO.requiereCapturaStr}" />  
+
+                                    <p:outputLabel value="Informacion Adicional sub-Origen : "  style="text-align:right; font-weight:bold"/>
+                                    <h:outputText value="#{MantenerSubOrigenDelSaldoMB.selectedDyccSubOrigSaldoDTO.leyendaCaptura}" />  
+                                    
+                                    <p:outputLabel value="Estado : "  style="text-align:right; font-weight:bold"/>
+                                    <h:outputText value="#{MantenerSubOrigenDelSaldoMB.selectedDyccSubOrigSaldoDTO.status}" />  
+                           
+                            </h:panelGrid>
+                            <p:dataTable id="multiTramitesConsulta" var="tramiteConsultado" value="#{MantenerSubOrigenDelSaldoMB.consultedDyccTipoTramiteList}" paginator="true" rows="10"
+                            paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">  
+                                                            
+                                 <p:column headerText="Tipo de tramite" style="width:98%;font-weight:bold">  
+                                     #{tramiteConsultado.descripcion}
+                                 </p:column>  
+
+                            </p:dataTable>
+                        </p:panel>
+                    </p:dialog>
+                    <!-- ************************************ TERMINA DIALOGO DE CONSULTA ************************************  -->
+                    <!-- ************************************ DIALOGO DE EDICION *********************************************  -->
+                    <p:dialog id="dlgModificar" header="Modificar Sub-Origen" widgetVar="dlgModifica" hideEffect="drop" modal="true" width="830">
+                        <p:messages id="generalErrorAct" autoUpdate="true" />
+                        <p:outputLabel value="#{MantenerSubOrigenDelSaldoMB.message}" style="text-align:middle"/>
+                        
+                        <p:panel id="pnlModifica" style="width:800;" visible="#{MantenerSubOrigenDelSaldoMB.isValidMod}">
+                            <p:outputLabel value="Los campos marcados con * son obligatorios" style="text-allign:right"/>
+                            <h:panelGrid columns="3" style="margin-bottom:10px">
+                                
+                                    <p:outputLabel value="Sub-origen del Saldo : " style="text-align:right; font-weight:bold"/>
+                                    <h:outputText value="#{MantenerSubOrigenDelSaldoMB.selectedDyccSubOrigSaldoDTO.descripcion}" />
+                                    <p:outputLabel value="" style="text-align:right; font-weight:bold"/>
+                                
+                                    <p:outputLabel value="* Requiere Captura : " style="text-align:right; font-weight:bold"/>
+                                    <p:selectOneRadio id="oneRadioCapMod" value="#{MantenerSubOrigenDelSaldoMB.selectedDyccSubOrigSaldoDTO.requiereCaptura}" required="true" requiredMessage="#{msgValidacion.msjCampoRequerido}"> 
+                                        <f:selectItem itemLabel="Si" itemValue="1"/>  
+                                        <f:selectItem itemLabel="No" itemValue="2" />  
+                                        <p:ajax event="click" listener="#{MantenerSubOrigenDelSaldoMB.showList}" process="@this" update="iTxtInfoMod" />
+                                    </p:selectOneRadio>
+                                    <p:message for="oneRadioCap" display="text" />
+
+                                    <p:outputLabel id="iLblInfoMod" value="Informacion Adicional sub-Origen: " style="text-align:right; font-weight:bold"/>
+                                    <h:inputText id="iTxtInfoMod" value="#{MantenerSubOrigenDelSaldoMB.selectedDyccSubOrigSaldoDTO.leyendaCaptura}" disabled="#{MantenerSubOrigenDelSaldoMB.isListSelectedEnabled}" required="true" requiredMessage="#{msgValidacion.msjCampoRequerido}"/>  
+                                    <p:message for="iTxtInfoMod" display="text" />
+                                    
+                                    <h:outputText value="Estado : " style="text-align:right; font-weight:bold"/>  
+                                    <p:selectOneMenu value="#{MantenerSubOrigenDelSaldoMB.selectedDyccSubOrigSaldoDTO.isActivo}">  
+                                        <f:selectItem itemLabel="#{MantenerSubOrigenDelSaldoMB.statusA}" itemValue="#{MantenerSubOrigenDelSaldoMB.statusA}" />  
+                                        <f:selectItem itemLabel="#{MantenerSubOrigenDelSaldoMB.statusB}" itemValue="#{MantenerSubOrigenDelSaldoMB.statusB}" />  
+                                    </p:selectOneMenu> 
+                           
+                            </h:panelGrid>
+                            
+                            <p:dataTable id="multiTramitesMod" var="tramite" value="#{MantenerSubOrigenDelSaldoMB.mediumTramiteModel}" paginator="true" rows="10" selection="#{MantenerSubOrigenDelSaldoMB.selectedTramitesToShow}">  
+
+                                <p:ajax event="rowSelectCheckbox" process="@this" update="@this"/>
+                                <p:ajax event="rowUnselectCheckbox" process="@this" update="@this"/>
+                                <p:ajax event="toggleSelect" update="@this" process="@this"/>                                 
+                                 
+                                 <p:column selectionMode="multiple" style="width:2%" />  
+                                 
+                                 <p:column headerText="Tipo de tramite" style="width:98%">  
+                                     #{tramite.descripcion}
+                                 </p:column>  
+                            
+                            </p:dataTable>
+                            
+                            <p:commandButton id="btnModificarSubmit"   value="Aceptar"  action="#{MantenerSubOrigenDelSaldoMB.modifySelectedItem}"       update="@this,  pnlListaSuborigenes, pnlModifica"  process="@this,pnlModifica" style="margin:0" ajax="true"></p:commandButton>
+                            <p:commandButton id="btnCancelarModificar" value="Cancelar" action="#{MantenerSubOrigenDelSaldoMB.cancelModifySelectedItem}" update="@this,  pnlListaSuborigenes, pnlModifica, tblSuborigenes"  process="@this,pnlModifica" style="margin:0" ajax="true" ></p:commandButton>
+                        </p:panel>
+                    </p:dialog>
+                    <!-- ************************************ TERMINA DIALOGO DE EDICION *********************************************  -->
+                    <!-- ************************************ DIALOGO DE BORRADO *****************************************************  -->
+                    <!-- ESTE DIALOGO NO SE OCUPARA POR EL MOMENTO YA QUE EL FLUJO DE MODIFICACION LE DA SOLUCION AL BORRADO LOGICO REQUERIDO
+                    <p:growl id="deleteSubOrigenMsg" showDetail="true" />
+                    
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="explode" severity="alert" widgetVar="dlgDeleteTramite" message="#{MantenerSubOrigenDelSaldoMB.deleteMessage}">  
+                        
+                        <p:commandButton value="Si" actionListener="#{MantenerSubOrigenDelSaldoMB.deleteSelectedItem}" update="deleteSubOrigenMsg, tblSuborigenes"
+                                        styleClass="ui-confirmdialog-yes" icon="ui-icon-check" process="@this, tblSuborigenes" oncomplete="dlgDeleteTramite.hide()"/>  
+                        
+                        <p:commandButton value="No" type="button" onclick="dlgDeleteTramite.hide();" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>       
+                    
+                    </p:confirmDialog> -->
+                    <!-- ************************************ TERMINA DIALOGO DE BORRADO *********************************************  -->
+                </p:panel>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

@@ -1,0 +1,126 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+             xmlns:tns="http://ws.dyc.mat.sat.gob.mx/" 
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+             xmlns="http://schemas.xmlsoap.org/wsdl/" 
+             targetNamespace="http://ws.dyc.mat.sat.gob.mx/" 
+             name="DevolucionAut">
+
+    <types>
+        <xsd:schema>
+            <xsd:import namespace="http://ws.dyc.mat.sat.gob.mx/" schemaLocation="Devolucion.xsd"/>
+            <xsd:import namespace="http://ws.dyc.mat.sat.gob.mx/" schemaLocation="ControlSaldosDev.xsd"/>
+            <xsd:import namespace="http://ws.dyc.mat.sat.gob.mx/" schemaLocation="CreditoFiscalDev.xsd"/>
+            <xsd:import namespace="http://ws.dyc.mat.sat.gob.mx/" schemaLocation="SolCompIRSDevolucion.xsd"/>
+            <xsd:import namespace="http://ws.dyc.mat.sat.gob.mx/" schemaLocation="RepcionYGestTramDevAut.xsd"/>
+        </xsd:schema>
+    </types>
+    <message name="asignaDictaminadorDevAut">
+        <part name="parameters" element="tns:asignaDictaminadorDevAut"/>
+    </message>
+    <message name="asignaDictaminadorDevAutResponse">
+        <part name="return" element="tns:asignaDictaminadorDevAutResponse"/>
+    </message>
+    <message name="confirmarAutorizacionPago">
+        <part name="parameters" element="tns:confirmarAutorizacionPago"/>
+    </message>
+    <message name="confirmarAutorizacionPagoResponse">
+        <part name="return" element="tns:confirmarAutorizacionPagoResponse"/>
+    </message>
+    <message name="verificaDevManual">
+        <part name="parameters" element="tns:verificaDevManual"/>
+    </message>
+    <message name="verificaDevManualResponse">
+        <part name="return" element="tns:verificaDevManualResponse"/>
+    </message>
+    <message name="consultarSolCompIRSDevAut">
+        <part name="parameters" element="tns:consultarSolCompIRSDevAut"/>
+    </message>
+    <message name="consultarSolCompIRSDevAutResponse">
+        <part name="return" element="tns:consultarSolCompIRSDevAutResponse"/>
+    </message>
+    <message name="repcionYGestTramDevAutISR">
+        <part name="parameters" element="tns:repcionYGestTramDevAutISR"/>
+    </message>
+    <message name="repcionYGestTramDevAutISRResponse">
+        <part name="return" element="tns:repcionYGestTramDevAutISRResponse"/>
+    </message>
+        
+    <portType name="DevolucionAut">
+        <operation name="asignaDictaminadorDevAut">
+            <input message="tns:asignaDictaminadorDevAut"/>
+            <output message="tns:asignaDictaminadorDevAutResponse"/>
+        </operation>
+        <operation name="confirmarAutorizacionPago">
+            <input message="tns:confirmarAutorizacionPago"/>
+            <output message="tns:confirmarAutorizacionPagoResponse"/>
+        </operation>
+        <operation name="verificaDevManual">
+            <input message="tns:verificaDevManual"/>
+            <output message="tns:verificaDevManualResponse"/>
+        </operation>
+        <operation name="consultarSolCompIRSDevAut">
+            <input message="tns:consultarSolCompIRSDevAut"/>
+            <output message="tns:consultarSolCompIRSDevAutResponse"/>
+        </operation>        
+        <operation name="repcionYGestTramDevAutISR">
+            <input message="tns:repcionYGestTramDevAutISR"/>
+            <output message="tns:repcionYGestTramDevAutISRResponse"/>
+        </operation>        
+    </portType>
+
+    <binding name="DevolucionAutImplPortBinding" type="tns:DevolucionAut">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <operation name="asignaDictaminadorDevAut">
+            <soap:operation soapAction="asignaDictaminadorDevAut"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="confirmarAutorizacionPago">
+            <soap:operation soapAction="confirmarAutorizacionPago"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="verificaDevManual">
+            <soap:operation soapAction="verificaDevManual"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="consultarSolCompIRSDevAut">
+            <soap:operation soapAction="consultarSolCompIRSDevAut"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+        <operation name="repcionYGestTramDevAutISR">
+            <soap:operation soapAction="repcionYGestTramDevAutISR"/>
+            <input>
+                <soap:body use="literal"/>
+            </input>
+            <output>
+                <soap:body use="literal"/>
+            </output>
+        </operation>
+    </binding>
+
+    <service name="DevolucionAut">
+        <port name="DevolucionAutImplPort" binding="tns:DevolucionAutImplPortBinding">
+            <soap:address location="http://localhost:7001/ws/PjDevolucionAut/DevolucionAut"/>
+        </port>
+    </service>
+</definitions>

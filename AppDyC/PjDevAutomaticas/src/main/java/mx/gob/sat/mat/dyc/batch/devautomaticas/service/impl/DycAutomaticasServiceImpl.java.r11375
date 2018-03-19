@@ -1,0 +1,82 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package mx.gob.sat.mat.dyc.batch.devautomaticas.service.impl;
+
+import java.util.Date;
+import mx.gob.sat.mat.dyc.automaticasiva.service.CrearCasoAutomaticasIvaService;
+import mx.gob.sat.mat.dyc.batch.devautomaticas.dto.TramiteDTO;
+import mx.gob.sat.mat.dyc.batch.devautomaticas.exception.DevAutomaticasException;
+import mx.gob.sat.mat.dyc.batch.devautomaticas.service.DycAutomaticasService;
+import mx.gob.sat.mat.dyc.controlsaldos.service.AfectarSaldosXDevolucionesService;
+import mx.gob.sat.siat.dyc.automaticasiva.util.constante.EDycAutomaticasIvaEstadoCasoDevolucion;
+import mx.gob.sat.siat.dyc.dao.regsolicitud.DycpSolicitudDAO;
+import mx.gob.sat.siat.dyc.domain.resolucion.DycpSolicitudDTO;
+import mx.gob.sat.siat.dyc.util.constante.Constantes;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+/**
+ *
+ * @author Ing. Gregorio Serapio Ramírez
+ */
+@Service(value = "dycAutomaticasService")
+public class DycAutomaticasServiceImpl implements DycAutomaticasService {
+
+    @Autowired
+    private DycpSolicitudDAO dycpSolicitudDAO;
+
+    @Autowired
+    private CrearCasoAutomaticasIvaService crearCasoAutomaticasIvaService;
+
+    @Autowired
+    private AfectarSaldosXDevolucionesService afectarSaldosXDevolucionesService;
+
+    @Override
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, rollbackFor = DevAutomaticasException.class)
+    public void procesarTramite(TramiteDTO tramite) throws DevAutomaticasException {
+        try {
+            DycpSolicitudDTO dycpSolicitudDTO = dycpSolicitudDAO.encontrar(tramite.getNumControl());
+
+            if (dycpSolicitudDTO != null) {
+
+                if (dycpSolicitudDTO.getDycpServicioDTO().getRfcContribuyente().equalsIgnoreCase(tramite.getRfc())
+                        && dycpSolicitudDTO.getDyccEstadoSolDTO() == Constantes.EstadosSolicitud.EN_PROCESO) {
+
+                    crearCasoAutomaticasIvaService.insertarResolucion(tramite.getNumControl(), new Date(), new Date(),
+                            dycpSolicitudDTO.getImporteSolicitado(), EDycAutomaticasIvaEstadoCasoDevolucion.AUTORIZADA_TOTAL);
+
+                    afectarSaldosXDevolucionesService.afectarXResolucionDevAutomaticasIva(tramite.getNumControl());
+
+                    dycpSolicitudDAO.actualizarStatus(EDycAutomaticasIvaEstadoCasoDevolucion.AUTORIZADA_TOTAL.getIdEstadoSolicitud(), tramite.getNumControl());
+
+                } else {
+                    /**
+                     * Se marca como error porque no pertenece al RFC o no esta
+                     * en estatus EN PROCESO
+                     */
+                    throw new DevAutomaticasException("No pertenece al RFC o no esta en estatus de EN PROCESO:: "
+                            + tramite.getNumControl() + " "
+                            + tramite.getRfc() + ":" + dycpSolicitudDTO.getDycpServicioDTO().getRfcContribuyente()
+                            + " " + dycpSolicitudDTO.getDyccEstadoSolDTO().getDescripcion());
+                }
+            } else {
+                /**
+                 * Se marca como error porque no se encontro el numero de
+                 * control
+                 */
+                throw new DevAutomaticasException("No se encontro el numero de control:: " + tramite.getNumControl());
+            }
+
+        } catch (Exception ex) {
+            /**
+             * Se marca como error porque ocurrio una excepcion
+             */
+            throw new DevAutomaticasException("Error al procesar el tramite:: " + tramite.getNumControl() + " " + tramite.getRfc(), ex);
+        }
+    }
+}

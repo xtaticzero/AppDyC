@@ -1,0 +1,188 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+        >
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+            <meta http-equiv="X-UA-Compatible" content="IE=8"/>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <meta http-equiv="pragma" content="no-cache"/>
+            <meta http-equiv="cache-control" content="no-cache"/>
+            <meta http-equiv="expires" content="0"/>
+            <h:outputScript library="js" name="utils.js" target="head"/>
+            <h:outputScript library="js" name="posicion.js" target="head"/>
+            <h:outputScript library="js" name="general.js"/>
+            <h:outputStylesheet library="css/" name="formato.css"/>
+        </h:head>
+        <h:body>
+            <h:form id="formImprimirAcuseDeRecibo">
+                <p:panelGrid style="width:810px">
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.iaCamposObligatorios}" style="color:red;"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+                <p:panel id="pnlImprimirAcuseDeRecibo" style="width:810px">
+                    <div align="center">
+                        <p:panelGrid id="gridAcuse" style="width:350px">
+                            <p:row>
+                                <p:column colspan="2" style="text-align:center">
+                                    <p:messages id="msgGeneral" showDetail="true" globalOnly="true" autoUpdate="true"
+                                                closable="true"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width:200px">
+                                    <p:outputLabel value="#{msgValidacion.iaNumeroControl}"/>
+                                    <p:outputLabel value=" * " style="color:red"/>
+                                </p:column>
+                                <p:column style="width:200px">
+                                    <p:inputText id="control" value="#{acuseReciboMB.numControl}" required="true"
+                                                 requiredMessage="Es requerido por el sistema"/>
+                                    <p:message id="msgControl" for="control" display="text"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <br/>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid><p:panelGrid style="width:790px">
+                            <f:facet name="footer">
+                                <p:row>
+                                    <p:column colspan="2" style="text-align:center">
+                                        <p:commandButton value="#{msgValidacion.iaBtnBuscar}"
+                                                         update="gridAcuse,:formAcuseDeRecibo"
+                                                         process="pnlImprimirAcuseDeRecibo"
+                                                         actionListener="#{acuseReciboMB.mostrarAcuseDeRecibo}"
+                                                         oncomplete="if(!args.validationFailed) dlgAcuseDeRecibo.show()"
+                                                         style="width:100px"/>
+                                    </p:column>
+                                </p:row>
+                            </f:facet>
+                        </p:panelGrid>
+                    </div>
+                </p:panel>
+            </h:form>
+             
+            <h:form id="formAcuseDeRecibo">
+                <p:dialog header="#{msgValidacion.iaTitulo}" widgetVar="dlgAcuseDeRecibo" resizable="false"
+                          id="acuseDeRecibo" showEffect="fade" hideEffect="fade" modal="true">
+                    <p:panelGrid style="width:330px" rendered="#{acuseReciboMB.existeNumControl==true?'false':'true'}">
+                        <p:row>
+                            <p:column style="text-align:center">
+                                <p:outputLabel value="#{acuseReciboMB.msgExisteNumControl}"/>
+                            </p:column>
+                        </p:row>
+                        <f:facet name="footer">
+                            <p:row>
+                                <p:column colspan="2" style="text-align:center">
+                                    <p:commandButton value="#{msgValidacion.iaBtnCerrar}"
+                                                     update=":formImprimirAcuseDeRecibo"
+                                                     actionListener="#{acuseReciboMB.cancelarImpresionAcuseDeRecibo}"
+                                                     oncomplete="dlgAcuseDeRecibo.hide()" style="width:100px"/>
+                                </p:column>
+                            </p:row>
+                        </f:facet>
+                    </p:panelGrid>
+                    <p:panel id="pnlAcuseDeRecibo" style="width:500px" rendered="#{acuseReciboMB.existeNumControl}">
+                        <p:panelGrid id="gridAcuseDeRecibo" style="width:475px">
+                            <p:row>
+                                <p:column style="width:200px;">
+                                    <p:outputLabel value="#{msgValidacion.iaNumeroControl}"/>
+                                </p:column>
+                                <p:column style="width:300px;">
+                                    <p:outputLabel value="#{acuseReciboMB.solicitudAcuseDeRecibo.numControl}"
+                                                   style="font-weight:bold"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width:200px;">
+                                    <p:outputLabel value="#{msgValidacion.iaFechaPresentacion}"/>
+                                </p:column>
+                                <p:column style="width:300px;">
+                                    <h:outputText value="#{acuseReciboMB.solicitudAcuseDeRecibo.fechaPresentacion}"
+                                                  style="font-weight:bold">
+                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                    </h:outputText>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width:200px;">
+                                    <p:outputLabel value="#{msgValidacion.iaTipoTramite}"/>
+                                </p:column>
+                                <p:column style="width:300px;">
+                                    <p:outputLabel value="#{acuseReciboMB.solicitudAcuseDeRecibo.tipoTramite}"
+                                                   style="font-weight:bold"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width:200px;">
+                                    <p:outputLabel value="#{msgValidacion.iaImpuesto}"/>
+                                </p:column>
+                                <p:column style="width:300px;">
+                                    <p:outputLabel value="#{acuseReciboMB.solicitudAcuseDeRecibo.impuesto}"
+                                                   style="font-weight:bold"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width:200px;">
+                                    <p:outputLabel value="#{msgValidacion.iaConcepto}"/>
+                                </p:column>
+                                <p:column style="width:300px;">
+                                    <p:outputLabel value="#{acuseReciboMB.solicitudAcuseDeRecibo.concepto}"
+                                                   style="font-weight:bold"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width:200px;">
+                                    <p:outputLabel value="#{msgValidacion.iaPeriodo}"/>
+                                </p:column>
+                                <p:column style="width:300px;">
+                                    <p:outputLabel value="#{acuseReciboMB.solicitudAcuseDeRecibo.periodo}"
+                                                   style="font-weight:bold"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width:200px;">
+                                    <p:outputLabel value="#{msgValidacion.iaEjercicio}"/>
+                                </p:column>
+                                <p:column style="width:300px;">
+                                    <p:outputLabel value="#{acuseReciboMB.solicitudAcuseDeRecibo.idEjercicio}"
+                                                   style="font-weight:bold"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width:200px;">
+                                    <p:outputLabel value="#{msgValidacion.iaImporteSolicitado}"/>
+                                </p:column>
+                                <p:column style="width:300px;">
+                                    <h:outputLabel value="#{acuseReciboMB.solicitudAcuseDeRecibo.importeSolicitado}"
+                                                   style="font-weight:bold">
+                                        <f:convertNumber type="currency" currencySymbol="$"/>
+                                    </h:outputLabel>
+                                </p:column>
+                            </p:row>
+                            <f:facet name="footer">
+                                <p:row>
+                                    <p:column colspan="2" style="text-align:center">
+                                        <p:commandButton value="#{msgValidacion.iaBtnImprimir}"
+                                                         actionListener="#{acuseReciboMB.mostrarReporte}" update="@form"
+                                                         ajax="false" style="width:100px"/>
+                                        <p:spacer width="15"/>
+                                        <p:commandButton value="#{msgValidacion.iaBtnCancelar}"
+                                                         update=":formImprimirAcuseDeRecibo"
+                                                         actionListener="#{acuseReciboMB.cancelarImpresionAcuseDeRecibo}"
+                                                         oncomplete="dlgAcuseDeRecibo.hide()" style="width:100px"/>
+                                    </p:column>
+                                </p:row>
+                            </f:facet>
+                        </p:panelGrid>
+                    </p:panel>
+                </p:dialog>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

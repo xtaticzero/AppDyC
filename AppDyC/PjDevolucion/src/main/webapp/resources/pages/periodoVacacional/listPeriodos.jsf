@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:p="http://primefaces.org/ui">
+    <html>
+        <h:head> 
+            <title>
+                #{msgValidacion.L0000023}
+            </title>
+            <meta http-equiv="X-UA-Compatible" content="IE=8"/>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <h:outputStylesheet library="css/" name="formato.css"/>
+            <h:outputScript library="js" name="calendarioIdiomaEs.js"/>
+            <style type="text/css">
+                .ui-paginator {
+                    font-size: 12px !important;
+                }
+
+                .ui-datatable tbody td {
+                    white-space: normal;
+                    vertical-align: text-top;
+                }
+
+                .ui-datatable thead th {
+                    white-space: normal;
+                    vertical-align: text-top;
+                }
+            </style>
+            <script type="text/javascript">
+                function resetTabIndex() {
+                    dataTable.getPaginator().setPage(0);
+                }
+            </script>
+        </h:head>
+        <h:body>
+
+            <table border="0">
+                <tr>
+                    <td>
+
+                        <p:tabView dynamic="true" id="tabViewPeriodoVac" effect="fade" effectDuration="fast"
+                                   orientation="top"> 
+                            <p:ajax event="tabChange" listener="#{periodoVacacionalMB.onTabChange}"/>
+
+                            <!-- TAB PERIODOS VACACIONALES   --> 
+                            <p:tab title="Lista periodo vacacional" id="tabListaPeriodos">
+                                <h:form id="frmPeriodoVac">
+                                    <p:panel header="#{msgValidacion.pvPeriodoVacacional}" >
+                                        <p:messages id="inputid" showDetail="true" autoUpdate="true" closable="true" />
+                                        <!-- BARRA DE HERRAMIENTAS   --> 
+                                        <p:toolbar>
+                                            <p:toolbarGroup align="right">
+
+                                                <p:commandButton id="btnConsultarPV"  
+                                                                 icon="ui-icon-search" 
+                                                                 title="Consultar periodo vacacional" 
+                                                                 action="#{periodoVacacionalMB.consultarPeriodoVac}" 
+                                                                 disabled="#{periodoVacacionalMB.deshabilitarCmdModifElim}" />
+
+                                                <p:commandButton id="btnModificarPV"  icon="ui-icon-pencil" 
+                                                                 title="Modificar periodo vacacional " 
+                                                                 action="#{periodoVacacionalMB.modificarPeriodoVac}" 
+                                                                 disabled="#{periodoVacacionalMB.deshabilitarCmdModifElim}"/>
+                                                <p:commandButton id="btnHabilitarPV"  
+                                                                 icon="ui-icon-plus" 
+                                                                 title="Habilitar periodo vacacional "
+                                                                 action="#{periodoVacacionalMB.habilitarPeriodoVac}"  />
+                                            </p:toolbarGroup>
+                                        </p:toolbar>
+
+                                        <!-- TABLA DE PERIODOS VACACIONALES   --> 
+                                        <p:dataTable var="periodovacdb" value="#{periodoVacacionalMB.listaPeriodosVacacionales}" rows="10"
+                                                     paginator="true"
+                                                     emptyMessage="No se encontraron registros"
+                                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                     rowsPerPageTemplate="5,10,15"
+                                                     selectionMode="single" selection="#{periodoVacacionalMB.objetoPeriodoVacacional}"
+                                                     rowKey="#{periodovacdb.idPeriodo}">
+
+                                            <p:ajax event="rowSelect" 
+                                                    listener="#{periodoVacacionalMB.onRowSelected}"
+                                                    update=":tabViewPeriodoVac:frmPeriodoVac:btnModificarPV:">
+                                                <f:setPropertyActionListener value="#{periodovacdb}," 
+                                                                             target="#{periodoVacacionalMB.objetoPeriodoVacacional}" />
+                                            </p:ajax>
+
+                                            <p:ajax event="rowSelect" listener="#{periodoVacacionalMB.onRowSelected}"
+                                                    update=":tabViewPeriodoVac:frmPeriodoVac:btnConsultarPV:">
+                                                <f:setPropertyActionListener value="#{periodovacdb}," 
+                                                                             target="#{periodoVacacionalMB.objetoPeriodoVacacional}" />
+                                            </p:ajax>        
+
+                                            <p:column headerText="#{msgValidacion.pvInicioPeriodo}">
+                                                <h:outputText value="#{periodovacdb.inicioPeriodo}">
+                                                    <f:convertDateTime pattern="dd/MM/yyyy" locale="es_MX" timeZone="America/Mexico_City"/>
+                                                </h:outputText>
+                                            </p:column>
+
+                                            <p:column headerText="#{msgValidacion.pvFinPeriodo}">
+                                                <h:outputText value="#{periodovacdb.finPeriodo}" >
+                                                    <f:convertDateTime pattern="dd/MM/yyyy" locale="es_MX" timeZone="America/Mexico_City"/>
+                                                </h:outputText>
+                                            </p:column>
+
+                                            <p:column headerText="#{msgValidacion.pvEstado}">
+                                                <h:outputText value="#{periodovacdb.estado ? ' Vigente' : 'No Vigente'}" />
+                                            </p:column>
+
+                                            <p:column headerText="#{msgValidacion.pvFechaDelMov}">
+                                                <h:outputText value="#{periodovacdb.fechaMovimiento}" >
+                                                    <f:convertDateTime pattern="dd/MM/yyyy" locale="es_MX" timeZone="America/Mexico_City"/>
+                                                </h:outputText>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </p:panel>
+                                </h:form>
+                            </p:tab>
+                            <!--   TAB REINICIO DE SECUENCIAS  -->              
+                            <p:tab title="Reinicio de Secuencias" id="tabReinicioSecuencia">
+                                <h:form id="formReinicioSecuencia" >
+
+                                    <p:panel header="Reinicio" >
+                                        <!--                                        <p:growl id="messagesReinicio"/>-->
+                                        <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" globalOnly="true"
+                                                    display="text"/>
+                                        <p:outputLabel value="Fecha de reinicio de secuencia:  " />
+                                        <p:outputLabel value="#{periodoVacacionalMB.fechaDeReinicioProgramada}" />
+                                        <p:panelGrid style="margin-top:20px">
+
+                                            <p:row>
+                                                <p:column rowspan="2" style="width:130px; font-weight: bold;">Fecha de reinicio:  <span style="color:red;">*</span></p:column>
+                                                <!--  FECHA REINICIO  -->
+                                                <p:column rowspan="2" style="width:260px; font-weight: bold;">
+                                                    <p:calendar id="fechaReinicio" value="#{periodoVacacionalMB.fechaReinicioSecuencia}" 
+                                                                showOn="button" 
+                                                                pattern="dd/MM/yyyy" locale="es_MX" timeZone="America/Mexico_City"
+                                                                disabledWeekends="true"
+                                                                yearRange="2000" readonlyInput="true"
+                                                                required="true" 
+                                                                disabled ="#{periodoVacacionalMB.existeFechaReinicio}"
+                                                                >
+                                                        <p:ajax  event="dateSelect" listener="#{periodoVacacionalMB.handleDateSelect}"/>
+                                                    </p:calendar>
+                                                </p:column>
+                                                <!--  HORA REINICIO  -->
+                                                <p:column rowspan="2" style="width:80px; font-weight: bold;">#{msgValidacion.pvAlas}: </p:column>
+                                                <p:column rowspan="2" style="font-weight: bold;">
+                                                    <p:selectOneMenu id="hoursReinicio" 
+                                                                     disabled="#{periodoVacacionalMB.existeFechaReinicio}"
+                                                                     value="#{periodoVacacionalMB.horaReinicioSecuencia}">
+                                                        <f:selectItem itemLabel="Seleccionar hora" itemValue="" />
+                                                        <f:selectItems value="#{periodoVacacionalMB.horasM}" var="entry"
+                                                                       itemValue="#{entry.key}" itemLabel="#{entry.value}"/>
+                                                        <p:ajax event="change" listener="#{periodoVacacionalMB.changeValueListener}" 
+                                                                process="@this" partialSubmit="true">
+
+                                                        </p:ajax>
+                                                    </p:selectOneMenu>
+                                                    <span style="color:red;">*</span>
+                                                </p:column>
+                                                <!--  MINUTO REINICIO  -->
+                                                <p:column  style="width:130px; font-weight: bold;">
+                                                    <p:selectOneMenu id="minutesReinicio" 
+                                                                     disabled="#{periodoVacacionalMB.existeFechaReinicio}"
+                                                                     value="#{periodoVacacionalMB.minutoReinicioSecuencia}">
+                                                        <f:selectItem itemLabel="Seleccionar minutos" itemValue="" />
+                                                        <f:selectItems value="#{periodoVacacionalMB.minutosM}" var="entry"
+                                                                       itemValue="#{entry.key}" itemLabel="#{entry.value}"/>
+                                                        <p:ajax event="change" listener="#{periodoVacacionalMB.changeValueListener}" 
+                                                                process="@this" partialSubmit="true"></p:ajax>
+                                                    </p:selectOneMenu>
+                                                    
+                                                </p:column>
+                                                <p:column rowspan="2"  style="width:50px; font-weight: bold;"><span style="color:red;">*</span>#{msgValidacion.pvHrs}</p:column>
+                                            </p:row>                                            
+                                        </p:panelGrid>
+                                        <!--  BOTONES -->
+                                        <p:panelGrid style="margin-top:20px">
+                                            <p:row>
+                                                <p:column rowspan="2" style="font-weight: bold;">
+                                                    <!--                                                    <p:growl id="msjCancelarReinicio"/>-->
+                                                    <p:commandButton value="Cancelar" id="btnCancelarReinicioSecuencia" 
+                                                                     disabled="#{periodoVacacionalMB.existeFechaReinicio}"
+                                                                     action="#{periodoVacacionalMB.cancelarReinicioSecuencia}" 
+                                                                     styleClass="ui-priority-primary" immediate="true" ajax="true"/>
+<!--                                                    <p:growl id="messagesReinicio"/>-->
+                                                    <p:commandButton value="Aceptar" id="btnGuardarReinicioSecuencia" 
+                                                                     update=":tabViewPeriodoVac:formReinicioSecuencia, messages" 
+                                                                     disabled="#{periodoVacacionalMB.existeFechaReinicio}"
+                                                                     action="#{periodoVacacionalMB.guardarReinicioSecuencia}" 
+                                                                     styleClass="ui-priority-primary" immediate="true" ajax="true"/>
+                                                </p:column>
+                                            </p:row>
+                                        </p:panelGrid>
+                                    </p:panel>
+                                </h:form>
+                            </p:tab>
+
+                        </p:tabView>
+                        <!--                        </p:panel>                            -->
+                    </td>
+                </tr>
+
+
+
+            </table>
+
+
+        </h:body>
+    </html>
+</f:view>

@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+        xmlns:pe="http://primefaces.org/ui/extensions">
+    <html xmlns="http://www.w3.org/1999/xhtml" xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+        <h:head>
+            <title>adminConexion</title>
+        </h:head>
+        <h:body>
+            <h:form id="frmAdminConexiones">
+                Administrar Conexiones
+                
+                <p:fieldset id="fstInfoConexionActual" legend="Info conexión actual" style="width: 97%">
+                
+                <table>
+                    <tr>
+                        <td>
+                            <h:outputLabel value="#{mbAdminConexiones.indicadorConexion}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Versión Base de Datos:</td>
+                        <td>
+                            <h:outputLabel value="#{mbAdminConexiones.versionBD}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Driver:</td>
+                        <td>
+                            <h:outputLabel value="#{mbAdminConexiones.driver}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>URL: </td>
+                        <td>
+                            <h:outputLabel value="#{mbAdminConexiones.url}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>UserName</td>
+                        <td>
+                            <h:outputLabel value="#{mbAdminConexiones.userName}"/>
+                        </td>
+                    </tr>      
+                </table>
+                </p:fieldset>
+
+                <br/>
+                
+                <p:commandButton    id="btnConectUAT"
+                                    value="Conectar a STU_FIS"
+                                    action="#{mbAdminConexiones.conectarStuFis}"
+                                    update="frmAdminConexiones"
+                                    disabled="#{mbAdminConexiones.serviceName eq 'STU_FIS'}"/>
+
+                <p:commandButton    id="btnConectFIS"
+                                    value="Conectar a STD_FIS"
+                                    action="#{mbAdminConexiones.conectarStdFis}"
+                                    update="frmAdminConexiones"
+                                    disabled="#{mbAdminConexiones.serviceName eq 'STD_FIS'}"/>
+
+                <p:commandButton    id="btnConectPRU"
+                                    value="Conectar a STD_PRU"
+                                    action="#{mbAdminConexiones.conectarStdPru}"
+                                    update="frmAdminConexiones"
+                                    disabled="#{mbAdminConexiones.serviceName eq 'STD_PRU'}"/>
+
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

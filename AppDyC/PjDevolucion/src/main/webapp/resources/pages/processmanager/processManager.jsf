@@ -1,0 +1,377 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" 
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:ui="http://java.sun.com/jsf/facelets">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head></h:head>
+        <h:outputScript library="js" name="calendarioIdiomaEs.js"/>
+        <h:outputStylesheet library="css/" name="estilos.css"/>
+        <p:dialog modal="true" widgetVar="statusDialog" header="#{mensajes['msgEspere']}" draggable="false" closable="false"
+                  resizable="false">
+            <p:graphicImage value="/resources/images/ajaxloadingbar.gif"/>
+        </p:dialog>
+        
+        <h:body>
+            <h:form id="form"> 
+                <p:panel id="pnlTbl" style="width:790px;overflow:auto;height:auto;border-color:none; " visible="#{jobMB.mostrarTabla}">
+                    <div style="text-align: right">
+                        <h:commandLink value="#{mensajes['exportarTxt']}" style="color: blue">
+                            <h:graphicImage title="Delete" value="/resources/images/txt1.png" height="26px" width="26px" style="border:none"/>  
+                            <p:fileDownload value="#{jobMB.txt}"/>
+                        </h:commandLink>                        
+                        &nbsp;&nbsp;
+                        <h:commandLink value="#{mensajes['manualDeUsuario']}" style="color: blue">
+                            <h:graphicImage title="Delete" value="/resources/images/pdf1.png" height="26px" width="19px"/>  
+                            <p:fileDownload value="#{jobMB.manual}"/>
+                        </h:commandLink>
+                    </div>
+                    <br/>
+                    <div>
+                        <h:outputText value="NOTA: La informaci&oacute;n en esta página se actualiza autom&aacute;ticamente." style="color:blue"/>
+                    </div>
+                    <br/>
+                    
+                    <p:poll interval="20" listener="#{jobMB.actualizar}" update="table, table1, table2"/>
+                    <p:dataTable id="table" var="jobManager" value="#{jobMB.job}" style="width:790px;" emptyMessage="#{mensajes['msg.dataTable.vacio']}" paginator="true" paginatorPosition="bottom" rows="5"> 
+                        <f:facet name="header">  
+                            Bitacora 
+                        </f:facet>  
+                        <p:ajax event="rowSelect"  update="@this"/>    
+                        <p:columnGroup type="header">  
+                            <p:row>  
+                                <p:column colspan="3" headerText="#{mensajes['etProceso']}" />  
+                                <p:column rowspan="2" headerText="#{mensajes['etEstado']}" /> 
+                                <p:column rowspan="2" headerText="#{mensajes['etEditar']}" />
+                                <p:column rowspan="2" headerText="#{mensajes['etAgregar']}" />
+                            </p:row>  
+
+                            <p:row>  
+                                <p:column rowspan="1" headerText="#{mensajes['etId']}" />
+                                <p:column rowspan="1" headerText="#{mensajes['etNombre']}" /> 
+                                <p:column rowspan="1" headerText="#{mensajes['etDescripcion']}" /> 
+                            </p:row>  
+
+                        </p:columnGroup>  
+
+
+                        <p:column style="text-align:center;padding: 0px 0px;">
+                            <p:commandLink action="#{jobMB.consultaBitacora}" process="@this" update=":form:panel :form:pnlTbl" onstart="statusDialog.show();" onsuccess="statusDialog.hide();">
+                                <h:outputText value="#{jobManager.id} " style="color:blue"/>
+                                <f:setPropertyActionListener value="#{jobManager}" 
+                                                             target="#{jobMB.elementoSeleccionado}"/>
+                            </p:commandLink>
+                        </p:column>
+
+                        <p:column style="text-align:center;padding: 0px 0px; ">
+                            <h:outputText value="#{jobManager.nombre} "/>
+                        </p:column>
+
+                        <p:column style="text-align:center;padding: 0px 0px; ">
+                            <h:outputText value="#{jobManager.descripcion} "/>
+                        </p:column>
+
+                        <p:column style="text-align:center;padding: 0px 0px; ">
+                            <h:graphicImage  id="tipDes1" value="/resources/images/desabilitado.png" rendered="#{jobManager.estado == 0}" height="20px" width="20px"/>
+                            <p:tooltip for="tipDes1" value="#{mensajes['estado.proceso.cero']}" showEffect="clip" hideEffect="explode" ></p:tooltip> 
+                            <h:graphicImage id="tipHab1" value="/resources/images/habilitado.png" rendered="#{jobManager.estado == 1}" height="20px" width="20px"/>
+                            <p:tooltip for="tipHab1" value="#{mensajes['estado.proceso.uno']}" showEffect="clip" hideEffect="explode" ></p:tooltip> 
+                            <h:graphicImage id="tipEsp1" value="/resources/images/espera.png" rendered="#{jobManager.estado == 2}" height="20px" width="20px"/>
+                            <p:tooltip for="tipEsp1" value="#{mensajes['estado.proceso.dos']}" showEffect="clip" hideEffect="explode" ></p:tooltip> 
+                            <h:graphicImage id="tipEje1" value="/resources/images/porejecutar.png" rendered="#{jobManager.estado == 3}" height="20px" width="20px"/>
+                            <p:tooltip for="tipEje1" value="#{mensajes['estado.proceso.tres']}" showEffect="clip" hideEffect="explode" ></p:tooltip> 
+                            <h:graphicImage id="tipEne1" value="/resources/images/enejecucion.png" rendered="#{jobManager.estado == 4}" height="20px" width="20px"/>
+                            <p:tooltip for="tipEne1" value="#{mensajes['estado.proceso.cuatro']}" showEffect="clip" hideEffect="explode" ></p:tooltip> 
+                            <h:graphicImage id="tipCom1" value="/resources/images/completado.png" rendered="#{jobManager.estado == 5}" height="20px" width="20px"/>
+                            <p:tooltip for="tipCom1" value="#{mensajes['estado.proceso.cinco']}" showEffect="clip" hideEffect="explode" ></p:tooltip> 
+                            <h:graphicImage id="tipFal1" value="/resources/images/fallido.png" rendered="#{jobManager.estado == 6}" height="20px" width="20px"/>
+                            <p:tooltip for="tipFal1" value="#{mensajes['estado.proceso.seis']}" showEffect="clip" hideEffect="explode" ></p:tooltip> 
+                            <h:graphicImage id="tipInt1" value="/resources/images/intentosagotados.png" rendered="#{jobManager.estado == 7}" height="20px" width="20px"/>
+                            <p:tooltip for="tipInt1" value="#{mensajes['estado.proceso.siete']}" showEffect="clip" hideEffect="explode" ></p:tooltip> 
+                        </p:column> 
+
+                        <p:column style="text-align:center" width="35" filterMatchMode="contains" >
+                            <p:commandButton process="@this" update=":form:pnlTbl" action="#{jobMB.redirigirEditar}"
+                                             icon="ui-icon-pencil" onclick="statusDialog.show();" onsuccess="statusDialog.hide();" >
+                                <f:setPropertyActionListener value="#{jobManager}" 
+                                                             target="#{jobMB.elementoSeleccionado}" /> 
+                            </p:commandButton>
+                        </p:column>
+
+                        <p:column style="text-align:center" width="35" filterMatchMode="contains" >
+                            <p:commandButton process="@this" update=":form:pnlTbl" action="#{jobMB.redirigirAgregar}"
+                                             icon="ui-icon-plus" onclick="statusDialog.show();" onsuccess="statusDialog.hide();">
+                            </p:commandButton>
+                        </p:column>
+
+                    </p:dataTable>  
+                    <p:column style="text-align:center" width="35" filterMatchMode="contains" >
+                            <p:commandButton process="@this" update=":form:pnlTbl" action="#{jobMB.redirigirAgregar}"
+                                             icon="ui-icon-plus" onclick="statusDialog.show();" onsuccess="statusDialog.hide();">
+                            </p:commandButton>
+                        </p:column>
+                    <br/>
+                    <br/>
+                    <p:dataTable id="table1" var="jobManager" value="#{jobMB.job}" style="width:790px;" emptyMessage="#{mensajes['msg.dataTable.vacio']}" paginator="true" paginatorPosition="bottom" rows="5"> 
+                        <f:facet name="header">  
+                            Bitacora  
+                        </f:facet>
+                        <p:ajax event="rowSelect"  update="@this"/>    
+                        <p:columnGroup type="header">  
+                            <p:row>  
+                                <p:column rowspan="3" headerText="#{mensajes['etId']}" /> 
+                                <p:column colspan="6" headerText="#{mensajes['etUltimaEjecucion']}" /> 
+                                <p:column rowspan="3" headerText="#{mensajes['etDuracionAcumulada']}"/> 
+                                <p:column rowspan="3" headerText="#{mensajes['etEditar']}" />
+                                <p:column rowspan="3" headerText="#{mensajes['etAgregar']}" />
+                            </p:row>  
+
+                            <p:row>  
+                                <p:column rowspan="2" headerText="#{mensajes['etIntento']}" /> 
+                                <p:column colspan="2" headerText="#{mensajes['etInicio']}" /> 
+                                <p:column colspan="2" headerText="#{mensajes['etFin']}" /> 
+                                <p:column rowspan="2" headerText="#{mensajes['etDuracion']}" /> 
+
+                            </p:row>  
+
+                            <p:row>  
+                                <p:column headerText="#{mensajes['etFecha']}" />  
+                                <p:column headerText="#{mensajes['etHora']}" />  
+                                <p:column headerText="#{mensajes['etFecha']}" />  
+                                <p:column headerText="#{mensajes['etHora']}" />  
+
+                            </p:row>  
+                        </p:columnGroup>  
+
+
+                        <p:column style="text-align:center;padding: 0px 0px;"> 
+                            <p:commandLink action="#{jobMB.consultaBitacora}" process="@this" update=":form:panel :form:pnlTbl">
+                                <h:outputText value="#{jobManager.id} " style="color:blue"/>
+                                <f:setPropertyActionListener value="#{jobManager}" 
+                                                             target="#{jobMB.elementoSeleccionado}"/>
+                            </p:commandLink>
+                        </p:column>
+
+                        <p:column style="text-align:center;padding: 0px 0px; ">
+                            <h:outputText value="#{jobManager.intento} "/>
+                        </p:column>
+
+                        <p:column style="text-align:center;padding: 0px 0px; ">
+                            <h:outputText value="#{jobManager.fechaInicioStr} " />
+                        </p:column>
+
+                        <p:column style="text-align:center;padding: 0px 0px; ">
+                            <h:outputText value="#{jobManager.horaInicio} "/>
+                        </p:column>
+
+                        <p:column style="text-align:center;padding: 0px 0px; ">
+                            <h:outputText value="#{jobManager.fechaFinStr} "/>
+                        </p:column>
+
+                        <p:column style="text-align:center;padding: 0px 0px; ">
+                            <h:outputText value="#{jobManager.horaFin} "/>
+                        </p:column>
+
+                        <p:column style="text-align:center;padding: 0px 0px; ">
+                            <h:outputText value="#{jobManager.duracion} "/>
+                        </p:column>
+
+                        <p:column style="text-align:center;padding: 0px 0px; ">
+                            <h:outputText value="#{jobManager.duracionAcumulada} "/>
+                        </p:column>
+
+                        <p:column style="text-align:center" width="35" filterMatchMode="contains" >
+                            <p:commandButton process="@this" update=":form:pnlTbl" action="#{jobMB.redirigirEditar}"
+                                             icon="ui-icon-pencil" onclick="statusDialog.show();" onsuccess="statusDialog.hide();">
+                                <f:setPropertyActionListener value="#{jobManager}" 
+                                                             target="#{jobMB.elementoSeleccionado}" /> 
+                            </p:commandButton>
+                        </p:column>
+
+                        <p:column style="text-align:center" width="35" filterMatchMode="contains" >
+                            <p:commandButton process="@this" update=":form:pnlTbl" action="#{jobMB.redirigirAgregar}"
+                                             icon="ui-icon-plus" onclick="statusDialog.show();" onsuccess="statusDialog.hide();">
+                            </p:commandButton>
+                        </p:column>
+                    </p:dataTable>
+                    <br/>
+                    <br/>
+                    <p:dataTable id="table2" var="jobManager" value="#{jobMB.job}" style="width:790px;" emptyMessage="#{mensajes['msg.dataTable.vacio']}" paginator="true" paginatorPosition="bottom" rows="5"> 
+                        <f:facet name="header">  
+                            Bitacora  
+                        </f:facet>
+                        <p:ajax event="rowSelect"  update="@this"/>    
+                        <p:columnGroup type="header">  
+                            <p:row>  
+                                <p:column rowspan="3" headerText="#{mensajes['etId']}" style = "width:10px" /> 
+                                <p:column colspan="5" headerText="#{mensajes['etConfiguracionEjecucion']}" />
+                                <p:column rowspan="3" headerText="#{mensajes['etEditar']}" />
+                                <p:column rowspan="3" headerText="#{mensajes['etAgregar']}" />
+                            </p:row>  
+
+                            <p:row>  
+                                <p:column rowspan="2" headerText="#{mensajes['etMaxIntentos']}" style = "width:10px"/>
+                                <p:column rowspan="2" headerText="#{mensajes['etPrioridad']}" style = "width:80px"/> 
+                                <p:column colspan="2" headerText="#{mensajes['etSigEjecucion']}" /> 
+                                <p:column rowspan="2" headerText="#{mensajes['etDependencias']}" style = "width:10px"/> 
+
+                            </p:row>  
+
+                            <p:row>  
+                                <p:column headerText="#{mensajes['etFecha']}" />  
+                                <p:column headerText="#{mensajes['etHora']}" />  
+
+                            </p:row>  
+                        </p:columnGroup>  
+
+
+                        <p:column style="text-align:center;padding: 0px 0px;">
+                            <p:commandLink action="#{jobMB.consultaBitacora}" process="@this"  update=":form:panel :form:pnlTbl">
+                                <h:outputText value="#{jobManager.id}" style="color:blue"/>
+                                <f:setPropertyActionListener value="#{jobManager}" 
+                                                             target="#{jobMB.elementoSeleccionado}"/>
+                            </p:commandLink>
+                        </p:column>
+
+                        <p:column style="text-align:center;padding: 0px 0px; ">
+                            <h:outputText value="#{jobManager.intentosMax} "/>
+                        </p:column>
+
+                        <p:column style="text-align:center;padding: 0px 0px; ">
+                            <h:outputText value="#{jobManager.prioridad} "/>
+                        </p:column>
+
+                        <p:column style="text-align:center;padding: 0px 0px; ">
+                            <h:outputText value="#{jobManager.fechaSiguienteEjecucionStr} "/>
+                        </p:column>
+
+                        <p:column style="text-align:center;padding: 0px 0px; ">
+                            <h:outputText value="#{jobManager.horaSiguienteEjecucion} "/>
+                        </p:column>
+
+                        <p:column style="text-align:center;padding: 0px 0px; ">
+                            <h:outputText value="#{jobManager.dependencias} "/>
+                        </p:column>
+
+                        <p:column style="text-align:center" width="35" filterMatchMode="contains" >
+                            <p:commandButton process="@this" update=":form:pnlTbl" action="#{jobMB.redirigirEditar}"
+                                             icon="ui-icon-pencil" onclick="statusDialog.show();" onsuccess="statusDialog.hide();">
+                                <f:setPropertyActionListener value="#{jobManager}" 
+                                                             target="#{jobMB.elementoSeleccionado}" /> 
+                            </p:commandButton>
+                        </p:column>
+
+                        <p:column style="text-align:center" width="35" filterMatchMode="contains" >
+                            <p:commandButton process="@this" update=":form:pnlTbl" action="#{jobMB.redirigirAgregar}"
+                                             icon="ui-icon-plus" onclick="statusDialog.show();" onsuccess="statusDialog.hide();">
+                            </p:commandButton>
+                        </p:column>
+
+                    </p:dataTable>
+
+                </p:panel>
+
+                <p:panel id="panel" visible="#{jobMB.mostrarDetalleTabla}" style="width:790px; overflow:auto;height:auto;border-color:none;">
+                    <div align = "right" >
+                        <h:panelGrid columns="9">
+                            <h:outputText value="#{mensajes['etDe']}"/>
+                            <p:calendar id="calendar1" showOn="button" readonlyInput="true" pattern="dd/MM/yyyy" locale="es"
+                                        required="true" requiredMessage="#{mensajes['ui.validacion.required']}" value="#{jobMB.fechaDe}"></p:calendar>                     
+
+                            <h:outputText value="#{mensajes['etA']}"/>
+                            <p:calendar id="calendar2" showOn="button" readonlyInput="true" pattern="dd/MM/yyyy" locale="es"
+                                        required="true" requiredMessage="#{mensajes['ui.validacion.required']}" value="#{jobMB.fechaA}"></p:calendar>
+
+                            <h:outputText/>
+                            <h:outputText />
+                            <p:commandButton id="consulta" value="#{mensajes['btnConsultar']}"  onclick="statusDialog.show();" onsuccess="statusDialog.hide();"
+                                             action="#{jobMB.consultaBitacoraPorFecha}" update= "panel"/>
+
+                            <h:outputText value="#{mensajes['etProceso']}"/>
+                            <p:inputText id="idProceso" value="#{jobMB.elementoSeleccionado.descripcion}" disabled="true" style="width:170px"/>                               
+                        </h:panelGrid>
+                        <h:panelGrid columns="3" >
+                            <h:outputText value="#{mensajes['etIntentosMax']}"/>
+                            <p:inputText id="idIntentos" value="#{jobMB.elementoSeleccionado.intentosMax}" disabled="true" style="width:50px"/>  
+                        </h:panelGrid>
+                    </div>
+
+                    <p:dataTable id="tableJobDetail" var="jobManager" value="#{jobMB.bitacora}" style="width:790px;" emptyMessage="#{mensajes['msg.dataTable.vacio']}">
+                        <f:facet name="header">Bitacora</f:facet>
+                        <p:columnGroup type="header">
+                            <p:row>
+                                <p:column rowspan="2" headerText="#{mensajes['etEjecucion']}" style = "width:30px"/>
+                                <p:column rowspan="2" headerText="#{mensajes['etIntento']}" style = "width:30px"/>
+                                <p:column colspan="2" headerText="#{mensajes['etInicio']}"/>
+                                <p:column colspan="2" headerText="#{mensajes['etFin']}"/>
+                                <p:column rowspan="2" headerText="#{mensajes['etDuracion']}"/>
+                                <p:column rowspan="2" headerText="#{mensajes['etResultado']}" style = "width:30px"/>
+                                <p:column rowspan="2" headerText="#{mensajes['etObservaciones']}"/>
+                            </p:row>
+                            <p:row>
+                                <p:column headerText="#{mensajes['etFecha']}"/>
+                                <p:column headerText="#{mensajes['etHora']}"/>
+                                <p:column headerText="#{mensajes['etFecha']}"/>
+                                <p:column headerText="#{mensajes['etHora']}"/>
+                            </p:row>
+                        </p:columnGroup>
+
+                        <p:column style="text-align:center;padding: 0px 0px;">
+                            <h:outputText value="#{jobManager.idEjecucion} "/>
+                        </p:column>
+
+                        <p:column style="text-align:center;padding: 0px 0px; ">
+                            <h:outputText value="#{jobManager.intento} "/>
+                        </p:column>
+
+                        <p:column style="text-align:center;padding: 0px 0px; ">
+                            <h:outputText value="#{jobManager.fechaInicioStr} "/>
+                        </p:column>
+
+                        <p:column style="text-align:center;padding: 0px 0px; ">
+                            <h:outputText value="#{jobManager.horaInicio} "/>
+                        </p:column>
+
+                        <p:column style="text-align:center;padding: 0px 0px; ">
+                            <h:outputText value="#{jobManager.fechaFinStr} "/>
+                        </p:column>
+
+                        <p:column style="text-align:center;padding: 0px 0px; ">
+                            <h:outputText value="#{jobManager.horaFin} " />
+                        </p:column>
+
+                        <p:column style="text-align:center;padding: 0px 0px; ">
+                            <h:outputText value="#{jobManager.duracion} "/>
+                        </p:column>
+
+                        <p:column style="text-align:center;padding: 0px 0px; ">
+                            <h:outputText value="Deshabilitado" rendered="#{jobManager.estado == 0}"/>
+                            <h:outputText value="Habilitado" rendered="#{jobManager.estado == 1}"/>
+                            <h:outputText value="En espera" rendered="#{jobManager.estado == 2}"/>
+                            <h:outputText value="Preparado" rendered="#{jobManager.estado == 3}"/>
+                            <h:outputText value="En ejecucion" rendered="#{jobManager.estado == 4}"/>
+                            <h:outputText value="Exito" rendered="#{jobManager.estado == 5}"/>
+                            <h:outputText value="Error" rendered="#{jobManager.estado == 6}"/>
+
+                        </p:column>
+
+                        <p:column style="text-align:center;padding: 0px 0px; ">
+                            <h:outputText value="#{jobManager.observaciones} "/>
+                        </p:column>
+
+                    </p:dataTable>
+
+                    <br>
+                    </br>
+                    <div>
+                        <p:commandButton id="return" value="#{mensajes['btnRegresar']}"  action="#{jobMB.regresar}" immediate="true" style="left:90%"
+                                         ajax="false" update= "pnlTbl panel" onclick="statusDialog.show();" onsuccess="statusDialog.hide();">
+                        </p:commandButton> 
+                    </div>
+                </p:panel>
+
+            </h:form>  
+        </h:body>
+    </html>
+</f:view>

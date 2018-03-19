@@ -1,0 +1,415 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+        xmlns:c="http://java.sun.com/jsp/jstl/core"
+        xmlns:pe="http://primefaces.org/ui/extensions">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <meta http-equiv="pragma" content="no-cache"/>
+            <meta http-equiv="cache-control" content="no-cache"/>
+            <h:outputScript library="js" name="general.js"/>
+            <script type="text/javascript">
+                $.datepicker._generateMonthYearHeader_original = $.datepicker._generateMonthYearHeader;
+
+                $.datepicker._generateMonthYearHeader = function (inst, dm, dy, mnd, mxd, s, mn, mns) {
+                    var header = $($.datepicker._generateMonthYearHeader_original(inst, dm, dy, mnd, mxd, s, mn, mns)), years = header.find('.ui-datepicker-year');
+
+                    // reverse the years
+                    years.html(Array.prototype.reverse.apply(years.children()));
+
+                    // return our new html
+                    return $('&lt;div />').append(header).html();
+                }
+            </script>
+            <script>
+                $(document).ready(function() {
+                         $errordisplaymsj=($('#formRegistrarAviso\\:tipoAviso').hasClass('ui-state-error'));
+                          $folioAvi=($('#formRegistrarAviso\\:folioAvi').hasClass('ui-state-error'));
+                          
+                            if($errordisplaymsj || $folioAvi){
+                                document.getElementById("error0").innerHTML="Todos los campos marcados con * son requeridos";
+                                document.getElementById("error0").style.display="inherit";  
+                            }
+
+                            $tipoDeclaracion=($('#formRegistrarAviso\\:tipoDeclaracion').hasClass('ui-state-error'));
+                            $InfoConcepto=($('#formRegistrarAviso\\:cbInfoConcepto').hasClass('ui-state-error'));
+                            $TipoPeriodo=($('#formRegistrarAviso\\:cbInfoTipoPeriodo').hasClass('ui-state-error'));
+                            $Periodo=($('#formRegistrarAviso\\:cbPeriodo').hasClass('ui-state-error'));
+                            $Ejercicio=($('#formRegistrarAviso\\:cbEjercicio').hasClass('ui-state-error'));
+                            $Fecha=($('#formRegistrarAviso\\:caFecha').hasClass('ui-state-error'));
+                            $NumOperacion=($('#formRegistrarAviso\\:itNumOperacion').hasClass('ui-state-error'));
+                            $huhu=($('#formRegistrarAviso\\:huhu_input').hasClass('ui-state-error'));
+                            
+                            if($tipoDeclaracion || $InfoConcepto || $TipoPeriodo || $Periodo || $Ejercicio || $Fecha || $NumOperacion || $huhu){
+                                document.getElementById("error1").innerHTML="Todos los campos marcados con * son requeridos";
+                                document.getElementById("error1").style.display="inherit";  
+                            }
+                            
+                            
+                    });                 
+            </script>
+            <style type="text/css">
+                
+                .ui-messages-error .ui-message-error-icon span
+                {
+                    color: #b94a48 !important;
+                    background-color: #ffffff !important;
+                    border-color: #ffffff !important;
+                }
+                .ui-panelgrid {
+                    margin-left: 0px !important;
+                }
+                h1 {
+                    margin-bottom: 0px !important;
+                    font-size: 54px !important;
+                    margin-left: 0px !important;
+                    line-height: 1.1 !important;
+                    margin-top: -20px !important;
+                }
+                h2 {
+                    font-size: 38px!important;
+                    margin-bottom: 0px!important;
+                    margin-left: 0px !important;
+                }
+                 body {
+                        font-family: 'Open Sans';
+                      }
+                .ui-panel .ui-button{
+                    margin-top:10px!important;
+                    margin-left:5px!important;
+                    float:right !important;
+                }
+                .gmxNoborde1 td
+                      {
+                         border-color:#FFFFFF;
+                      }
+                      
+                .ui-messages-error, .ui-message-error {
+                    color: #b94a48!important;background-color: #ffffff!important;border-color: #ffffff!important;
+                    margin-left: -10px !important;
+                }
+                .ui-state-error,  .ui-state-error{border: 1px solid #953434 !important;background:#ffffff!important;}
+                
+                    
+                 hr.red {
+                        margin: 0px 0 0px !important;border-top-color: #DCE0E0 !important;position: relative !important; margin-left: 2px !important;} 
+                hr.red:before {
+                    content: " "!important;width: 35px!important;height: 6px!important;background-color: #D0021B!important;
+                    display: block!important;  position: absolute!important;} 
+                .ui-selectonemenu{height:39px!important;}
+                .ui-selectonemenu .ui-state-focus{height:39px!important;}
+                .ui-selectonemenu .ui-state-active{height:39px!important;}
+                .tab_D{width:373px!important;border: 0px solid!important;float:left; }
+                .tab_I{width:373px!important;border: 0px solid!important;float:left;margin-left: 30px; }
+                .tab_DB{width:373px!important;border: 0px solid!important;float:left;margin-top: 20px; }
+                .tab_IB{width:373px!important;border: 0px solid!important;float:left;margin-left: 30px;margin-top: 20px; }
+                .ui-selectonemenu{margin-top: 0px!important;}
+                .ui-panelgrid td {
+                    border-width: 1px;
+                    border-style: solid;
+                    border-color: inherit;
+                    padding: 0px 10px;
+                }
+                .tab_D{width:359px!important;border: 0px solid!important;float:left; }
+                .tab_I{width:359px!important;border: 0px solid!important;float:left;margin-left: 30px; }
+                .ui-messages-warn, .ui-message-warn{
+                    border-radius: 3px 3px 3px 3px;
+                    -moz-border-radius: 3px 3px 3px 3px;
+                    -webkit-border-radius: 3px 3px 3px 3px;
+                    border: 2px solid #BCE8F1 ;
+                    background-color: #D9EDF7;
+                     text-align: center;
+                     color:#31708F;
+                     margin-top:30px;
+                    margin-bottom: 30px;
+                    padding-top:30px;
+                    padding-bottom: 30px;                                            
+                }
+                .ui-messages-warn-icon{
+                    display:none;   
+                   }
+            </style>
+        </h:head>
+         <h:outputStylesheet library="css/" name="gob-datocont.css"/>
+        <h:body>
+            <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+             
+            <p:dialog modal="true" widgetVar="statusDialog" header="#{msgValidacion.ajaxLoading}" draggable="false"
+                      resizable="false" closable="false">
+                <p:graphicImage value="../../images/ajaxloadingbar.gif"/>
+            </p:dialog>
+            <h:form id="formRegistrarAviso" acceptcharset="UTF-8" >
+            <p:messages id="noExistFolio" for="noExistFolio"  autoUpdate="true"/>
+            
+            
+            <!-- -->
+            <div class="gobmxContenedor8">
+                <div class="gob-regav-title">
+                    <h1>
+                  <p:outputLabel value="#{msgValidacion.aclP3Titulo1}"/>
+                </h1>
+                </div>
+                <div class="gob-regav-csubtitle">
+                    <h2>
+                        <p:outputLabel value="#{msgValidacion.aclP3Titulo2}" />
+                    </h2>
+                    <hr class="red" />
+                </div>
+                    <style>
+
+                        #formRegistrarAviso\:folioAvi{
+                            margin-bottom: 5px;l
+                        }
+                        .ui-messages-error{
+                                    border-radius: 3px 3px 3px 3px!important;
+                                    -moz-border-radius: 3px 3px 3px 3px!important;
+                                    -webkit-border-radius: 3px 3px 3px 3px!important;
+                                    border: 2px solid #D0021B!important;
+                                    background-color: #F2DEDE!important;
+                                    text-align: center!important;
+                                    color: #545454!important;
+                                    margin-top: 30px!important;
+                                    margin-bottom: 30px!important;
+                                    padding-top: 30px!important;
+                                    padding-bottom: 30px!important;
+                                    position: inherit !important;
+                                    margin-left: 0px !important;
+                                }
+                        
+                    </style>
+                        <p:messages for="folioAvi" showDetail="true" autoUpdate="true"   rendered="true"/>
+                    <div class="gob-regav-table">
+                        <div id="error0"></div>
+                        <p:panelGrid style="width: 787px;margin-left: -9px!important" id="pnlRegistroAviso" styleClass="gmxNoborde">
+                        <p:row>
+                            
+                            <p:column style="width: 19%!important;">
+                                <p:outputLabel id="tipoAviso_label"  value="#{msgValidacion.aclP3Campo1}" for="tipoAviso" widgetVar="youtlink" /><span>:</span>
+                            </p:column>
+                            
+                            <p:column style="width: 30%!important;padding-left: 0px!important;">
+                                   <p:selectOneMenu id="tipoAviso"
+                                                    style="width: 225px!important;"
+                                                    value="#{avisoCompensacionEnLineaMB.dyccTipoAvisoDTO.idTipoAviso}"
+                                                    required="true"
+                                                    requiredMessage="#{msgValidacion.mcRequerido}"
+                                                    disabled="#{avisoCompensacionEnLineaMB.estadoPantInicio eq 'editandoIcepDestino'}">
+                                    <f:selectItem itemLabel="#{msgValidacion.comboSeleccion}"
+                                                  itemValue=""/>
+                                    <f:selectItems value="#{avisoCompensacionEnLineaMB.listaTiposDeAvisos}"
+                                                   var="tipoAviso" itemLabel="#{tipoAviso.descripcion}"
+                                                   itemValue="#{tipoAviso.idTipoAviso}"/>
+                                    <p:ajax update="pnlRegistroAviso" listener="#{avisoCompensacionEnLineaMB.mostrarNumControl}"/>
+
+                                </p:selectOneMenu>
+                                <p:message id="msgIdTIpoAviso" for="tipoAviso" display="text"/>
+                             </p:column>
+                                   
+                            <p:column  rendered="#{avisoCompensacionEnLineaMB.requiereNumControl}" style="width: 25%!important;">
+                                <p:outputLabel value="#{msgValidacion.aclP3Campo2}"
+                                               for="folioAvi"  style="display: initial;"/>:
+                                <style type="text/css">
+                              #formRegistrarAviso\:msgFolioAvisoNormal {
+                                    display: ruby-text;
+                                }
+                              </style> 
+                                <p:graphicImage id="ayuda" value="../../images/Ayuda.png" style="margin-left: 2px !important;"
+                                                 rendered="#{avisoCompensacionEnLineaMB.requiereNumControl}"/>
+                            </p:column>
+                            <p:column rendered="#{avisoCompensacionEnLineaMB.requiereNumControl}" style="width: 25%!important;padding: 1px!important;">
+                                <p:inputText id="folioAvi"
+                                             value="#{avisoCompensacionEnLineaMB.folioAvisoNormal}"
+                                             rendered="#{avisoCompensacionEnLineaMB.requiereNumControl}"
+                                             required="true"
+                                             requiredMessage="#{msgValidacion.mcRequerido}"
+                                             maxlength="14" styleClass="upperCase"
+                                             disabled="#{avisoCompensacionEnLineaMB.estadoPantInicio eq 'editandoIcepDestino'}">
+
+                                </p:inputText>
+                                <p:watermark for="folioAvi" value="Ingresar Folio" />
+                                <p:tooltip for="ayuda">
+                                    <p:outputLabel value="#{msgValidacion.tooltip01}"/>
+                                    <br/>
+                                    <p:outputLabel value="#{msgValidacion.tooltip02}"/>
+                                    <br/>
+                                    <p:outputLabel value="#{msgValidacion.tooltip03}"/>
+                                    <br/>
+                                    <p:outputLabel value="#{msgValidacion.tooltip04}"/>
+                                </p:tooltip>
+                                <p:message id="msgFolioAvisoNormal" for="folioAvi" display="text"/>
+                            </p:column>
+                            <p:column colspan="2" rendered="#{!avisoCompensacionEnLineaMB.requiereNumControl}" style="width: 50%!important;">
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{avisoCompensacionEnLineaMB.estadoPantInicio == 'editandoTipoAviso'}" >
+                            <p:column colspan="4">
+                                    <p:outputLabel value="#{msgValidacion.camposObligatorios}" />
+                                     <p:commandButton id="btnSiguientePnlTipoAviso" value="Siguiente"
+                                                 actionListener="#{avisoCompensacionEnLineaMB.validarFolioAvisoNormal}"
+                                                 process="pnlRegistroAviso" update="@form"
+                                                 ajax="false"
+                                                 onclick="validar();"
+                                                  onstart="statusDialog.show();" onsuccess="statusDialog.hide();"
+                                                 styleClass="gmxPositivo" 
+                                                 rendered="#{avisoCompensacionEnLineaMB.estadoPantInicio eq 'editandoTipoAviso'}" />
+                            </p:column>
+                            
+                        </p:row>
+                    </p:panelGrid>
+                    </div>
+            </div>
+             <!---->
+             <style>
+                 .ui-messages-info-summary, .ui-messages-warn-summary, .ui-messages-error-summary, .ui-messages-fatal-summary, .ui-message-info-summary, .ui-message-warn-summary, .ui-message-error-summary, .ui-message-fatal-summary{
+                     font-weight: normal !important;
+                 }
+             </style>
+            <div class="gobmxContenedor8">
+                <div class="gob-info-decl-comp">
+                    <c:if test="#{avisoCompensacionEnLineaMB.estadoPantInicio == 'editandoIcepDestino'}">
+                     <h2><p:outputLabel value="#{msgValidacion.aclP3Titulo3}"/></h2>
+                    <hr class="red" />
+                    <p:messages id="msgDatos" for="msgDatos" showDetail="true" globalOnly="true" autoUpdate="true" closable="true"/>
+                </c:if>
+                </div>
+                    <div id="error1"></div>
+            </div>
+                
+                 <c:if test="#{avisoCompensacionEnLineaMB.estadoPantInicio == 'editandoIcepDestino'}">
+                     <div class="gob-info-decl-comp-table">
+                        <div class="tab_D" style="width:373.33px !important;">
+                             <p:outputLabel value="#{msgValidacion.aclP3Campo23}" for="tipoDeclaracion"/><span>:</span>
+                             <p:selectOneMenu id="tipoDeclaracion"
+                                                value="#{avisoCompensacionEnLineaMB.dyccTipoDeclaracionDTO.idTipoDeclaracion}"
+                                                required="true"
+                                                style="width: 100%"
+                                                requiredMessage="#{msgValidacion.mcRequerido}">
+                                   <f:selectItem itemLabel="#{msgValidacion.comboSeleccion}"
+                                                 itemValue=""/>
+                                   <f:selectItems value="#{avisoCompensacionEnLineaMB.listaTiposDeDeclaraciones}"
+                                                  var="tipoAviso" itemLabel="#{tipoAviso.descripcion}"
+                                                  itemValue="#{tipoAviso.idTipoDeclaracion}"/>
+                               </p:selectOneMenu>
+                               <p:message id="msgIdTipoDeclaracion" for="tipoDeclaracion"   display="text"/>
+                               <p:outputLabel value="#{msgValidacion.aclP3Campo4}" for="cbInfoTipoPeriodo" style="margin-top:20px!important;"/><span>:</span>
+                               <p:selectOneMenu id="cbInfoTipoPeriodo"
+                                              style="width: 100%;"
+                                              value="#{avisoCompensacionEnLineaMB.idTipoPeriodo}"
+                                              required="true"
+                                              requiredMessage="#{msgValidacion.mcRequerido}">
+                                <f:selectItem itemLabel="#{msgValidacion.comboSeleccion}"
+                                              itemValue=""/>
+                                <f:selectItems value="#{avisoCompensacionEnLineaMB.listaTiposDePeriodos}"
+                                               var="tipoPeriodo"
+                                               itemLabel="#{tipoPeriodo.descripcion}"
+                                               itemValue="#{tipoPeriodo.idTipoPeriodo}"/>
+                                <p:ajax update="cbPeriodo"  listener="#{avisoCompensacionEnLineaMB.mostrarPeriodosPorTipoDePeriodo}"/>
+                               </p:selectOneMenu>
+                            <p:message id="msgCbInfoTipoPeriodo" for="cbInfoTipoPeriodo"  display="text"/>
+                               <p:outputLabel value="#{msgValidacion.aclP3Campo6}" for="cbEjercicio" style="margin-top:20px!important;"/><span>:</span>
+                            <p:selectOneMenu id="cbEjercicio"
+                                              style="width: 100%"
+                                            value="#{avisoCompensacionEnLineaMB.dyccEjercicioDTO.idEjercicio}"
+                                            required="true"
+                                            requiredMessage="#{msgValidacion.mcRequerido}">
+                               <f:selectItem itemLabel="#{msgValidacion.comboSeleccion}"
+                                             itemValue=""/>
+                               <f:selectItems value="#{avisoCompensacionEnLineaMB.listaEjercicios}"
+                                              var="idejercicio"
+                                              itemLabel="#{idejercicio.idEjercicio}"
+                                              itemValue="#{idejercicio.idEjercicio}"/>
+                           </p:selectOneMenu>
+                           <p:message id="msgCbEjercicio" for="cbEjercicio" display="text"/>
+                            <p:outputLabel value="#{msgValidacion.aclP3Campo8}" for="itNumOperacion" style="margin-top:20px!important;"/><span>:</span>
+                           <p:inputText id="itNumOperacion" 
+                                         style="width: 100%"
+                                         value="#{avisoCompensacionEnLineaMB.dycpCompensacionDTO.numOperacionDec}"
+                                         required="true"
+                                         requiredMessage="#{msgValidacion.mcRequerido}"
+                                         maxlength="18">
+                                         <pe:keyFilter regEx="/[\d]/" />
+                            </p:inputText>
+                            <p:message id="msgItNumOperacion" for="itNumOperacion" display="text"/>
+                            <p:watermark for="itNumOperacion" value="Ingresar #{msgValidacion.aclP3Campo8}" />
+                            <p:outputLabel value="#{msgValidacion.camposObligatorios}" style="color:#777777!important;margin-top: 20px!important;float: inherit!important;"/>
+                        </div>
+                        <div class="tab_I" style="width:373.33px !important;">
+                            <p:outputLabel value="#{msgValidacion.aclP3Campo3}" for="cbInfoConcepto"/><span>:</span>
+                            <p:selectOneMenu id="cbInfoConcepto"
+                                            value="#{avisoCompensacionEnLineaMB.dyccConceptoDTO.idConcepto}"
+                                            style="width:100%" panelStyle="width:500px"
+                                            required="true"
+                                            requiredMessage="#{msgValidacion.mcRequerido}">
+                               <f:selectItem itemLabel="#{msgValidacion.comboSeleccion}"
+                                             itemValue=""/>
+                               <f:selectItems value="#{avisoCompensacionEnLineaMB.listaConceptos}"
+                                              var="concepto" itemLabel="#{concepto.descripcion}"
+                                              itemValue="#{concepto.idConcepto}"
+                                              itemDescription="#{concepto.idConcepto} -- #{concepto.descripcion}"/>
+                               <p:ajax listener="#{avisoCompensacionEnLineaMB.mostrarDescripcionConcepto}"/>
+                           </p:selectOneMenu>
+                           <p:message id="msgCbInfoConcepto" for="cbInfoConcepto" display="text"/>
+                            <p:outputLabel value="#{msgValidacion.aclP3Campo5}" for="cbPeriodo" style="margin-top:20px!important;"/><span>:</span>
+                              <p:selectOneMenu id="cbPeriodo"
+                                             style="width: 100%;"
+                                            value="#{avisoCompensacionEnLineaMB.dyccPeriodoDTO.idPeriodo}"
+                                            required="true"
+                                            requiredMessage="#{msgValidacion.mcRequerido}">
+                               <f:selectItem itemLabel="#{msgValidacion.comboSeleccion}"
+                                             itemValue=""/>
+                               <f:selectItems value="#{avisoCompensacionEnLineaMB.listaPeriodos}"
+                                              var="periodo" itemLabel="#{periodo.descripcion}"
+                                              itemValue="#{periodo.idPeriodo}"/>
+                               <p:ajax listener="#{avisoCompensacionEnLineaMB.mostrarDescripcionPeriodo}"/>
+                           </p:selectOneMenu>
+                           <p:message id="msgCbPeriodo" for="cbPeriodo" display="text"/>
+                           <p:outputLabel value="#{msgValidacion.aclP3Campo7}" for="caFecha" style="margin-top:20px!important;"/><span>:</span>
+                             <p:calendar id="caFecha"
+                                        style="width: 100%"
+                                        value="#{avisoCompensacionEnLineaMB.dycpCompensacionDTO.fechaPresentaDec}"
+                                        navigator="true" pattern="dd/MM/yyyy" yearRange="2000"
+                                        locale="es" readonlyInput="true"
+                                        maxdate="#{avisoCompensacionEnLineaMB.fechaActual}"
+                                        required="true"
+                                        disabled="#{avisoCompensacionEnLineaMB.habilitarCal}"
+                                        requiredMessage="#{msgValidacion.generalMsgRequerido}"
+                                        styleClass="myClass">
+                                <p:ajax event="dateSelect"
+                                        listener="#{avisoCompensacionEnLineaMB.validaFechaPresDesOri}"
+                                        update="noExistFolio, btnSiguiente"/>
+                                <f:param name="opcionFecha" value="fechaDestino"/>
+                            </p:calendar>
+                            <p:message id="msgCaFecha" for="caFecha" display="text"/>
+                            <p:watermark for="caFecha" value="Ingresar Fecha" />
+                            <p:outputLabel value="#{msgValidacion.aclP3Campo9}"  for ="huhu" style="margin-top:20px!important;"/><span>:</span>
+                                <pe:inputNumber id="huhu"
+                                                 style="width: 100%;"
+                                                 thousandSeparator="," decimalSeparator="."
+                                                 symbol="$ " required="true"
+                                                  value="#{avisoCompensacionEnLineaMB.dycpCompensacionDTO.importeCompensado}"
+                                                 requiredMessage="#{msgValidacion.mcRequerido}"
+                                                 maxValue="9999999999.99">
+                                           <p:ajax event="blur" update="huhu"/>
+                                        </pe:inputNumber>
+                                 <p:message id="msghuhu" for="huhu" display="text"/>
+                                 <p:watermark for="huhu" value="Ingresar #{msgValidacion.aclP3Campo9}" />
+                            <div class="gob-next-step">
+                                <p:commandButton id="btnSiguiente" value="Siguiente" ajax="false"
+                                      actionListener="#{avisoCompensacionEnLineaMB.mostrarDetalleCuadro}"
+                                      process="@form" update="pnlRegistroAviso, pnlInfoDestino"
+                                       onstart="statusDialog.show();" onsuccess="statusDialog.hide();"
+                                      styleClass="gmxPositivo"/>
+
+                                      <p:commandButton id="btnAtras" value="#{msgValidacion.tooltop08}"
+                                                      actionListener="#{avisoCompensacionEnLineaMB.editarTipoAviso}"
+                                                      process="@this" update="pnlRegistroAviso" styleClass="gob-separate-btn" style="  margin-bottom: 30px!important;"/>
+                            </div> 
+                        </div>
+                                 
+                    </div>
+                 </c:if>
+            </h:form>
+        </h:body>
+    </html>
+</f:view> 

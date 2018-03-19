@@ -1,0 +1,70 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+     <div style="width:777px">
+                   <style>
+        .ui-widget-content{
+        border: 0px solid #e2e2e2!important;}
+        #dvBtnSalir{
+                            position: relative;
+                            left: -250px;
+                            top: -29px !important;
+                        }
+    </style>
+    <div >
+        <p:messages id="msmtab7" closable="true" autoUpdate="true" globalOnly="true"  /> 
+    </div>
+      <div class="gob-dat-cont"  >
+        <h2 style="margin-left: 0px !important;">
+            <p:outputLabel value="#{msgValidacion.L0000015}"/>
+        </h2> 
+        <hr class="red" style="margin-left: 0px !important;"/>
+          <p:messages id="msgDocumentosAnexos" for="msgDocumentosAnexos" showDetail="true"
+                                 globalOnly="true" autoUpdate="true" closable="false"/>
+    </div>
+    <p:panel style="border-style: none;" >
+        <div>
+        </div>
+        <br/>
+        <div align="left"  style="margin-left:-4px">
+            <p:commandButton icon="glyphicon glyphicon-upload" title="#{msgValidacion.aiaAdjuntar}" onclick="dlgDocumento.show();"
+                             type="middle">
+                    <span class="glyphicon glyphicon-upload"></span>
+               </p:commandButton>
+
+            <p:commandButton icon="glyphicon glyphicon-folder-close" title="#{msgValidacion.asBtnEliminar}"
+                             actionListener="#{uploadScanCtrlMB.doDeleteDocumento}"
+                             update="dtDocAdjuntos">
+               <span class="glyphicon glyphicon-folder-close"></span>
+               </p:commandButton>
+        </div>
+        <div align="left"  style="margin-left:-4px">
+            #{msgValidacion.aclP4Campo1}#{msgValidacion.aclP4Campo2}
+        </div>
+        <br/>
+        <div align="left" style="margin-left:-4px">
+            <p:dataTable id="dtDocAdjuntos" emptyMessage="#{msgValidacion.tblEmpty}" var="anexos" 
+                         style="width: 777px" styleClass="table table-bordered"
+                         value="#{adicionarSolicitudMB.dataModelDocumento}" paginator="false"
+                         selection="#{adicionarSolicitudMB.documento}" selectionMode="single">
+                <p:column>
+                    <f:facet name="header">
+                        <div>
+                            <h:outputText value="#{msgValidacion.aclP4TblCol1}"/>
+                        </div>
+                    </f:facet>
+                    <h:outputText value="#{anexos.nombreArchivo}"/>
+                </p:column>
+                <p:column>
+                    <f:facet name="header">
+                        <div>
+                            <h:outputText value="#{msgValidacion.aclP4TblCol2}"/>
+                        </div>
+                    </f:facet>
+                    <h:outputText value="#{anexos.descripcion}"/>
+                </p:column>
+            </p:dataTable>
+        </div>
+    </p:panel>
+                </div>
+</ui:composition>

@@ -1,0 +1,613 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" locale="ES"
+        xmlns:f="http://java.sun.com/jsf/core">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <title>
+                #{mDictaminadorMB.frm.tituloPagina}
+            </title>
+            <meta http-equiv="X-UA-Compatible" content="IE=8"/>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <meta http-equiv="pragma" content="no-cache"/>
+            <meta http-equiv="cache-control" content="no-cache"/>
+            <meta http-equiv="expires" content="0"/>
+            <h:outputScript library="primefaces" name="primefaces.js"/>
+            <h:outputScript library="js" name="general.js"/>
+            <style type="text/css">
+                .ui-paginator {
+                    font-size: 12px !important;
+                }
+
+                .ui-datatable tbody td {
+                    white-space: normal;
+                    font-size: 10px;
+                }
+
+                .ui-datatable thead th {
+                    white-space: normal;
+                    font-size: 11px;
+                    font-weight: bold;
+                }
+
+                @media (max-height: 580px) {
+
+                    [id="frmListarDictaminadores:dlgDetalleMD"] >.ui-dialog-content.ui-widget-content {
+                        max-height: 370px !important;
+                    }
+
+                }
+
+            </style>
+            <script type="text/javascript">
+                function handleRequest(xhr, status, args) {
+                    $var = $("input[name*='frmListarDictaminadores:idTblLista_selection']").val();
+                    return $var != "" ? true : false;
+                }
+
+                var CARACTER_ENTER = 13;
+//                $(document).ready( function (){
+//                      $( 'body' ).on( 'keypress', function (evento){
+//                          if ( evento.keyCode == CARACTER_ENTER ){
+//                              console.log( 'cuerpo' );
+//                              return false;
+//                          }
+//                      });
+//                });
+            </script>
+        </h:head>
+        <h:body>
+            <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+             
+            <p:dialog modal="true" widgetVar="statusDialog" header="#{msgValidacion.ajaxLoading}" draggable="false"
+                      resizable="false" closable="false">
+                <h:graphicImage library="images/" name="ajaxloadingbar.gif"/>
+            </p:dialog>
+             
+            <h:form id="frmListarDictaminadores">
+                <p:confirmDialog id="crfmBaja" message="#{mDictaminadorMB.frm.confMensaje}"
+                                 header="#{mDictaminadorMB.frm.confTitulo}" severity="alert" width="430"
+                                 widgetVar="cfm">
+                    <p:commandButton value="#{msgValidacion.rsNo}" onclick="cfm.hide();" type="button"
+                                     styleClass="gmxNegativo"/>
+                    <p:commandButton value="#{msgValidacion.rsSi}" actionListener="#{mDictaminadorMB.frmAccionBaja}"
+                                     process="@this, idTblLista" update="idTblLista,messages" onsuccess="cfm.hide()"
+                                     styleClass="gmxPositivo"/>
+                </p:confirmDialog>
+                <p:panel id="pnlListaDictaminadores" header="#{mDictaminadorMB.frm.tituloPagina}" style="width: 100%">
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" globalOnly="true"
+                                display="text"/>
+                    <p:toolbar id="toolbarButton">
+                        <p:toolbarGroup align="right">
+                            <!-- Izquierda -->
+                            <p:commandButton id="btnEliminar"
+                                             oncomplete="if( handleRequest(xhr, status, args) ){ cfm.show() }"
+                                             process="@this, idTblLista" action="#{mDictaminadorMB.mensajeBaja}"
+                                             ajax="true" title="#{msgValidacion.MD00004}" update="crfmBaja"
+                                             icon="ui-icon-close" disabled="#{empty mDictaminadorMB.selectDictaminador}"></p:commandButton>
+                            <p:commandButton id="btnNuevo" oncomplete="dlgDetalleMD.show();" process="@this"
+                                             title="#{msgValidacion.MD00001}"
+                                             action="#{mDictaminadorMB.frmBuscarEmpleado}"
+                                             update="dlgDetalleMD, messages" icon="ui-icon-document"></p:commandButton>
+                            <p:commandButton id="btnEditar" oncomplete="wdlgAsignarTramite.show();" process="@this"
+                                             title="Asignar tramite"
+                                             action="#{mDictaminadorMB.abrirDlgAsignarTramite}"
+                                             update="dlgAsignarTramite, messages" icon="ui-icon-pencil" 
+                                             disabled="#{empty mDictaminadorMB.selectDictaminador}"></p:commandButton>
+                            <p:commandButton id="btnConsulta"
+                                             oncomplete="if( handleRequest(xhr, status, args) ){ dlgDetalleMD.show() }"
+                                             process="@this, idTblLista" title="#{msgValidacion.MD00003}"
+                                             action="#{mDictaminadorMB.frmAccionConsultar}"
+                                             update="dlgDetalleMD, messages" icon="ui-icon-search" 
+                                             disabled="#{empty mDictaminadorMB.selectDictaminador}"></p:commandButton>
+                        </p:toolbarGroup>
+                    </p:toolbar>
+                    <!-- ************************************ INICIA LISTA DICTAMINADORES ************************************  -->
+                    <p:dataTable id="idTblLista" var="vTblLista" value="#{mDictaminadorMB.tblListaDictaminadores}"
+                                 rowKey="#{vTblLista.numEmpleado}" scrollWidth="100%"
+                                 paginator="#{mDictaminadorMB.frm.paginador}"
+                                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                 rowsPerPageTemplate="10,15,20" rows="#{mDictaminadorMB.frm.rowsPaginador}"
+                                 style="width:100%;" resizableColumns="true" liveResize="true" rowIndexVar="rowIndex"
+                                 rowStyleClass="#{(rowIndex mod 2) eq 0 ?'highlightA':'highlightB'}"
+                                 selection="#{mDictaminadorMB.selectDictaminador}" selectionMode="single"
+                                 emptyMessage="#{msgValidacion.tblEmpty}">
+                        
+                        <p:ajax event="rowSelect" update=":#{p:component('toolbarButton')}" />
+                        <p:column sortBy="#{vTblLista.numEmpleado}" headerText="#{msgValidacion.mdNEmpleado}"
+                                  width="90">
+                            <h:outputText value="#{vTblLista.numEmpleado}"/>
+                        </p:column>
+                        <p:column sortBy="#{vTblLista.nombreCompleto}" headerText="#{msgValidacion.mdTblCol1}">
+                            <h:outputText value="#{vTblLista.nombreCompleto}"/>
+                        </p:column>
+                        <p:column headerText="#{msgValidacion.mdTblCol2}">
+                            <h:outputText value="#{vTblLista.descComision}"/>
+                        </p:column>
+                        <p:column width="90">
+                            <f:facet name="header">
+                                <h:outputText value="#{msgValidacion.mdTblCol3}"/>
+                            </f:facet>
+                            <h:outputText value="#{vTblLista.activo == 1 ? 'Activo' : 'Inactivo' }"/>
+                        </p:column>
+                        
+                        <p:column width="90">
+                            <f:facet name="header">
+                                <h:outputText value="#{msgValidacion.mdTblCol4}"/>
+                            </f:facet>
+                             <p:commandLink action="#{mDictaminadorMB.cargaInfoAGS}" oncomplete="dlgEmpAGS.show()"
+                                                 title="Situacion en AGS" process="@this"  update="@form">
+                                 <h:outputText value="Ver detalle" />
+                                    <f:setPropertyActionListener value="#{vTblLista}"
+                                                                 target="#{mDictaminadorMB.selectDictaminador}"/>
+                                </p:commandLink>
+                        </p:column>
+                        
+                        <f:facet name="footer">
+                            <p:outputLabel value="#{mDictaminadorMB.frm.numResultados} Resultados"
+                                           style="text-align:left"/>
+                        </f:facet>
+                    </p:dataTable>
+                    <!-- ************************************ TERMINA LISTA DICTAMINADORES ************************************  -->
+                    <!-- ************************************ INICIA DIALIOG DICTAMINADORES ************************************  -->
+                    <p:dialog id="dlgDetalleMD" header="#{mDictaminadorMB.frm.dlgTitulo}" widgetVar="dlgDetalleMD"
+                              hideEffect="drop" width="75%" modal="false" style="max-height:500px;overflow:auto">
+                        <div style="text-align:left;width:100%;height:100%;">
+                            <p:outputLabel value="#{msgValidacion.inpObligatorio}" style="color:red;"
+                                           rendered="#{!mDictaminadorMB.frm.dlgVerConsultaDict}"/>
+                        </div>
+                        <p:panel id="pnlDetalleMD">
+                            <!--  *************************************************************************************** -->
+                            <p:panelGrid styleClass="gmxNoborde">
+                                <p:row>
+                                    <p:column colspan="2">
+                                        <p:messages id="msgDialiog" showDetail="true" autoUpdate="true"
+                                                    closable="true" showSummary="false"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row rendered="#{(!mDictaminadorMB.frm.dlgVerBusquedaEmp and !mDictaminadorMB.frm.dlgVerComision)}">
+                                    <p:column style="text-align:left">
+                                        <p:outputLabel value="#{msgValidacion.mdAdmin}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel value="#{mDictaminadorMB.admva.nombre}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row rendered="#{mDictaminadorMB.frm.dlgVerBusquedaEmp}">
+                                    <p:column colspan="2">
+                                        <p:selectOneRadio id="opcion" value="#{mDictaminadorMB.frm.empleado}">
+                                            <f:selectItem itemLabel="No. Empleado" itemValue="No. Empleado"/>
+                                            <f:selectItem itemLabel="RFC" itemValue="RFC Empleado"/>
+                                            <p:ajax update="pnlDetalleMD"
+                                                    listener="#{mDictaminadorMB.frmSelectBuscar}"/>
+                                        </p:selectOneRadio>
+                                    </p:column>
+                                </p:row>
+                                <p:row rendered="#{mDictaminadorMB.frm.dlgVerBusquedaEmp}">
+                                    <p:column style="text-align:left">
+                                        <p:outputLabel id="lblEmpleado" value="#{mDictaminadorMB.frm.empleado}"/>
+                                        <p:outputLabel value=" *" style="color:red;"
+                                                       rendered="#{mDictaminadorMB.frm.dlgVerBusquedaEmp}"/>
+                                    </p:column>
+                                    <!--Mensajes de validacion-->    
+                                    <p:column id="colEmpleado">
+                                        <p:inputText id="txtNoEmpleado" required="true"
+                                                     value="#{mDictaminadorMB.empleado.numEmpleado}" maxlength="11"
+                                                     requiredMessage="#{msgValidacion.mdRequerida}"
+                                                     validatorMessage="#{msgValidacion.mdValidaNoEm}"
+                                                     rendered="#{mDictaminadorMB.frm.inpEmpleado}" size="15">
+                                            <f:validateRegex pattern="([0-9]{3,11})"/>
+                                        </p:inputText>
+                                        <p:inputText id="txtCapturaRFC" required="true"
+                                                     value="#{mDictaminadorMB.empleado.rfc}"
+                                                     requiredMessage="#{msgValidacion.mdRequeridaRFC}"
+                                                     validatorMessage="#{msgValidacion.msjValRFC}" maxlength="13"
+                                                     rendered="#{!mDictaminadorMB.frm.inpEmpleado}" size="18">
+                                            <f:validateRegex pattern="#{mDictaminadorMB.expRFC}"/>
+                                        </p:inputText>
+                                        <script>
+                                        $( '[id*="txtCapturaRFC"], [id*="txtNoEmpleado"]' )
+                                            .on( 'keypress', function (evento){
+                                                if ( evento.keyCode == CARACTER_ENTER ){
+                                                    console.log( 'cuadro buscar' );
+                                                    $( '[id*="botonBuscar"]' ).click();
+                                                    return false;
+                                                }
+                                            });
+                                    </script>
+                                    </p:column>
+                                </p:row>
+                                <!--
+                                <p:row>
+                                    <p:column colspan="2">
+                                        <p:message id="msgNoEmpleado" for="txtNoEmpleado" display="text"/>
+                                        <p:message id="msgCapturaRFC" for="txtCapturaRFC" display="text"/>
+                                    </p:column>
+                                </p:row>
+                                -->
+                                 <p:row rendered="#{!mDictaminadorMB.frm.dlgVerBusquedaEmp}">
+                                    <p:column style="text-align:left">
+                                        <p:outputLabel value="#{msgValidacion.mdCentroCostos}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel id="lblECentroCostos"
+                                                       value="#{mDictaminadorMB.empleado.ccosto}"
+                                                       rendered="#{mDictaminadorMB.frm.dlgVerAgregaEmp}"/>
+                                        <p:outputLabel id="lblACentroCostos"
+                                                       value="#{mDictaminadorMB.dictaminador.ccosto}"
+                                                       rendered="#{(mDictaminadorMB.frm.dlgVerConsultaDict  or mDictaminadorMB.frm.dlgVerModificaDict) and mDictaminadorMB.dictaminador.ccosto != null}"/>
+                                        
+                                        <p:outputLabel id="lblACentroCostos2"
+                                                       value="#{mDictaminadorMB.dictaminador.claveAdmComision}"
+                                                       rendered="#{(mDictaminadorMB.frm.dlgVerConsultaDict  or mDictaminadorMB.frm.dlgVerModificaDict) and mDictaminadorMB.dictaminador.ccosto == null}"/>
+                                    </p:column>
+                                </p:row>
+                                
+                                <p:row rendered="#{!mDictaminadorMB.frm.dlgVerBusquedaEmp}">
+                                    <p:column style="text-align:left">
+                                        <p:outputLabel value="#{msgValidacion.mdNEmpleado}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel id="lblENoEmpleado"
+                                                       value="#{mDictaminadorMB.empleado.numEmpleado}"
+                                                       rendered="#{mDictaminadorMB.frm.dlgVerAgregaEmp}"/>
+                                        <p:outputLabel id="lblANoEmpleado"
+                                                       value="#{mDictaminadorMB.dictaminador.numEmpleado}"
+                                                       rendered="#{mDictaminadorMB.frm.dlgVerConsultaDict  or mDictaminadorMB.frm.dlgVerModificaDict }"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row rendered="#{!mDictaminadorMB.frm.dlgVerBusquedaEmp}">
+                                    <p:column style="text-align:left">
+                                        <p:outputLabel value="RFC"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel id="lblERfcEmpleado" value="#{mDictaminadorMB.empleado.rfc}"
+                                                       rendered="#{mDictaminadorMB.frm.dlgVerAgregaEmp}"/>
+                                        <p:outputLabel id="lblARfcEmpleado" value="#{mDictaminadorMB.dictaminador.rfc}"
+                                                       rendered="#{mDictaminadorMB.frm.dlgVerConsultaDict  or mDictaminadorMB.frm.dlgVerModificaDict }"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row rendered="#{!mDictaminadorMB.frm.dlgVerBusquedaEmp}">
+                                    <p:column style="text-align:left">
+                                        <p:outputLabel value="#{msgValidacion.mdNombreEmpl}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel id="lblNombreEmpleadoEmp"
+                                                       value="#{mDictaminadorMB.empleado.nombreCompleto}"
+                                                       rendered="#{mDictaminadorMB.frm.dlgVerAgregaEmp}"/>
+                                        <p:outputLabel id="lblNombreEmpleadoDict"
+                                                       value="#{mDictaminadorMB.dictaminador.nombreCompleto}"
+                                                       rendered="#{!mDictaminadorMB.frm.dlgVerAgregaEmp}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row rendered="#{mDictaminadorMB.frm.dlgVerConsultaDict||mDictaminadorMB.frm.dlgVerModificaDict}">
+                                    <p:column style="text-align:left">
+                                        <p:outputLabel value="#{msgValidacion.mdEstado}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel id="lblEstado"
+                                                       value="#{mDictaminadorMB.dictaminador.activo == 1 ? 'Activo' : 'Inactivo' }"
+                                                       rendered="#{mDictaminadorMB.frm.dlgVerConsultaDict || mDictaminadorMB.frm.dlgVerModificaDict}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row rendered="#{(mDictaminadorMB.frm.dlgComisionado and !mDictaminadorMB.frm.dlgVerComision)}">
+                                    <p:column style="text-align:left">
+                                        <p:outputLabel value="#{msgValidacion.mdComision}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel id="lblComision"
+                                                       value="#{mDictaminadorMB.dictaminador.descComision}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row rendered="#{(!mDictaminadorMB.frm.dlgVerBusquedaEmp and !mDictaminadorMB.frm.dlgVerComision)}">
+                                    <p:column style="text-align:left">
+                                        <p:outputLabel value="#{msgValidacion.mdObserva}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputTextarea id="txtObserva" required="true"
+                                                         value="#{mDictaminadorMB.dictaminador.observaciones}"
+                                                         requiredMessage="Ingresar observaciones"
+                                                         rendered="#{mDictaminadorMB.frm.dlgVerAgregaEmp||mDictaminadorMB.frm.dlgVerModificaDict}"
+                                                         rows="5" cols="38" queryDelay="750" minQueryLength="5"
+                                                         style="width:98%"/>
+                                        <p:outputLabel id="lblObserva"
+                                                       value="#{mDictaminadorMB.dictaminador.observaciones}"
+                                                       rendered="#{mDictaminadorMB.frm.dlgVerConsultaDict}"/>
+                                        <p:outputLabel value=" *" style="color:red;"
+                                                       rendered="#{mDictaminadorMB.frm.dlgVerAgregaEmp||mDictaminadorMB.frm.dlgVerModificaDict}"/>
+                                        <p:message id="msgObserva" for="txtObserva" display="text"></p:message>
+                                    </p:column>
+                                </p:row>
+                                
+                                <p:row rendered="#{(mDictaminadorMB.frm.dlgVerAgregaEmp || mDictaminadorMB.frm.dlgVerConsultaDict)}">
+                                    <p:column style="text-align:left">
+                                        <p:outputLabel value="Tipo de solicitudes asignar"/>
+                                    </p:column>
+                                        <p:column>
+                                            <p:outputLabel value="#{mDictaminadorMB.servicioAsignado.descripcion}" rendered="#{mDictaminadorMB.frm.dlgVerConsultaDict}"/>
+                                            <p:selectOneMenu id="tipoSolicitudNew" value="#{mDictaminadorMB.servicioSelect}" style="width:125px"
+                                                             required="true" requiredMessage="Ingresar Tipo de solicitudes a asignar"
+                                                             rendered="#{mDictaminadorMB.frm.dlgVerAgregaEmp}">
+                                                <f:selectItem itemLabel="Seleccione" itemValue="" />
+                                                <f:selectItems value="#{mDictaminadorMB.tiposServicio}" var="servicio" itemValue="#{servicio.idStr}" itemLabel="#{servicio.descripcion}" />
+                                                <p:ajax event="change" listener="#{mDictaminadorMB.buscarTramiteXServicio}" update="pLstInfoARequerirNew" />
+                                            </p:selectOneMenu>
+                                        </p:column>
+                                </p:row>
+                                                
+                                            <p:row rendered="#{(mDictaminadorMB.frm.dlgVerAgregaEmp || mDictaminadorMB.frm.dlgVerConsultaDict)}">
+                                                <p:column style="text-align:left">
+                                        <p:outputLabel value="Tipos de trámite asignados"/>
+                                    </p:column>
+                                                <p:column>
+                                                    <p:orderList value="#{mDictaminadorMB.tipoTramiteList}" var="item" controlsLocation="none" itemLabel="#{item.descripcion}" itemValue="#{item}"
+                                                                 rendered="#{mDictaminadorMB.frm.dlgVerConsultaDict}"/>
+                                                    <p:pickList id="pLstInfoARequerirNew" value="#{mDictaminadorMB.infoARequerir}" var="itemIAR"
+                                                                itemLabel="#{itemIAR.dyccTipoTramiteDTO.descripcion}" itemValue="#{itemIAR}"
+                                                                addLabel="#{msgValidacion.Agregar}" removeLabel="#{msgValidacion.Quitar}"
+                                                                converter="dycaOrigenTramitePickListConverter"
+                                                                required="true" requiredMessage="Ingresar al menos un Tipo de trámite a asignar"
+                                                                rendered="#{mDictaminadorMB.frm.dlgVerAgregaEmp}">
+                                                        <f:facet name="sourceCaption">
+                                                            <h:outputLabel value="Tipos de trámite"/>
+                                                        </f:facet>
+                                                        <f:facet name="targetCaption">
+                                                            <h:outputLabel value="Tipos de trámite asignar"/>
+                                                        </f:facet>
+                                                    </p:pickList>
+                                                </p:column>
+                                            </p:row>                
+                                                
+                                 <p:row rendered="#{(mDictaminadorMB.frm.dlgVerAgregaEmp || mDictaminadorMB.frm.dlgVerConsultaDict)}">
+                                    <p:column style="text-align:left">
+                                        <p:outputLabel value="Monto hasta"/>
+                                    </p:column>
+                                        <p:column>
+                                            <p:outputLabel value="#{mDictaminadorMB.montoAsignado.montoMax}" rendered="#{mDictaminadorMB.frm.dlgVerConsultaDict}"/>
+                                            <p:selectOneMenu id="montoLimiteNew" value="#{mDictaminadorMB.montoSelect}" style="width:125px"
+                                                             required="true" requiredMessage="Ingresar Monto hasta"
+                                                             rendered="#{mDictaminadorMB.frm.dlgVerAgregaEmp}">
+                                                <f:selectItem itemLabel="Seleccione" itemValue="" />
+                                                <f:selectItems value="#{mDictaminadorMB.listaMontos}" var="monto" itemValue="#{monto.idMonto}" itemLabel="0 hasta #{monto.montoMax}" />
+                                            </p:selectOneMenu>
+                                        </p:column>
+                                </p:row>
+                                
+                                <p:row>
+                                    <p:column colspan="2" style="text-align:center">
+                                        <p:inputText id="hddAccionFrm" value="#{mDictaminadorMB.frm.ifrmAccion}"
+                                                     type="hidden"/>
+                                        <p:commandButton value="Cancelar" onclick="dlgDetalleMD.hide();" type="button"
+                                                         rendered="#{!mDictaminadorMB.frm.dlgVerConsultaDict}"
+                                                         styleClass="gmxNeutro"/>
+                                        <p:commandButton value="Buscar" update="pnlDetalleMD"
+                                                         id="botonBuscar"
+                                                         process="@this, pnlDetalleMD"
+                                                         action="#{mDictaminadorMB.ejecutaAccion}"
+                                                         rendered="#{mDictaminadorMB.frm.dlgVerBusquedaEmp}" ajax="true"
+                                                         styleClass="gmxNeutro"/>
+                                        <p:commandButton value="Aceptar" update="pnlDetalleMD,idTblLista,messages"
+                                                         process="@this, pnlDetalleMD"
+                                                         action="#{mDictaminadorMB.ejecutaAccion}"
+                                                         rendered="#{!mDictaminadorMB.frm.dlgVerBusquedaEmp}"
+                                                         oncomplete="statusDialog.hide();if(!args.validationFailed) dlgDetalleMD.hide();"
+                                                         styleClass="gmxPositivo"/>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </p:panel>
+                    </p:dialog>
+                    <!-- ************************************ TERMINA DIALOG DICTAMINADORES ************************************  -->
+                     <!-- ************************************ INICIA DIALOG EMPLEADO AGS ************************************  -->
+                     <p:dialog id="dlgEmpAGS" header="#{msgValidacion.mdConsDict}" widgetVar="dlgEmpAGS"  modal="true"
+                              hideEffect="drop" width="75%" rendered="#{!mDictaminadorMB.frm.dlgEmpAGS}">
+                        <p:panel id="pnlEmpAGS">
+                            <!--  *************************************************************************************** -->
+                            <p:panelGrid styleClass="gmxNoborde">
+                                
+                                <p:row>
+                                    <p:column style="text-align:left">
+                                        <p:outputLabel value="#{msgValidacion.mdNEmpleado}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel id="lblNEmpleado"
+                                                       value="#{mDictaminadorMB.empleadoAGS.noEmpleado}"/>
+                                    </p:column>
+                                </p:row>
+                                    
+                                <p:row>   
+                                    <p:column style="text-align:left">
+                                        <p:outputLabel value="#{msgValidacion.adycRfc}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel id="lblRfc"
+                                                       value="#{mDictaminadorMB.empleadoAGS.rfc}"/>
+                                    </p:column>
+                                </p:row>    
+                                    
+                                <p:row>   
+                                    <p:column style="text-align:left">
+                                        <p:outputLabel value="#{msgValidacion.mdNombreEmpl}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel id="lblNombre"
+                                                       value="#{mDictaminadorMB.empleadoAGS.nombreCompleto}"/>
+                                    </p:column>
+                                </p:row>   
+                                    
+                                 <p:row>
+                                    <p:column style="text-align:left">
+                                        <p:outputLabel value="#{msgValidacion.mdCveDept}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel id="lblCveDept"
+                                                       value="#{mDictaminadorMB.empleadoAGS.deptid}"/>
+                                    </p:column>
+                                </p:row>      
+                                                               
+                                <p:row>
+                                    <p:column style="text-align:left">
+                                        <p:outputLabel value="#{msgValidacion.mdCentroCostos}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel id="lblACentroCostosEmp"
+                                                       value="#{mDictaminadorMB.empleadoAGS.centroCosto}"/>
+                                    </p:column>
+                                </p:row>
+                                    
+                                <p:row>
+                                    <p:column style="text-align:left">
+                                        <p:outputLabel value="#{msgValidacion.mdEstado}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel id="lblANoEmpleadoEmp"
+                                                       value="#{mDictaminadorMB.empleadoAGS.estatus == 'A'? 'Activo': 'Inactivo'}"/>
+                                    </p:column>
+                                </p:row>    
+                                        
+                                <p:row>
+                                    <p:column colspan="2" style="text-align:center">
+                                        
+                                       
+                                        <p:commandButton value="Aceptar" update="pnlDetalleMD,idTblLista,messages"
+                                                         oncomplete="if(!args.validationFailed) dlgEmpAGS.hide()"
+                                                         onclick="dlgEmpAGS.hide();"
+                                                         styleClass="gmxPositivo"/>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </p:panel>
+                    </p:dialog>
+                      <!-- ************************************ FIN DIALOG EMPLEADO AGS ************************************  -->                                                        
+                </p:panel>
+                                    
+                <p:dialog id="dlgAsignarTramite" header="Busqueda de empleado" widgetVar="wdlgAsignarTramite"  modal="true"
+                              hideEffect="drop" width="75%" rendered="true" style="max-height:500px;overflow:auto">
+                        <div style="text-align:left;width:100%;height:100%;">
+                            <p:outputLabel value="#{msgValidacion.inpObligatorio}" style="color:red;"/>
+                        </div>
+                        <p:panel id="pnlAsignartramite">
+                            <!--  *************************************************************************************** -->
+                            <p:panelGrid styleClass="gmxNoborde">
+                                <p:row>
+                                    <p:column colspan="2">
+                                        <p:messages id="msgAsignarTramite" showDetail="true" autoUpdate="true"
+                                                    closable="true" showSummary="false"/>
+                                    </p:column>
+                                </p:row>
+
+                                <p:row>
+                                    <p:column style="text-align:left">
+                                        <p:outputLabel value="#{msgValidacion.mdCentroCostos}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel value="#{mDictaminadorMB.selectDictaminador.descComision}"/>
+                                    </p:column>
+                                </p:row>
+                                    
+                                 <p:row>
+                                    <p:column style="text-align:left">
+                                        <p:outputLabel value="#{msgValidacion.mdNEmpleado}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel value="#{mDictaminadorMB.selectDictaminador.numEmpleado}"/>
+                                    </p:column>
+                                </p:row>
+                                    
+                                <p:row>   
+                                    <p:column style="text-align:left">
+                                        <p:outputLabel value="#{msgValidacion.adycRfc}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel value="#{mDictaminadorMB.selectDictaminador.rfc}"/>
+                                    </p:column>
+                                </p:row>    
+                                    
+                                <p:row>   
+                                    <p:column style="text-align:left">
+                                        <p:outputLabel value="#{msgValidacion.mdNombreEmpl}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel value="#{mDictaminadorMB.selectDictaminador.nombreCompleto}"/>
+                                    </p:column>
+                                </p:row>   
+                                    
+                                 <p:row>
+                                    <p:column style="text-align:left">
+                                        <p:outputLabel value="#{msgValidacion.mdObserva}"/>
+                                        <p:outputLabel value="*" style="color:red;"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputTextarea id="txtObservaAsignarTramites"
+                                                         value="#{mDictaminadorMB.selectDictaminador.observaciones}"
+                                                         rows="5" cols="38" queryDelay="750" minQueryLength="5"
+                                                         style="width:98%" required="true" requiredMessage="Ingresar observaciones"/>
+                                    </p:column>
+                                </p:row>
+                                        
+                                 <p:row>
+                                    <p:column style="text-align:left">
+                                        <p:outputLabel value="Tipo de solicitudes asignar"/>
+                                        <p:outputLabel value="*" style="color:red;"/>
+                                    </p:column>
+                                        <p:column>
+                                            <p:selectOneMenu id="tipoSolicitud" value="#{mDictaminadorMB.servicioSelect}" style="width:125px"
+                                                             required="true" requiredMessage="Ingresar Tipo de solicitudes a asignar">
+                                                <f:selectItem itemLabel="Seleccione" itemValue="" />
+                                                <f:selectItems value="#{mDictaminadorMB.tiposServicio}" var="servicio" itemValue="#{servicio.idStr}" itemLabel="#{servicio.descripcion}" />
+                                                <p:ajax event="change" listener="#{mDictaminadorMB.buscarTramiteXServicio}" update="pLstInfoARequerir" />
+                                            </p:selectOneMenu>
+                                        </p:column>
+                                </p:row>
+                                                
+                                            <p:row>
+                                                <p:column colspan="2">
+                                                    <p:outputLabel value="*" style="color:red;"/>
+                                                    <p:pickList id="pLstInfoARequerir" value="#{mDictaminadorMB.infoARequerir}" var="itemIAR"
+                                                                itemLabel="#{itemIAR.dyccTipoTramiteDTO.descripcion}" itemValue="#{itemIAR}"
+                                                                addLabel="#{msgValidacion.Agregar}" removeLabel="#{msgValidacion.Quitar}" 
+                                                                converter="dycaOrigenTramitePickListConverter"
+                                                                required="true" requiredMessage="Ingresar al menos un Tipo de trámite a asignar">
+                                                        <f:facet name="sourceCaption">
+                                                            <h:outputLabel value="Tipos de trámite"/>
+                                                        </f:facet>
+                                                        <f:facet name="targetCaption">
+                                                            <h:outputLabel value="Tipos de trámite asignar"/>
+                                                        </f:facet>
+                                                    </p:pickList>
+                                                </p:column>
+                                            </p:row>                
+                                                
+                                 <p:row>
+                                    <p:column style="text-align:left">
+                                        <p:outputLabel value="Monto hasta"/>
+                                        <p:outputLabel value="*" style="color:red;"/>
+                                    </p:column>
+                                        <p:column>
+                                            <p:selectOneMenu id="montoLimite" value="#{mDictaminadorMB.montoSelect}" style="width:125px"
+                                                             required="true" requiredMessage="Ingresar Monto hasta">
+                                                <f:selectItem itemLabel="Seleccione" itemValue="" />
+                                                <f:selectItems value="#{mDictaminadorMB.listaMontos}" var="monto" itemValue="#{monto.idMonto}" itemLabel="0 hasta #{monto.montoMax}" />
+                                            </p:selectOneMenu>
+                                        </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column colspan="2" style="text-align:center">
+                                        <p:commandButton value="Cancelar" onclick="wdlgAsignarTramite.hide();" type="button"
+                                                         styleClass="gmxNeutro"/>
+                                        
+                                        <p:commandButton value="Aceptar" update="msgAsignarTramite"
+                                                         process="@this, dlgAsignarTramite"
+                                                         actionListener="#{mDictaminadorMB.actualizarAsigarTramites}"
+                                                         oncomplete="if(!args.validationFailed){wdlgAsignarTramite.hide();}"
+                                                         styleClass="gmxPositivo"/>
+                                    </p:column>
+                                </p:row>            
+                                        
+                            </p:panelGrid>
+                        </p:panel>
+                    </p:dialog>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

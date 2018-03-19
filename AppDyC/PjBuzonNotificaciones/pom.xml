@@ -1,0 +1,93 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>AppDyC</groupId>
+    <artifactId>PjBuzonNotificaciones</artifactId>
+	<name>PjBuzonNotificaciones</name>
+    <version>1.0</version>
+    <packaging>jar</packaging>
+    <description>Cliente para el consumo del web service Buzon Notificaciones (Medios de comunicacion)</description>
+
+    <url>http://maven.apache.org</url>
+
+    <properties>
+        <jdk.version>1.6</jdk.version>
+        <spring.version>3.2.2.RELEASE</spring.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <!-- LOG - Inicio -->
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+        <!-- LOG - Fin -->
+
+        <!-- TEST - Inicio -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.9</version>
+            <type>jar</type>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+            <type>jar</type>
+            <scope>test</scope>
+        </dependency>
+        <!-- TEST - Fin -->
+        
+        <!-- WS - Inicio -->
+        <dependency>
+            <groupId>org.springframework.ws</groupId>
+            <artifactId>spring-ws-core</artifactId>
+            <version>2.1.4.RELEASE</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+        <!-- WS - Fin -->
+    </dependencies>
+  
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>${jdk.version}</source>
+                    <target>${jdk.version}</target>
+                </configuration>
+            </plugin>
+            <!--plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jaxb2-maven-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <id>xjc</id>
+                        <goals>
+                            <goal>xjc</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <packageName>mx.gob.sat.mat.buzonnotif.client</packageName>
+                    <wsdl>true</wsdl>
+                    <xmlschema>false</xmlschema>
+                    <schemaFiles>BuzonNotificaciones_1.wsdl</schemaFiles>
+                    <schemaDirectory>${project.basedir}/src/main/resources</schemaDirectory>
+                    <outputDirectory>${project.basedir}/src/main/java</outputDirectory>
+                    <clearOutputDir>false</clearOutputDir>
+                </configuration>
+            </plugin-->
+        </plugins>
+    </build>
+</project>

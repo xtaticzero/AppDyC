@@ -1,0 +1,54 @@
+.combos{
+    text-align:center;
+}
+.calCargaOmisos input {
+    width: 267px;
+    text-align:center;
+}
+
+DIV#j_idt19\3A F_panel {
+    width:630px;
+}
+
+DIV[id$=F_panel] {
+    width:630px;
+}
+
+.cancel{
+    width: 79px;
+    text-align: right;
+    float: none;
+    margin-left: 3px;
+}
+
+.panel-principal{
+    width:820px;
+    margin-left:auto;
+    margin-right:auto;
+    overflow: auto;
+    border-width: 0px;
+}
+.contenedor-principal{
+    width:822px;
+    border-width: 0px;
+}
+
+/*Headers de dataTable en "negrita"*/
+table thead tr th span{
+    font-weight: bold; 
+    text-align:center;
+}
+
+.version{
+    text-align: right;
+    border: 0px;
+    border-width: 0px;
+    width:800px;
+      
+}
+
+.version:before{
+    content: "#{version['version.numero']}";
+    font-size: 11px;
+    font: Arial, sans-serif;
+}

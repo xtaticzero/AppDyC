@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context-3.2.xsd
+                           http://www.springframework.org/schema/util
+                           http://www.springframework.org/schema/util/spring-util-3.2.xsd
+">
+
+    <util:properties id="prop" location="file:///siat/dyc/configuraciondyc/parametrosdyc.properties" />
+    <context:property-placeholder properties-ref="prop" />
+
+
+    <bean id="jndiTemplate" class="org.springframework.jndi.JndiTemplate">
+        <property name="environment">
+            <props>
+                <prop key="java.naming.factory.initial">weblogic.jndi.WLInitialContextFactory</prop>
+                <prop key="java.naming.provider.url">t3://#{prop['weblogicIp']}:#{prop['weblogicPort']}</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="queueConnectionFactory" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiTemplate">
+            <ref bean="jndiTemplate" />
+        </property>
+        <property name="jndiName">
+            <value>#{prop['weblogicFactory']}</value>
+        </property>
+    </bean>
+
+    <bean id="jmsDestinationResolver" class="org.springframework.jms.support.destination.JndiDestinationResolver">
+        <property name="jndiTemplate">
+            <ref bean="jndiTemplate" />
+        </property>
+        <property name="cache">
+            <value>true</value>
+        </property>
+    </bean>
+    
+    <bean id="invoiceQueue" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiTemplate">
+            <ref bean="jndiTemplate" />
+        </property>
+        <property name="jndiName">
+            <value>#{prop['weblogicQueue']}</value>
+        </property>
+    </bean>
+    <bean id="Invoicelistener" class="org.springframework.jms.listener.DefaultMessageListenerContainer">
+        <property name="concurrentConsumers" value="5" />
+        <property name="connectionFactory" ref="queueConnectionFactory" />
+        <property name="destination" ref="invoiceQueue" />
+        <property name="messageListener" ref="envioNyVListenerImpl" />
+    </bean>
+
+    <bean id="taskExecutorEnvioNyV" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <property name="corePoolSize" value="5"/>
+        <property name="maxPoolSize" value="10"/>
+        <property name="queueCapacity" value="1000000"/>
+    </bean>
+
+
+    <!--quartz-->
+    <bean id="jobValidaHorarioHabil" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="validaHorarioHabilImpl" />
+        <property name="targetMethod" value="validaHorario" />
+        <property name="concurrent" value="true" />
+    </bean>
+    <bean id="cronValidaHorarioHabil" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="jobValidaHorarioHabil" />
+        <property name="cronExpression" value="0 0/1 * * * ?" />
+    </bean>
+
+    <bean id="schedulerFactory" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="cronValidaHorarioHabil"/>
+            </list>
+        </property>
+
+        <property name="waitForJobsToCompleteOnShutdown" value="true"/>
+        <property name="quartzProperties">
+            <props>
+                <!--para que no revise actualizaciones de quartz-->
+                <prop key="org.quartz.scheduler.skipUpdateCheck">true</prop>
+                <!--estos dos cuando se encole los procesos threadCount=1, en otro caso varios en ejecucion -->
+                <prop key="org.quartz.threadPool.class">org.quartz.simpl.SimpleThreadPool</prop>
+                <prop key="org.quartz.threadPool.threadCount">15</prop>
+            </props>
+        </property>
+    </bean>
+
+    <context:component-scan base-package="mx.gob.sat.siat.pjenvionyv" />
+
+</beans>

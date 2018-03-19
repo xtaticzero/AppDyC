@@ -1,0 +1,275 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" 
+        xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions" >
+    <h:form id="frmMovimientosSaldo">
+        <p:dialog   id="dlgEliminarCargos" header="Ajustar movimientos ICEP" draggable="true" resizable="false"
+                widgetVar="wDlgEliminarCargos" modal="false" closable="true" width="750px" height="500px" visible="#{mbMovimientosSaldo.mostrarDialog}">
+            <p:panelGrid id="pnlDetalleDeclaracion" style="width: 100%; height:98%;" >
+                <p:row>
+                    <p:column>
+                        <p:messages id="msjsDlgConfirmValidaDeclara" showDetail="true" autoUpdate="false" closable="true" globalOnly="true"/>
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column>
+                        <h:outputText value="Cadena digital ICEP:"/>
+                        <p:outputLabel value=" #{detalleIcepMB.descripcionIcep}" style="color:blue;"/>
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column colspan="2">
+
+                        <p:dataTable    id="tbMovsSaldo" var="movSaldo" value="#{mbMovimientosSaldo.filas}" selection="#{mbMovimientosSaldo.filaSelec}" 
+                                        rowKey="#{movSaldo.idMovSaldo}" style="width:100%; padding:0; font-size:13.5px;" rowIndexVar="rowIndex"
+                                        rowStyleClass="#{(movSaldo.estatus eq 'Inactivado') ? 'decl-no-efectiva' : ''}"
+                                        selectionMode="single" emptyMessage="#{msgValidacion.tblEmpty}">
+
+                            <p:ajax event="rowSelect" listener="#{mbMovimientosSaldo.manejarRowSelectMovimiento}"
+                                                process="@this"
+                                                update="btnInactivarMovimiento btnActivarMovimiento"/>
+
+                            <f:facet name="header">
+                                <p:toolbar>
+                                    <p:toolbarGroup align="left" >
+                                        <h:outputText value="Movimientos de saldo para el ICEP: "/>
+                                    </p:toolbarGroup>
+                                    <p:toolbarGroup align="right">
+                                        <p:commandButton id="btnAgregarMovimiento" icon="ui-icon-document" 
+                                                        title="Agregar movimiento"
+                                                        update=":frmAbono" action="#{mbMovimientosSaldo.mostrarDialogAgregarMov}"/>
+                                        
+                                        <p:commandButton id="btnInactivarMovimiento" title="Inactivar movimiento"
+                                                 update=":formConfirmAjuste" 
+                                                 actionListener="#{mbConfirmarAjuste.mostrarDialog}"
+                                                 icon="ui-icon-trash"
+                                                 disabled="#{not mbMovimientosSaldo.habilitarBtnInactivarMov}"/>
+                                        
+                                        <p:commandButton id="btnActivarMovimiento" icon="ui-icon-check"
+                                                        title="Activar movimiento seleccionado"
+                                                        update=":formConfirmAjuste"
+                                                        actionListener="#{mbConfirmarAjuste.mostrarDialog}"
+                                                        disabled="#{not mbMovimientosSaldo.habilitarBtnActivarMov}"/>
+
+                                    </p:toolbarGroup>
+                                </p:toolbar>
+                            </f:facet>
+
+                            <p:column headerText="Id movimiento" sortBy="#{movSaldo.tipoMovimiento}" width="70">
+                                <h:outputText value="#{movSaldo.idMovSaldo}"/>
+                            </p:column>
+                            <p:column headerText="Tipo movimiento" sortBy="#{movSaldo.tipoMovimiento}" width="70">
+                                <h:outputText value="#{movSaldo.tipoMovimiento}"/>
+                            </p:column>
+                            <p:column headerText="Fecha Origen" sortBy="#{movSaldo.fechaOrigen}" width="70">
+                                <h:outputText value="#{movSaldo.fechaOrigen}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Monto" style="text-align: right;" width="80">
+                                    <h:outputText value="#{movSaldo.monto}">
+                                        <f:convertNumber pattern="¤#,##0.00" currencySymbol="$" type="currency"
+                                                         locale="es-MX"/>
+                                    </h:outputText>
+                                </p:column>
+                            <p:column headerText="Origen" sortBy="#{movSaldo.origen}" width="100"
+                                      style="white-space:normal; text-align: center;">
+                                <h:outputText value="#{movSaldo.origen}"/>
+                            </p:column>
+                            <p:column headerText="Fecha registro" sortBy="#{movSaldo.fechaRegistro}" width="70">
+                                <h:outputText value="#{movSaldo.fechaRegistro}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy HH:mm 'hrs'"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Descripción origen" width="200">
+                                <h:outputText value="#{movSaldo.descrOrigen}"/>
+                            </p:column>
+                            <p:column headerText="Estatus" width="100">
+                                <h:outputText value="#{movSaldo.estatus}"/>
+                            </p:column>
+
+                            <p:column headerText="" style="width: 50px">
+                                <!--p:graphicImage  value="../../images/iconInfo.png" title="#{movSaldo.infoAdicional}" rendered="${not empty movSaldo.infoAdicional}"/-->
+                            </p:column>
+
+                        </p:dataTable>                    
+                    </p:column>
+                </p:row>
+
+                <f:facet name="footer">
+                    <p:row>
+                        <p:column>
+                            <div align="center">
+                                <p:commandButton    value="Cerrar" update="frmMovimientosSaldo :formDetalleIcep" actionListener="#{mbMovimientosSaldo.cerrar}"
+                                                    process="@this" icon="ui-icon-close"/>
+                            </div>
+                        </p:column>
+                    </p:row>
+                </f:facet>
+        </p:panelGrid>
+            
+      </p:dialog>
+    </h:form>
+    
+    <h:form id="frmAbono">
+        <p:dialog   id="dlgAgregarMovimiento" header="Agregar movimiento" draggable="true" resizable="false"
+                widgetVar="wDlgAgregarMovimiento" modal="false" closable="true" width="500px" height="600px" visible="#{mbMovimientosSaldo.mostrarDlgAgregarMov}">
+
+            <table border="0" style="width: 100%">
+                <tr>
+                    <td>
+                        <p style="color: Red;">Los datos con * son obligatorios</p>
+                    </td>
+                    <td>
+                        <div align="center">
+                            <p:graphicImage id="gimAyudaAgregarMovimiento" value="../../images/Ayuda.png"/>
+                            <p:tooltip for="gimAyudaAgregarMovimiento">
+                                <p:outputLabel value="#{labelscs.msjAyudaAgregarMov}"/>
+                                <br/>
+                                <p:outputLabel value="#{labelscs.msjAyudaAgregarMov2}"/>
+                                <br/>
+                                <p:outputLabel value="#{labelscs.msjAyudaAgregarMov3}"/>
+                            </p:tooltip>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+            <p:panelGrid id="pnlDetalleMovimiento" style="width: 97%; height:100%;" >
+                <p:row>
+                    <p:column colspan="2">
+                        <p:messages id="msjsDlgPnlDetalleMov" showDetail="true" autoUpdate="false" closable="true" globalOnly="true"/>
+                    </p:column>
+                </p:row>
+                
+                 <p:row>
+                    <p:column >
+                        <h:outputText value="#{labelscs.lblTipoAfectacion}"/>
+                        <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                    </p:column>
+                    <p:column >
+                        <p:selectOneMenu id="cmbTipoAfectacion"
+                                         value="#{mbMovimientosSaldo.movimientoNuevo.idAfectacion}" style="width:250px;"
+                                         required="true" requiredMessage="El tipo de afectacion es requerido">
+                            <f:selectItem itemValue="" itemLabel="-- seleccione --"/>
+                            <f:selectItem itemValue="1" itemLabel="Abono"/>
+                            <f:selectItem itemValue="2" itemLabel="Cargo"/>
+                        </p:selectOneMenu>
+                        <p:message id="msgCmbTipoAfectacion" for="cmbTipoAfectacion" display="text"/>
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column style="width:40%; text-align:left;">
+                        <h:outputText value="Fecha origen:"/>
+                        <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                    </p:column>
+                    <p:column style="width:60%; text-align:left;">
+                        <p:calendar value="#{mbMovimientosSaldo.movimientoNuevo.fechaOrigen}" id="calFechaPresentacion" 
+                            navigator="true" locale="es" showOn="button"
+                            pattern="dd/MM/yyyy" readonlyInput="true" maxdate="#{now}" required="true"
+                            requiredMessage="La fecha origen es requerida"
+                            yearRange="c-12:c+12"/>
+
+                        <p:message id="msgCalFechaPresentacion" for="calFechaPresentacion" display="text"/>
+                        
+                    </p:column>
+                    <p:column>
+                        <p:graphicImage id="gimAyudaFechaOrigen" value="../../images/Ayuda.png"/>
+                        <p:tooltip for="gimAyudaFechaOrigen">
+                            <p:outputLabel value="#{labelscs.msjAyudaFechaOrigen}"/>
+                            <br/>
+                            <p:outputLabel value="#{labelscs.msjAyudaFechaOrigen2}"/>
+                            <br/>
+                            <p:outputLabel value="#{labelscs.msjAyudaFechaOrigen3}"/>
+                        </p:tooltip>                        
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column >
+                        <h:outputText value="Monto:"/>
+                        <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                    </p:column>
+                    <p:column>
+                        <pe:inputNumber id="txtMonto" style="width:180px;border-color:black;"
+                                        value="#{mbMovimientosSaldo.movimientoNuevo.monto}"
+                                        symbol="$ " maxValue="9999999999.99" required="true"
+                                        requiredMessage="El monto es requerido"/>
+                        <p:message id="msgTxtMonto" for="txtMonto" display="text"/>
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column style="text-align:left;">
+                        <h:outputText value="Origen:"/>
+                    </p:column>
+                    <p:column style="text-align:left;">
+                        <p:inputText id="txtOrigen" style="width:100px"
+                                 value="#{mbMovimientosSaldo.movimientoNuevo.origen}" required="false" 
+                                 maxlength="18">
+                        </p:inputText>
+                        <p:message id="msgTxtOrigen" for="txtOrigen" display="text"/>
+                    </p:column>
+                    <p:column>
+                        <p:graphicImage id="gimAyudaOrigen" value="../../images/Ayuda.png"/>
+                        <p:tooltip for="gimAyudaOrigen">
+                            <p:outputLabel value="#{labelscs.msjAyudaOrigen}"/>
+                            <br/>
+                            <p:outputLabel value="#{labelscs.msjAyudaOrigen2}"/>
+                        </p:tooltip>                        
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column colspan="2">
+                        <table border="0" style="width: 100%"><tr><td>
+                            <h:outputText value="#{labelscs.lblJustificacion}"/>
+                            <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                        </td>
+                        <td valign="top">
+                            <p:inputTextarea value="#{mbMovimientosSaldo.movimientoNuevo.justificacion}"
+                                id="itaJustificacion" rows="4" cols="75" 
+                                counter="display" maxlength="255" counterTemplate="Quedan {0} caracteres."
+                                requiredMessage="#{labelscs.msjJustifReqAgregarMovimiento}" required="true"/>
+
+                            <p:message id="msgJustificacion" for="itaJustificacion" display="text"/>
+                        </td>
+                                <td>
+                                    <p:graphicImage id="gimAyudaJustificacion" value="../../images/Ayuda.png"/>
+                                    <p:tooltip for="gimAyudaJustificacion">
+                                        <p:outputLabel value="#{labelscs.msjAyudaJustifCrearMov}"/>
+                                        <br/>
+                                        <p:outputLabel value="#{labelscs.msjAyudaJustifCrearMov2}"/>
+                                    </p:tooltip>
+                                </td>
+                            </tr>
+                        <tr><td></td>
+                        <td>
+                            <h:outputText id="display" />
+                        </td></tr></table>
+                    </p:column>
+                </p:row>
+
+
+                <f:facet name="footer">
+                    <p:row>
+                        <p:column colspan="2">
+                            <div align="center">
+                                <p:commandButton value="Guardar" 
+                                                 update="frmAbono :frmMovimientosSaldo:tbMovsSaldo" 
+                                                 action="#{mbMovimientosSaldo.agregarMovimiento}"/>
+
+                                <p:commandButton    value="Cancelar" update="frmAbono" actionListener="#{mbMovimientosSaldo.cerrarDialogAgregarMov}"
+                                                    process="@this" />
+                            </div>
+                        </p:column>
+                    </p:row>
+                </f:facet>
+        </p:panelGrid>
+            
+      </p:dialog>
+    </h:form>
+</f:view>

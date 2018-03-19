@@ -1,0 +1,137 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" locale="ES"
+        xmlns:f="http://java.sun.com/jsf/core" xmlns:pe="http://primefaces.org/ui/extensions">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+            <title>
+                <h:outputText value="Notificaciones pendientes"/>
+            </title>
+            <style type="text/css">
+                .table-notificaciones {
+                    font-size: 0.8em;
+                    text-align: center !important;
+                    padding: 4px 6px;
+                }
+
+                .dialog-panel-notificaciones {
+                    width: 100%;
+                    text-align: center !important;
+                    font-size: 0.8em;
+                }
+            </style>
+        </h:head>
+        <h:body>
+            <h:form id="formNotificaciones">
+                <h:panelGrid style="width:100%" columns="1" id="panel1">
+                    <p:column>
+                        <p:commandButton action="#{administrarNotificaciones.cargaDocRezagados}"
+                                         update=":idFormPrincipal:idTab:formNotificaciones:dlgNotificacionesDetalle"
+                                         oncomplete="dlgNotificacionesDetalle.show()" title="Ver rezagados"
+                                         process="@this" value="Ver rezagados"></p:commandButton>
+                    </p:column>
+                    <p:column>
+                        <p:dataTable id="notificacionesTable" var="notificacion"
+                                     value="#{administrarNotificaciones.notificaciones}"
+                                     styleClass="table-notificaciones" emptyMessage="No se encontraron resultados.">
+                            <f:facet name="header">
+                                <h:outputText value="Notificaciones pendientes"/>
+                            </f:facet>
+                            <p:column headerText="Origen" style="white-space: pre-line; text-align: center !important;">
+                                <h:outputText value="#{notificacion.origen}"/>
+                            </p:column>
+                            <p:column headerText="Mensaje"
+                                      style="white-space: pre-line; text-align: center !important;">
+                                <h:outputText value="#{notificacion.mensaje}"/>
+                            </p:column>
+                            <p:column headerText="Total" style="white-space: pre-line; text-align: center !important;">
+                                <h:outputText value="#{notificacion.total}"/>
+                            </p:column>
+                            <p:column headerText="Opción" style="white-space: pre-line; text-align: center !important;">
+                                <p:commandButton action="#{administrarNotificaciones.cargaNotificacion}" update="@form"
+                                                 oncomplete="dlgNotificacionesDetalle.show()" icon="ui-icon-search"
+                                                 title="Seleccionar" process="@this">
+                                    <f:setPropertyActionListener value="#{notificacion}"
+                                                                 target="#{administrarNotificaciones.selectedNotificacion}"/>
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+                    </p:column>
+                </h:panelGrid>
+                <p:dialog id="dlgNotificacionesDetalle" widgetVar="dlgNotificacionesDetalle" modal="true"
+                          showEffect="fade" hideEffect="fade" resizable="false" width="940px" height="320px">
+                    <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                    <p:dialog modal="true" widgetVar="statusDialog" header="#{msgValidacion.ajaxLoading}"
+                              draggable="false" resizable="false" closable="false">
+                        <p:graphicImage value="../../images/ajaxloadingbar.gif"/>
+                    </p:dialog>
+                    <p:outputPanel id="notificacionesDetalle" styleClass="dialog-panel-notificaciones">
+                        <p:messages id="msgInfo" showDetail="true" autoUpdate="true" closable="true" severity="info"/>
+                        <p:messages id="msgError" showDetail="true" autoUpdate="true" closable="true" severity="error"/>
+                        <p:dataTable id="falloMensajesTable" var="falloMensaje" widgetVar="dataTableFalloMensaje"
+                                     value="#{administrarNotificaciones.falloMensajes}" paginator="true" rows="5"
+                                     paginatorPosition="bottom" rowsPerPageTemplate="10,50,100" lazy="true"
+                                     selection="#{administrarNotificaciones.selectedFalloMensajes}"
+                                     rowIndexVar="rowIndex" rowKey="#{falloMensaje.idFalloMensaje}"
+                                     styleClass="table-notificaciones" emptyMessage="No se encontraron resultados.">
+                            <f:facet name="header">
+                                <h:outputText value="Detalle: #{administrarNotificaciones.selectedNotificacion.mensaje}"
+                                              style="white-space: pre-line; text-align: center !important;"/>
+                            </f:facet>
+                            <p:ajax event="toggleSelect" listener="#{administrarNotificaciones.onRowSelect}"
+                                    update=":idFormPrincipal:idTab:formNotificaciones:falloMensajesTable:btnReprocesar"/>
+                            <p:ajax event="rowSelect" listener="#{administrarNotificaciones.onRowSelect}"
+                                    update=":idFormPrincipal:idTab:formNotificaciones:falloMensajesTable:btnReprocesar"/>
+                            <p:ajax event="rowUnselect" listener="#{administrarNotificaciones.onRowUnselect}"
+                                    update=":idFormPrincipal:idTab:formNotificaciones:falloMensajesTable:btnReprocesar"/>
+                            <p:ajax event="rowSelectCheckbox" listener="#{administrarNotificaciones.onRowSelect}"
+                                    update=":idFormPrincipal:idTab:formNotificaciones:falloMensajesTable:btnReprocesar"/>
+                            <p:ajax event="rowUnselectCheckbox" listener="#{administrarNotificaciones.onRowUnselect}"
+                                    update=":idFormPrincipal:idTab:formNotificaciones:falloMensajesTable:btnReprocesar"/>
+                            <p:column headerText="Local" style="white-space: pre-line; text-align: center !important;"
+                                      filterBy="#{falloMensaje.cveUnidadAdmtva}">
+                                <h:outputText value="#{falloMensaje.cveUnidadAdmtva}"/>
+                            </p:column>
+                            <p:column headerText="Número de Control DyC"
+                                      style="white-space: pre-line; text-align: center !important;"
+                                      filterBy="#{falloMensaje.numControl}">
+                                <h:outputText value="#{falloMensaje.numControl}"/>
+                            </p:column>
+                            <p:column headerText="Fecha Envío"
+                                      style="white-space: pre-line; text-align: center !important;">
+                                <h:outputText value="#{falloMensaje.hora}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Acto Administrativo"
+                                      style="white-space: pre-line; text-align: center !important;">
+                                <h:outputText value="#{falloMensaje.actoAdministrativo}"/>
+                            </p:column>
+                            <p:column headerText="Tipo Documento"
+                                      style="white-space: pre-line; text-align: center !important;">
+                                <h:outputText value="#{falloMensaje.tipoDocumento}"/>
+                            </p:column>
+                            <p:column headerText="Opción" selectionMode="multiple"
+                                      style="width:16px; text-align:center;"/>
+                            <f:facet name="footer">
+                                <p:outputPanel>
+                                    <p:commandButton id="btnRegresar" ajax="true"
+                                                     action="#{administrarNotificaciones.cargaNotificaciones}"
+                                                     update="@form" value="Regresar"
+                                                     oncomplete="dataTableFalloMensaje.clearFilters()"
+                                                     />
+                                    <p:commandButton id="btnReprocesar"
+                                                     disabled="#{!administrarNotificaciones.enabledBtnReprocesar}"
+                                                     ajax="true" action="#{administrarNotificaciones.reencolamiento}"
+                                                     update="@form" value="Reprocesar" process="@this"
+                                                     oncomplete="dlgNotificacionesDetalle.show()"/>
+                                </p:outputPanel>
+                            </f:facet>
+                        </p:dataTable>
+                    </p:outputPanel>
+                </p:dialog>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

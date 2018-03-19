@@ -1,0 +1,914 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+        >
+    <html>
+        <h:head>
+            <title>
+                #{msgValidacion.L0000023}
+            </title>
+            <meta http-equiv="X-UA-Compatible" content="IE=8"/>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <meta http-equiv="pragma" content="no-cache"/>
+            <meta http-equiv="cache-control" content="no-cache"/>
+            <meta http-equiv="expires" content="0"/>
+            <h:outputScript library="js" name="general.js"/>
+ <style type="text/css">
+        .ui-panel {padding: 0;}
+        .ui-panel .ui-panel-content {padding: 0 1em;}
+        .ui-wizard-nav-next:hover
+                {
+                    background:#2276D7 !important;
+                    border:1px solid #2276D7 !important;
+                    color:#fff !important;
+                    box-shadow: 0 2px 0 0 #1b5eab !important;
+                }
+        .ui-panel .ui-button
+                {
+                    margin-top:10px !important;
+                    margin-right:33px !important;
+                    float:right !important;
+                    z-index: 1;
+                }
+        .ui-wizard-nav-next{
+                    display: inline-block !important;
+                    position: relative !important;
+                    padding: 0 !important;
+                    line-height: normal !important;
+                    margin-right: .1em !important;
+                    cursor: pointer !important;
+                    vertical-align: middle !important;
+                    text-align: center !important;
+                    overflow: visible !important; /* removes extra width in IE */
+                    background:#4A90E2 !important;
+                    border:1px solid #4A90E2 !important;
+                    color:#fff !important;
+                    box-shadow: 0 2px 0 0 #1b5eab !important;
+                    left: 130px;
+                }
+        .ui-wizard-nav-back {
+                    float: right;
+                    left: -265px;
+                    position: relative;
+                    width: 127px;
+                }
+
+        .gmxfhorizontal td:nth-child(odd) {
+                        text-align: right !important;
+                }
+
+        .gmxfhorizontal td:nth-child(even) {
+                    text-align: left !important;
+                }
+        .gmxfhorizontal .ui-outputlabel
+                {
+                    font-weight: normal !important;
+                }
+        .ui-wizard-nav-next .ui-button-icon-left
+                {
+                    background-image: none!important;
+                }
+        .ui-wizard-nav-back .ui-button-icon-left
+                {
+                    background-image: none!important;
+                }
+        body {
+                    font-family: 'Open Sans';
+                }
+                  
+        .gmxNoborde1 td
+                {
+                   border-color:#FFFFFF;
+                }
+        .ui-outputlabel.ui-state-error span.ui-outputlabel-rfi{
+                    color:#B74B4B!important;
+                    margin-left: 0px!important; 
+                }
+
+        .ui-outputlabel .ui-outputlabel-rfi{
+                   margin-left: 0px!important; 
+                }
+                hr.red {
+                    margin: 0px 0 0px !important;
+                    border-top-color: #DCE0E0 !important;
+                    position: relative !important;
+                    margin-left: 11px !important;
+                    z-index:25;
+             
+                } 
+                
+                h2 {
+                    font-size: 38px!important;
+                    margin-bottom: 0px!important;
+                    margin-left: 10px !important;
+                    z-index:20;
+                }
+                hr.red:before {
+                    content: " "!important;
+                    width: 35px!important;
+                    height: 6px!important;
+                    background-color: #D0021B!important;
+                    display: block!important;
+                    position: absolute!important;
+                    z-index:15;
+                }
+                
+                   .ui-messages-error {
+          
+            border-radius: 3px 3px 3px 3px;
+            -moz-border-radius: 3px 3px 3px 3px;
+            -webkit-border-radius: 3px 3px 3px 3px;
+            border: 2px solid #D0021B ;
+            background-color: #F2DEDE;
+             text-align: center;
+             color:#545454 ;
+             margin-top:30px;
+            margin-bottom: 30px;
+            padding-top:30px;
+            padding-bottom: 30px;
+             position: initial !important;
+            left: 15%;
+            right: 15%;
+        }
+                .ui-message-error {
+                    margin-left: -10px !important;
+                    color: #b94a48!important;
+                    background-color: #ffffff!important;
+                    border-color: #ffffff!important;
+                    position: relative;
+                   
+                }
+               
+                .ui-state-error, .ui-state-error
+                {
+                    border: 1px solid #953434 !important;
+                    background:#ffffff!important;
+                }
+                .ui-selectonemenu{height:39px!important;}
+                .ui-selectonemenu .ui-state-focus{height:39px!important;}
+                .ui-selectonemenu .ui-state-active{height:39px!important;}
+                .ui-selectonemenu {
+                    margin-top: 0px !important;
+                }
+                .ui-selectonemenu-items-wrapper
+                {
+                    z-index: 500;
+                }
+                  #error1{display: none;border-radius: 3px 3px 3px 3px;-moz-border-radius: 3px 3px 3px 3px;-webkit-border-radius: 3px 3px 3px 3px;border: 2px solid #D0021B ;background-color: #F2DEDE;text-align: center;color:#545454;margin-top:30px;margin-bottom: 30px;padding-top:30px;padding-bottom: 30px;}
+            </style>
+            <script type="text/javascript">
+              // store original so we can call it inside our overriding method
+              $.datepicker._generateMonthYearHeader_original = $.datepicker._generateMonthYearHeader;
+
+              $.datepicker._generateMonthYearHeader = function (inst, dm, dy, mnd, mxd, s, mn, mns) {
+                  var header = $($.datepicker._generateMonthYearHeader_original(inst, dm, dy, mnd, mxd, s, mn, mns)), years = header.find('.ui-datepicker-year');
+
+                  // reverse the years
+                  years.html(Array.prototype.reverse.apply(years.children()));
+
+                  // return our new html
+                  return $('&lt;div />').append(header).html();
+              }
+            </script>
+            <script type="text/javascript">
+              function imprimir() {
+                  document.getElementById('form:pruebaPrint').click();
+              };
+            </script>
+            <h:outputStylesheet library="css/" name="gobcss.css"/>
+        </h:head>
+        <h:body style="width:1180px;">
+          
+            <h:form id="form" enctype="multipart/form-data">
+                <ui:include src="/resources/pages/common/sessionPage.jsf"></ui:include>
+                <ui:include src="/resources/pages/common/inactividad.jsf"></ui:include>
+                <p:remoteCommand name="updateForm" update=":form:tabViewAdicionarSolicitud" immediate="true"/>
+                <div style="width:777px; margin-bottom: 48px">
+                <div class="gob-dat-cont">
+                    <h2 style="margin-top: -20px!important; margin-left: -4px!important;">
+                        <p:outputLabel value="#{msgValidacion.L0000058}"/>
+                    </h2> 
+                    <hr class="red" style="margin-top: 4px !important;" />
+                </div>
+                    <p:panelGrid  styleClass="gobmxContenedor8 gmxfhorizontal" style="position:relative;margin-top: -3px !important;">
+                          <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.aclP2Campo1}"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{adicionarSolicitudMB.tramite.persona.rfcVigente}"/>
+                            </p:column>
+                        </p:row>
+                          <p:row rendered ="#{adicionarSolicitudMB.tramite.persona.personaIdentificacion.tipoPersona == 'M' ? 'false' : 'true'}">
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.ce2ApellidoPaterno}"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{adicionarSolicitudMB.tramite.persona.personaIdentificacion.apPaterno}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{adicionarSolicitudMB.tramite.persona.personaIdentificacion.tipoPersona == 'M' ? 'false' : 'true'}">
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.ce2ApellidoMaterno}"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{adicionarSolicitudMB.tramite.persona.personaIdentificacion.apMaterno}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{adicionarSolicitudMB.tramite.persona.personaIdentificacion.tipoPersona == 'M' ? 'false' : 'true'}">
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.L0000007}"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{adicionarSolicitudMB.tramite.persona.personaIdentificacion.nombre}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{adicionarSolicitudMB.tramite.persona.personaIdentificacion.tipoPersona == 'F' ? 'false' : 'true'}">
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.L0000008}"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{adicionarSolicitudMB.tramite.persona.personaIdentificacion.razonSocial} #{adicionarSolicitudMB.tramite.persona.personaIdentificacion.tipoSociedad}"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                            </div>
+                    <p:panel id="pnlAdicionarSolicitud" styleClass="gmxNoborde">
+                     <p:wizard widgetVar="wiz" id="tabViewAdicionarSolicitud" nextLabel="#{msgValidacion.B0000002}"
+                                  backLabel="#{msgValidacion.B0000005}" iconPos="right"
+                                  flowListener="#{solicitudDVCtrlMB.onFlowProcess}" showStepStatus="false"
+                                  step="#{adicionarSolicitudMB.flagsSolicitud.step}">
+                            <p:tab id="T1" title="#{msgValidacion.L0000009}">
+                     <style type="text/css">                
+                            .ui-wizard-nav-next{
+                                left: -124px;
+                                top: 15px;
+                            }
+                           .ui-wizard-navbar {
+                                z-index: 20;   
+                                width: 906px;
+                           }
+                           #dvBtnSalir{
+                                top: -50px;
+                            }
+                            #lblMsgCamObli{
+                                top: -41px;
+                            }
+                            .ui-selectonemenu-panel {
+                                    z-index: 100 !important;
+                                }
+                                
+                          .ui-panel .ui-button {margin-top: 10px !important;margin-right: 20px !important;float: right !important;z-index: 1!important;}
+                          .ui-button{margin-right: -14px!important;}
+                    </style>
+                            <div style="position:relative; left: -16px;">
+                                <ui:include src="/resources/pages/registro/domain/informacionDelTramite.jsf"/>
+                            </div>
+                            </p:tab>
+                            
+                            <p:tab id="T2" title="#{msgValidacion.L0000010}"
+                                   titleStyle="font-size:12px;font-weight:bold;">
+                                <style type="text/css">                
+                                    .gobmxContenedor33{
+                                        width: 1170ppx !important;
+                                        padding: 12 !important;
+                                     }
+                                    .ui-wizard-nav-next{
+                                        left: 217px;  
+                                         top: 15px;
+                                    }
+                                    .ui-wizard-nav-back {
+                                       left: -68px;
+                                        top: 15px;
+                                    }
+                                  
+                                    .ui-wizard-navbar {
+                                        width: 1145px;
+                                   }
+                                   #lblMsgCamObli{
+                                        left: 11px !important;
+                                        top: -17px;
+                                  }   
+                                  .ui-panelgrid {
+                                    width: 100%!important;
+                                    margin: auto!important;
+                                    margin-left: 0px !important;
+                                }
+                                hr.red {
+                                    margin: 0px 0 0px !important;
+                                    border-top-color: #DCE0E0 !important;
+                                    position: relative !important;
+                                    margin-left: 0px !important;
+                                    z-index: 25!important;
+                                }
+                               </style>
+                             <div style="position:relative; left: -16px;">
+                                <ui:include src="/resources/pages/registro/domain/datosIcep.jsf"></ui:include>
+                            </div>
+                            </p:tab>
+                            <p:tab id="T3" title="#{msgValidacion.L0000011}"
+                                   titleStyle="font-size:12px;font-weight:bold;">
+                                <style type="text/css"> 
+                                    /*Informacion del saldo a favor */
+                                   .ui-wizard-nav-next{
+                                           left: 166px;
+                                            top: -11px;
+                                    }
+                                    .ui-wizard-nav-back {
+                                        left: -266px;
+                                          top: -11px;
+                                    }
+
+                                    .ui-wizard-navbar {
+                                        width: 795px;
+                                    }
+                                    #lblMsgCamObli{
+                                        left: 11px !important;
+                                        top: -41px;
+                                    }
+                                    hr.red {
+                                        margin: 0px 0 0px !important;
+                                        border-top-color: #DCE0E0 !important;
+                                        position: relative !important;
+                                        margin-left: 0px !important;
+                                        z-index: 25!important;
+                                    }
+                                    .ui-panelgrid {
+                                        width: 100%;
+                                        margin: auto;
+                                        margin-left: 0px !important;
+                                    }
+                               </style>
+                                <div style="position:relative; left: -16px;">
+                                <ui:include src="/resources/pages/registro/domain/informacionDelSaldoAfavor.jsf"></ui:include>
+                                </div>
+                            </p:tab>
+                            <p:tab id="T4" titleStyle="font-size:12px;font-weight:bold;"
+                                   title="#{msgValidacion.L0000012}">
+                            <style type="text/css">                
+                                    .ui-wizard-nav-next{left: -178px;}
+                                    .ui-wizard-nav-back {left: -611px;}
+                                    #dvBtnSalir{left: -525px !important;top: -39px;}
+                                    #lblMsgCamObli{left: 10px !important;top: -31px;}
+                                    .ui-panelgrid {margin-left: 0px !important;}
+                                    hr.red{margin-left: 0px !important;}
+                                    .ui-panel .ui-button {margin-right: 39px !important;}
+                                    #dvBtnSalir {left: -535px !important;}
+                                    #form\:tabViewAdicionarSolicitud_back {left: -615px!important;}
+                               </style>
+                            <div style="position:relative; left: -16px;">
+                                <ui:include src="/resources/pages/registro/domain/informacion.jsf"></ui:include>
+                            </div>
+                            </p:tab>
+                            <p:tab id="T5" title="#{msgValidacion.L0000013}"
+                                   titleStyle="font-size:12px;font-weight:bold;">
+                                <style type="text/css">     
+                                    /*Informacion del banco*/
+                                    .ui-wizard-nav-next{left: -205px;top: 12px;}
+                                    #dvBtnSalir{left: -520px !important;top: -27px;}
+                                    .ui-wizard-nav-back {left: -606px;top: 12px;width: 110px;}
+                                    
+                                    #lblMsgCamObli{left: 10px !important;top: -19px;}
+                                    .ui-panelgrid {margin-left: 10px !important;}
+                                    hr.red {margin-left: 0px !important;}
+                                    .ui-panelgrid {margin-left: 0px !important;}
+                               </style>
+                             <div style="position:relative; left: -16px;  ">
+                                <ui:include src="/resources/pages/registro/domain/informacionDelBanco.jsf"></ui:include>
+                            </div>
+                            </p:tab>
+                            <p:tab id="T6" title="#{msgValidacion.L0000014}"
+                                   titleStyle="font-size:12px;font-weight:bold;">
+                                        <style type="text/css">                
+                                    .ui-wizard-nav-next{
+                                        left: -230px;       
+                                    }
+                                    .ui-wizard-nav-back {
+                                        left: -630px;
+                                    }
+                                    #dvBtnSalir{
+                                        left: -516px !important;
+                                        top: -50px;
+                                    }
+                                    #lblMsgCamObli{
+                                        left: 10px !important;
+                                        top: -41px;
+                                    }
+                               </style>
+                            <div style="position:relative; left: -6px; width:796px;">
+                                <ui:include src="/resources/pages/registro/domain/anexos.jsf"></ui:include>
+                            </div>
+                            </p:tab>
+                            <p:tab id="T7" title="#{msgValidacion.L0000015}"
+                                   titleStyle="font-size:12px;font-weight:bold;">
+                                 <style type="text/css">                
+                                    .ui-wizard-nav-next{left: -195px;top: 10px;      }
+                                    .ui-wizard-nav-back {left: -596px;top: 10px; width: 110px;}
+                                    #dvBtnSalir{left: -510px !important;top: -29px;}
+                                    #lblMsgCamObli{left: 10px !important;top: -20px;}  
+                                    hr.red {margin-left: 0px !important;}
+                                    .ui-panelgrid {margin-left: 0px !important;}
+                                    .ui-wizard-nav-next .ui-button-icon-left{
+                                        width: 0px !important;
+                                        height: 0px !important;
+                                    }
+                                    .ui-wizard-nav-back .ui-button-icon-left{
+                                        width: 0px !important;
+                                        height: 0px !important;
+                                    }
+                                    .ui-button-text-icon-left .ui-button-text {
+                                        padding: .4em 1em .4em 1.2em;
+                                    }
+                               </style>
+                            <div style="position:relative; left: -17px; ">
+                                <ui:include src="/resources/pages/registro/domain/documentos.jsf"></ui:include>
+                            </div>
+                            </p:tab>
+                            <p:tab id="T8" title="#{msgValidacion.L0000016}"
+                                   titleStyle="font-size:12px;font-weight:bold;">
+                                 <style type="text/css">                
+                                    .ui-wizard-nav-next{
+                                        display: none !important;      
+                                    }
+                                    #dvBtnSalir{
+                                        display: none !important;      
+                                    }
+                                    .ui-wizard-nav-back {
+                                        left: 84px;
+                                        top: -2px;
+                                        position: relative;
+                                        width: 125px;
+                                    }
+                                    .ui-wizard-nav-back .ui-button-icon-left{
+                                        width: 0px !important;
+                                        height: 0px !important;
+                                    }
+                                    .ui-button-text-icon-left .ui-button-text {
+                                        padding: .4em 1em .4em 1.2em !important;
+                                    }
+                                    #lblMsgCamObli{
+                                        left: 10px !important;
+                                        top: -34px;
+                                    }
+                                    h2 {
+                                    font-size: 38px !important;
+                                    margin-bottom: 0px !important;
+                                    margin-left: 0px !important;
+                                    z-index: 20;
+                                }
+                                hr.red {
+                                margin: 0px 0 0px !important;
+                                border-top-color: #DCE0E0 !important;
+                                position: relative !important;
+                                margin-left: 0px !important;
+                                z-index: 25;
+                                }
+                                .ui-panelgrid {
+                                    width: 100%;
+                                    margin: auto;
+                                    margin-left: 0px !important;
+                                }
+                               </style>
+                              <div style="position:relative; left: -16px; width:804px;">
+                                <ui:include src="/resources/pages/registro/domain/datosGenerales.jsf"></ui:include>
+                            </div>
+                            </p:tab>
+                        </p:wizard>
+                    </p:panel>
+                    <div id="lblMsgCamObli" style="position: relative; z-index:1!important;">                   
+                        <p:outputLabel value="#{msgValidacion.camposObligatorios}" style="color:#777777; float: left;"/>
+                    </div>
+                    
+                    <div id="dvBtnSalir" align="center">
+                        <p:commandButton id="test" value="#{msgValidacion.B0000001}"
+                                         action="#{solicitudDevolicionUtilsMB.initSolicitud}" immediate="true"
+                                         ajax="false" onclick="loadingbar.show();"
+                                         style="width: 128px;height:39px" 
+                                         styleClass="gmxNegativo"/>
+                    </div>
+                    <p:dialog id="dialogEr" header="#{msgValidacion.tooltop12}" widgetVar="dlgSolError" resizable="false" width="500"
+                              modal="true" closable="false"
+                              visible="#{adicionarSolicitudMB.flagsSolicitud.showMessageError}">
+                        <div align="justify">
+                            <a>El sistema no pudo ejecutar correctamente este servicio, le sugerimos lo intente mas tarde!...</a>
+                        </div>
+                        <div align="right">
+                            <p:commandButton id="btnCancel" action="#{datosSolicitudCtrlMB.cancelarSolicitud}"
+                                             value="Aceptar" style="width: 150px;height:40px" styleClass="gmxPositivo" immediate="true"
+                                             ajax="false"/>
+                        </div>
+                        <br/>
+                        <br/>
+                        <p:separator/>
+                        <h:outputText value="#{now}" style="font-size:12px;font-weight:bold;">
+                                <f:convertDateTime dateStyle="full" locale="es_MX" timeZone="Mexico/General" type="date"/>
+                        </h:outputText>
+                    </p:dialog>
+                    <!-- Inicia Dialog NO existen Dictaminadores -->
+                    <p:dialog id="dialogAsigErr" header="#{msgValidacion.tooltop12}" widgetVar="dlgAsigError" resizable="false" width="500"
+                              modal="true" closable="false"
+                              visible="#{adicionarSolicitudMB.flagsSolicitud.showMessageErrorAsig}">
+                        <div align="justify">
+                            <a>#{solicitudDVCtrlMB.mensajeDialogo}</a>
+                        </div>
+                         <br/>
+                         <p:separator/>
+                        <div align="right">
+                            <p:commandButton id="btnError" action="#{datosSolicitudCtrlMB.cancelarSolicitud}"
+                                             value="Aceptar" style="width: 150px;height:40px" styleClass="gmxPositivo" immediate="true"
+                                             ajax="false"/>
+                        </div>
+                        <br/>
+                        <br/>
+                        <p:separator/>
+                        <h:outputText value="#{now}" style="font-size:12px;font-weight:bold;">
+                                <f:convertDateTime dateStyle="full" locale="es_MX" timeZone="Mexico/General" type="date"/>
+                        </h:outputText>
+                    </p:dialog>
+                    <!-- Fin Dialog NO existen Dictaminadores -->
+                    <p:dialog id="dialog" header="Confirme" widgetVar="dlg" resizable="false" width="500" modal="true"
+                              closable="false" style="padding-bottom:15px !important;">
+                        <h:panelGrid columns="1">
+                            <h:outputLabel value="#{msgValidacion.M0000004}"/>
+                            <h:outputLabel value="#{msgValidacion.M0000005}"/>
+                            <f:facet name="footer">
+                                <div align="center">
+                                    <p:commandButton id="confirm" value="#{msgValidacion.rsSi}" styleClass="gmxPositivo" type="button" update="T4"
+                                                     onclick="dlg.hide();" style="width:100px; height: 40px;"/> 
+                                    <p:commandButton id="exit" value="#{msgValidacion.rsNo}" immediate="true"
+                                                     action="datosContribuyente" style="width:100px; height: 40px;"/>
+                                </div>
+                            </f:facet>
+                        </h:panelGrid>
+                    </p:dialog>
+                    <p:confirmDialog id="modalDialog" message="#{adicionarSolicitudMB.flagsSolicitud.messageSol}"
+                                 header="La Solicitud no pudo ser completada!..." severity="error" widgetVar="error"
+                                 width="500">
+                        <div align="right">
+                            <p:commandButton id="confirmExit" value="Salir" action="datosContribuyente" immediate="true"
+                                             style="width: 150px;height:40px"/>
+                        </div>
+                    </p:confirmDialog>
+                    <p:dialog id="soliTemp" header="Confirme" widgetVar="confirmTemp" width="500" closable="false"
+                              visible="#{adicionarSolicitudMB.flagsSolicitud.flagTemp}" modal="true">
+                        <div align="justify">
+                            #{msgValidacion.M0000006}
+                        </div>
+                        <div align="right">
+                              <p:commandButton id="confirmSoliTemp" value="#{msgValidacion.rsSi}"
+                                             action="#{datosSolicitudCtrlMB.createSolicitudTemporal}"
+                                             update="messageAnexos soliTempConfirm dialogEr"
+                                             style="width: 150px;height:40px" styleClass="gmxPositivo" />
+                            <p:commandButton id="declineSoliTemp" value="#{msgValidacion.rsNo}"
+                                             update="dtInfoBanco soliTempConfirm"
+                                             actionListener="#{datosSolicitudCtrlMB.limpiarSolicitud}"
+                                             onclick="confirmTemp.hide();" style="width: 150px;height:40px"/>
+                        </div>
+                    </p:dialog>
+                    <p:dialog id="soliTempConfirm" header="Confirme" widgetVar="confirExit" width="500" modal="true"
+                              closable="false">
+                        <div align="justify">
+                            #{adicionarSolicitudMB.flagsSolicitud.messageSol}
+                        </div>
+                        <div align="right">
+                            <p:commandButton id="exitTemporal" value="#{msgValidacion.B0000000}"
+                                             action="#{datosSolicitudCtrlMB.cancelarSolicitud}"
+                                             style="width: 150px;height:40px" styleClass="gmxPositivo" immediate="true" ajax="true"/>
+                        </div>
+                    </p:dialog>
+                    <p:dialog id="insisDoc" widgetVar="dlgInst" modal="true" resizable="false" draggable="false"
+                              dynamic="true" width="500">
+                        <h:panelGrid style="border-style:hidden;">
+                            <h:outputText id="mensajeIns" value="#{adicionarSolicitudMB.flagsSolicitud.messageSol}"/>
+                        </h:panelGrid>
+                        <br/>
+                        <div align="right">
+                            <p:commandButton id="confirmarIns" value="#{msgValidacion.B0000000}" type="button"
+                                             onclick="dlgInst.hide();" ajax="false" style="width: 150px;height:40px;margin-right: 160px !important;margin-bottom: 15px !important;" styleClass="gmxPositivo"/>
+                        </div>
+                        <br/>
+                    </p:dialog>
+                    <!-- **************************************************************************** -->
+                    <!--  Dialogs de Informacion del Banco-->
+                    <!-- **************************************************************************** -->
+                    <p:dialog id="adicionar" header="#{msgValidacion.L0000017}" widgetVar="add" width="500"
+                              resizable="false" closable="false" dynamic="true" modal="true" styleClass="gobmxContenedor8 gmxNoborde1">
+                        
+                        <div>
+                            <h:panelGrid columns="4">
+                                <h:outputLabel value="#{msgValidacion.L0000050}" for="clabe"/>
+                                <span style="margin-right: 30px;">: </span>
+                                <p:inputText maxlength="18" id="clabe" style="width:153px;" required="true"
+                                             value="#{adicionarSolicitudMB.flagsSolicitud.cuentaClabe}"
+                                             onkeypress="return justNumbers(event);"
+                                             requiredMessage="#{msgValidacion.msjCampoRequerido}"/>
+                                    <p:message id="msjclabe" for="clabe" display="text"/>
+                            </h:panelGrid>
+                        </div>
+                        <div align="center">
+                            <p:commandButton value="#{msgValidacion.B0000000}" id="addBanco"
+                                             actionListener="#{datosSolicitudCtrlMB.addCuentaBanco}"
+                                             update="dtInfoBanco,msmtab5,adicionar,clabe,addEdoCtaExp"
+                                             oncomplete="add.hide();" style="width:108px; height: 40px;" styleClass="gmxPositivo" />
+                            <p:commandButton value="#{msgValidacion.cbBotCan}" styleClass="btn btn-default"  update="dtInfoBanco,adicionar,clabe"
+                                             oncomplete="add.hide();" style="width:112px; height: 40px"/>
+                        </div>
+                    </p:dialog>
+                    <p:dialog id="confirmInsistencia" header="Confirme" widgetVar="seguir" width="500" closable="false"
+                              modal="true">
+                        <div align="justify">
+                            #{adicionarSolicitudMB.flagsSolicitud.messageSol}
+                        </div>
+                        <p:separator/>
+                        <div align="center">
+                            #{msgValidacion.M0000008}
+                        </div>
+                        <div align="right">
+                            <p:commandButton id="confirmIns" value="#{msgValidacion.rsSi}"
+                                             action="#{solicitudDevolicionUtilsMB.seguirAInsisEdoCont}"
+                                             update="tabViewAdicionarSolicitud" onclick="seguir.hide();"
+                                             style="width:100px; height: 40px;" styleClass="gmxPositivo" />
+                            <p:commandButton id="decline" value="#{msgValidacion.rsNo}" action="datosContribuyente"
+                                             update="" style="width:100px; height: 40px;"/>
+                        </div>
+                    </p:dialog>
+                    <p:dialog id="confirmInsistenciaCLABE" header="Seguir a insistencia." modal="true"
+                              widgetVar="seguirCLABE" width="400" closable="false">
+                        <div align="justify">
+                            #{msgValidacion.M0000017}
+                        </div>
+                        <div align="right">
+                            <p:commandButton id="confirmInsCLABE" value="#{msgValidacion.rsSi}"
+                                             actionListener="#{solicitudDevolicionUtilsMB.seguirAInsistencia}"
+                                             update="addEdoCtaAux tabViewAdicionarSolicitud addEdoCtaExp" style="width:100px; height:40px;" styleClass="gmxPositivo"/>
+                            <p:commandButton id="declineCLABE" value="#{msgValidacion.rsNo}" update="addEdoCtaAux dtInfoBanco msmtab5"
+                                             actionListener="#{solicitudDevolicionUtilsMB.select}" style="width:100px; height:40px;"/>
+                        </div>
+                    </p:dialog>
+                    <p:dialog id="addEdoCtaExp" widgetVar="dlgAddEdoCtaExp" modal="true" resizable="false" draggable="false"
+                              closable="false" header="#{msgValidacion.L0000021}" width="700">
+                        <div align="justify">
+                            <h:outputText value="#{adicionarSolicitudMB.flagsSolicitud.messageGlobal}"/>
+                        </div>
+                        <div align="right">
+                            <p:commandButton id="bSi" value="#{msgValidacion.rsSi}" update="addEdoCtaAux dtInfoBanco"
+                                             actionListener="#{datosSolicitudCtrlMB.showAdjuntarEdoCta}"
+                                             style="width:100px; height:40px;" immediate="true" styleClass="gmxPositivo"
+                                             oncomplete="dlgAddEdoCtaExp.hide();seguirCLABE.hide();"/>
+                            <p:commandButton id="bSalir" value="#{msgValidacion.rsNo}" update="dtInfoBanco msmtab5"
+                                             actionListener="#{solicitudDevolicionUtilsMB.select}" style="width:100px; height:40px;"
+                                             onsuccess="dlgAddEdoCtaExp.hide();"/>
+                        </div>
+                    </p:dialog>
+                    <p:dialog id="viewMessage" closable="false" modal="true" widgetVar="confirmationEdoCta" width="600" style="padding-bottom: 20px !important;"
+                              height="120" resizable="false" visible="#{adicionarSolicitudMB.flagsSolicitud.flgEdoCta}">
+                        <div align="justify">
+                            <h:outputText value="#{adicionarSolicitudMB.flagsSolicitud.messageProtestaEdoCta}"/>
+                        </div>
+                        <f:facet name="footer" style="border: 0;">
+                            <div align="right">
+                                <p:commandButton id="confirmarEdoCta" value="#{msgValidacion.rsSi}"
+                                                 onsuccess="confirmationEdoCta.hide();" styleClass="gmxPositivo"
+                                                 actionListener="#{datosSolicitudCtrlMB.confirmaEdoCta}" style="width:100px; height:40px;"
+                                                 update="dtInfoBanco"/>
+                                <p:commandButton id="salirEdoCta" value="#{msgValidacion.rsNo}"
+                                                 actionListener="#{datosSolicitudCtrlMB.negarEdoCta}" immediate="true"
+                                                 update="dtInfoBanco" style="width:100px; height:40px; margin-right: 6px;"
+                                                 onsuccess="confirmationEdoCta.hide();"/>
+                            </div>
+                        </f:facet>
+                    </p:dialog>
+                    <!-- **************************************************************************** -->
+                    <!-- Dialogs de Tipo Tramite -->
+                    <!-- **************************************************************************** -->
+                    <p:dialog id="messageProtesta" widgetVar="confirmProtesta" modal="true" resizable="false"
+                                              draggable="false" width="500" closable="false">
+                        <div align="justify">
+                            <h:outputText id="messageProt"
+                                          value="#{adicionarSolicitudMB.flagsSolicitud.messageProtestaOperaciones}"/>
+                        </div>
+                        <f:facet name="footer">
+                            <div align="center">
+                                #{msgValidacion.M0000007}
+                            </div>
+                            <br/>
+                            <div align="center">
+                                <p:commandButton id="confirmarProtesta" value="#{msgValidacion.rsSi}" styleClass="gmxPositivo"
+                                                 actionListener="#{solicitudDVCtrlMB.continuarBajoProtesta}"
+                                                 immediate="true" style="width:100px; height:40px;"/>
+                                <p:commandButton id="salirProtesta" value="#{msgValidacion.rsNo}"
+                                                 actionListener="#{datosSolicitudCtrlMB.confirmarNoProtesta}"
+                                                 immediate="true" style="width:100px; height:40px;" update="messageProtesta2"/>
+                            </div>
+                        </f:facet>
+                    </p:dialog>
+                    <p:dialog id="messageEndSolicitud" widgetVar="endSolicitud" modal="true" resizable="false"
+                              draggable="false" width="500" closable="false" style="border: 0px solid #e2e2e2!important;"
+                              visible="#{adicionarSolicitudMB.flagsSolicitud.endSolicitud}">
+                        <div align="justify">
+                            #{adicionarSolicitudMB.flagsSolicitud.messageGlobal}
+                        </div>
+                       
+                            <div align="right">
+                                <p:commandButton id="confirmarEmpCert" value="#{msgValidacion.B0000000}"
+                                                 action="datosContribuyente" immediate="true" styleClass="gmxPositivo"
+                                                 onsuccess="endSolicitud.hide();" style="margin-bottom: 20px!important;margin-right: 10px!important;"/>
+                            </div>
+                  
+                    </p:dialog>
+                    <p:dialog id="messageSolError" widgetVar="endSolError" modal="true" resizable="false" draggable="false"
+                              width="500" closable="false">
+                        <div align="justify">!No es posible presentar la solicitud de devoluci&oacute;n ya que las
+                                             declaraci&oacute;nes no se encuentran disponibles en el sistema!</div>
+                    </p:dialog>
+                    <p:dialog id="messageProtesta2" widgetVar="confirmProtesta2" modal="true" resizable="false"
+                              draggable="false" width="500" closable="false">
+                        <div align="justify">
+                            <h:outputText value="#{adicionarSolicitudMB.flagsSolicitud.messageGlobal}"/>
+                        </div>
+                        <f:facet name="footer">
+                            <div align="center">
+                                #{msgValidacion.M0000007}
+                            </div>
+                            <br/>
+                            <div align="center">
+                                <p:commandButton id="confirmarProtesta2" value="#{msgValidacion.Aceptar}"
+                                                 style="width:100px; height:40px;" styleClass="gmxPositivo"
+                                                 actionListener="#{datosSolicitudCtrlMB.continuarBajoProtesta}"
+                                                 onsuccess="confirmProtesta2.hide();"
+                                                 update="form:msmtabInfoSaldo form:msjOptProtesta"/>
+                                <p:commandButton id="salirProtesta2" value="#{msgValidacion.Cancelar}"
+                                                 actionListener="#{datosSolicitudCtrlMB.confirmarNoProtesta}"
+                                                 onsuccess="confirmProtesta2.hide();" style="width:100px; height:40px;"
+                                                 update="form:sorProtesta form:msmtabInfoSaldo form:msjOptProtesta"/>
+                            </div>
+                        </f:facet>
+                    </p:dialog>
+                    <p:dialog id="messageFacilidad" widgetVar="confirmFacilidad" modal="true" resizable="false"
+                              draggable="false" width="500" closable="false">
+                        <div align="justify">
+                            <h:outputText value="#{adicionarSolicitudMB.flagsSolicitud.messageGlobal}"/>
+                        </div>
+                        <br/>
+                        <f:facet name="footer">
+                            <div align="center">
+                                <p:commandButton id="confirmarFacilidad" value="#{msgValidacion.rsSi}"
+                                                 onclick="confirmRecordatolrio.show();" update="form:messageRecordatorio"
+                                                 style="width:100px; height:40px;" styleClass="gmxPositivo" type="button"/>
+
+                                <p:commandButton id="salirFacilidad" value="#{msgValidacion.rsNo}"
+                                                 onclick="confirmFacilidad.hide();" style="width:100px; height:40px;"/>
+                            </div>
+                        </f:facet>
+                    </p:dialog>
+                    <p:dialog id="messageRecordatorio" widgetVar="confirmRecordatorio" modal="true" resizable="false"
+                              draggable="false" width="500" closable="false">
+                        <div align="justify">
+                            <h:outputText id="idRec" value="#{adicionarSolicitudMB.flagsSolicitud.messageSol}"/>
+                        </div>
+                        <br/>
+                        <f:facet name="footer">
+                            <div align="center">
+                                <p:commandButton id="confirmarRecordatorio" value="#{msgValidacion.B0000000}"
+                                                 actionListener="#{solicitudDVCtrlMB.continuar}" immediate="true"
+                                                 onsuccess="confirmRecordatorio.hide();confirmFacilidad.hide();"
+                                                 style="width:100px;height:40px;" styleClass="gmxPositivo"/>
+                            </div>
+                        </f:facet>
+                    </p:dialog>
+                    <!-- **************************************************************************** -->
+                    <!-- Dialogs de Tipo Anexos -->
+                    <!-- **************************************************************************** -->
+                    <p:dialog id="messageInfoAgro" widgetVar="infoAgropecuario" modal="true" resizable="false"
+                              draggable="false" width="500" closable="false">
+                        <div align="justify">
+                            <h:outputText id="infoAgro" value="#{adicionarSolicitudMB.flagsSolicitud.messageSecAgp}"
+                                          rendered="true"/>
+                        </div>
+                        <f:facet name="footer">
+                            <div align="center">
+                                #{msgValidacion.M0000007}
+                            </div>
+                            <div align="center">
+                                 <p:commandButton id="confirmarInfoAgro" value="#{msgValidacion.rsSi}"
+                                                 onsuccess="infoAgropecuario.hide();"
+                                                 actionListener="#{datosSolicitudCtrlMB.complementaIVASecAgp}"
+                                                 immediate="true" style="width:100px; height:40px;" styleClass="gmxPositivo" update=":form:dtAnexos"/>
+                                <p:commandButton id="salirInfoAgro" value="#{msgValidacion.rsNo}"
+                                                 actionListener="#{datosSolicitudCtrlMB.noComplementaIVASecAgp}"
+                                                 onsuccess="infoAgropecuario.hide();" immediate="true" style="width:100px; height:40px;"
+                                                 update=":form:dtAnexos"/>
+                            </div>
+                        </f:facet>
+                    </p:dialog>
+                    <p:dialog id="messageAplicaFacilida" widgetVar="aplicaFacilidad" modal="true" resizable="false"
+                          draggable="false" width="500" closable="false">
+                        <div align="justify">
+                            <h:outputText id="infoAplicaFacilida"
+                                          value="#{adicionarSolicitudMB.flagsSolicitud.messageSecAgp}" rendered="true"/>
+                        </div>
+                        <f:facet name="footer">
+                            <div align="center">
+                                #{msgValidacion.M0000007}
+                            </div>
+                            <div align="center">
+                                <p:commandButton id="confirmarAplicaFacilida" value="#{msgValidacion.rsSi}"
+                                                 onclick="aplicaFacilidad.hide();" style="width:100px; height:40px;" styleClass="gmxPositivo" type="button"/>
+                                <p:commandButton id="salirAplicaFacilida" value="#{msgValidacion.rsNo}"
+                                                 actionListener="#{datosSolicitudCtrlMB.viewInfoSecAgp}"
+                                                 onsuccess="aplicaFacilidad.hide();" immediate="true" style="width:100px; height:40px;"
+                                                 update=":form:dtAnexos"/>
+                            </div>
+                        </f:facet>
+                    </p:dialog>
+                    <!-- **************************************************************************** -->
+                    <!--  FileUpload de Informacion del Banco-->
+                    <!-- **************************************************************************** -->
+                    <p:dialog id="cargaEdoCta" widgetVar="dlgEdoCta" modal="true" resizable="false" draggable="false"
+                          closable="false" header="#{msgValidacion.L0000022}" width="670">
+                            <div align="left">
+                               <!-- <p style="color: Red;">
+                                    #{msgValidacion.L0000019}
+                                </p>-->
+                            </div>
+                            <h:panelGrid columns="3" style="border-style:hidden;">
+                                <h:outputText value="#{msgValidacion.asEtiRuta}"/>
+                                <p:fileUpload value="#{adicionarSolicitudMB.fileEdoCta}" mode="simple" style="width:411px;"
+                                              id="fileEdoCta" validator="ArchivoValidator"/>
+                               <!--<h:outputText value="#{msgValidacion.asRequerido}" style="color:red"/>-->
+                            </h:panelGrid>
+                            <h:panelGrid style="width:100%;text-align:center;">
+                                <p:row>
+                                    <p:column>
+                                        <p:commandButton id="enviarEdoCta" value="#{msgValidacion.B0000007}"
+                                                         actionListener="#{uploadScanCtrlMB.fileUploadEdoCta}"
+                                                         update="dtInfoBanco confirmInsistenciaCLABE" ajax="false"
+                                                         style="width:150px; height:40px;" styleClass="gmxPositivo"></p:commandButton>
+                                        <p:commandButton value="#{msgValidacion.asBtnCancelar}" immediate="true"
+                                                         onclick="dlgEdoCta.hide();" style="width:150px; height:40px;"/>
+                                    </p:column>
+                                </p:row>
+                            </h:panelGrid>
+                    </p:dialog>
+                <!-- **************************************************************************** -->
+                <!-- FileUpload de  Documentos Adjuntos de la Solicitud de Devolucion -->
+                <!-- **************************************************************************** -->
+                 <p:dialog id="cargaDoc" widgetVar="dlgDocumento" modal="true" resizable="false" draggable="false"
+                          header="#{msgValidacion.L0000022}" width="670" closable="false">
+                    <div align="left">
+                    </div>
+                    <h:panelGrid columns="3" border="0">
+                        <h:outputText value="#{msgValidacion.asEtiRuta}"/>
+                        <p:fileUpload value="#{adicionarSolicitudMB.fileDoc}" mode="simple" validator="ArchivoValidator"
+                                      style="width:411px;" id="fileAddDoc"/>
+                        <div >
+                    </div>
+                        <p:outputLabel value="Nombre del Documento: "/>
+                        <p:inputText id="nomDoc" style="width:400px;text-transform: uppercase;"
+                                     value="#{adicionarSolicitudMB.flagsSolicitud.nombreDocumento}" maxlength="180" />
+                    </h:panelGrid>
+                    <h:panelGrid style="width:100%;text-align:center;">
+                        <p:row>
+                            <p:column>
+                               <p:commandButton id="enviarDoc" value="#{msgValidacion.B0000007}"
+                                                 actionListener="#{uploadScanCtrlMB.fileUploadDocumentos}"
+                                                 update="dtDocAdjuntos nomDoc" ajax="false" styleClass="gmxPositivo" style="width:150px; height:40px;"></p:commandButton>
+                                <p:commandButton value="#{msgValidacion.asBtnCancelar}" immediate="true"
+                                                 onclick="dlgDocumento.hide();" style="width:150px; height:40px;"/>
+                            </p:column>
+                        </p:row>
+                    </h:panelGrid>
+                </p:dialog>
+                 <!-- **************************************************************************** -->
+                <!-- FileUpload de Anexos de la solicitud de devolucion -->
+                <!-- **************************************************************************** -->
+                <p:dialog id="dlgAnexo" widgetVar="dlgAnexos" header="#{msgValidacion.L0000022}" draggable="false"
+                          modal="true" closable="false" resizable="false" width="650">
+                    <div align="left">
+                        <p style="color: Red;">
+                            #{msgValidacion.L0000019}
+                        </p>
+                    </div>
+                    <h:panelGrid columns="3" style="text-align:right;border-style:hidden;">
+                        <h:outputText id="rutaAnex" value="#{msgValidacion.asEtiRuta}"/>
+                        <p:fileUpload id="fileAnexo" value="#{adicionarSolicitudMB.fileAnexo}" mode="simple"
+                                      style="width:411px;" validator="ArchivoValidator"/>
+                        <p style="color: Red;">*</p>
+                    </h:panelGrid>
+                    <h:panelGrid columns="1" style="width:100%;text-align:center;">
+                        <p:row>
+                            <p:column>
+                                <p:commandButton id="chartBtn" value="#{msgValidacion.B0000007}"
+                                                 actionListener="#{uploadScanCtrlMB.fileUploadAnexos}"
+                                                 update="dtAnexos, form:continuar" ajax="false" styleClass="gmxPositivo" style="width:150px; height:40px;"/>
+                                <p:commandButton id="cancelAnex" value="#{msgValidacion.asBtnCancelar}" ajax="false"
+                                                 immediate="true" onclick="dlgAnexos.hide();" style="width:150px; height:40px;"/>
+                            </p:column>
+                        </p:row>
+                    </h:panelGrid>
+                </p:dialog>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

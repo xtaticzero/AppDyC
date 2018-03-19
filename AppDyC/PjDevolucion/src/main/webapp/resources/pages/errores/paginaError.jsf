@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+    <html xmlns="http://www.w3.org/1999/xhtml" xmlns:p="http://primefaces.org/ui">
+        <h:head>
+            <title>MENSAJE DE SISTEMA DYC</title>
+        </h:head>
+        <h:body>
+            <p:panel header="Aviso Importante" style="width:540px;" footer="#{paginaErrorMB.fecha}">
+                <table border="0" style="#{paginaErrorMB.messageSession eq false ? 'display:none': null}"
+                       width="500px;">
+                    <tr align="justify">
+                        <td>
+                            <h4>
+                                #{msgValidacion.M0000013}
+                            </h4>
+                        </td>
+                    </tr>
+                </table>
+                <table style=" white-space: normal;font-size: 11px;#{paginaErrorMB.messageSession eq false ? null: 'display:none;'}"
+                       width="500px;">
+                    <tr>
+                        <td align="left">
+                            <h4>
+                                #{msgValidacion.M0000015}
+                                <br/>
+                                #{msgValidacion.M0000016}
+                            </h4>
+                        </td>
+                    </tr>
+
+                    <tr align="left">
+                        <td>
+                            <h4>
+                                Importante tener a la mano el siguiente c&oacute;digo:
+                                <a style="color:red">
+                                    #{paginaErrorMB.folio}</a>
+                            </h4>
+                        </td>
+                    </tr>
+
+                    <tr align="right">
+                        <td><!--
+                            <input id="confirmBackToLogin" type="button" value="Aceptar"
+                                   onclick="window.location='#{paginaErrorMB.logout}';"/>"/app/PE/cerrarSesion" a href="#{msgValidacion.M0000014}">#{msgValidacion.M0000014}</a -->
+                        </td>
+                    </tr>
+                </table>
+                <div style="display:none">
+                    La excepcion producida es debido a:
+                    <h:outputLabel value="#{paginaErrorMB.mensaje}"/><br/>
+
+                    <h:outputText value="#{paginaErrorMB.error}"/><br/>
+                </div>
+            </p:panel>
+        </h:body>
+    </html>
+</f:view>

@@ -1,0 +1,23 @@
+.botonAzul {
+    background: none repeat scroll 0% 0% #4A90E2 !important;
+    color: #FFF !important;
+    box-shadow: 0px 2px 0px 0px #1B5EAB !important;
+    border-color: #3484DE !important;
+}
+.botonAzul:hover {
+    color: #FFF !important;
+    background-color: #2276D7 !important;
+    border-color: #1D68B8 !important;
+}
+
+.botonRojo {
+    color: #FFF !important;
+    background-color: #D75452 !important;
+    border-color: #AC2525 !important;
+    box-shadow: 0px 2px 0px 0px #A02522 !important;
+}
+.botonRojo:hover {
+    color: #FFF !important;
+    background-color: #C92E2C !important;
+    border-color: #AC2525 !important;
+}

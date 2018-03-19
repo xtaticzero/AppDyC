@@ -1,0 +1,115 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" 
+xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions" 
+xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+   
+    <h:form id="formDeclaracion">
+    <p:dialog widgetVar="dlgDetalleDeclaracion" header="Agregar declaración" draggable="true" resizable="false"
+          modal="true" closable="true" width="600px" visible="#{detalleIcepMB.mostrarDlgDetDeclara}">
+    
+        <p style="color: Red;">Los datos con * son obligatorios</p>
+        <p:panelGrid id="pnlDetalleDeclaracion" style="width: 100%; height:100%;" >
+            <p:row>
+                <p:column colspan="2">
+                    <p:messages id="msjsDlgDeclaraManual" showDetail="true" autoUpdate="false" closable="true" globalOnly="true"/>
+                </p:column>
+            </p:row>
+            <p:row>
+                <p:column style="width:40%; text-align:left;">
+                    <h:outputText value="Fecha presentación:"/>
+                    <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                </p:column>
+                <p:column style="width:60%;text-align:left;">
+                    <p:calendar value="#{detalleIcepMB.declaraNueva.fechaPresentacion}" id="calFechaPresentacion" 
+                        navigator="true" locale="es" showOn="button"
+                        pattern="dd/MM/yyyy" readonlyInput="true" maxdate="#{now}" required="true"
+                        requiredMessage="La fecha de presentación es requerida"
+                        yearRange="c-12:c+12"/>
+                    <p:message id="msgCalFechaPresentacion" for="calFechaPresentacion" display="text"/>
+                </p:column>
+            </p:row>
+
+            <p:row>
+                <p:column style="text-align:left;">
+                    <h:outputText value="Número de operación:"/>
+                </p:column>
+                <p:column style="text-align:left;">
+                    <p:inputText id="txtNumOperacion" style="width:100px"
+                             value="#{detalleIcepMB.declaraNueva.numOperacion}" required="false" 
+                             maxlength="18">
+                        <pe:keyFilter for="txtNumOperacion" mask="num"/>
+                    </p:inputText>
+                    <p:message id="msgTxtNumOperacion" for="txtNumOperacion" display="text"/>
+                </p:column>
+            </p:row>
+
+            <p:row>
+                <p:column >
+                    <h:outputText value="Tipo:"/>
+                    <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                </p:column>
+                <p:column >
+                    <p:selectOneMenu id="cmbTipoDeclaracion"
+                                     value="#{detalleIcepMB.declaraNueva.idTipoDeclaracion}" style="width:250px;"
+                                     required="true" requiredMessage="El tipo de declaración es requerido">
+                        <f:selectItem itemValue="" itemLabel="-- seleccione --"/>
+                        <f:selectItem itemValue="1" itemLabel="Normal"/>
+                        <f:selectItem itemValue="2" itemLabel="Complementaria"/>
+                    </p:selectOneMenu>
+                    <p:message id="msgCmbTipoDeclaracion" for="cmbTipoDeclaracion" display="text"/>
+                </p:column>
+            </p:row>
+    
+            <p:row>
+                <p:column >
+                    <h:outputText value="Saldo a favor manifestado:"/>
+                    <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                </p:column>
+                <p:column>
+                    <pe:inputNumber id="txtSaldoFavorDecla" style="width:180px;border-color:black;"
+                                    value="#{detalleIcepMB.declaraNueva.importeDeclarado}"
+                                    symbol="$ " maxValue="9999999999.99" required="true"
+                                    requiredMessage="El saldo a favor es requerido"/>
+                    <p:message id="msgTxtSaldoFavorDecla" for="txtSaldoFavorDecla" display="text"/>
+                </p:column>
+            </p:row>
+            
+            <p:row>
+                <p:column colspan="2">
+                    <table border="0" style="width: 100%"><tr><td>
+                        <h:outputText value="Notas:"/>
+                    </td>
+                    <td>
+                        <p:inputTextarea value="#{detalleIcepMB.declaraNueva.notas}"
+                            id="itaNotas" rows="3" cols="58" 
+                            counter="display" maxlength="255" counterTemplate="Quedan {0} caracteres." />
+                    </td></tr>
+                    <tr><td></td>
+                    <td>
+                        <h:outputText id="display" />
+                    </td></tr></table>
+                </p:column>
+            </p:row>
+            
+            <f:facet name="footer">
+                <p:row>
+                    <p:column colspan="2">
+                        <div align="center">
+                            <p:commandButton value="Guardar" 
+                                             update=":formDetalleIcep formDeclaracion" 
+                                             action="#{detalleIcepMB.insertarDeclaracion}"/>
+                             
+                            <p:commandButton    value="Cancelar" update="formDeclaracion" actionListener="#{detalleIcepMB.limpiarDeclaracion}"
+                                                process="@this" />
+                        </div>
+                    </p:column>
+                </p:row>
+            </f:facet>
+        </p:panelGrid>
+    
+</p:dialog>
+    </h:form>
+                                                
+
+</f:view>

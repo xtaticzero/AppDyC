@@ -1,0 +1,125 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+     <div style="width:777px">
+          <style>
+        .ui-widget-content{
+        border: 0px solid #e2e2e2!important;}
+        .ui-button-icon-left.ui-icon.ui-c.ui-icon-arrowthick-1-e{
+            width: 0px !important;
+            height: 0px !important;
+        }
+        .ui-button-icon-left.ui-icon.ui-c.ui-icon-arrowthick-1-w{
+            width: 0px !important;
+            height: 0px !important;
+        }
+        .ui-button .ui-button-text {
+            padding: .4em 1em .4em 1.2em;
+
+        }
+        .ui-button-text-icon-left .ui-button-text {
+            padding: .4em 1em .4em 1.2em;}
+       #dvBtnSalir{
+                            position: relative;
+                            left: -250px;
+                            top: -27px !important;
+                        }
+    </style>
+      <div class="gob-dat-cont"  >
+   
+        <h2 style="margin-left: -3px !important;">
+            <p:outputLabel value="#{msgValidacion.L0000013}"/>
+        </h2> 
+        <hr class="red" style="margin-left: 0px !important;"/>
+    </div>
+        <style>
+            .ui-messages-info,.ui-message-info{
+                border-radius: 3px 3px 3px 3px;
+                -moz-border-radius: 3px 3px 3px 3px;
+                -webkit-border-radius: 3px 3px 3px 3px;
+                border: 2px solid #D0021B;
+                background-color: #F2DEDE;
+                text-align: center;
+                color: #545454;
+                margin-top: 30px;
+                margin-bottom: 30px;
+                padding-top: 30px;
+                padding-bottom: 30px;
+            }
+            .ui-messages-info-icon{
+                display: none;
+            }
+        </style>
+        <div >
+           <p:messages id="msmtab5" closable="true" autoUpdate="true" globalOnly="true"  /> 
+        </div>
+        <style>
+            .ui-panel .ui-button{
+                
+            }
+        </style>
+            <div style="float: right;">
+               <p:commandButton id="addEdoCtaAux" icon="ui-icon-arrowthickstop-1-n" 
+                                    ajax="true" process="@this"
+                                    styleClass="styleGreen"
+                                    title="#{msgValidacion.B0000008}" type="butoon" onclick="dlgEdoCta.show();"
+                                    disabled="#{adicionarSolicitudMB.flagsSolicitud.showEdoCta}"/>
+                
+               <p:commandButton icon="ui-icon-document" title="#{msgValidacion.B0000014}"
+                                    onclick="add.show();"/>
+                
+               
+          </div>
+          <br/><br/><br/>
+        <div align="center" style="padding-left: 0px;font-size: 15px;">
+          <p:dataTable id="dtInfoBanco" emptyMessage="#{msgValidacion.tblEmpty}" var="solicitudes"
+                         style="width: 100%;" styleClass="table table-bordered" value="#{adicionarSolicitudMB.dataModel}" rendered="true"
+                         selection="#{adicionarSolicitudMB.tramite.institucionFinanciera}" rows="5" paginator="true"
+                         selectionMode="single" paginatorPosition="bottom">
+                <div align="right" style="display: none; border-color:#FFFFFF;">
+                        <p:commandButton id="addEdoCta" icon="ui-icon-arrowthickstop-1-n" styleClass="styleGreen"
+                                         title="#{msgValidacion.B0000008}" type="butoon" onclick="dlgEdoCta.show();"
+                                         disabled="#{adicionarSolicitudMB.flagsSolicitud.showEdoCta}"/>
+                         
+                        <p:commandButton icon="ui-icon-document" title="#{msgValidacion.B0000014}"
+                                         onclick="add.show();"/>
+                    </div>
+                <p:ajax event="rowSelect" listener="#{datosSolicitudCtrlMB.findCunetaCLABE}"
+                        update=":form:addEdoCtaExp addEdoCta dtInfoBanco :form:addEdoCtaAux :form:confirmInsistenciaCLABE" render="addEdoCtaAux"/>
+                <p:column style="text-align: left;">
+                    <f:facet name="header">
+                        <div>
+                            <h:outputText value="#{msgValidacion.L0000049}"/>
+                        </div>
+                    </f:facet>
+                    <h:outputText value="#{solicitudes.dyccInstCreditoDTO.descripcion}"/>
+                </p:column>
+                <p:column style="text-align: left;">
+                    <f:facet name="header">
+                        <div>
+                            <h:outputText value="#{msgValidacion.L0000050}"/>
+                        </div>
+                    </f:facet>
+                    <h:outputText value="#{solicitudes.clabe}"/>
+                </p:column>
+                <p:column style="text-align: left;">
+                    <f:facet name="header">
+                        <div>
+                            <h:outputText value="#{msgValidacion.L0000080}"/>
+                        </div>
+                    </f:facet>
+                    <h:outputText value="#{solicitudes.dyctArchivoDTO.descripcion}"/>
+                </p:column>
+                <p:column style="text-align: left;" rendered="true">
+                    <f:facet name="header">
+                        <div>
+                            <h:outputText value="#{msgValidacion.ce2Estado}"/>
+                        </div>
+                    </f:facet>
+                    <h:outputText value="#{solicitudes.dyctArchivoDTO.idArchivo == '1' ? 'Adjuntado' : ''}"
+                                  rendered="true"/>
+                </p:column>
+            </p:dataTable>
+        </div>
+                                   </div>
+</ui:composition>

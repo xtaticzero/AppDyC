@@ -1,0 +1,345 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view contentType="text/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:pe="http://primefaces.org/ui/extensions">
+    <html xmlns="http://www.w3.org/1999/xhtml" xmlns:p="http://primefaces.org/ui">
+        <h:head>
+            <title>administrarSolicitudesDevoluciones</title>
+            <h:outputStylesheet library="css/" name="formato.css"/>
+            <h:outputScript library="js" name="calendar-localization.js"/>
+            <style type="text/css">
+                .ui-paginator {
+                    font-size: 12px !important;
+                }
+
+                .dateTimeField input {
+                    width: 110px;
+                }
+            </style>
+            <script type="text/javascript">
+              // store original so we can call it inside our overriding method
+              $.datepicker._generateMonthYearHeader_original = $.datepicker._generateMonthYearHeader;
+
+              $.datepicker._generateMonthYearHeader = function (inst, dm, dy, mnd, mxd, s, mn, mns) {
+                  var header = $($.datepicker._generateMonthYearHeader_original(inst, dm, dy, mnd, mxd, s, mn, mns)), years = header.find('.ui-datepicker-year');
+
+                  // reverse the years
+                  years.html(Array.prototype.reverse.apply(years.children()));
+
+                  // return our new html
+                  return $('&lt;div />').append(header).html();
+              }
+            </script>
+        </h:head>
+        <h:body>
+            <f:metadata>
+                <f:viewParam name="rfcProveedor" value="#{agregarFacturasMB.rfcProveedor}"/>
+            </f:metadata>
+             
+            <h:form id="agregarFac">
+                <p:panelGrid id="mensajes" style="width:100%;text-align:left">
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.asdCamposRequeridos}" style="color:red;"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+                <p:panel id="pnlSeleccionSolicitudes" style="text-align:center" styleClass="gmxAutoAjustable"
+                         visible="#{administrarSolicitudesMB.pnlSelSol}">
+                    <p:messages id="msgDt" showDetail="true" autoUpdate="true" closable="true"/>
+                    <!--showDetail="true" -->
+                    <table align="center" style="width:480px;">
+                        <tr>
+                            <td align="right" style="width:200px;">
+                                <p:outputLabel for="nuDeFactura" value="#{msgValidacion.asdNumDeFacturaF}"/>
+                                 
+                                <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                            </td>
+                            <td style="width:300px;">
+                                <p:inputText maxlength="15" id="nuDeFactura"
+                                             style="width:110px; text-transform:uppercase"
+                                             value="#{agregarFacturasMB.numFactura}"/><!--required="true"-->
+                            </td>
+                            <td>
+                                <p:message id="idNuDeFactura" for="nuDeFactura" display="icon"/>
+                            </td>
+                        </tr>
+                         
+                        <tr>
+                            <td align="right">
+                                <p:outputLabel for="fecha" value="#{msgValidacion.asdFechaF}"/>
+                                 
+                                <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                            </td>
+                            <td style="width:10px;height:20px;">
+                                <p:calendar styleClass="dateTimeField" value="#{agregarFacturasMB.fechaFactura}"
+                                            yearRange="2000" id="fecha" maxdate="#{agregarFacturasMB.fechaMax}"
+                                            locale="es" navigator="true" pattern="dd/MM/yyyy"/>
+                            </td>
+                            <td>
+                                <p:message id="idFecha" for="fecha" display="icon"/>
+                            </td>
+                        </tr>
+                         
+                        <tr>
+                            <td align="right">
+                                <p:outputLabel for="concepto" value="#{msgValidacion.asdConceptoF}"/>
+                                 
+                                <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                            </td>
+                            <td>
+                                <p:inputText maxlength="50" id="concepto" style="width:110px; text-transform:uppercase"
+                                             value="#{agregarFacturasMB.concepto}"/><!-- required="true"-->
+                            </td>
+                            <td>
+                                <p:message id="idConcepto" for="concepto" display="icon"/>
+                            </td>
+                        </tr>
+                         
+                        <tr>
+                            <td align="right">
+                                <p:outputLabel for="importe" value="#{msgValidacion.asdImporteF}"/>
+                                 
+                                <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                            </td>
+                            <td>
+                                <!--   <p:inputText maxlength="18" id="importe" style="width:110px"
+                                             value="#{agregarFacturasMB.importeS}"/>   -->
+                                <pe:inputNumber id="importe" style="width:110px" value="#{agregarFacturasMB.importeS}"
+                                                symbol="$ " maxValue="9999999999.99"/>
+                            </td>
+                            <td>
+                                <p:message id="idImporte" for="importe" display="icon"/>
+                            </td>
+                        </tr>
+                         
+                        <tr>
+                            <td align="right">
+                                <p:outputLabel for="ivaTrasladado" value="#{msgValidacion.asdIvaTrasladadoF}"/>
+                                 
+                                <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                            </td>
+                            <td>
+                                <!--  <p:inputText id="ivaTrasladado" style="width:110px"
+                                             value="#{agregarFacturasMB.ivaTrasladadoS}"/>  -->
+                                <pe:inputNumber id="ivaTrasladado" style="width:110px"
+                                                value="#{agregarFacturasMB.ivaTrasladadoS}" symbol="$ "
+                                                maxValue="9999999999.99"/>
+                            </td>
+                            <td>
+                                <p:message id="idIvaTrasladado" for="ivaTrasladado" display="icon"/>
+                            </td>
+                        </tr>
+                         
+                        <tr>
+                            <td align="right">
+                                <p:outputLabel for="total" value="#{msgValidacion.asdTotalF}"/>
+                                 
+                                <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                            </td>
+                            <td>
+                                <!--  <p:inputText id="total" style="width:110px" value="#{agregarFacturasMB.totalS}"/> -->
+                                <pe:inputNumber id="total" style="width:110px" value="#{agregarFacturasMB.totalS}"
+                                                symbol="$ " maxValue="9999999999.99"/>
+                            </td>
+                            <td>
+                                <p:message id="idTotal" for="total" display="icon"/>
+                            </td>
+                        </tr>
+                    </table>
+                    <div align="right" style="height:30px">
+                        <p:commandButton id="cancelar" value="#{msgValidacion.asdBtnCancelar}"
+                                         action="#{agregarFacturasMB.irAAdministrarSolicitudes}" immediate="true"
+                                         ajax="false"/>
+                         
+                        <p:commandButton id="btnAceptar" value="#{msgValidacion.afBtnAceptar}" action="#{agregarFacturasMB.valida}"
+                                         disabled="#{agregarFacturasMB.botonAceptar}"
+                                         style="width:90px"
+                                         update=":consultaFac:facturas:,:consultaFac:btnGuardar:, nuDeFactura,fecha,concepto,importe,ivaTrasladado,total,idNuDeFactura,idFecha,idConcepto,idImporte,idIvaTrasladado,idTotal"/>
+                    </div>
+                </p:panel>
+                <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+                <p:dialog id="statusBar" modal="true" widgetVar="statusDialog" header="#{msgValidacion.ajaxLoading}"
+                          draggable="false" width="250" closable="false" resizable="false">
+                    <p:graphicImage value="/resources/images/ajaxloadingbar.gif"/>
+                </p:dialog>
+            </h:form>
+             
+            <h:form id="consultaFac" prependId="false">
+                <p:panel styleClass="gmxAutoAjustable">
+                    <p:scrollPanel style="height:200px" mode="native">
+                        <p:dataTable id="facturas" var="fac" value="#{agregarFacturasMB.facturas}"
+                                     rowKey="#{fac.numFactura}" paginator="#{agregarFacturasMB.paginador}" rows="10"
+                                     rowsPerPageTemplate="5,10,15,20" emptyMessage="No se encontraron facturas"
+                                     selectionMode="single" selection="#{agregarFacturasMB.facturaToRemove}"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                            <p:ajax event="rowSelect" update="btnBorrar" listener="#{agregarFacturasMB.onRowSelect}"/>
+                            <f:facet name="header">
+                                <div align="right" style="height:30px">
+                                    <p:commandButton id="btnBorrar" icon="ui-icon-trash" style="height:30px"
+                                                     title="#{msgValidacion.asdBtnEliminarFactura}"
+                                                     disabled="agregarFacturasMB.varBotonBorrar"
+                                                     update=":consultaFac:facturas:,:consultaFac:btnGuardar:, :consultaFac:nuevo"
+                                                     action="#{agregarFacturasMB.eliminarFactura}"/>
+                                </div>
+                            </f:facet>
+                            <p:column headerText="#{msgValidacion.asdNumDeFactura}">
+                                <p:outputLabel value="#{fac.numFactura}"/>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asdFecha}">
+                                <h:outputLabel value="#{fac.fechaFactura}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputLabel>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asdConcepto}">
+                                <p:outputLabel value="#{fac.concepto}"/>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asdImporte}">
+                                <h:outputText value="#{fac.importe}">
+                                    <f:convertNumber type="currency" currencySymbol="$" groupingUsed="true" locale="MX"
+                                                     maxFractionDigits="2"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asdIvaTrasladado}">
+                                <h:outputText value="#{fac.ivaTrasladado}">
+                                    <f:convertNumber type="currency" currencySymbol="$" groupingUsed="true" locale="MX"
+                                                     maxFractionDigits="2"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asdTotal}">
+                                <h:outputText value="#{fac.total}">
+                                    <f:convertNumber type="currency" currencySymbol="$" groupingUsed="true" locale="MX"
+                                                     maxFractionDigits="2"/>
+                                </h:outputText>
+                            </p:column>
+                        </p:dataTable>
+                    </p:scrollPanel>
+                    <br/>
+                    <div id="botones" align="center" style="height:40px">
+                        <p:panel id="nuevo" style="height:40px">
+                            <p:commandButton id="btnEnviarAAprobacion" value="#{msgValidacion.asdBtnEnviarAAprobacion}"
+                                             oncomplete="dlgJefesSup.show();"
+                                             disabled="#{agregarFacturasMB.varBotonEnviarAAprobacion}"
+                                             update=":dictaminarSolicitud5"/>
+                            <p:commandButton id="docCargar" value="Cargar Documento"
+                                             rendered="#{agregarFacturasMB.documentoCargar}"
+                                             onclick="dlgCargar.show();"/>
+                            <p:commandButton id="btnGuardar" value="#{msgValidacion.asdGenerarDocumento}"
+                                             disabled="#{agregarFacturasMB.varBotonGuardar}"
+                                             rendered="#{agregarFacturasMB.varBotonOcultar}"
+                                             update=":agregarFac:mensajes:, btnGuardar, :consultaFac:facturas:, btnEnviarAAprobacion, consultaFac, :agregarFac:btnAceptar"
+                                             action="#{agregarFacturasMB.mantenerDocumento}"/>
+                            <div style="display:none">
+                                <p:commandButton id="docGen" actionListener="#{agregarFacturasMB.downloadDocumentos}"
+                                                 ajax="false">
+                                    <p:fileDownload value="#{agregarFacturasMB.fileFacturas}"/>
+                                </p:commandButton>
+                            </div>
+                        </p:panel>
+                    </div>
+                </p:panel>
+            </h:form>
+             
+            <h:form id="agregarFactura2" enctype="multipart/form-data">
+                <p:dialog id="carga" widgetVar="dlgCargar" modal="true" resizable="false" draggable="false"
+                          closable="true" header="Cargar documento generado" width="670">
+                    <p:panelGrid style="width:100%">
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.diCamposObligatorios}" style="color:red;"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <br/>
+                    <p:panelGrid columns="3" style="border-style:hidden;">
+                        <h:outputText value="#{msgValidacion.asEtiRuta}"/>
+                        <p:outputLabel value="#{msgValidacion.asRequerido}" style="color:red"/>
+                        <p:fileUpload value="#{agregarFacturasMB.file}" mode="simple" dragDropSupport="true"
+                                      style="width:411px;" validator="ArchivoValidator"/>
+                        <p:outputLabel/>
+                    </p:panelGrid>
+                    <p:panelGrid style="width:100%;text-align:right;">
+                        <p:row>
+                            <p:column>
+                                <p:commandButton value="#{msgValidacion.asBtnCancelar}" ajax="false" immediate="true"
+                                                 onclick="dlgCargar.hide();"/>
+                                <p:commandButton id="chartBtn" value="Cargar" action="#{agregarFacturasMB.fileUpload}"
+                                                 style="width:90px" ajax="false"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:dialog>
+            </h:form>
+             
+            <h:form id="dictaminarSolicitud5">
+                <p:dialog id="dlg1" widgetVar="dlgJefesSup" modal="true" closable="false" resizable="false"
+                          header="#{msgValidacion.asDlgJefesSup}" width="660" height="180">
+                    <p:messages id="messJefes" globalOnly="true" closable="true"/>
+                    <p:panelGrid style="width:100%">
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.diCamposObligatorios}" style="color:red;"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <br/>
+                    <p:panelGrid columns="3">
+                        <p:outputLabel value="#{msgValidacion.asLblJefes}"/>
+                        <p:outputLabel value="*" style="color:red"/>
+                        <p:selectOneMenu id="comboJefes" style="width:290px;" required="false"
+                                         requiredMessage="#{msgValidacion.diRequerido}"
+                                         value="#{agregarFacturasMB.numEmp}">
+                            <f:selectItem itemLabel="Seleccione una opcion" itemValue=""/>
+                            <f:selectItems value="#{agregarFacturasMB.listaJefesSup}" var="jefes"
+                                           itemLabel="#{jefes.nombre} #{jefes.apellidoPaterno} #{jefes.apellidoMaterno}"
+                                           itemValue="#{jefes.numEmpleado}"/>
+                        </p:selectOneMenu>
+                        <p:outputLabel/>
+                        <p:message id="idMsgJefes" for="comboJefes" display="text"/>
+                    </p:panelGrid>
+                    <p:panelGrid style="width:100%;text-align:right;">
+                        <p:row>
+                            <p:column>
+                                <p:commandButton value="#{msgValidacion.iaBtnCancelar}" onclick="dlgJefesSup.hide();"
+                                                 action="#{agregarFacturasMB.initJefe}"/>
+                                <p:commandButton value="#{msgValidacion.asBtnAceptar}" oncomplete="dlgJefesSup.hide();" update="idMsgJefes, :agregarFac:mensajes, :consultaFac:btnGuardar, 
+                                                         :consultaFac:btnEnviarAAprobacion, :consultaFac"
+                                                 style="width:90px" action="#{agregarFacturasMB.insertarFactura}"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:dialog>
+                <p:dialog header="CU Mantener Documento" id="GenerarDocumentoDialog" widgetVar="dlgGenerarDocumento">
+                    <table>
+                        <tr>
+                            <td>
+                                <h:outputText value="Plantilla:"/>
+                            </td>
+                            <td>
+                                <h:outputText value="#{agregarFacturasMB.generarDocPlantilla}"/>
+                            </td>
+                        </tr>
+                         
+                        <tr>
+                            <td>
+                                <h:outputText value="Numero de control"/>
+                            </td>
+                            <td>
+                                <h:outputText value="#{agregarFacturasMB.numControl}"/>
+                            </td>
+                        </tr>
+                         
+                        <tr>
+                            <td>
+                                <h:outputText value="RFC"/>
+                            </td>
+                            <td>
+                                <h:outputText value="#{agregarFacturasMB.generarDocRFC}"/>
+                            </td>
+                        </tr>
+                    </table>
+                </p:dialog>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

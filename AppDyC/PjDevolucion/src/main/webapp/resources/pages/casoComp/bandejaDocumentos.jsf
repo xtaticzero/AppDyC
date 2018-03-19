@@ -1,0 +1,143 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+        >
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <h:outputScript library="js" name="casosCompensacion.js"/>
+            <h:outputStylesheet library="css/" name="formato.css"/>
+            <style type="text/css">
+                .ui-datatable tbody td {
+                    white-space: normal;
+                    font-size: 12px;
+                }
+
+                .ui-datatable thead th {
+                    white-space: normal;
+                    font-size: 14px;
+                    font-weight: bold;
+                }
+                .ui-paginator {
+                    font-size: 12px !important;
+                }
+            </style>
+            <script type="text/javascript">
+              function start() {
+                  PF('statusDialog').show();
+              }
+
+              function stop() {
+                  PF('statusDialog').hide();
+              }
+            </script>
+        </h:head>
+        <h:body>
+            <h:form>
+                <p:panelGrid id="pnlBandejaDocsComps">
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="3">Bandeja Documentos</p:column>
+                        </p:row>
+                    </f:facet>
+                    <p:row>
+                        <p:column colspan="3" style="font-weight: bold;">
+                            <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column style="vertical-align: top;">
+                            <p:dataTable var="doc" value="#{bandDocsCCMB.documentos}" style="width: 100%;"
+                                         selection="#{bandDocsCCMB.documentoSeleccionado}" widgetVar="dtbDocumentos"
+                                         emptyMessage="No existen documentos pendientes para usted"
+                                         selectionMode="single">
+                                <!-- <p:column selectionMode="single" style="width:2%"/> scrollable="true" scrollWidth="800" -->
+                                <p:column headerText="Número de Control" width="110">
+                                    <h:outputText value="#{doc.numeroControl}"/>
+                                </p:column>
+                                <p:column headerText="RFC">
+                                    <h:outputText value="#{doc.rfc}"/>
+                                </p:column>
+                                <p:column headerText="Dictaminado" style="text-align: center;" width="20">
+                                    <h:outputText value="#{doc.dictaminado}"/>
+                                </p:column>
+                                <p:column headerText="Tipo Trámite">
+                                    <h:outputText value="#{doc.tipoTramite}"/>
+                                </p:column>
+                                <p:column headerText="Fecha de Recepción de Trámite">
+                                    <h:outputText value="#{doc.fechaRecepTramite}"/>
+                                </p:column>
+                                <p:column headerText="Nombre del Documento" width="250">
+                                    <h:outputText value="#{doc.nombreDocumento}"/>
+                                </p:column>
+                                <p:column headerText="Fecha Limite de Resolución del Trámite"
+                                          style="text-align: center;">
+                                    <h:outputText value="#{doc.fechaLimResolTramite}"/>
+                                </p:column>
+                                <p:column headerText="Estado del Documento" style="text-align: center;">
+                                    <h:outputText value="#{doc.estadoDocumento}"/>
+                                </p:column>
+                                <p:column headerText="Monto Compensado" style="text-align: right;">
+                                    <h:outputText value="#{doc.montoCompensado}"/>
+                                </p:column>
+                            </p:dataTable>
+                        </p:column>
+                    </p:row>
+                    <f:facet name="footer">
+                        <p:row>
+                            <p:column>
+                                <p:commandButton value="Enviar a Aprobación" onclick="manejarBtnEnviarAAprob();"
+                                                 style="float:left;" icon="ui-icon-arrow-1-e"/>
+                                <p:commandButton id="btnConsultarV" value="Consultar" style="float:left;"
+                                                 onclick="manejarBtnConsultarDocs();" icon="ui-icon-search"/>
+                                <p:commandButton id="btnConsultarO" ajax="false" style="display: none;"
+                                                 onclick="PrimeFaces.monitorDownload(start, stop)"
+                                                 widgetVar="btnConsultarOPD">
+                                    <p:fileDownload value="#{bandDocsCCMB.file}"/>
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </f:facet>
+                </p:panelGrid>
+                <p:dialog modal="true" widgetVar="statusDialog" header="Status" draggable="false" closable="false"
+                          resizable="false">
+                    <p:graphicImage value="/design/ajaxloadingbar.gif"/>
+                </p:dialog>
+                <p:dialog id="modalDialog" header="Enviar a Aprobación" widgetVar="dlgEnvAAprob" modal="true"
+                          width="650" height="150" resizable="false" closable="false">
+                    <table border="0" width="100%">
+                        <tr>
+                            <td >
+                                <table border="0">
+                                    <tr>
+                                        <td valign="middle">
+                                            <b>Jefe superior a quien se escala la aprobaci&oacute;n:</b>
+                                        </td>
+                                        <td>
+                                            <p:selectOneMenu id="cmbSuperiorAAprobar" style="width: 400px"
+                                                             value="#{bandDocsCCMB.idSuperior}">
+                                                <f:selectItem itemValue="0" itemLabel="-- seleccione --"/>
+                                                <f:selectItems value="#{bandDocsCCMB.superiores}" var="supAux"
+                                                               itemValue="#{supAux.idLong}"
+                                                               itemLabel="#{supAux.descripcion}"/>
+                                            </p:selectOneMenu>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                         
+                        <tr height="50px">
+                            <td style="text-align: right;">
+                                <p:commandButton value="Cancelar" onclick="dlgEnvAAprob.hide();"/>
+                                <p:commandButton id="btnAceptarEAV" value="Aceptar" onclick="manejarBtnAceptarEAA();"/>
+                                 
+                                <p:commandButton id="btnAceptarEAO" oncomplete="dlgEnvAAprob.hide()"
+                                                 action="#{bandDocsCCMB.enviarAAprobacion}" style="display: none;"/>
+                            </td>
+                        </tr>
+                    </table>
+                </p:dialog>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

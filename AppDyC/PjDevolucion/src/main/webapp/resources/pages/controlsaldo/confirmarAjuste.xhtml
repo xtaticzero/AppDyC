@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" 
+        xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions" >
+    <h:form id="formConfirmAjuste">
+        <p:dialog widgetVar="dlgConfirmAjuste" header="#{mbConfirmarAjuste.headerDialog}" draggable="true" resizable="false"
+          modal="true" closable="true" width="600px" visible="#{mbConfirmarAjuste.mostrarDlg}">
+    
+            <table border="0" style="width: 100%">
+                <tr>
+                    <td>
+                        <p style="color: Red;">Los datos con * son obligatorios</p>
+                    </td>
+                    <td>
+                        <div align="center">
+                            <p:graphicImage id="gimAyudaConfirmAjuste" value="../../images/Ayuda.png"/>
+                            <p:tooltip for="gimAyudaConfirmAjuste">
+                                <p:outputLabel value="#{mbConfirmarAjuste.ayuda1}"/>
+                                <br/>
+                                <p:outputLabel value="#{mbConfirmarAjuste.ayuda2}"/>
+                            </p:tooltip>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+            <p:panelGrid id="pnlGrid" style="width: 100%; height:100%;" >
+                <p:row>
+                    <p:column colspan="2">
+                        <p:messages id="msjsDlgConfirmAjuste" showDetail="true" autoUpdate="false" closable="true" globalOnly="true"/>
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column colspan="2">
+                        <table border="0" style="width: 100%"><tr><td>
+                            <h:outputText value="#{labelscs.lblJustificacion}"/>
+                            <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                        </td>
+                        <td valign="top">
+                            <p:inputTextarea value="#{mbConfirmarAjuste.justificacion}"
+                                id="itaJustificacion" rows="4" cols="75" 
+                                counter="display" maxlength="255" counterTemplate="Quedan {0} caracteres."
+                                requiredMessage="#{labelscs.msjJustReq}" required="true"/>
+
+                            <p:graphicImage id="gimAyudaJustificacion" value="../../images/Ayuda.png"/>
+                            <p:tooltip for="gimAyudaJustificacion">
+                                <p:outputLabel value="#{mbConfirmarAjuste.ayudaJustificacion}"/>
+                                <br/>
+                                <p:outputLabel value="#{mbConfirmarAjuste.ayudaJustificacion2}"/>
+                            </p:tooltip>
+
+                            <p:message id="msgJustificacion" for="itaJustificacion" display="text"/>
+                        </td></tr>
+                        <tr><td></td>
+                        <td>
+                            <h:outputText id="display" />
+                        </td></tr></table>
+                    </p:column>
+                </p:row>
+            
+                <f:facet name="footer">
+                    <p:row>
+                        <p:column colspan="2">
+                            <div align="center">
+                                <p:commandButton value="Confirmar" 
+                                                 update="formConfirmAjuste :frmMovimientosSaldo :formDetalleIcep"
+                                                 action="#{mbConfirmarAjuste.confirmarAjuste}"
+                                                 />
+
+                                <p:commandButton    value="Cancelar" update="formConfirmAjuste" actionListener="#{mbConfirmarAjuste.cancelar}"
+                                                    process="@this" />
+                            </div>
+                        </p:column>
+                    </p:row>
+                </f:facet>
+            </p:panelGrid>
+    
+        </p:dialog>
+    </h:form>
+
+</f:view>

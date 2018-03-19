@@ -1,0 +1,145 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view contentType="text/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+    <html xmlns="http://www.w3.org/1999/xhtml" xmlns:p="http://primefaces.org/ui">
+        <h:head>
+            <title>Consultar periodo vacacional</title>
+            <h:outputStylesheet library="css/" name="formato.css"/>
+            <style type="text/css">
+                .ui-paginator {
+                    font-size: 12px !important;
+                }
+
+                .ui-datatable tbody td {
+                    white-space: normal;
+                    vertical-align: text-top;
+                }
+
+                .ui-datatable thead th {
+                    white-space: normal;
+                    vertical-align: text-top;
+                }
+            </style>
+            <script type="text/javascript">
+              function resetTabIndex() {
+                  dataTable.getPaginator().setPage(0);
+              }
+            </script>
+        </h:head>
+        <h:body>
+            <h:form id="consultarPeriodoVac"  >
+                    <p:panel header="#{msgValidacion.pvConPerVac}" >
+                    <p:growl id="mess2" globalOnly="true"/>
+                    
+                     <h:panelGrid columns="2" style="margin: 0 auto" id="searchParams">
+                    </h:panelGrid>
+                     <p:panelGrid style="margin-top:20px">
+                        
+                                    <p:row>
+                                        <p:column  style="width:130px; font-weight: bold;">#{msgValidacion.pvFechIni}:</p:column>
+                                        <p:column  style="font-weight: bold;">
+                                            <h:outputLabel for="estado" value="#{periodoVacacionalMB.objetoPeriodoVacacional.inicioPeriodo}">
+                                                <f:convertDateTime pattern="dd/MM/yyyy" locale="es_MX" timeZone="America/Mexico_City"/>
+                                            </h:outputLabel>
+                                        </p:column>
+                                        <p:column  style="width:130px; font-weight: bold;"></p:column>
+                                    </p:row>
+                                </p:panelGrid>
+                                <p:panelGrid style="margin-top:20px">
+                                    <p:row>
+                                        <p:column rowspan="2" style="width:130px; font-weight: bold;">#{msgValidacion.pvFechFin}:</p:column>
+                                        <p:column rowspan="2" style="font-weight: bold;">
+                                            <h:outputLabel for="estado" value="#{periodoVacacionalMB.objetoPeriodoVacacional.finPeriodo}">
+                                                <f:convertDateTime pattern="dd/MM/yyyy" locale="es_MX" timeZone="America/Mexico_City"/>
+                                            </h:outputLabel>
+                                        </p:column>
+                                        <p:column  style="width:130px; font-weight: bold;"></p:column>
+                                    </p:row>
+                                </p:panelGrid>
+                                <p:panelGrid style="margin-top:20px">
+                                    <p:row>
+                                        <p:column rowspan="2" style="width:130px; font-weight: bold;">#{msgValidacion.pvEstado}:</p:column>
+                                        <p:column rowspan="2" style="font-weight: bold;">
+                                            <h:outputLabel for="estado" value="#{periodoVacacionalMB.objetoPeriodoVacacional.estado ? ' Vigente' : 'No Vigente'}"/>
+                                        </p:column>
+                                        <p:column  style="width:130px; font-weight: bold;"></p:column>
+                                    </p:row>
+                                </p:panelGrid>
+                                                
+                    <p:separator />      
+                    <br />
+                        <p:outputLabel for="display" value="#{msgValidacion.pvMensaje}" style="font-weight: bold;"/>: 
+                        <br />
+                        <br />
+                            <p:inputTextarea rows="5" cols="20" counter="display" maxlength="300" 
+                                         counterTemplate="Quedan {0} caracteres." autoResize="false" 
+                                         style="width:350px !important;" value="#{periodoVacacionalMB.objetoPeriodoVacacional.mensaje}"
+                                         required="true" readonlyInput="true"
+                                         requiredMessage="#{msgValidacion.hablilitarperiodo_m01}"/>
+                        <br />
+                        <h:outputText id="display" />
+                        <br />
+
+                                        
+                    <p:panel id="from" header="#{msgValidacion.pvInhaServ}" style="margin-top:20px;margin-bottom:20px">
+                            <p:panelGrid style="margin-top:20px">
+                                    <p:row>
+                                        <p:column rowspan="2" style="width:130px; font-weight: bold;">#{msgValidacion.pvApartirdel}:</p:column>
+                                        <p:column rowspan="2" style="width:260px; font-weight: bold;">
+                                            <h:outputLabel for="InhSerIn" value="#{periodoVacacionalMB.objetoPeriodoVacacional.inicioHoraInhabServ}">
+                                            <f:convertDateTime pattern="dd/MM/yyyy" locale="es_MX" timeZone="America/Mexico_City"/>
+                                            </h:outputLabel>
+                                        </p:column>
+
+                                        <p:column rowspan="2" style="width:80px; font-weight: bold;">#{msgValidacion.pvAlas}:</p:column>
+                                        <p:column rowspan="2" style="font-weight: bold;">
+                                            <h:outputLabel for="InhSerIn" value="#{periodoVacacionalMB.objetoPeriodoVacacional.inicioHoraInhabServ}">
+                                            <f:convertDateTime pattern="HH:mm" locale="es_MX" timeZone="America/Mexico_City"/>
+                                            </h:outputLabel>
+                                        </p:column>
+
+                                        <p:column rowspan="2"  style="width:50px; font-weight: bold;">#{msgValidacion.pvHrs}</p:column>
+
+                                    </p:row>
+                                    
+
+                                </p:panelGrid>
+                                <p:panelGrid style="margin-top:20px">
+                                    <p:row>
+                                        <p:column rowspan="2" style="width:130px; font-weight: bold;">#{msgValidacion.pvHastael}:</p:column>
+                                        <p:column rowspan="2" style="width:260px; font-weight: bold;">
+                                            <h:outputLabel for="InhSerIn" value="#{periodoVacacionalMB.objetoPeriodoVacacional.finHoraInhabServ}">
+                                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                            </h:outputLabel>
+                                        </p:column>
+                                        
+                                        <p:column rowspan="2" style="width:80px; font-weight: bold;">#{msgValidacion.pvAlas}:</p:column>
+                                        <p:column rowspan="2" style="font-weight: bold;" >
+                                            <h:outputLabel for="InhSerIn" value="#{periodoVacacionalMB.objetoPeriodoVacacional.finHoraInhabServ}">
+                                                <f:convertDateTime pattern="HH:mm" locale="es_MX" timeZone="America/Mexico_City"/>
+                                            </h:outputLabel>
+                                        </p:column>
+
+                                        <p:column rowspan="2"  style="width:50px; font-weight: bold;">#{msgValidacion.pvHrs}</p:column>
+
+                                    </p:row>
+                                </p:panelGrid>
+                                <p:panelGrid style="margin-top:20px">
+                                    <p:row>
+                                        <p:column rowspan="2" style="font-weight: bold;">
+                                            <p:growl id="pvRegresar" life="2000" />
+                                            <p:commandButton value="#{msgValidacion.pvRegresar}" id="btnPVRegresar" update="pvRegresar"
+                                                               action="#{periodoVacacionalMB.btnPVRegresar}" styleClass="ui-priority-primary" />
+                                        </p:column>
+                                    </p:row>
+                                </p:panelGrid>
+                    </p:panel>
+                    <!-- 
+                    <p:scrollPanel id="scr1" style="height:600px" mode="native">
+                        aa
+                    </p:scrollPanel>-->
+                </p:panel>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

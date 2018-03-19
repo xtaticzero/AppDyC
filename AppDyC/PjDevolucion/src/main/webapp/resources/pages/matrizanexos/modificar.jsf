@@ -1,0 +1,242 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+        >
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <meta http-equiv="X-UA-Compatible" content="IE=8"/>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <meta http-equiv="pragma" content="no-cache"/>
+            <meta http-equiv="cache-control" content="no-cache"/>
+            <meta http-equiv="expires" content="0"/>
+            <h:outputScript library="primefaces" name="primefaces.js"/>
+            <h:outputScript library="js" name="utils.js" target="head"/>
+            <h:outputScript library="js" name="posicion.js" target="head"/>
+            <h:outputScript library="js" name="general.js"/>
+            <h:outputStylesheet library="css/" name="formato.css"/>
+            <style type="text/css">
+                .ui-datatable tbody td {
+                    white-space: normal;
+                    font-size: 10px;
+                }
+
+                .ui-datatable thead th {
+                    white-space: normal;
+                    font-size: 11px;
+                    font-weight: bold;
+                }
+            </style>
+        </h:head>
+        <h:body>
+            <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+             
+            <p:dialog modal="true" widgetVar="statusDialog" header="#{msgValidacion.ajaxLoading}" draggable="false"
+                      resizable="false" closable="false">
+                <p:graphicImage value="../../images/ajaxloadingbar.gif"/>
+            </p:dialog>
+             
+            <h:form id="modificarAnexo">
+                <p:panelGrid style="width:810px">
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.camposObligatorios}" style="color:red;"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+                <p:panel id="pnlModificarAnexo" style="width:810px">
+                    <div align="center">
+                        <p:panelGrid>
+                            <p:row>
+                                <p:column colspan="2" style="text-align:center">
+                                    <p:messages id="msgFormulario" for="msgFormulario" showDetail="true"
+                                                globalOnly="true" autoUpdate="true" closable="true"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width:125px">
+                                    <p:outputLabel value="Nombre de Anexo:"/>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel value="#{matrizAnexosMB.dyccMatrizAnexosDto.nombreAnexo}"
+                                                   style="font-weight:bold"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel value="Descripción de Anexo:"/>
+                                    <p:outputLabel value="#{msgValidacion.generalRequerido}" style="color:red"/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputTextarea id="descripcion" cols="50"
+                                                     value="#{matrizAnexosMB.dyccMatrizAnexosDto.descripcionAnexo}"
+                                                     required="true" requiredMessage="Es requerido por el sistema"/>
+                                    <p:message id="msgDescripcion" for="descripcion" display="text"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel value="Ruta del Archivo Anexo: "/>
+                                    <p:outputLabel value="#{msgValidacion.generalRequerido}" style="color:red"/>
+                                </p:column>
+                                <p:column>
+                                    <p:outputLabel value="#{matrizAnexosMB.urlAnexo}" style="font-weight:bold"/>
+                                    <p:commandButton value="Cargar" oncomplete="dlgCargar.show();"/>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                    </div>
+                    <br/>
+                    <div align="center">
+                        <p:fieldset legend="Criterios de Habilitación" style="width:450px;">
+                            <br/>
+                            <p:panelGrid>
+                                <p:row>
+                                    <p:column colspan="2" style="text-align:center">
+                                        <p:dataTable id="dtlTramite" var="tramite" paginatorPosition="bottom"
+                                                     value="#{matrizAnexosMB.dyccTipoTramiteModel}"
+                                                     selection="#{matrizAnexosMB.seleccionTipoTramiteDto}"
+                                                     paginator="true" rows="10"
+                                                     emptyMessage="No se encontraron registros."
+                                                     style="text-align:left;width:450px">
+                                            <p:column selectionMode="multiple" style="width:2%"/>
+                                            <p:column headerText="Tipo Trámite">
+                                                <h:outputText value="#{tramite.descripcion}"/>
+                                            </p:column>
+                                            <f:facet name="footer">
+                                                <p:outputLabel value="#{matrizAnexosMB.totalTramites} Resultados"
+                                                               style="text-align:left"/>
+                                            </f:facet>
+                                        </p:dataTable>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <br/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width:40px">
+                                        <p:outputLabel value="Desde:"/>
+                                        <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:calendar id="calDesde" showOn="button" navigator="true"
+                                                    value="#{matrizAnexosMB.dyccMatrizAnexosDto.fechaInicio}"
+                                                    mindate="#{matrizAnexosMB.fechaActual}" pattern="dd/MM/yyyy"
+                                                    yearRange="1900:2023" locale="es" disabledWeekends="true"
+                                                    readonlyInput="true" required="true"
+                                                    requiredMessage="Es requerido por el sistema">
+                                            <p:ajax event="dateSelect" update="calHasta"/>
+                                        </p:calendar>
+                                        <p:message id="msgDesde" for="calDesde" display="text"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="width:40px">
+                                        <p:outputLabel value="Hasta:"/>
+                                        <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:calendar id="calHasta" showOn="button" navigator="true"
+                                                    value="#{matrizAnexosMB.dyccMatrizAnexosDto.fechaFin}"
+                                                    mindate="#{matrizAnexosMB.dyccMatrizAnexosDto.fechaInicio}"
+                                                    pattern="dd/MM/yyyy" yearRange="1900:2023" locale="es"
+                                                    disabledWeekends="true" readonlyInput="true" required="true"
+                                                    requiredMessage="Es requerido por el sistema"/>
+                                        <p:message id="msgHasta" for="calHasta" display="text"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <br/>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                            <p:panelGrid>
+                                <p:row>
+                                    <p:column style="text-align:center">
+                                        <p:dataTable id="dtlRol" var="rol" paginatorPosition="bottom"
+                                                     value="#{matrizAnexosMB.dyccRolModel}"
+                                                     selection="#{matrizAnexosMB.seleccionRolDto}" paginator="true"
+                                                     rows="10" emptyMessage="No se encontraron registros."
+                                                     style="text-align:left;width:450px">
+                                            <p:column selectionMode="multiple" style="width:2%"/>
+                                            <p:column headerText="Rol">
+                                                <h:outputText value="#{rol.descripcion}"/>
+                                            </p:column>
+                                            <f:facet name="footer">
+                                                <p:outputLabel value="#{matrizAnexosMB.totalRoles} Resultados"
+                                                               style="text-align:left"/>
+                                            </f:facet>
+                                        </p:dataTable>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </p:fieldset>
+                    </div>
+                    <br/>
+                    <p:panelGrid style="width:770px;">
+                        <f:facet name="footer">
+                            <p:row>
+                                <p:column colspan="2" style="text-align:center">
+                                    <p:commandButton value="Aceptar" update="pnlModificarAnexo,confirmar"
+                                                     oncomplete="if(!args.validationFailed) dlgConfirmar.show()"
+                                                     actionListener="#{matrizAnexosMB.regla607Mod}"
+                                                     style="width:100px"/>
+                                    <p:spacer width="15"/>
+                                    <p:commandButton value="Cancelar" action="#{matrizAnexosMB.cancelarModificacion}"
+                                                     process="@this" style="width:100px"/>
+                                </p:column>
+                            </p:row>
+                        </f:facet>
+                    </p:panelGrid>
+                </p:panel>
+                <p:dialog header="Confirmar" widgetVar="dlgConfirmar" closable="true" resizable="false" id="confirmar"
+                          showEffect="fade" hideEffect="fade" modal="true">
+                    <p:panelGrid style="width:300px">
+                        <p:row>
+                            <p:column colspan="2" style="text-align:center">
+                                <h:outputLabel value="#{matrizAnexosMB.mgsConfirmar}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="2" style="text-align:center">
+                                <p:commandButton value="Aceptar" action="#{matrizAnexosMB.modificarAnexo}"
+                                                 rendered="#{matrizAnexosMB.confirmar}" oncomplete="dlgConfirmar.hide()"
+                                                 style="width:100px"/>
+                                <p:spacer width="15"/>
+                                <p:commandButton value="Cancelar" oncomplete="dlgConfirmar.hide()" style="width:100px"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:dialog>
+            </h:form>
+             
+            <h:form id="formCargar" enctype="multipart/form-data">
+                <p:dialog header="Cargar Archivo" widgetVar="dlgCargar" closable="true" resizable="false" id="cargar"
+                          showEffect="fade" hideEffect="fade" modal="true">
+                    <p:panelGrid id="pgCargar" style="width:380px;">
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.aclP5Campo1}"/>
+                                <p:outputLabel value=" *" style="color:red"/>
+                            </p:column>
+                            <p:column>
+                                <p:fileUpload value="#{matrizAnexosMB.file}" mode="simple" style="width:210px;"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="2" style="text-align:center">
+                                <p:commandButton value="Aceptar" ajax="false"
+                                                 actionListener="#{matrizAnexosMB.uploadAnexo}" style="width:100px"/>
+                                <p:spacer width="15"/>
+                                <p:commandButton value="Cancelar" process="@this" onsuccess="dlgCargar.hide()"
+                                                 actionListener="#{matrizAnexosMB.cancelarCarga}" style="width:100px"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:dialog>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

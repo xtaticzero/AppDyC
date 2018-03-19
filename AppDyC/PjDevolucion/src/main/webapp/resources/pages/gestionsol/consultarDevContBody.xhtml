@@ -1,0 +1,272 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:p="http://primefaces.org/ui"
+        xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:pe="http://primefaces.org/ui/extensions">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <f:metadata>
+            <f:event type="preRenderView" listener="#{consultaDevautisrMB.prerenderView}" />
+        </f:metadata>
+        <p:dialog modal="true" widgetVar="statusDialog" header="#{msgValidacion.ajaxLoading}" draggable="false"
+                  resizable="false" closable="false">
+            <h:graphicImage library="images/" name="ajaxloadingbar.gif"/>
+        </p:dialog>
+        <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+        <h:form id="idConsultaDevautisr">
+            <p:dialog modal="true" resizable="false" visible="#{consultaDevautisrMB.tienePeriodoVacacionalActivo}"
+                      draggable="false" header="Aviso!..." width="450" closable="false" >
+                <table border="0">
+                    <tr align="justify">
+                        <td>#{consultaDevautisrMB.mensajePeriodoVacacional}</td>
+                    </tr>
+                </table>
+                <br/><br/>
+            </p:dialog>
+            <div style="width: 777px!important;">
+                <h2>
+                    <p:outputLabel value="Consulta de tr&aacute;mites"/>
+                </h2>
+                <hr class="red" />
+                <div style="width: 777px!important;">
+                    <p:messages id="msgError" style="float: left !important;" showDetail="true" autoUpdate="true" closable="true" />
+                    
+                    <br/>
+                </div>
+                <p:panelGrid style="border-color:#FFFFFF;" id="combosId">
+                    <p:row>
+                        <p:column style="padding: 0px;width: 239px!important;"> 
+                            <p:outputLabel value="Tipo de Solicitud:"/>
+                        </p:column>
+                        <p:column style="width: 30px!important;"  ></p:column>
+                        <p:column style="padding: 0px;width: 239px!important;"> 
+                            <p:outputLabel value="Ejercicio:"/>
+                        </p:column>
+                        <p:column style="width: 30px!important;" ></p:column>
+                        <p:column style="padding: 0px;width: 239px!important;"  > 
+                            <p:outputLabel value="Mostrar Solicitudes:"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column style="padding: 0px;width: 239px!important;">           
+                            <p:selectOneMenu id="tipoSolicitudId"
+                                             value="#{consultaDevautisrMB.tipoSolicitudId}"
+                                             required="true"
+                                             ajax="true"
+                                             requiredMessage="#{msgValidacion.mcRequerido}">
+                                <f:selectItem itemLabel="#{msgValidacion.comboSeleccion}" itemValue="0"/>
+                                <f:selectItem itemLabel="Compensaci&oacute;n"                 itemValue="1"/>
+                                <f:selectItem itemLabel="Devoluci&oacute;n manual"            itemValue="2"/>
+                                <f:selectItem itemLabel="Devoluci&oacute;n autom&aacute;tica IVA"    itemValue="3"/>
+                                <f:selectItem itemLabel="Devoluci&oacute;n autom&aacute;tica ISR" itemValue="4"/>
+                                <p:ajax update="combosId" listener="#{consultaDevautisrMB.validarTabla}" />
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column style="width: 30px!important;"></p:column>
+                        <p:column style="padding: 0px;width: 239px!important;">           
+                            <p:selectOneMenu id="ejercicioId"
+                                             value="#{consultaDevautisrMB.ejercicioId}"
+                                             required="true"
+                                          
+                                             requiredMessage="#{msgValidacion.mcRequerido}">
+                                <f:selectItem itemLabel="#{msgValidacion.comboSeleccion}" itemValue="0"/>
+                                <f:selectItems value="#{consultaDevautisrMB.catalogoEjercicio}"
+                                               var="tipoEjercicio" itemLabel="#{tipoEjercicio.itemLabel}"
+                                               itemValue="#{tipoEjercicio.itemValue}"/>
+
+                                <p:ajax update="combosId" listener="#{consultaDevautisrMB.crearFiltro}" />
+                            </p:selectOneMenu>
+                        </p:column> 
+                        <p:column style="width: 30px!important;" ></p:column>
+                        <p:column style="padding: 0px;width: 239px!important;"  >           
+                            <p:selectOneMenu id="mostrarSolicitudId"
+                                             value="#{consultaDevautisrMB.mostrarSolicitudId}"
+                                             required="true"
+                                             requiredMessage="#{msgValidacion.mcRequerido}">
+                                <f:selectItem itemLabel="#{msgValidacion.comboSeleccion}" itemValue="0"/>
+                                <f:selectItems value="#{consultaDevautisrMB.catalogoMostrarSolicitud}"
+                                               var="mostrarSolicitud" itemLabel="#{mostrarSolicitud.itemLabel}"
+                                               itemValue="#{mostrarSolicitud.itemValue}"/>
+                                <p:ajax update="combosId" listener="#{consultaDevautisrMB.ocultarBoton}" />
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="5">
+                            <p:commandButton id="btnBuscar"
+                                             value="Buscar"
+                                             ajax="true"
+                                             styleClass="gmxPositivo"
+                                             process="@form"
+                                             update="combosId"
+                                             action="#{consultaDevautisrMB.buscarTramites}"/>
+                            <c:if test="#{consultaDevautisrMB.btMostrarDetalle}">
+                                <p:commandButton id="btnBuscarDetelle"
+                                                 value="Consultar Detalle"
+                                                 ajax="false"
+                                                 styleClass="gmxPositivo"
+                                                 process="@form"
+                                                 disabled="#{consultaDevautisrMB.btnConsultarDetalle}"
+                                                 update="combosId msgError"
+                                                 action="#{consultaDevautisrMB.irAlDetalle}"/>
+                            </c:if>
+                            
+                        </p:column>
+                    </p:row>
+                    <p:row rendered="#{consultaDevautisrMB.mostrarDetalleManual}" >
+                        <p:column colspan="5" >
+                            <p:scrollPanel style="width:777px!important; height:200px!important" mode="native">
+                                <p:dataTable id="dtlDocumentos" var="solicitud"
+                                             value="#{consultaDevautisrMB.listaSolicitudes}" scrollWidth="790"
+                                             paginator="#{consultaDevautisrMB.muestraPaginador}"
+                                             paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                             rowsPerPageTemplate="5,10,15,20" rows="5" style="text-align:left;width:1300px !important;height: auto !important;"
+                                             rowIndexVar="rowIndex"
+                                             rowStyleClass="#{(rowIndex mod 2) eq 0 ?'highlightA':'highlightB'}"
+                                             emptyMessage="#{msgValidacion.tblEmpty}" rowKey="#{solicitud.numControl}"
+                                             selection="#{consultaDevautisrMB.selectedSolicitud}"
+                                             selectionMode="single">
+                                    <p:ajax event="rowSelect" update="btnAdjuntar,btnSolventar"
+                                            listener="#{consultaDevautisrMB.onRowSelect}"/>
+                                    <f:facet name="header">
+                                        <p:toolbar>
+                                            <p:toolbarGroup align="left">
+                                                <p:commandButton id="btnAdjuntar"
+                                                                 action="#{consultaDevautisrMB.mostrarAdjuntar}"
+                                                                 disabled="#{consultaDevautisrMB.verBotonAdjuntar}"
+                                                                 icon="ui-icon-folder-open"
+                                                                 title="#{msgValidacion.cdAdjuntarDocumentacionAdicional}"/>
+                                                <p:commandButton id="btnSolventar"
+                                                                 action="#{consultaDevautisrMB.mostrarSolventar}"
+                                                                 disabled="#{consultaDevautisrMB.verBotonSolventar}"
+                                                                 icon="ui-icon-document"
+                                                                 title="#{msgValidacion.cdSolventarRequerimiento}"/>
+                                            </p:toolbarGroup>
+                                        </p:toolbar>
+                                    </f:facet>
+                                    <p:column headerText="#{msgValidacion.cdNumeroControl}" style="width:75px">
+                                        <h:outputText value="#{solicitud.numControl}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgValidacion.cdTipoTramite}" style="width:75px">
+                                        <h:outputText value="#{solicitud.tipoTramite}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgValidacion.cdImpuesto}" style="width:75px">
+                                        <h:outputText value="#{solicitud.impuesto}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgValidacion.cdConcepto}" style="width:95px">
+                                        <h:outputText value="#{solicitud.concepto}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgValidacion.cdPeriodo}" style="width:55px">
+                                        <h:outputText value="#{solicitud.periodo}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgValidacion.cdEjercicio}" style="width:55px">
+                                        <h:outputText value="#{solicitud.idEjercicio}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgValidacion.cdFechaPresentacion}" style="width:75px">
+                                        <h:outputText value="#{solicitud.fechaPresentacionCadena}">
+                                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Monto a devolver" style="width:75px; ">
+                                        <div align="right">
+                                            <p:outputLabel value="#{solicitud.montoADevolver}">
+                                                <f:convertNumber minFractionDigits="2" locale="es-MX" pattern="###,###" currencySymbol="$ " type="currency" />
+                                            </p:outputLabel>                                            
+                                        </div>
+                                    </p:column>
+                                    <p:column headerText="#{msgValidacion.cdFechaPago}" style="width:55px" rendered="#{consultaDevautisrMB.verColumnasPago}">
+                                        <h:outputText value="#{solicitud.dyctResolucionDTO.fechaPago}">
+                                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="#{msgValidacion.cdMontoPagado}sadsdasd" style="width:75px" rendered="#{consultaDevautisrMB.verColumnasPago}">
+                                        <div align="right">
+                                            <h:outputText value="#{solicitud.dyctResolucionDTO.importeNeto}">
+                                                <f:convertNumber minFractionDigits="2" locale="es-MX" pattern="###,###" currencySymbol="$ " type="currency" />
+                                            </h:outputText>
+                                        </div>
+                                    </p:column>
+                                </p:dataTable>
+                            </p:scrollPanel>
+                        </p:column>
+                    </p:row>
+                    <p:row rendered="#{consultaDevautisrMB.devIsr}" > 
+                        <p:column colspan="5" >
+                            <p:scrollPanel style="width:777px!important; height: auto!important;" mode="native">
+                                <p:dataTable id="dtlDocumentosIsr" var="solicitud"
+                                             value="#{consultaDevautisrMB.datosTramiteISRDetalleVOs}" scrollWidth="790"
+                                             paginator="#{consultaDevautisrMB.muestraPaginador}"
+                                             paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                             rowsPerPageTemplate="5,10,15,20" rows="5" style="text-align:left;width:2215px !important;height: auto !important;"
+                                             rowIndexVar="rowIndex"
+                                             rowStyleClass="#{(rowIndex mod 2) eq 0 ?'highlightA':'highlightB'}"
+                                             emptyMessage="#{msgValidacion.tblEmpty}" rowKey="#{solicitud.folioDeclaracion}"
+                                             selection="#{consultaDevautisrMB.selectedDatosTramiteISRDetalleVOs}"
+                                             selectionMode="single">
+                                    <p:ajax event="rowSelect" update=":idConsultaDevautisr:combosId"
+                                            listener="#{consultaDevautisrMB.buscarExisteDetalle}"/>
+
+                                    <p:column headerText="#{msgValidacion.consulta_tooltop80}" style="width:75px">
+                                        <h:outputText value="#{solicitud.folioDeclaracion}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgValidacion.consulta_tooltop81}"  style="width:75px">
+                                        <h:outputText value="#{solicitud.folioMATDYCNumeroControl}"/>
+                                    </p:column> 
+                                    <p:column headerText="#{msgValidacion.consulta_tooltop82}"  style="width:75px">
+                                        <h:outputText value="#{solicitud.tipoDeTramiteDes}"/>
+                                    </p:column> 
+                                    <p:column headerText="#{msgValidacion.consulta_tooltop83}"  style="width:75px">
+                                        <h:outputText value="#{solicitud.conceptoDes}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgValidacion.consulta_tooltop84}"  style="width:75px">
+                                        <h:outputText value="#{solicitud.descripcionPeriodo}"/>
+                                    </p:column> 
+                                    <p:column headerText="#{msgValidacion.consulta_tooltop85}"  style="width:75px">
+                                        <h:outputText value="#{solicitud.ejercicio}"/>
+                                    </p:column> 
+                                    <p:column headerText="#{msgValidacion.consulta_tooltop86}"  style="width:75px">
+                                        <h:outputText value="#{solicitud.fechaPresentacionCadena}"/>
+                                    </p:column> 
+                                    <p:column headerText="#{msgValidacion.consulta_tooltop87}" rendered="#{consultaDevautisrMB.ejercicioId eq 2016}"  style="width:75px">
+                                        <h:outputText value="#{solicitud.fechaHoraEstadoCadena}"/>
+                                    </p:column> 
+                                    <p:column headerText="#{msgValidacion.consulta_tooltop87}" rendered="#{consultaDevautisrMB.ejercicioId > 2016}"  style="width:75px">
+                                        <h:outputText value="#{solicitud.fechaEstado}">
+                                            <f:convertDateTime pattern="dd-MM-yyyy"/>
+                                        </h:outputText>
+                                    </p:column> 
+                                    <p:column headerText="#{msgValidacion.consulta_tooltop88}"  style="width:75px">
+                                        <h:outputText  value="#{solicitud.idEstadoProcesoDetalle}"/>
+                                    </p:column> 
+                                    <p:column headerText="#{msgValidacion.consulta_tooltop89}"  style="width:75px">
+                                        <h:outputText value="#{solicitud.cuetaClabe}"/>
+                                    </p:column>
+                                    <p:column headerText="#{msgValidacion.consulta_tooltop91}"  style="width:75px">
+                                        <h:outputText value="#{solicitud.fechaPagoCadena}"/>
+                                    </p:column> 
+                                    <p:column headerText="#{msgValidacion.consulta_tooltop92}"  style="width:75px">
+                                        <h:outputText value="#{solicitud.montoISRAFavor}" rendered="#{consultaDevautisrMB.ejercicioId eq 2016}">
+                                            <f:convertNumber minFractionDigits="2" locale="es-MX" pattern="$ #,##0.00" currencySymbol="$ " type="currency" />
+                                        </h:outputText>
+                                        
+                                        <h:outputText value="#{solicitud.declaracionContribuyente.isrAFavorDelEjercicio}" rendered="#{consultaDevautisrMB.ejercicioId > 2016}">
+                                            <f:convertNumber minFractionDigits="2" locale="es-MX" pattern="$ #,##0.00" currencySymbol="$ " type="currency" />
+                                        </h:outputText>
+                                    </p:column> 
+                                    <p:column headerText="#{msgValidacion.consulta_tooltop93}"  style="width:75px">
+                                        <h:outputText value="#{solicitud.saldoAPagarCadena}" rendered="#{consultaDevautisrMB.ejercicioId eq 2016}">
+                                            <f:convertNumber minFractionDigits="2" locale="es-MX" pattern="$ #,##0.00" currencySymbol="$ " type="currency" />
+                                        </h:outputText>    
+                                        <h:outputText value="#{solicitud.saldoAPagarNR}" rendered="#{consultaDevautisrMB.ejercicioId > 2016}">
+                                            <f:convertNumber minFractionDigits="2" locale="es-MX" pattern="$ #,##0.00" currencySymbol="$ " type="currency" />
+                                        </h:outputText>    
+                                    </p:column>
+                                </p:dataTable>
+                            </p:scrollPanel>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </div>
+        </h:form> 
+    </html>
+</f:view>
+

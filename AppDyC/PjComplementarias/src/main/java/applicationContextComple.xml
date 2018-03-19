@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans                 http://www.springframework.org/schema/beans/spring-beans-3.0.xsd                  http://www.springframework.org/schema/tx                     http://www.springframework.org/schema/tx/spring-tx-2.5.xsd                  http://www.springframework.org/schema/context                      http://www.springframework.org/schema/context/spring-context-3.0.xsd"
+       default-autowire="byName">
+
+    <bean id="nativeJdbcExtractor" class="org.springframework.jdbc.support.nativejdbc.C3P0NativeJdbcExtractor"/>
+    <tx:annotation-driven />
+    
+    <bean id="dataSourceDWHDYP" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value='${driverDWHDYP}'/>
+        <property name="jdbcUrl" value='${urlDWHDYP}'/>
+        <property name="user" value='${usernameDWHDYP}'/>
+        <property name="password" value='${passwordDWHDYP}'/>
+    </bean>
+
+    <bean id="TMdataSourceDWHDYP" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSourceDWHDYP"/>
+        <qualifier value="TMdataSourceDWHDYP"/>
+    </bean>
+
+    <bean id="dataSourceDYC" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value='${driverClassNameD}'/>
+        <property name="jdbcUrl" value='${urlD}'/>
+        <property name="user" value='${usernameD}'/>
+        <property name="password" value='${passwordD}'/>
+    </bean>
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSourceDYC"/>
+    </bean>
+    
+    <context:property-placeholder location="file:/siat/dyc/configuraciondyc/parametrosdyc.properties"/>
+
+    <!-- ::::::::::::::::::::::::: JDCTEMPLATE :::::::::::::::::::::::::: -->
+    <bean id="jdbcTemplateDWHDYP" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceDWHDYP"></property>
+    </bean>
+    <bean id="jdbcTemplateDYC" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceDYC"></property>
+    </bean>
+    <context:component-scan base-package="mx.gob.sat.mat.dyc.background.declscomple"/>
+    <context:component-scan base-package="mx.gob.sat.siat.dyc"/>
+
+    <!-- ::::::::::::::::::::::::::: CONTEXTO DAO BATCH ::::::::::::::::::::::::::: -->
+    <import resource="classpath:applicationContextDAODyCBatch.xml"/>
+
+    
+    
+    
+    <!-- ::::::::::::::::::::::::::: para que no marque error en ejecucion ::::::::::::::::::::::::::: -->
+    <bean id="dataSourceSIATDYC" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value='${driverClassNameS}'/>
+        <property name="jdbcUrl" value='${urlS}'/>
+        <property name="user" value='${usernameS}'/>
+        <property name="password" value='${passwordS}'/>
+    </bean>
+    <bean id="TMdataSourceSIATDYC" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSourceSIATDYC"/>
+    </bean>
+    <bean id="jdbcTemplateSIAT" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceSIATDYC"></property>
+    </bean>
+    
+    <!--DWHORA 2 se configuro asi solo para dependencias, no se usa-->
+    <bean id="dataSourceDwhOra2DYC" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value='${driverClassNameS}'/>
+        <property name="jdbcUrl" value='${urlS}'/>
+        <property name="user" value='${usernameS}'/>
+        <property name="password" value='${passwordS}'/>
+    </bean>
+    <bean id="TMdataSourceDwhOra2DYC" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSourceDwhOra2DYC"/>
+    </bean>
+    <bean id="jdbcTemplateDwhOra2" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceDwhOra2DYC"></property>
+    </bean>
+    
+    <!--INFORMIX-->
+    <bean id="dataSourceInformixDYC" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value='${driverClassNameIn}'/>
+        <property name="jdbcUrl" value='${urlIn}'/>
+        <property name="user" value='${usernameIn}'/>
+        <property name="password" value='${passwordIn}'/>
+        <property name="acquireIncrement" value="5" />
+        <property name="minPoolSize" value="5" />
+        <property name="maxPoolSize" value="20" />
+        <property name="maxStatementsPerConnection" value="100" />
+        <property name="testConnectionOnCheckout" value="false"/>
+        <property name="testConnectionOnCheckin" value="false"/>
+        <property name="idleConnectionTestPeriod" value="420"/>
+        <property name="preferredTestQuery" value=""/>
+        <property name="maxIdleTime" value="1200"/>
+        <property name="maxIdleTimeExcessConnections" value="600"/>
+        <property name="maxConnectionAge" value="420"/>
+    </bean>
+    <bean id="TMdataSourceInformixDYC" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSourceInformixDYC"/>
+        <qualifier value="TMdataSourceInformixDYC"/>
+    </bean>
+    <bean id="jdbcTemplateInformix" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceInformixDYC"></property>
+    </bean>
+    <bean id="jdbcTemplateDYCDB2" class="org.springframework.jdbc.core.JdbcTemplate">
+        <!--property name="dataSource" ref="dataSourceDYCDB2"></property-->
+         <!--se configuro asi solo para dependencias, no se usa-->
+        <property name="dataSource" ref="dataSourceSIATDYC"></property>
+    </bean>
+    
+    
+    
+</beans>

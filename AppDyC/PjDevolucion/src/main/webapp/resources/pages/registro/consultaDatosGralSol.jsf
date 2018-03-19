@@ -1,0 +1,187 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+    <html xmlns="http://www.w3.org/1999/xhtml" xmlns:p="http://primefaces.org/ui"
+          xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:ui="http://java.sun.com/jsf/facelets">
+  
+    <h:head>
+        <h:outputScript library="js" name="general.js"/>
+        <h:outputStylesheet library="css/" name="formato.css"/>
+    </h:head>
+    <h:body>
+      <h:form>
+      <p:scrollPanel style="width:850px;height:800px"> 
+        <p:panel id="pnlConsulta" >
+            <p:panel id="pnlDatosContribuyente" header="Datos del contribuyente" 
+                style="width:810px;text-align:center;">
+                <p:panelGrid style="width:800px;text-align:center;" columns="2">
+                    <h:outputLabel value="Apellido paterno: "></h:outputLabel>
+                    <h:outputLabel value="#{ConsultaDatosGralSolMB.contribuyente.rfc}"></h:outputLabel>
+                    <h:outputLabel value="Apellido materno: "></h:outputLabel>
+                    <h:outputLabel value=""></h:outputLabel>
+                    <h:outputLabel value="Nombre(s): "></h:outputLabel>
+                    <h:outputLabel value=""></h:outputLabel>
+                    <h:outputLabel value="Denominaci&oacute;n o raz&oacute;n social: "></h:outputLabel>
+                    <h:outputLabel value=""></h:outputLabel>
+                    <h:outputLabel value="RFC: "></h:outputLabel>
+                    <h:outputLabel value=""></h:outputLabel>
+                </p:panelGrid>
+            </p:panel>
+            <p:panel id="pnlDomicilioFiscal" header="Domicilio fiscal" style="width:810px;text-align:center;">
+                <p:panelGrid style="width:800px;text-align:center;" columns="2">
+                    <h:outputLabel value="Calle: "></h:outputLabel>
+                    <h:outputLabel value=""></h:outputLabel>
+                    <h:outputLabel value="No. exterior: "></h:outputLabel>
+                    <h:outputLabel value=""></h:outputLabel>
+                    <h:outputLabel value="No. interior: "></h:outputLabel>
+                    <h:outputLabel value=""></h:outputLabel>
+                    <h:outputLabel value="Colonia: "></h:outputLabel>
+                    <h:outputLabel value=""></h:outputLabel>
+                    <h:outputLabel value="Delegaci&oacute;n o municipio: "></h:outputLabel>
+                    <h:outputLabel value=""></h:outputLabel>
+                    <h:outputLabel value="C&oacute;digo postal: "></h:outputLabel>
+                    <h:outputLabel value=""></h:outputLabel>
+                    <h:outputLabel value="Localidad: "></h:outputLabel>
+                    <h:outputLabel value=""></h:outputLabel>
+                    <h:outputLabel value="Entidad federativa: "></h:outputLabel>
+                    <h:outputLabel value=""></h:outputLabel>
+                    <h:outputLabel value="N&uacute;mero de administraci&oacute;n desconcentrada de auditor&iacute; f&iacute;scal: "></h:outputLabel>
+                    <h:outputLabel value=""></h:outputLabel>
+                    <h:outputLabel value="Descripci&oacute;n de la administraci%oacute;n de auditor&iacute; que corresponde"></h:outputLabel>
+                    <h:outputLabel value=""></h:outputLabel>
+                </p:panelGrid>
+            </p:panel>
+            <p:panel id="pnlInfoTram" header="Informaci&oacute;n del tr&aacute;mite" 
+                style="width:810px;text-align:center;">
+                <p:panelGrid style="width:800px;text-align:center;" columns="2">
+                    <h:outputLabel value="Origen devoluci&oacute;n: "></h:outputLabel>
+                    <h:outputLabel value=""></h:outputLabel>
+                    <h:outputLabel value="Tipo de tr&aacute;mite: "></h:outputLabel>
+                    <h:outputLabel value=""></h:outputLabel>
+                    <h:outputLabel value="Suborigen de saldo: "></h:outputLabel>
+                    <h:outputLabel value=""></h:outputLabel>
+                    <h:outputLabel value="Informaci&oacute;n adicional: "></h:outputLabel>
+                    <h:outputLabel value=""></h:outputLabel>
+                    <h:outputLabel value="RFC del retenedor nacional"></h:outputLabel>
+                    <h:outputLabel value=""></h:outputLabel>
+                </p:panelGrid>
+            </p:panel>
+            <p:panel id="pnlDatosIcep" header="Datos del ICEP" style="width:810px;text-align:center;">
+                <p:panelGrid style="width:800px;text-align:center;" columns="2">
+                    <h:outputLabel value="Impuesto: "></h:outputLabel>
+                    <h:outputLabel value=""></h:outputLabel>
+                    <h:outputLabel value="Concepto: "></h:outputLabel>
+                    <h:outputLabel value=""></h:outputLabel>
+                    <h:outputLabel value="Tipo de per&iacute;do: "></h:outputLabel>
+                    <h:outputLabel value=""></h:outputLabel>
+                    <h:outputLabel value="Per&iacute;odo: "></h:outputLabel>
+                    <h:outputLabel value=""></h:outputLabel>
+                    <h:outputLabel value="Ejercicio: "></h:outputLabel>
+                    <h:outputLabel value=""></h:outputLabel>
+                    <h:outputLabel value="Subtipo de tr&aacute;mite: "></h:outputLabel>
+                    <h:outputLabel value=""></h:outputLabel>
+                </p:panelGrid>
+            </p:panel>
+            <p:panel id="pnlInfoSaldo" header="Informaci&oacute;n del saldo a favor" 
+                style="width:810px;text-align:center;">
+                <p:panelGrid style="width:800px;text-align:center;" columns="2">
+                    <h:outputLabel value="Tipo de declaraci&oacute;n: "></h:outputLabel>
+                    <h:outputLabel value=""></h:outputLabel>
+                    <h:outputLabel value="Fecha de presentaci&oacute;n de la declaraci&oacute;n: "></h:outputLabel>
+                    <h:outputLabel value=""></h:outputLabel>
+                    <h:outputLabel value="Fecha de la causaci&oacute;n: "></h:outputLabel>
+                    <h:outputLabel value=""></h:outputLabel>
+                    <h:outputLabel value="N&uacute;mero de operaci&oacute;n: "></h:outputLabel>
+                    <h:outputLabel value=""></h:outputLabel>
+                    <h:outputLabel value="Importe del saldo a favor: "></h:outputLabel>
+                    <h:outputLabel value=""></h:outputLabel>
+                    <h:outputLabel value="Importe de las devoluciones y/o compensaciones efectuadas (sin incluir actualizaci&oacute;n): "></h:outputLabel>
+                    <h:outputLabel value=""></h:outputLabel>
+                    <h:outputLabel value="Importe del acreditamiento efectuado: "></h:outputLabel>
+                    <h:outputLabel value=""></h:outputLabel>
+                    <h:outputLabel value="Importe solicitado en devoluci&oacute;n: "></h:outputLabel>
+                    <h:outputLabel value=""></h:outputLabel>
+                </p:panelGrid>
+            </p:panel>
+            <p:panel id="pnlDeclaracionNormal" header="Datos de la declaraci&oacute;n normal" 
+                style="width:810px;text-align:center;">
+                <p:panelGrid style="width:800px;text-align:center;" columns="2">
+                    <h:outputLabel value="Tipo de declaraci&oacute;n: "></h:outputLabel>
+                    <h:outputLabel value=""></h:outputLabel>
+                    <h:outputLabel value="Fecha de presentaci&oacute;n de la declaraci&oacute;n: "></h:outputLabel>
+                    <h:outputLabel value=""></h:outputLabel>
+                    <h:outputLabel value="N&uacute;mero de operaci&oacute;n"></h:outputLabel>
+                    <h:outputLabel value=""></h:outputLabel>
+                    <h:outputLabel value="Saldo a favor manifestado en la declaraci&oacute;n: "></h:outputLabel>
+                    <h:outputLabel value=""></h:outputLabel>
+                </p:panelGrid>
+            </p:panel>
+            <p:panel id="pnlDatosDiot" header="Datos de la DIOT" style="width:810px;text-align:center;">
+                <p:panelGrid style="width:800px;text-align:center;" columns="2">
+                    <h:outputLabel value="N&uacute;mero de la operaci&oacute;n: "></h:outputLabel>
+                    <h:outputLabel value=""></h:outputLabel>
+                    <h:outputLabel value="Fecha presentaci&oacute;n declaraci&oacute;n: "></h:outputLabel>
+                    <h:outputLabel value=""></h:outputLabel>
+                </p:panelGrid>
+            </p:panel>
+            <p:panel id="pnlDatosCpr" header="Datos del CPR" style="width:810px;text-align:center;">
+                <p:panelGrid style="width:800px;text-align:center;" columns="2">
+                    <h:outputLabel value="N&uacute;mero de registro: "></h:outputLabel>
+                    <h:outputLabel value=""></h:outputLabel>
+                    <h:outputLabel value="RFC: "></h:outputLabel>
+                    <h:outputLabel value=""></h:outputLabel>
+                </p:panelGrid>
+            </p:panel>
+            <p:panel id="pnlDatosAltex" header="Datos Altex" style="width:810px;text-align:center;">
+                <p:panelGrid style="width:800px;text-align:center;" columns="2">
+                    <h:outputLabel value="N&uacute;mero de constancia: "></h:outputLabel>
+                    <h:outputLabel value=""></h:outputLabel>
+                </p:panelGrid>
+            </p:panel>
+            <p:panel id="pnlContribuyenteCert" header="Datos del contribuyente certificado" 
+                style="width:810px;text-align:center;">
+                <p:panelGrid style="width:800px;text-align:center;" columns="2">
+                    <h:outputLabel value="Contribuyente certificado: "></h:outputLabel>
+                </p:panelGrid>
+            </p:panel>
+            <p:panel id="pnlInfoBanco" header="Informaci&oacute;n del banco"
+                style="width:810px;text-align:center;">
+                <p:panelGrid style="width:800px;text-align:center;" columns="2">
+                </p:panelGrid>
+            </p:panel>
+            <p:panel id="pnlInconsistencias" header="Inconsistencias de la solicitud de la devoluci&ocaute;n" 
+                style="width:810px;text-align:center;">
+                <p:panelGrid style="width:800px;text-align:center;" columns="2">
+                </p:panelGrid>
+            </p:panel>
+            <p:panel id="pnlAnexos" header="Anexos" style="width:810px;text-align:center;">
+                <p:panelGrid style="width:800px;text-align:center;" columns="2">
+                </p:panelGrid>
+            </p:panel>
+            <p:panel id="pnlDocumentosAdjuntos" header="Informaci&oacute;n del banco" 
+                style="width:810px;text-align:center;">
+                <p:panelGrid style="width:800px;text-align:center;" columns="2">
+                </p:panelGrid>
+            </p:panel>
+            <p:panel id="pnlDatosCorrectos" style="width:810px;text-align:center;">
+                <p:panelGrid style="width:800px;text-align:center;" columns="2">
+                    <p:selectOneRadio id="options">
+                            <f:selectItem itemLabel="Si" itemValue="1"/>
+                            <f:selectItem itemLabel="No" itemValue="2"/>
+                    </p:selectOneRadio>
+                </p:panelGrid>
+            </p:panel>
+            <p:panel id="pnlBotones" header="" style="width:810px;text-align:center;">
+                <p:panelGrid style="width:800px;text-align:center;" columns="4">
+                    <p:commandButton value="Modificar datos contribuyente"></p:commandButton>
+                    <p:commandButton value="Imprimir"></p:commandButton>
+                    <p:commandButton value="Subir documento"></p:commandButton>
+                    <p:commandButton value="Modificar solicitud"></p:commandButton>
+                </p:panelGrid>
+            </p:panel>
+        </p:panel>
+        </p:scrollPanel>
+      </h:form>
+    </h:body>
+  </html>
+</f:view>

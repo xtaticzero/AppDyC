@@ -1,0 +1,138 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+        >
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <meta http-equiv="X-UA-Compatible" content="IE=8"/>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <meta http-equiv="pragma" content="no-cache"/>
+            <meta http-equiv="cache-control" content="no-cache"/>
+            <meta http-equiv="expires" content="0"/>
+            <h:outputScript library="primefaces" name="primefaces.js"/>
+            <h:outputScript library="js" name="utils.js" target="head"/>
+            <h:outputScript library="js" name="posicion.js" target="head"/>
+            <h:outputScript library="js" name="general.js"/>
+            <h:outputStylesheet library="css/" name="formato.css"/>
+            <style type="text/css">
+                .ui-datatable tbody td {
+                    white-space: normal;
+                    font-size: 10px;
+                }
+
+                .ui-datatable thead th {
+                    white-space: normal;
+                    font-size: 11px;
+                    font-weight: bold;
+                }
+            </style>
+        </h:head>
+        <h:body>
+            <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+             
+            <p:dialog modal="true" widgetVar="statusDialog" header="#{msgValidacion.ajaxLoading}" draggable="false"
+                      resizable="false" closable="false">
+                <p:graphicImage value="../../images/ajaxloadingbar.gif"/>
+            </p:dialog>
+             
+            <h:form id="listarAnexos">
+                <p:panelGrid style="width:810px">
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.camposObligatorios}" style="color:red;"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+                <p:panel id="pnlListado" style="width:810px">
+                    <p:panelGrid>
+                        <p:row>
+                            <p:column colspan="2" style="text-align:center">
+                                <p:messages id="msgGeneral" for="msgGeneral" showDetail="true" globalOnly="true"
+                                            autoUpdate="true" closable="true"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:dataTable id="dtlAnexos" var="anexo" value="#{matrizAnexosMB.listarAnexos}"
+                                             scrollWidth="750" paginator="#{matrizAnexosMB.muestraPaginador}"
+                                             paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                             rowsPerPageTemplate="5,10,15,20" rows="15"
+                                             style="text-align:left;width:770px" resizableColumns="true"
+                                             liveResize="true" rowIndexVar="rowIndex"
+                                             rowStyleClass="#{(rowIndex mod 2) eq 0 ?'highlightA':'highlightB'}"
+                                             emptyMessage="#{msgValidacion.tblEmpty}" rowKey="#{anexo}"
+                                             selection="#{matrizAnexosMB.dyccMatrizAnexosDto}" selectionMode="single">
+                                    <f:facet name="header">
+                                        <p:toolbar>
+                                            <p:toolbarGroup align="left">
+                                                <p:commandButton id="btnNuevo" icon="ui-icon-document"
+                                                                 action="#{matrizAnexosMB.irAdicion}"
+                                                                 title="Adicionar"/>
+                                                <p:commandButton id="btnModificar" icon="ui-icon-pencil"
+                                                                 action="#{matrizAnexosMB.consultarAnexoMod}"
+                                                                 title="Modificar"/>
+                                                <p:commandButton id="btnConsulta" icon="ui-icon-search"
+                                                                 action="#{matrizAnexosMB.consultarAnexo}"
+                                                                 title="Consultar"/>
+                                                <p:commandButton id="btnEliminar" icon="ui-icon-trash"
+                                                                 update=":listarAnexos:eliminarAnexo"
+                                                                 actionListener="#{matrizAnexosMB.validarEliminacion}"
+                                                                 oncomplete="dlgEliminarAnexo.show()" title="Eliminar"/>
+                                            </p:toolbarGroup>
+                                        </p:toolbar>
+                                    </f:facet>
+                                    <p:column headerText="Nombre del Anexo" style="text-align:left;width:250px">
+                                        <h:outputText value="#{anexo.nombreAnexo}"/>
+                                    </p:column>
+                                    <p:column headerText="Descripción del Anexo">
+                                        <h:outputText value="#{anexo.descripcionAnexo}"/>
+                                    </p:column>
+                                    <f:facet name="footer">
+                                        <p:outputLabel value="#{matrizAnexosMB.totalAnexos} Resultados"
+                                                       style="text-align:left"/>
+                                    </f:facet>
+                                </p:dataTable>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:panel>
+                <p:dialog header="Eliminar Anexo" widgetVar="dlgEliminarAnexo" closable="true" resizable="false"
+                          id="eliminarAnexo" showEffect="fade" hideEffect="fade" modal="true">
+                    <p:panelGrid style="width:300px" rendered="#{matrizAnexosMB.seleccionaAnexo==true?'false':'true'}">
+                        <p:row>
+                            <p:column style="text-align:center">
+                                <p:outputLabel value="#{matrizAnexosMB.msgSeleccionaAnexo}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="2" style="text-align:center">
+                                <p:commandButton value="Cerrar" oncomplete="dlgEliminarAnexo.hide()"
+                                                 icon="ui-icon-close"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <p:panel id="pnlEliminarAnexo" style="border-style:none!important"
+                             rendered="#{matrizAnexosMB.seleccionaAnexo}">
+                        <p:panelGrid style="width:300px;text-align:center">
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel value="#{matrizAnexosMB.msgConfirmarEliminarAnexo}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <p:commandButton value="Aceptar" update=":listarAnexos"
+                                                     actionListener="#{matrizAnexosMB.eliminarAnexo}" process="@this"
+                                                     oncomplete="dlgEliminarAnexo.hide()" style="width:100px"/>
+                                    <p:spacer width="15"/>
+                                    <p:commandButton value="Cancelar" oncomplete="dlgEliminarAnexo.hide()"
+                                                     style="width:100px"/>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                    </p:panel>
+                </p:dialog>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

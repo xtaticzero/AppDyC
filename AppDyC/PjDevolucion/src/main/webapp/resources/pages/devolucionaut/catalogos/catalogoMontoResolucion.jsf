@@ -1,0 +1,233 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" 
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:pe="http://primefaces.org/ui/extensions">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <title>Administrar Monto Autorizacion de Resolucion</title>
+            <style type="text/css">
+                .ui-datatable tbody td {
+                    white-space: normal;
+                }
+
+                .ui-datatable thead th {
+                    white-space: normal;
+                }
+            </style>
+
+        </h:head>
+        <h:body>
+            <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/>
+             
+            <p:dialog modal="true" widgetVar="statusDialog" header="#{msgValidacion.ajaxLoading}" draggable="false"
+                      closable="false">
+                <h:graphicImage library="images/" name="ajaxloadingbar.gif"/>
+            </p:dialog>
+                      
+            <h:form id="formMontoResolucion">
+                <p:growl id="growl" showDetail="true" sticky="true" globalOnly="true"/>
+                <p:panel id="pnlListaMontoSAF" style="width: 100%" header="#{msgValidacion.headerMontoAutorizado}">
+                <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" globalOnly="true"
+                                display="text"/>
+                <p:toolbar style="width:892px" id="barraBotones">
+                    <p:toolbarGroup align="rigth">
+                        <p:commandButton disabled="#{catalogoMontoResolucion.banderaBotones}"
+                                         icon="ui-icon-trash"
+                                         id="inactivar"
+                                         title="#{msgValidacion.DAC00002}"
+                                         onclick="deleteConfirmDlg.show()"
+                                         ajax="true" process="@this"
+                                         style="margin:0"/>
+                        
+                        <p:commandButton oncomplete="dlgMontoResol.show();" action="#{catalogoMontoResolucion.modificarMontoResolListener}"
+                                         disabled="#{catalogoMontoResolucion.banderaBotones}"
+                                         icon="ui-icon-pencil"
+                                         id="modificar"
+                                         title="#{msgValidacion.DAC00003}"
+                                         ajax="true" process="@this"
+                                         update="dlgMontoResol,msgDialiogMontoResol" style="margin:0"/>
+                        
+                        <p:commandButton oncomplete="dlgMontoResol.show();" action="#{catalogoMontoResolucion.addMontoResolucionListener}"
+                                         icon="ui-icon-document"
+                                         id="agregar"
+                                         title="#{msgValidacion.DAC00004}"
+                                         ajax="true" process="@this"
+                                         update="dlgMontoResol" style="margin:0"/>
+                              
+                    </p:toolbarGroup>
+                </p:toolbar>
+                
+                <p:dataTable emptyMessage="#{msgValidacion.DAC00006}" 
+                             id="tabla"
+                             rowsPerPageTemplate="5,10,15,20"
+                             paginator="true"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rows="5" 
+                             rowKey="#{montoAutorizado.idMontoResolucion}" 
+                             selection="#{catalogoMontoResolucion.montoResolucionSeleccionado}"
+                             selectionMode="single"
+                             style="width:900px;"
+                             var="montoAutorizado" 
+                             value="#{catalogoMontoResolucion.lstMontosResolucion}"
+                             filteredValue="#{catalogoMontoResolucion.lstMontosResolucion}"
+                             >
+                    <p:ajax event="rowSelect" update=":formMontoResolucion:inactivar :formMontoResolucion:modificar" 
+                            listener="#{catalogoMontoResolucion.activarBotones}"/>
+                                     
+                    <p:column headerText="#{msgValidacion.DAC00008}">
+                        <h:outputText value="#{montoAutorizado.origenDevolucion}" />
+                    </p:column>
+                 
+                    <p:column headerText="#{msgValidacion.DAC00011}">
+                        <h:outputText value="#{montoAutorizado.tipoTramite}" />
+                    </p:column>
+                    <p:column headerText="#{msgValidacion.DAC00009}">
+                        <h:outputText value="#{montoAutorizado.montoAutorizado}">
+                            <f:convertNumber currencySymbol="$" currencyCode="MXN" type="currency" locale="es_MX"/>
+                        </h:outputText>
+                    </p:column>
+                    <p:column headerText="#{msgValidacion.DAC00010}">
+                        <h:outputText value="#{montoAutorizado.estado eq 1 ? 'Activo' : 'Inactivo'} " />
+                    </p:column>                    
+                </p:dataTable>
+               </p:panel>
+               
+                        <p:confirmDialog closable="true" id="deleteConfirmDialog" message="#{msgValidacion.mensajeEliminar}" severity="alert" widgetVar="deleteConfirmDlg" >
+                            <p:commandButton id="declineDelete" value="Cancelar" onclick="deleteConfirmDlg.hide()" type="button" styleClass="gmxNegativo"/>
+                            <p:commandButton actionListener="#{catalogoMontoResolucion.removeMontoAutorizadoListener}" 
+                                             id="confirmDelete" 
+                                             update="pnlMontoResol,pnlListaMontoSAF,messages" ajax="true"
+                                             value="Aceptar" styleClass="gmxPositivo"
+                                             oncomplete="deleteConfirmDlg.hide();"/>
+                        </p:confirmDialog>
+                    
+               <p:dialog id="dlgMontoResol" header="#{catalogoMontoResolucion.frmMontoSaldoAFavorDTO.tituloDialog}"
+                         widgetVar="dlgMontoResol" hideEffect="drop" modal="true" width="620px">
+                   
+
+                   
+                    <div style="text-align:left;">
+                        <p:outputLabel value="#{msgValidacion.inpObligatorio}" style="color:red;" rendered="true"/>
+                    </div>
+                   
+                   <p:panel id="pnlMontoResol" visible="true">
+                        <p:row>
+                                    <p:column colspan="2">
+                                        <p:messages id="msgDialiogMontoResol" showDetail="true" autoUpdate="true"
+                                                    closable="true" showSummary="false"  />
+                                    </p:column>
+                        </p:row>
+                       
+                        <table role="grid" border="0" cellspacing="5">
+                            <tbody>
+                                <tr role="row" class="ui-widget-content">
+                                    <td role="gridcell"  width="40%">
+                                        <p:outputLabel value="#{msgValidacion.DAC00008}"/>
+                                         
+                                        <p:outputLabel value=" *" style="color:red;"/>
+                                    </td>
+                                    <td role="gridcell" width="60%">
+                                        <h:panelGrid columns="3">
+                                            <p:selectOneMenu id="cmbOrigenDevolucion"
+                                                             required="true" style="width: 400px"
+                                                             value="#{catalogoMontoResolucion.origenDevolucion}"
+                                                             requiredMessage="#{msgValidacion.mensajeOrigenDevo}"
+                                                             >
+                                                <f:selectItem itemValue="-1" itemLabel="Seleccione una opcion" noSelectionOption="false" />
+                                                <f:selectItems value="#{catalogoMontoResolucion.listaOrigenSaldo}" var="origenDev"
+                                                               itemValue="#{origenDev.idOrigenSaldo}"
+                                                               itemLabel="#{origenDev.descripcion}"/>
+                                                <p:ajax update="cmbTipoTramite" listener="#{catalogoMontoResolucion.actualizaTipoTramite}"/>  
+                                            </p:selectOneMenu>
+                                            
+                                        </h:panelGrid>
+                                    </td>
+                                </tr>
+                                <tr role="row" class="ui-widget-content">
+                                    <td role="gridcell"  width="40%">
+                                        <p:outputLabel value="#{msgValidacion.DAC00011}" />
+                                         
+                                        <p:outputLabel value=" *" style="color:red;"/>
+                                    </td>
+                                    <td role="gridcell"  width="60%">
+                                        <h:panelGrid columns="2">
+                                            <p:selectOneMenu id="cmbTipoTramite" 
+                                                             style="width:400px" panelStyle="width:400px" 
+                                                             required="true"
+                                                             value="#{catalogoMontoResolucion.tipoTramite}"
+                                                             requiredMessage="#{msgValidacion.mensajeTipoTramite}">
+                                               <f:selectItem itemValue="" itemLabel="Seleccione una opcion"  noSelectionOption="true"/>
+                                               <f:selectItems value="#{catalogoMontoResolucion.listaTipoTramite}" var="tipoTramite"
+                                                              itemValue="#{tipoTramite.dyccTipoTramiteDTO.idTipoTramite}"
+                                                              itemLabel="#{tipoTramite.dyccTipoTramiteDTO.descripcion}"/>
+                                               <p:ajax update="cmbTipoTramite" event="valueChange"/>
+                                            </p:selectOneMenu>
+                                        </h:panelGrid>
+                                    </td>
+                                </tr>
+                                            
+                                <tr role="row" class="ui-widget-content">
+                                    <td role="gridcell"  width="40%">
+                                        <p:outputLabel value="#{msgValidacion.DAC00009}"/>
+                                         
+                                        <p:outputLabel value=" *" style="color:red;"/>
+                                    </td>
+                                    <td role="gridcell"  width="60%">
+                                        <h:panelGrid columns="2">
+                                            <pe:inputNumber id="txtMontoSAF" required="true"
+                                                         requiredMessage="#{msgValidacion.mensajeMonto}"
+                                                         value="#{catalogoMontoResolucion.montoSaldoAFavor}"
+                                                         validatorMessage="#{msgValidacion.DAC00042}"
+                                                         maxlength="10"
+                                                         maxValue="9999999999"
+                                                         decimalPlaces="0">                             
+                                                <f:validateLongRange minimum="1"/>
+                                            </pe:inputNumber>                                            
+                                        </h:panelGrid>
+                                    </td>
+                                </tr>
+                                                         
+                                
+                            <tr role="row" class="ui-widget-content">
+                                    <td role="gridcell"  width="40%">
+                                        <p:outputLabel value="Estado" rendered="#{catalogoMontoResolucion.frmMontoSaldoAFavorDTO.bandEstado}"/>
+                                         
+                                        <p:outputLabel value=" *" style="color:red;" rendered="#{catalogoMontoResolucion.frmMontoSaldoAFavorDTO.bandEstado}"/>
+                                    </td>
+                                    <td role="gridcell"  width="60%">
+                                       <h:panelGrid columns="2">
+                                            <p:selectOneMenu id="cmbEstado" 
+                                                             style="width:100px" panelStyle="width:300px" height="100"
+                                                             required="true"
+                                                             rendered="#{catalogoMontoResolucion.frmMontoSaldoAFavorDTO.bandEstado}"
+                                                             value="#{catalogoMontoResolucion.estado}">
+                                                             
+                                               <f:selectItem itemLabel="#{msgValidacion.DAC00014}" itemValue="1"/>  
+                                               <f:selectItem itemLabel="#{msgValidacion.DAC00015}" itemValue="0" />
+                                            </p:selectOneMenu>
+                                        </h:panelGrid>
+                                    </td>
+                                </tr>
+                                                         
+                                <tr role="row" class="ui-widget-content">
+                                    <td role="gridcell" colspan="2" align="center">
+                                        <p:commandButton value="Cancelar" onclick="dlgMontoResol.hide();" type="button"
+                                                         styleClass="gmxNegativo"/>&nbsp; 
+                                        <p:commandButton value="Aceptar" id="btnAceptar" 
+                                                         actionListener="#{catalogoMontoResolucion.execGuardar}"
+                                                         process="@this, pnlMontoResol"
+                                                         update="pnlMontoResol,pnlListaMontoSAF,messages"
+                                                         styleClass="gmxPositivo"/>&nbsp;
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>                
+                   </p:panel>
+               </p:dialog>     
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

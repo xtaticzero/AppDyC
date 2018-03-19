@@ -1,0 +1,738 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+        xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <title>Consultar Expediente Aviso Compensaci&ograve;n</title>
+            <h:outputStylesheet library="css/" name="formato.css"/>
+        </h:head>
+        <h:body>
+            <h:form>
+                <p:dialog id="statusBar" modal="true" widgetVar="statusDialog" header="Procesando..." draggable="false"
+                          closable="false" resizable="false">
+                    <p:graphicImage value="/resources/images/ajaxloadingbar.gif"/>
+                </p:dialog>
+                <p:panelGrid style="width:840px;text-align:left">
+                <p:row>
+                <p:column>
+                <p:messages id="msgDt" showDetail="true" autoUpdate="true" closable="true"/>
+                </p:column>
+                </p:row>
+                </p:panelGrid>
+                <!--ConsultarCasoCompensacion-->
+                <p:tabView id="tabView" style="width:840px" dynamic="true">
+                    <!--DATOS RESUMIDOS DEL CONTRIBUYENTE-->
+                    <p:tab id="tab1" title="#{msgValidacion.ce2DatosResumidosDelContribuyente}">
+                        <!--DATOS DEL CONTRIBUYENTE-->
+                        <p:fieldset legend="#{msgValidacion.ce2DatosDelContribuyente}" style="width:790px">
+                            <p:panelGrid style="width:760px;text-align:left">
+                                <p:row>
+                                    <p:column>
+                                        <p:outputLabel value="#{msgValidacion.ce2RFC}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel value="#{consultasExpedienteMB.personaDTO.rfc}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="#{consultasExpedienteMB.personaIdentificacion.tipoPersona == 'M' ? 'display:none' : 'display:disabled;'}">
+                                        <p:outputLabel value="#{msgValidacion.ce2ApellidoPaterno}"/>
+                                    </p:column>
+                                    <p:column style="#{consultasExpedienteMB.personaIdentificacion.tipoPersona == 'M' ? 'display:none' : 'display:disabled;'}">
+                                        <p:outputLabel value="#{consultasExpedienteMB.personaIdentificacion.apPaterno}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="#{consultasExpedienteMB.personaIdentificacion.tipoPersona == 'M' ? 'display:none' : 'display:disabled;'}">
+                                        <p:outputLabel value="#{msgValidacion.ce2ApellidoMaterno}"/>
+                                    </p:column>
+                                    <p:column style="#{consultasExpedienteMB.personaIdentificacion.tipoPersona == 'M' ? 'display:none' : 'display:disabled;'}">
+                                        <p:outputLabel value="#{consultasExpedienteMB.personaIdentificacion.apMaterno}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="#{consultasExpedienteMB.personaIdentificacion.tipoPersona == 'M' ? 'display:none' : 'display:disabled;'}">
+                                        <p:outputLabel value="#{msgValidacion.ce2Nombre} "/>
+                                    </p:column>
+                                    <p:column style="#{consultasExpedienteMB.personaIdentificacion.tipoPersona == 'M' ? 'display:none' : 'display:disabled;'}">
+                                        <p:outputLabel value="#{consultasExpedienteMB.personaIdentificacion.nombre}"/>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </p:fieldset>
+                        <br/>
+                        <!--INFORMACION RESUMIDA DEL TRAMITE-->
+                        <p:fieldset legend="#{msgValidacion.ce2InformacionResumidaDelTramite}" style="width:790px">
+                            <p:panelGrid style="width:760px;text-align:left">
+                                <p:row>
+                                    <p:column>
+                                        <p:outputLabel value="#{msgValidacion.ce2FechaDeRegDelTramite}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel value="28/05/2013"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel value="#{msgValidacion.ce2NumDeControl}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel value="AC121200005678"/>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </p:fieldset>
+                        <br/>
+                        <!--DOMICILIO FISCAL -->
+                        <p:fieldset legend="#{msgValidacion.ce2DomicilioFiscal}" style="width:790px">
+                            <p:panelGrid style="width:760px;text-align:left">
+                                <p:row>
+                                    <p:column>
+                                        <p:outputLabel value="#{msgValidacion.ce2Calle}"/>
+                                    </p:column>
+                                    <p:column colspan="3">
+                                        <p:outputLabel value="#{consultasExpedienteMB.domicilio.calle}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <p:outputLabel value="#{msgValidacion.ce2DelOMun}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel value="#{consultasExpedienteMB.domicilio.municipio}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel value="#{msgValidacion.ce2EntidadFed}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel value="#{consultasExpedienteMB.domicilio.entFed}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <p:outputLabel value="#{msgValidacion.ce2NumDeAdministracion}"/>
+                                    </p:column>
+                                    <p:column colspan="3">
+                                        <p:outputLabel value="#{consultasExpedienteMB.domicilio.claveAdmonLocal}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <p:outputLabel value="#{msgValidacion.ce2DescDeLaAdmin}"/>
+                                    </p:column>
+                                    <p:column colspan="3">
+                                        <p:outputLabel value="#{consultasExpedienteMB.domicilio.admonLocal}"/>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </p:fieldset>
+                        <br/>
+                        <!--BOTONES-->
+                        <div align="center">
+                            <p:commandButton value="#{msgValidacion.ce2ImprimirElExpediente}" 
+                                             style="width: 150px;height:24px"  action="#{consultasExpedienteMB.irAImprimirDetalle}"
+                                             immediate="true" ajax="false" />
+                               
+                            <p:spacer style="width:30px"/>
+                             
+                            <p:commandButton id="btnRegresar" value="#{msgValidacion.ce2Regresar}" ajax="false"/>
+                        </div>
+                        <br/>
+                    </p:tab>
+                    <!--DETALLE TRAMITE-->
+                    <p:tab id="tab2" title="#{msgValidacion.ce2DetalleTramite}">
+                        <!--INFORMACION DEL AVISO DE COMPENSACION-->
+                        <p:fieldset legend="#{msgValidacion.ce2InfoDelAvisoComp}" style="width:790px">
+                            <p:panelGrid style="width:760px;text-align:left">
+                                <p:row>
+                                    <p:column>
+                                        <p:outputLabel value="#{msgValidacion.ce2TipoDeAviso}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel value="#{consultasExpedienteMB.dyccTipoDeclaracionDTO.descripcion}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel value="#{msgValidacion.ce2DelNumControl}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel value="#{consultasExpedienteMB.dycpCompensacionDTO.numControl}"/>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </p:fieldset>
+                        <br/>
+                        <!--INFORMACION DE LA DECLARACION EN QUE SE COMPENSO-->
+                        <p:fieldset legend="#{msgValidacion.ce2InfDeLaDec}" style="width:790px">
+                            <p:panelGrid style="width:760px;text-align:left">
+                                <p:row>
+                                    <p:column>
+                                        <p:outputLabel value="#{msgValidacion.ce2Concepto}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel value="#{consultasExpedienteMB.dyccConceptoDTO.descripcion}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <p:outputLabel value="#{msgValidacion.ce2TipoDePeriodo}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel value="#{consultasExpedienteMB.dyccTipoPeriodoDTO.descripcion}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <p:outputLabel value="#{msgValidacion.ce2Periodo}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel value="#{consultasExpedienteMB.dyccPeriodoDTO.descripcion}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <p:outputLabel value="#{msgValidacion.ce2Ejercicio}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel value="#{consultasExpedienteMB.dyccEjercicioDTO.idEjercicio}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <p:outputLabel value="Impuesto:"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel value="#{consultasExpedienteMB.dyccImpuestoDTO.descripcion}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <p:outputLabel value="#{msgValidacion.ce2FechaPresentDec}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputLabel value="#{consultasExpedienteMB.dycpCompensacionDTO.fechaPresentaDec}">
+                                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                        </h:outputLabel>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <p:outputLabel value="#{msgValidacion.ce2NumDeOperacion}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel value="#{consultasExpedienteMB.dycpCompensacionDTO.numOperacionDec}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <p:outputLabel value="#{msgValidacion.ce2ImporeComp}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputLabel value="#{consultasExpedienteMB.dycpCompensacionDTO.importeCompDec}">
+                                            <f:convertNumber pattern="$ ###,###,###" locale="==-MX"/>
+                                        </h:outputLabel>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </p:fieldset>
+                        <br/>
+                        <!--CUADROS-->
+                        <!--foreach-->
+                        <p:tabView id="testView" style="width:810px">
+                            <c:forEach var="i" items="#{consultasExpedienteMB.cuadrosFin}" varStatus="NumCu">
+                                <!--CUADRO N-->
+                                <p:tab title="#{msgValidacion.ce2Cuadro} #{NumCu.index + 1}">
+                                    <!--ORIGEN DEL IMPORTE A FAVOR-->
+                                    <p:fieldset legend="#{msgValidacion.ce2OrigImpFavor}" style="width:760px">
+                                        <p:panelGrid style="width:600px;text-align:left">
+                                            <p:row>
+                                                <p:column>
+                                                    <p:outputLabel value="#{msgValidacion.ce2OrigComp}"/>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column>
+                                                    <p:outputLabel value="#{i.cuadro.origenComp}"/>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column>
+                                                    <p:outputLabel value="#{msgValidacion.ce2TipoTramite}"/>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column>
+                                                    <p:outputLabel value="#{i.cuadro.tipoTramite}"/>
+                                                </p:column>
+                                            </p:row>
+                                        </p:panelGrid>
+                                    </p:fieldset>
+                                    <br/>
+                                    <!--DATOS DE LA DIOT-->
+                                    <c:choose>
+                                        <c:when test="#{i.cuadro.presentoDIOT == 1}">
+                                            <p:fieldset legend="#{msgValidacion.ce2DatosDIOT}" style="width:760px">
+                                                <p:panelGrid style="width:600px;text-align:left">
+                                                    <p:row>
+                                                        <p:column>
+                                                            <p:outputLabel value="#{msgValidacion.ce2NumDeOperacion}"/>
+                                                        </p:column>
+                                                        <p:column>
+                                                            <p:outputLabel value="#{i.cuadro.numOperacionDIOT}"/>
+                                                        </p:column>
+                                                    </p:row>
+                                                    <p:row>
+                                                        <p:column>
+                                                            <p:outputLabel value="#{msgValidacion.ce2FechaPresentacion}"/>
+                                                        </p:column>
+                                                        <p:column>
+                                                            <h:outputLabel value="#{i.cuadro.fechaPresentacionDIOT}">
+                                                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                                            </h:outputLabel>
+                                                        </p:column>
+                                                    </p:row>
+                                                </p:panelGrid>
+                                            </p:fieldset>
+                                        </c:when>
+                                    </c:choose>
+                                    <br/>
+                                    <!--INFORMACION DEL IMPUESTO-->
+                                    <p:fieldset legend="#{msgValidacion.ce2InformDelImpuesto}" style="width:760px">
+                                        <p:panelGrid style="width:600px;text-align:left">
+                                            <p:row>
+                                                <p:column>
+                                                    <p:outputLabel value="#{msgValidacion.ce2TipoDePeriodo}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <p:outputLabel value="#{i.cuadro.tipoDePeriodo}"/>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column>
+                                                    <p:outputLabel value="#{msgValidacion.ce2Periodo}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <p:outputLabel value="#{i.cuadro.periodo}"/>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column>
+                                                    <p:outputLabel value="#{msgValidacion.ce2Ejercicio}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <p:outputLabel value="#{i.cuadro.ejercicio}"/>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column>
+                                                    <p:outputLabel value="#{msgValidacion.ce2Concepto}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <p:outputLabel value="#{i.cuadro.concepto}"/>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column>
+                                                    <p:outputLabel value="Impuesto:"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <p:outputLabel value="#{i.cuadro.impuesto}"/>
+                                                </p:column>
+                                            </p:row>
+                                        </p:panelGrid>
+                                    </p:fieldset>
+                                    <br/>
+                                    <p:fieldset legend="#{msgValidacion.ce2InformDecImpAFavor}" style="width:760px">
+                                        <p:panelGrid style="width:600px;text-align:left">
+                                            <p:row>
+                                                <p:column>
+                                                    <p:outputLabel value="#{msgValidacion.ce2EsRemanente}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <p:outputLabel value="#{i.cuadro.esRemanente}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <p:outputLabel value="#{msgValidacion.ce2DelNumControl}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <p:outputLabel value="#{i.cuadro.numeroControl}"/>
+                                                </p:column>
+                                            </p:row>
+                                        </p:panelGrid>
+                                        <!--Declaracion Complementaria-->
+                                        <c:choose>
+                                            <c:when test="#{i.cuadroDeclaracionC != null}">
+                                                <p:fieldset legend="Declaracion" style="width:730px">
+                                                    <p:panelGrid style="width:57px;text-align:left">
+                                                        <p:row>
+                                                            <p:column>
+                                                                <p:outputLabel value="#{msgValidacion.ce2TipoDeDeclaracion}"/>
+                                                            </p:column>
+                                                            <p:column>
+                                                                <c:choose>
+                                                                    <c:when test="#{i.cuadroDeclaracionC.tipoDeclaracion == 1}">
+                                                                        <p:outputLabel value="Normal"/>
+                                                                    </c:when>
+                                                                    <c:when test="#{i.cuadroDeclaracionC.tipoDeclaracion == 2}">
+                                                                        <p:outputLabel value="Complementaria"/>
+                                                                    </c:when>
+                                                                </c:choose>
+                                                            </p:column>
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column>
+                                                                <p:outputLabel value="#{msgValidacion.ce2FechaPresentacionDeclaracion}"/>
+                                                            </p:column>
+                                                            <p:column>
+                                                                <h:outputLabel value="#{i.cuadroDeclaracionC.fechaPresentacion}">
+                                                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                                                </h:outputLabel>
+                                                            </p:column>
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column>
+                                                                <p:outputLabel value="#{msgValidacion.ce2NumDeOperacion}"/>
+                                                            </p:column>
+                                                            <p:column>
+                                                                <p:outputLabel value="#{i.cuadroDeclaracionC.numOperacion}"/>
+                                                            </p:column>
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column>
+                                                                <p:outputLabel value="#{msgValidacion.ce2ImpDelSaldoOCantAFavor}"/>
+                                                            </p:column>
+                                                            <p:column>
+                                                                <h:outputLabel value="#{i.cuadroDeclaracionC.importe}">
+                                                                    <f:convertNumber pattern="$ ###,###,###" locale="==-MX"/>
+                                                                </h:outputLabel>
+                                                            </p:column>
+                                                        </p:row>
+                                                    </p:panelGrid>
+                                                </p:fieldset>
+                                            </c:when>
+                                        </c:choose>
+                                        <br/>
+                                        <!--Declaracion Normal-->
+                                        <c:choose>
+                                            <c:when test="#{i.cuadroDeclaracionN != null}">
+                                                <p:fieldset legend="Declaracion" style="width:730px">
+                                                    <p:panelGrid style="width:57px;text-align:left">
+                                                        <p:row>
+                                                            <p:column>
+                                                                <p:outputLabel value="#{msgValidacion.ce2TipoDeDeclaracion}"/>
+                                                            </p:column>
+                                                            <p:column>
+                                                                <c:choose>
+                                                                    <c:when test="#{i.cuadroDeclaracionN.tipoDeclaracion == 1}">
+                                                                        <p:outputLabel value="Normal"/>
+                                                                    </c:when>
+                                                                    <c:when test="#{i.cuadroDeclaracionN.tipoDeclaracion == 2}">
+                                                                        <p:outputLabel value="Complementaria"/>
+                                                                    </c:when>
+                                                                </c:choose>
+                                                            </p:column>
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column>
+                                                                <p:outputLabel value="#{msgValidacion.ce2FechaPresentacionDeclaracion}"/>
+                                                            </p:column>
+                                                            <p:column>
+                                                                <h:outputLabel value="#{i.cuadroDeclaracionN.fechaPresentacion}">
+                                                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                                                </h:outputLabel>
+                                                            </p:column>
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column>
+                                                                <p:outputLabel value="#{msgValidacion.ce2NumDeOperacion}"/>
+                                                            </p:column>
+                                                            <p:column>
+                                                                <p:outputLabel value="#{i.cuadroDeclaracionN.numOperacion}"/>
+                                                            </p:column>
+                                                        </p:row>
+                                                        <p:row>
+                                                            <p:column>
+                                                                <p:outputLabel value="#{msgValidacion.ce2ImpDelSaldoOCantAFavor}"/>
+                                                            </p:column>
+                                                            <p:column>
+                                                                <h:outputLabel value="#{i.cuadroDeclaracionN.importe}">
+                                                                    <f:convertNumber pattern="$ ###,###,###" locale="==-MX"/>
+                                                                </h:outputLabel>
+                                                            </p:column>
+                                                        </p:row>
+                                                    </p:panelGrid>
+                                                </p:fieldset>
+                                            </c:when>
+                                        </c:choose>
+                                        <br/>
+                                    </p:fieldset>
+                                    <br/>
+                                    <!--CANTIDAD A COMPENSAR-->
+                                    <p:fieldset legend="#{msgValidacion.ce2CantACompensar}" style="width:760px">
+                                        <p:panelGrid style="width:600px;text-align:left">
+                                            <p:row>
+                                                <p:column>
+                                                    <p:outputLabel value="#{msgValidacion.ce2ImporteActDeLaAplicacion}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <h:outputLabel value="#{i.cuadro.impActualizado}">
+                                                        <f:convertNumber pattern="$ ###,###,###" locale="==-MX"/>
+                                                    </h:outputLabel>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column>
+                                                    <p:outputLabel value="#{msgValidacion.ce2CantidadImpComp}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <h:outputLabel value="#{i.cuadro.cantImpCompensa}">
+                                                        <f:convertNumber pattern="$ ###,###,###" locale="==-MX"/>
+                                                    </h:outputLabel>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column>
+                                                    <p:outputLabel value="#{msgValidacion.ce2RemanenteDelImpComp}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <h:outputLabel value="#{i.cuadro.remImpCompensa}">
+                                                        <f:convertNumber pattern="$ ###,###,###" locale="==-MX"/>
+                                                    </h:outputLabel>
+                                                </p:column>
+                                            </p:row>
+                                        </p:panelGrid>
+                                    </p:fieldset>
+                                </p:tab>
+                            </c:forEach>
+                        </p:tabView>
+                        <br/>
+                        <!--INCONSISTENCIAS DEL AVISO DE COMPENSACION-->
+                        <p:fieldset legend="#{msgValidacion.ce2InconsAvisoComp}" style="width:790px">
+                            <p:dataTable id="inconsistencias" var="inc" value="#{consultasExpedienteMB.dataModel}"
+                                         style="width:790px" emptyMessage="No se encontraron resultados"
+                                         paginator="true" rows="10" rowsPerPageTemplate="5,10,15,20"
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                                <p:column headerText="#{msgValidacion.ce2FechaCreacion}" style="text-align:center">
+                                    <div align="left">
+                                        <h:outputLabel value="#{inc.fechaRegistro}">
+                                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                        </h:outputLabel>
+                                    </div>
+                                </p:column>
+                                <p:column headerText="#{msgValidacion.ce2Desc}" style="text-align:center">
+                                    <div align="left">
+                                        <h:outputLabel value="#{inc.descripcion} "/>
+                                    </div>
+                                </p:column>
+                            </p:dataTable>
+                        </p:fieldset>
+                        <br/>
+                        <!--Anexos rowKey="anx.nombreArchivo"-->
+                        <p:fieldset legend="#{msgValidacion.ce2Anexos}" style="width:790px">
+                            <p:dataTable id="anexos" var="anx" value="#{consultasExpedienteMB.dataModelAnexo}"
+                                         style="width:790px" emptyMessage="No se encontraron resultados"
+                                         paginator="true" rows="10" rowsPerPageTemplate="5,10,15,20"
+                                         selectionMode="single" 
+                                         selection="#{consultasExpedienteMB.dycaAvisoAnexoDTO}"
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                                <p:ajax event="rowSelect" update="btnDescargar"
+                                        listener="#{consultasExpedienteMB.onRowSelectAnexos}"/>
+                                <f:facet name="header">
+                                    <div align="left">
+                                        <p:commandButton id="btnDescargar" icon="ui-icon-disk"
+                                                         immediate="true"
+                                                         title="Descargar Documento Anexo" ajax="false"
+                                                         disabled="#{consultasExpedienteMB.varBotonAnexos}"
+                                                         actionListener="#{consultasExpedienteMB.downloadAnexos}">
+                                            <p:fileDownload value="#{consultasExpedienteMB.fileAnexos}"/>
+                                        </p:commandButton>
+                                    </div>
+                                </f:facet>
+                                <p:column headerText="#{msgValidacion.ce2Estado}">
+                                    <p:outputLabel value="Guardado"/>
+                                </p:column>
+                                <p:column headerText="#{msgValidacion.ce2Desc}" style="text-align:center">
+                                    <div align="left">
+                                        <h:outputLabel value="#{anx.nombreArchivo}"/>
+                                    </div>
+                                </p:column>
+                            </p:dataTable>
+                        </p:fieldset>
+                        <br/>
+                        <!--DOCUMENTOS ADJUNTOS-->
+                        <p:fieldset legend="#{msgValidacion.ce2Documentos}" style="width:790px">
+                            <p:dataTable id="tblAdjuntos" var="doc" value="#{consultasExpedienteMB.dataModelDocumento}"
+                                         emptyMessage="No se encontraron resultados" paginator="true" rows="10"
+                                         rowsPerPageTemplate="5,10,15,20" selectionMode="single"
+                                         selection="#{consultasExpedienteMB.dyctArchivoDTO}"
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                                <p:ajax event="rowSelect" update="descDocumento"
+                                        listener="#{consultasExpedienteMB.onRowSelectDocs}"/>
+                                <f:facet name="header">
+                                    <div align="left">
+                                        <p:commandButton id="descDocumento" icon="ui-icon-disk"
+                                                         title="Descargar Documento Adjunto" ajax="false"
+                                                         immediate="true"
+                                                         disabled="#{consultasExpedienteMB.varBotonDocs}"
+                                                         actionListener="#{consultasExpedienteMB.downloadDocs}">
+                                            <p:fileDownload value="#{consultasExpedienteMB.fileDocs}"/>
+                                        </p:commandButton>
+                                         
+                                        <!--p:commandButton id="loadDocumento" icon="ui-icon-document"
+                                                         title="Cargar Documento Adjunto" oncomplete="dlgCargar.show();"
+                                                         actionListener="#{consultasExpedienteMB.clear}"
+                                                         update="tblAdjuntos"/-->
+                                    </div>
+                                </f:facet>
+                                <p:column headerText="#{msgValidacion.ce2FechaRegistro}">
+                                    <h:outputLabel value="#{doc.fechaRegistro}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                    </h:outputLabel>
+                                </p:column>
+                                <p:column headerText="#{msgValidacion.ce2NomDelDocu}">
+                                    <h:outputLabel value="#{doc.nombreArchivo}"/>
+                                </p:column>
+                                <p:column headerText="#{msgValidacion.ce2Estado}">
+                                    <h:outputLabel value="Guardado"/>
+                                </p:column>
+                            </p:dataTable>
+                        </p:fieldset>
+                    </p:tab>
+                    <!--DETALLE CONTRIBUYENTE-->
+                    <p:tab id="tab3" title="#{msgValidacion.ce2DetalleContribuyente}">
+                        <!--DATOS GENERALES DEL CONTRIBUYENTE-->
+                        <p:fieldset legend="#{msgValidacion.ce2DatosGeneralesContribuyente}" style="width:790px">
+                            <p:panelGrid style="width:760px;text-align:left">
+                                <p:row>
+                                    <p:column>
+                                        <p:outputLabel value="#{msgValidacion.ce2RFC}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel value="#{consultasExpedienteMB.personaDTO.rfc}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="#{consultasExpedienteMB.personaIdentificacion.tipoPersona == 'M' ? 'display:none' : 'display:disabled;'}">
+                                        <p:outputLabel value="#{msgValidacion.ce2ApellidoPaterno}"/>
+                                    </p:column>
+                                    <p:column style="#{consultasExpedienteMB.personaIdentificacion.tipoPersona == 'M' ? 'display:none' : 'display:disabled;'}">
+                                        <p:outputLabel value="#{consultasExpedienteMB.personaIdentificacion.apPaterno}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="#{consultasExpedienteMB.personaIdentificacion.tipoPersona == 'M' ? 'display:none' : 'display:disabled;'}">
+                                        <p:outputLabel value="#{msgValidacion.ce2ApellidoMaterno}"/>
+                                    </p:column>
+                                    <p:column style="#{consultasExpedienteMB.personaIdentificacion.tipoPersona == 'M' ? 'display:none' : 'display:disabled;'}">
+                                        <p:outputLabel value="#{consultasExpedienteMb.personaIdentificacion.apMaterno}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="#{consultasExpedienteMB.personaIdentificacion.tipoPersona == 'M' ? 'display:none' : 'display:disabled;'}">
+                                        <p:outputLabel value="#{msgValidacion.ce2Nombre}"/>
+                                    </p:column>
+                                    <p:column style="#{consultasExpedienteMB.personaIdentificacion.tipoPersona == 'M' ? 'display:none' : 'display:disabled;'}">
+                                        <p:outputLabel value="#{consultasExpedienteMB.personaIdentificacion.nombre}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column style="#{consultasExpedienteMB.personaIdentificacion.tipoPersona == 'F' ? 'display:none' : 'display:disabled;'}">
+                                        <p:outputLabel value="#{msgValidacion.ce2DenoORazonSocial}"/>
+                                    </p:column>
+                                    <p:column style="#{consultasExpedienteMB.personaIdentificacion.tipoPersona == 'F' ? 'display:none' : 'display:disabled;'}">
+                                        <p:outputLabel value="#{consultasExpedienteMB.personaIdentificacion.denominacion}"/>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </p:fieldset>
+                        <br/>
+                        <!--DOMICILIO FISCAL-->
+                        <p:fieldset legend="#{msgValidacion.ce2DomicilioFiscal}" style="width:790px">
+                            <p:panelGrid style="width:760px;text-align:left">
+                                <p:row>
+                                    <p:column>
+                                        <p:outputLabel value="Calle del Domicilio Fiscal del Contribuyente: "/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel value="#{consultasExpedienteMB.domicilio.calle}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <p:outputLabel value="Número Exterior: "/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel value="#{consultasExpedienteMB.domicilio.numeroExt}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <p:outputLabel value="Número Interior: "/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel value="#{consultasExpedienteMB.domicilio.numeroInt}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <p:outputLabel value="Colonia: "/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel value="#{consultasExpedienteMB.domicilio.colonia}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <p:outputLabel value="Delegación o Municipio: "/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel value="#{consultasExpedienteMB.domicilio.municipio}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <p:outputLabel value="Código Postal: "/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel value="#{consultasExpedienteMB.domicilio.codigoPostal}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <p:outputLabel value="Localidad: "/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel value="#{consultasExpedienteMB.domicilio.localidad}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <p:outputLabel value="Entidad Federativa: "/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel value="#{consultasExpedienteMB.domicilio.entFed}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <p:outputLabel value="Número de Administración Desconcentrada de Auditoría Fiscal: "/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel value="#{consultasExpedienteMB.domicilio.claveAdmonLocal}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <p:outputLabel value="Descripción de la Administración de Auditoría Fiscal que Corresponde: "/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:outputLabel value="#{consultasExpedienteMB.domicilio.admonLocal}"/>
+                                    </p:column>
+                                </p:row>
+                            </p:panelGrid>
+                        </p:fieldset>
+                    </p:tab>
+                </p:tabView> 
+                
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

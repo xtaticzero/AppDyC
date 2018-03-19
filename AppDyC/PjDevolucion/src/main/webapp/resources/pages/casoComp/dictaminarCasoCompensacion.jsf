@@ -1,0 +1,570 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view contentType="text/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+        xmlns:ui="http://java.sun.com/jsf/facelets">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <meta http-equiv="X-UA-Compatible" content="IE=8"/>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <meta http-equiv="pragma" content="no-cache"/>
+            <meta http-equiv="cache-control" content="no-cache"/>
+            <meta http-equiv="expires" content="0"/>
+            <h:outputScript library="js" name="calendar-localization.js"/>
+            <h:outputStylesheet library="css/" name="dyc.css"/>
+            <style type="text/css">
+                .ui-tabs .ui-state-active a {
+                    border-bottom-color: #D9EDF5;
+                    border-bottom-width: 4px;
+                    border-bottom-style: solid;
+                }
+
+                .fileupload-content {
+                    height: 0 !important;
+                    border: none !important;
+                }
+
+                .fileupload-buttonbar {
+                    border: none !important;
+                }
+            </style>
+            <script type="text/javascript">
+              jQuery(document).ready(function () {
+                  $("textarea[name*='frmDictaminar:nota']").keyup(function () {
+                      $(this).val($(this).val().toUpperCase());
+                  });
+
+                  $("input[name*='frmEnviarAprob:fileCarga']").change(function () {
+                      return false;
+                  });
+
+              });
+
+              function descarga() {
+                  $("button[id*='frmDictaminar:archivoDescarga']").click();
+                  return false;
+              }
+
+              function start() {
+                  statusDialog.show();
+              }
+
+              function stop() {
+                  statusDialog.hide();
+              }
+            </script>
+        </h:head>
+        <h:body>
+          
+            <h:form id="frmDictaminar">
+              <ui:include src="/resources/pages/common/sessionPage.jsf"></ui:include>
+                <ui:include src="/resources/pages/common/inactividad.jsf"></ui:include>
+                <p:panel id="pnlAdicionarSolicitud" styleClass="gmxAutoAjustable">
+                    <p:messages id="messages" showDetail="false" globalOnly="true" closable="true"/>
+                    <p:panelGrid id="pnlDictaminarCC" styleClass="gmxAutoAjustable">
+                        <f:facet name="header">
+                            <p:row>
+                                <p:column>
+                                    #{msgValidacion.adycTitulo}
+                                </p:column>
+                            </p:row>
+                        </f:facet>
+                        <p:row>
+                            <p:column>
+                                <p:tabView id="tabView">
+                                    <p:tab id="tab1" title="Información general">
+                                        <br/>
+                                        <p:panelGrid id="pnlInfoCC" style="width: 80%;">
+                                            <f:facet name="header">
+                                                <p:row>
+                                                    <p:column colspan="2" style="font-weight:bold;">
+                                                        #{msgValidacion.adycInfoCC}
+                                                    </p:column>
+                                                </p:row>
+                                            </f:facet>
+                                            <p:row>
+                                                <p:column style="width: 210px;">
+                                                    <h:outputLabel value="#{msgValidacion.adycNumControl}:"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <h:outputLabel value="#{admCasosComp.numControl}"/>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column style="width: 210px;">
+                                                    <h:outputLabel value="#{msgValidacion.adycRfc}:"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <h:outputLabel value="#{admCasosComp.rfcContribuyente}"/>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column>
+                                                    <h:outputLabel value="#{msgValidacion.adycTipo}:"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <h:outputLabel value="#{pDictCCMB.tipoTramite}"/>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column>
+                                                    <h:outputLabel value="#{msgValidacion.adycEdoCC}:"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <h:outputLabel value="#{pDictCCMB.estadoCompensacion}"/>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column>
+                                                    <h:outputLabel value="#{msgValidacion.adycEdoRes}:"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <h:outputLabel value="#{pDictCCMB.estadoResolucion}"/>
+                                                </p:column>
+                                            </p:row>
+                                            
+                                            <!-- <c:if test="#{pDictCCMB.fechaAprobacionResolucion eq 'Registrado' || pDictCCMB.fechaAprobacionResolucion eq 'Improcedente'}"> -->
+                                            <p:row>
+                                                <p:column>
+                                                    <h:outputLabel value="#{msgValidacion.adycFechaAR}:"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <h:outputLabel value="#{pDictCCMB.fechaAprobacionResolucion}"/>
+                                                </p:column>
+                                            </p:row>
+                                            <!-- </c:if> -->
+                                        </p:panelGrid>
+                                        <br/>
+                                        <p:panelGrid id="pnlInfoDeclComp" style="width: 80%;">
+                                            <f:facet name="header">
+                                                <p:row>
+                                                    <p:column colspan="2">
+                                                        #{msgValidacion.adycInfoDComp}
+                                                    </p:column>
+                                                </p:row>
+                                            </f:facet>
+                                            <p:row>
+                                                <p:column style="width: 210px;">
+                                                    #{msgValidacion.adycImpComp}
+                                                    :
+                                                </p:column>
+                                                <p:column>
+                                                    <h:outputText value="#{pDictCCMB.importeCompensado}">
+                                                        <f:convertNumber pattern="¤#,##0.00" currencySymbol="$"
+                                                                         type="currency" locale="es-MX"/>
+                                                    </h:outputText>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column>Impuesto:</p:column>
+                                                <p:column>
+                                                    <h:outputLabel value="#{pDictCCMB.impuesto}"/>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column>Concepto:</p:column>
+                                                <p:column>
+                                                    <h:outputLabel value="#{pDictCCMB.concepto}"/>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column>Ejercicio:</p:column>
+                                                <p:column>
+                                                    <h:outputLabel value="#{pDictCCMB.ejercicio}"/>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column>Periodo:</p:column>
+                                                <p:column>
+                                                    <h:outputLabel value="#{pDictCCMB.periodo}"/>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column>
+                                                    #{msgValidacion.adycTDeclara}
+                                                    :
+                                                </p:column>
+                                                <p:column>
+                                                    <h:outputLabel value="#{pDictCCMB.tipoDeclaracion}"/>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column>
+                                                    #{msgValidacion.adycFechaP}
+                                                    :
+                                                </p:column>
+                                                <p:column>
+                                                    <h:outputText value="#{pDictCCMB.fechaPresentacion}">
+                                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                                    </h:outputText>
+                                                </p:column>
+                                            </p:row>
+                                        </p:panelGrid>
+                                    </p:tab>
+                                    <p:tab id="tab2_tabnoprimario" title="ICEP origen del saldo">
+                                        <br/>
+                                        <p:panelGrid id="pnlICEPOrigen" style="width: 80%;max-height: 450px;">
+                                            <f:facet name="header">
+                                                <p:row>
+                                                    <p:column colspan="2" style="font-weight:bold;">
+                                                        #{msgValidacion.adycICEPO}
+                                                    </p:column>
+                                                </p:row>
+                                            </f:facet>
+                                            <p:row>
+                                                <p:column style="width: 210px;">
+                                                    Id:
+                                                </p:column>
+                                                <p:column>
+                                                    <h:outputLabel value="#{pDictCCMB.icepOrigenSaldo.idSaldoIcep}"/>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column>
+                                                    #{msgValidacion.adycOrgSald}
+                                                    :
+                                                </p:column>
+                                                <p:column>
+                                                    <h:outputLabel value="#{pDictCCMB.icepOrigenSaldo.origenSaldo}"/>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column>Periodicidad:</p:column>
+                                                <p:column>
+                                                    <h:outputLabel value="#{pDictCCMB.icepOrigenSaldo.periodicidad}"/>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column>Periodo:</p:column>
+                                                <p:column>
+                                                    <h:outputLabel value="#{pDictCCMB.icepOrigenSaldo.periodo}"/>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column>Ejercicio:</p:column>
+                                                <p:column>
+                                                    <h:outputLabel value="#{pDictCCMB.icepOrigenSaldo.ejercicio}"/>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column>Concepto:</p:column>
+                                                <p:column>
+                                                    <h:outputLabel value="#{pDictCCMB.icepOrigenSaldo.concepto}"/>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column>
+                                                    #{msgValidacion.adycSaldoA}
+                                                    :
+                                                </p:column>
+                                                <p:column>
+                                                    <h:outputText value="#{pDictCCMB.icepOrigenSaldo.saldoAplicar}">
+                                                        <f:convertNumber pattern="¤#,##0.00" currencySymbol="$"
+                                                                         type="currency" locale="es-MX"/>
+                                                    </h:outputText>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column>
+                                                    #{msgValidacion.adycRemH}
+                                                    :
+                                                </p:column>
+                                                <p:column>
+                                                    <h:outputText value="#{pDictCCMB.icepOrigenSaldo.remanenteHistorico}">
+                                                        <f:convertNumber pattern="¤#,##0.00" currencySymbol="$"
+                                                                         type="currency" locale="es-MX"/>
+                                                    </h:outputText>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row rendered="#{!pDictCCMB.icepOrigenSaldo.origenSaldo eq 'Saldo a favor'}">
+                                                <p:column>
+                                                    #{msgValidacion.adycFechaCau}
+                                                    :
+                                                </p:column>
+                                                <p:column>
+                                                    <h:outputText value="#{pDictCCMB.icepOrigenSaldo.fechaCausacion}">
+                                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                                    </h:outputText>
+                                                </p:column>
+                                            </p:row>
+                                        </p:panelGrid>
+                                    </p:tab>
+                                    <p:tab id="tab3_tabnoprimario" title="Seguimiento">
+                                        <p:dataTable var="doc" value="#{pDictCCMB.documentos}" scrollHeight="455px;"
+                                                     style="min-height: 400px;" scrollable="true" scrollWidth="810"
+                                                     resizableColumns="true"
+                                                     emptyMessage="No existen documentos vinculados a esta compensación">
+                                            <p:column headerText="Tipo documento" width="160">
+                                                <h:outputText value="#{doc.tipoDocumento}"/>
+                                            </p:column>
+                                            <p:column headerText="Acción de seguimiento" width="210">
+                                                <h:outputText value="#{doc.accionSeguimiento}"/>
+                                            </p:column>
+                                            <p:column headerText="Responsable" width="250">
+                                                <h:outputText value="#{doc.responsable}"/>
+                                            </p:column>
+                                            <p:column headerText="Fecha" width="115">
+                                                <h:outputLabel value="#{doc.fechaReasignacion}">
+                                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                                </h:outputLabel>                                                    
+                                            </p:column>
+                                            <p:column headerText="Comentarios" width="450" style="white-space:normal">
+                                                <h:outputText value="#{doc.comentarios}"/>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </p:tab>
+                                </p:tabView>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{pDictCCMB.verOpciones}">
+                            <p:column style="font-weight: bold; text-align:left;">
+                                #{msgValidacion.adycTitulo}
+                            </p:column>
+                        </p:row>
+                        
+                        
+                        <p:row rendered="#{pDictCCMB.verOpciones}">
+                            <p:column>
+                                <table width="100%">
+                                    <tr>
+                                        <td>Opciones</td>
+                                        <td>
+                                            <p:selectOneMenu id="cmbDictamen" required="true" label="Opciones"
+                                                             validatorMessage="Opción invalida"
+                                                             value="#{pDictCCMB.idAccionSelec}">
+                                                <f:selectItem itemValue="0" itemLabel="#{msgValidacion.msjSelectOneRadio}"/>
+                                                <f:selectItems value="#{pDictCCMB.opciones}" var="i" itemValue="#{i.id}"
+                                                               itemLabel="#{i.descripcion}"/>
+                                            </p:selectOneMenu>
+                                        </td>
+                                        <td>
+                                            <!-- <p:commandButton id="cbtAceptar" value="Siguiente"
+                                                                         onclick="manejarClickBtnAceptarPDict(); return false;"
+                                                                         style="float:right;width:130px"/>
+                                                         -->
+                                            <p:commandButton id="cbtRealizarAccionEnServ" value="Siguiente"
+                                                             process="@this, cmbDictamen, pnlSelectLiquida"
+                                                             action="#{pDictCCMB.manejarAceptarPDictaminarCC}"
+                                                             update="dlgAResolucion, dlgAReasigDictaminador, dlgReasignacionDictaminador, dlgAEscalar, :frmEnviarAprob:dlgEnviarAprob, archivoDescarga"
+                                                             styleClass="btn btn-primary"/>
+                                             
+                                            <!--style="visibility:hidden; display: none;"   style="float:right;width:130px" -->
+                                             
+                                            <p:commandButton id="archivoDescarga" ajax="false" value="Descarga"
+                                                             immediate="true"
+                                                             onclick="PrimeFaces.monitorDownload(start, stop)"
+                                                             style="visibility:hidden; display: none;">
+                                                <p:fileDownload value="#{admCasosComp.archivoDescarga}"/>
+                                            </p:commandButton><!--
+                                                        <p:commandButton id="archivoDescarga2" ajax="false"
+                                                                         immediate="true"
+                                                                         onclick="PrimeFaces.monitorDownload(start, stop)"
+                                                                         value="Descarga2">
+                                                            <p:fileDownload value="#{pDictCCMB.ADescarga}"/>
+                                                        </p:commandButton>
+-->
+                                        </td>
+                                    </tr>
+                                     
+                                    <tr>
+                                        <td colspan="3">
+                                        
+                                        
+                                        <!--    <p:button id="btnCancelar" value="Anterior"
+                                                      outcome="#{pDictCCMB.nruler}"/>   -->
+                                                      
+                                            <p:commandButton id="btnCancelar" value="Anterior" immediate="true"
+                                                              action="#{pDictCCMB.regresarPantallaAnterior}" />
+                                             
+                                            <p:commandButton id="cbtRealizarAccionEnServ2" style="display: none;"
+                                                             action="#{pDictCCMB.manejarAceptarPDictaminarCC}"/>
+                                             
+                                            <p:commandButton value="Registrar nota" type="button"
+                                                             onclick="dlgNota.show();"/>
+                                             
+                                            <!--p:commandButton value="Consultar Info. Fiscal" actionListener="#{bandCCMB.dictaminar}"
+                                         ajax="false" style="width:170px"/-->
+                                             
+                                            <p:commandButton value="Consultar Expediente"
+                                                             actionListener="#{pDictCCMB.consultarExpediente}" immediate="true"
+                                                             styleClass="btn btn-primary"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </p:column>
+                        </p:row>
+                        
+                        
+                        
+                        <!-- <p:button id="btnCancelar2" value="Anterior"
+                                          outcome="#{pDictCCMB.mbSession.NRule}"/> -->
+                        
+                        <p:row rendered="#{!pDictCCMB.verOpciones}">
+                            <p:column style="text-aling:right;">
+                                
+                                          
+                                <p:commandButton id="btnCancelar2" value="Anterior" immediate="true" ajax="false"
+                                                              action="#{pDictCCMB.regresarPantallaAnterior}" />
+                                          
+                                <p:commandButton value="Consultar Expediente" actionListener="#{pDictCCMB.consultarExpediente}"
+                                                 immediate="true" styleClass="btn btn-primary"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:panel>
+                <!-- ::::::::::::::::::::::::: REGISTRAR NOTAS :::::::::::::::::::::::::  -->
+                 <p:dialog id="dlgCloseD" header="#{msgValidacion.msjConfirmacion}" widgetVar="dlgCloseD" modal="true"
+                           width="600" height="220" rendered="true" resizable="true" closable="true" >
+                    <p:panelGrid id="dlgTesPanelDocumento" style="width:100%;">
+                        <p:row>
+                            <p:column>
+                              <h:outputText value="#{msgValidacion.dic_caso_comp_MSG022}" />
+                            </p:column>
+                        </p:row>
+                        <p:row  style="text-align:left;" colspan="2">
+                                <p:column>
+                                <p:commandButton id="btnCancelarID" value="Salir" immediate="true"
+                                                              action="#{pDictCCMB.regresarPantallaAnterior}" />
+                                </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:dialog>
+                <p:dialog   id="dlgTes" header="#{msgValidacion.msjConfirmacion}" widgetVar="dlgTes" modal="true"
+                            width="600" height="220" rendered="true" resizable="true" closable="true" >
+                    <p:panelGrid id="dlgTesPanel" style="width:100%;">
+                        <p:row>
+                            <p:column>
+                              <h:outputText value="#{msgValidacion.dic_caso_comp_MSG021}" />
+                            </p:column>
+                        </p:row>
+                        <p:row  style="text-align:left;" colspan="3">
+                                <p:column>
+
+                                <p:commandButton id="noAceptaNyV" value="No" 
+                                                 onclick="dlgTes.hide();"/>
+                                <p:commandButton id="aceptaNyV" value="Si" 
+                                                 actionListener="#{pDictCCMB.cambioDeEstadoEnProceso}"
+                                                 process="@this"
+                                                 
+                                                 oncomplete="dlgTes.hide();"/>                                    
+                                </p:column>
+                        </p:row>
+                        </p:panelGrid>
+                    </p:dialog>
+                <p:dialog id="modalDialog" header="#{msgValidacion.asDialogNota}" widgetVar="dlgNota" modal="true"
+                          width="450" resizable="false" closable="true">
+                    <div style="text-align:left;width:360px;height:20px;font-size:11px;">
+                        <p:outputLabel value="#{msgValidacion.asdCamposRequeridos}" style="color:red;"/>
+                    </div>
+                    <p:panelGrid id="pnlNota" style="width:100%;">
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="#{msgValidacion.asLblNota}"/>
+                                <h:outputLabel value="*" style="color:red; width: 10px;"/>
+                            </p:column>
+                            <p:column>
+                                <p:inputTextarea id="nota" rows="6" cols="45" required="true" value="#{pDictCCMB.nota}"
+                                                 label="Nota" maxlength="250" counter="counterN"
+                                                 counterTemplate="Quedan {0} caracteres" autoResize="false"/>
+                                <br/>
+                                <p:spacer style="width:6px"/>
+                                <h:outputText id="counterN"/>
+                                <p:message for="nota" id="msgNota" display="text"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="2">
+                                <p:commandButton value="#{msgValidacion.Cancelar}" oncomplete="dlgNota.hide();"
+                                                 styleClass="gmxNegativo"/>
+                                <p:commandButton id="btnGuardarNota" value="#{msgValidacion.asBtnNota}"
+                                                 oncomplete="if(!args.validationFailed) dlgNota.hide()"
+                                                 styleClass="gmxPositivo" actionListener="#{pDictCCMB.insertarNota}"
+                                                 process="@this, nota" update="messages"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:dialog>
+                
+                 <p:dialog id="dlgEmitirResolucion" header="Emitir resolución" widgetVar="dlgEmitirResolucion" modal="true" 
+                    style="max-width: 600px; min-height:170px;" resizable="true" closable="true">
+
+                    <p:panel id="pnlSelectLiquida" styleClass="panelgrid">
+                        <p:panelGrid rendered="#{pDictCCMB.pnlLiquida}">
+                            <p:row>
+                                <p:column>
+                                    <b>Tipo de resoluci&oacute;n:</b>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <p:messages id="msgLiquida" showDetail="false" closable="true"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <p:selectOneMenu id="cmbLiquidacion" value="#{pDictCCMB.idSelectLiquida}"
+                                                     required="true" style="width: 400px" widgetVar="cmbResolucion">
+                                        <f:selectItem itemValue="0" itemLabel="-- Seleccione una opción --"/>
+                                        <f:selectItem itemValue="1" itemLabel="Registrar aviso o caso de compensación"/>
+                                        <f:selectItem itemValue="2" itemLabel="Compensación improcedente"/>
+                                        <f:selectItem itemValue="3" itemLabel="Saldo a favor improcedente"/>
+                                    </p:selectOneMenu>
+                                    <p:message for="cmbLiquidacion" display="text"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <p:button value="#{msgValidacion.Cancelar}" onclick="dlgEmitirResolucion.hide()"
+                                              outcome="bandejaCompensaciones"/>
+                                    <p:commandButton id="btnAceptarER" value="Aceptar"
+                                                     action="#{pDictCCMB.selectLiquidacion}"
+                                                     process="@this, cmbLiquidacion" update="pnlSelectLiquida"/>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                        <p:panelGrid rendered="#{!pDictCCMB.pnlLiquida}">
+                            <p:row>
+                                <p:column>
+                                    <h:outputLabel value="#{msgValidacion.acc00049}"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <p:messages id="msgLiquidaA" showDetail="false" closable="true" autoUpdate="true"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <p:selectOneMenu id="cmbSuperiorAAprobar" style="width: 400px" required="true"
+                                                     value="#{admCasosComp.idNumAprob}" widgetVar="cmbSuperiorRegComp">
+                                        <f:selectItem itemValue="0" itemLabel="-- Seleccione una opción --"/>
+                                        <f:selectItems value="#{admCasosComp.aprobadores}" var="supAux"
+                                                       itemValue="#{supAux.id}" itemLabel="#{supAux.descripcion}"/>
+                                    </p:selectOneMenu>
+                                    <p:message for="cmbSuperiorAAprobar" display="text"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <p:button value="#{msgValidacion.Cancelar}" onclick="dlgEmitirResolucion.hide()"
+                                              outcome="bandejaCompensaciones"/>
+                                    <p:commandButton id="cbtAceptarDEAAH" value="Aceptar"
+                                                     process="@this, cmbSuperiorAAprobar" update="msgLiquida"
+                                                     action="#{pEmitirResolucionCCMB.registrarCompensacion}"/>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                    </p:panel>
+                </p:dialog>
+
+                
+                <ui:insert name="aprobarResolucion">
+                    <ui:include src="aprobarResol.jsf"/>
+                </ui:insert>
+            </h:form>
+             
+            <ui:insert name="enviarAprobacion">
+                <ui:include src="enviarAprobacion.jsf"/>
+            </ui:insert>
+        </h:body>
+    </html>
+</f:view>

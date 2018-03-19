@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+        >
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <link type="text/css" rel="stylesheet" href="../../css/icon.css"/>
+            <link type="text/css" rel="stylesheet" href="#{request.contextPath}/resources/css/screen.css"/>
+            <link type="text/css" rel="stylesheet" href="#{request.contextPath}/resources/css/satgobmx_2_0.css"/>
+        </h:head>
+        <h:body>
+            <h:form id="construccionErrorForm">
+                <p:growl showDetail="true" id="msgGrw" globalOnly="true"/>
+                <p:messages showDetail="true" id="msg" globalOnly="true"/>
+                <div align="center">
+                    <p:panel style="width:820px;" header="Aviso importante!" id="panelCap" styleClass="ui-widget-content-no-border">
+                        <p:outputPanel rendered="#{mensajeErrorMB.isImgVisible}">
+                            <img src="../../images/warning.png" align="middle" alt="" /> 
+                        </p:outputPanel>
+                        <div class="#{mensajeErrorMB.messages}">
+                            <ul>
+                                <li>
+                                    <span class="#{mensajeErrorMB.icon}"></span>
+                                    <span class="ui-messages-error-summary">
+                                        #{mensajeErrorMB.error}</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </p:panel>
+                </div>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

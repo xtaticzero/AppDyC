@@ -1,0 +1,348 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" 
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:pe="http://primefaces.org/ui/extensions"
+        >
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <title>Modificaci&oacute;n de tipos de tr&aacute;mite</title>
+            <style type="text/css">
+                .ui-picklist .ui-picklist-list {
+                    height: 200px !important;
+                    width: 400px;
+                }
+                
+                .ui-picklist div {
+                    font-weight: normal;
+                }
+
+                .ui-selectlistbox-item {
+                    padding-bottom: 4px !important;
+                    margin: 9px !important;
+                    padding-top: 4px !important;
+                }
+                
+                #modificaTipoTramite\:idConcepto_panel {
+                    width: 400px;
+                }
+            </style>
+            <script type="text/javascript">
+                $(document).ready(
+                    function(){
+                        var rx = /INPUT|SELECT|TEXTAREA/i;
+                        $(document).bind("keydown keypress", function(e){
+                            if( e.which == 8 ){ // 8 == backspace
+                                if(!rx.test(e.target.tagName) || e.target.disabled || e.target.readOnly ){
+                                    e.preventDefault();
+                                }
+                            }
+                        });
+                    }
+                );
+            </script>
+        </h:head>
+        <h:body>
+            <h:form id="modificaTipoTramite">
+                <p:panel id="panelPrincipal" visible="true" style="width:900px;" styleClass="panelgrid">
+                    <f:facet name="header">
+                        <div align="center">Modificaci&oacute;n de tr&aacute;mites</div>
+                    </f:facet>
+                    <h:panelGrid style="width:100%" columns="2" id="panel1">
+                        <p:column>
+                            <p:outputLabel value="Los Campos Marcados con * son Obligatorios" style="color:red;"/>
+                        </p:column>
+                        <p:column></p:column>
+                        <p:column width="200" >
+                            <p:outputLabel value="Descripci&oacute;n" />
+                            <p:outputLabel style="color:red;">*</p:outputLabel>
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="descripcionTramite" required="true" requiredMessage="#{msgValidacion.diRequerido}" size="50" value="#{modificarTipoTramite.descripcion}" />
+                            <p:message for="descripcionTramite" />
+                        </p:column>
+                        <p:column >
+                            <p:outputLabel value="ID del tr&aacute;mite" />
+                            <p:outputLabel style="color:red;">*</p:outputLabel>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel id="idTramite" 
+                                         value="#{modificarTipoTramite.idTramite}" 
+                                         >
+                            </p:outputLabel>
+                        </p:column>
+                        <p:column >
+                            <p:outputLabel value="Tipo de servicio" />
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu id="idTipoServicio" 
+                                             required="true"
+                                             requiredMessage="#{msgValidacion.diRequerido}"
+                                             style="width:300px" 
+                                             value="#{modificarTipoTramite.tipoServicio}" 
+                                             >
+                                <p:ajax event="change" listener="#{modificarTipoTramite.addOrigenSaldoListener}" update="idOrigenSaldo" />
+                                <f:selectItem itemLabel="#{msgValidacion.asComboSeleccion}"  itemValue="0"/>
+                                <f:selectItems value="#{modificarTipoTramite.listaTipoServicio}" var="tipoServicio" itemLabel="#{tipoServicio.descripcion}" itemValue="#{tipoServicio.idTipoServicio}"/>
+                            </p:selectOneMenu>
+                            <p:message for="idTipoServicio" />
+                        </p:column>
+                        <p:column >
+                            <p:outputLabel value="Origen del saldo" />
+                        </p:column>
+                        <p:column id="columnaSaldo">
+                            <p:selectOneMenu id="idOrigenSaldo" 
+                                             required="false"
+                                             requiredMessage="#{msgValidacion.diRequerido}"
+                                             style="width:300px" 
+                                             value="#{modificarTipoTramite.origenSaldo}"
+                                             >
+                                <f:selectItem itemLabel="#{msgValidacion.asComboSeleccion}" itemValue=""/>
+                                <f:selectItems value="#{modificarTipoTramite.listaOrigenSaldo}" var="origenSaldo" itemLabel="#{origenSaldo.descripcion}" itemValue="#{origenSaldo.idOrigenSaldo}"/>
+                            </p:selectOneMenu>
+                            <p:message for="idOrigenSaldo" />
+                        </p:column>
+                        <p:column >
+                            <p:outputLabel value="Impuesto" />
+                            <p:outputLabel style="color:red;">*</p:outputLabel>
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu id="idImpuesto" 
+                                             required="true"
+                                             requiredMessage="#{msgValidacion.diRequerido}"
+                                             style="width:300px" 
+                                             value="#{modificarTipoTramite.impuesto}"
+                                             >
+                                <p:ajax event="change" listener="#{modificarTipoTramite.addConceptoListener}" update="idConcepto" />
+                                <f:selectItem itemLabel="#{msgValidacion.asComboSeleccion}" itemValue=""/>
+                                <f:selectItems value="#{modificarTipoTramite.listaImpuestos}" var="impuesto" itemLabel="#{impuesto.descripcion}" itemValue="#{impuesto.idImpuesto}"/>
+                            </p:selectOneMenu>
+                            <p:message for="idImpuesto" />
+                        </p:column>
+                        <p:column >
+                            <p:outputLabel value="Concepto" />
+                            <p:outputLabel style="color:red;">*</p:outputLabel>
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu id="idConcepto" 
+                                             required="true"
+                                             requiredMessage="#{msgValidacion.diRequerido}"
+                                             style="width:300px; white-space: nowrap"   
+                                             value="#{modificarTipoTramite.concepto}"
+                                             >
+                                <f:selectItem itemLabel="#{msgValidacion.asComboSeleccion}" itemValue=""/>
+                                <f:selectItems itemLabel="#{concepto.idConcepto} - #{concepto.descripcion}" 
+                                               itemValue="#{concepto.idConcepto}"
+                                               style="width:300px; white-space: nowrap"   
+                                               value="#{modificarTipoTramite.listaConceptos}" 
+                                               var="concepto" 
+                                               />
+                            </p:selectOneMenu>
+                            <p:message for="idConcepto" />
+                        </p:column>
+                        <p:column >
+                            <p:outputLabel value="Clave Contable" />
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="idClaveContable" 
+                                         maxlength="30"
+                                         required="false" 
+                                         requiredMessage="#{msgValidacion.diRequerido}" 
+                                         size="50" 
+                                         value="#{modificarTipoTramite.claveContable}" />
+                            <p:message for="idClaveContable" />
+                        </p:column>
+                        <p:column >
+                            <p:outputLabel value="Clave de c&oacute;mputo" />
+                            <p:outputLabel style="color:red;">*</p:outputLabel>
+                        </p:column> 
+                        <p:column>
+                            <p:inputText id="idClaveComputo" 
+                                         maxlength="15"
+                                         required="true" 
+                                         requiredMessage="#{msgValidacion.diRequerido}" 
+                                         size="50" 
+                                         value="#{modificarTipoTramite.claveComputo}">
+                            <pe:keyFilter regEx="/[0-9]/i"/> 
+                            </p:inputText>
+                            <p:message for="idClaveComputo" />
+                        </p:column>
+                        <p:column >
+                            <p:outputLabel value="&iquest;Requiere CCI?" />
+                            <p:outputLabel style="color:red;">*</p:outputLabel>
+                        </p:column>
+                        <p:column>
+                            <p:selectOneRadio id="idRequiereCCI" required="true" requiredMessage="#{msgValidacion.diRequerido}" value="#{modificarTipoTramite.requiereCCI}" >
+                                <f:selectItem itemLabel="Si" itemValue="1" />
+                                <f:selectItem itemLabel="No" itemValue="0" />
+                            </p:selectOneRadio>
+                            <p:message for="idRequiereCCI" />
+                        </p:column>
+                        <p:column >
+                            <p:outputLabel value="&iquest;Resoluci&oacute;n autom&aacute;tica?" />
+                            <p:outputLabel style="color:red;">*</p:outputLabel>
+                        </p:column>
+                        <p:column>
+                            <p:selectOneRadio id="idResolucionAutomatica" required="true" requiredMessage="#{msgValidacion.diRequerido}" value="#{modificarTipoTramite.resolucionAutomatica}" >
+                                <f:selectItem itemLabel="Si" itemValue="1" />
+                                <f:selectItem itemLabel="No" itemValue="0" />
+                            </p:selectOneRadio>
+                            <p:message for="idResolucionAutomatica" />
+                        </p:column>
+                        <p:column >
+                            <p:outputLabel value="Puntos de asigaci&oacute;n" />
+                            <p:outputLabel style="color:red;">*</p:outputLabel>
+                        </p:column>
+                        <p:column>
+                            <pe:inputNumber decimalPlaces="0"  
+                                            id="idPuntosAsignacion" 
+                                            maxlength="2"
+                                            maxValue="99" 
+                                            validator="validadorNumerico"
+                                            value="#{modificarTipoTramite.puntosAsignacion}" 
+                                            required="true"
+                                            requiredMessage="#{msgValidacion.diRequerido}" 
+                                            size="50"
+                                            >
+                            </pe:inputNumber>
+                            <p:message for="idPuntosAsignacion" />
+                        </p:column>
+                    </h:panelGrid>
+                    <h:panelGrid style="width:100%" id="panel2" >
+                        <p:column >
+                            <br />
+                            <p:outputLabel value="Tipos de Unidades Administrativas" />
+                            <p:outputLabel style="color:red;">*</p:outputLabel>
+                        </p:column>
+                        <p:column >
+                            <p:pickList converter="uniAdmtvaPickListConverter" 
+                                        id="pickList" 
+                                        itemLabel="#{unidadesAdmvas.descripcion}"
+                                        itemValue="#{unidadesAdmvas}" 
+                                        required="true" 
+                                        requiredMessage="#{msgValidacion.diRequerido}"
+                                        value="#{modificarTipoTramite.listaUnidadAdmtvaTipo}" 
+                                        var="unidadesAdmvas">
+                                <f:facet name="sourceCaption">Disponibles</f:facet>
+                                <f:facet name="targetCaption">Asignados</f:facet>
+                            </p:pickList>
+                            <p:message for="pickList" />
+                        </p:column>
+                    </h:panelGrid>
+                    
+                    <h:panelGrid style="width:100%" columns="2" id="panel3">
+                    
+                            <p:column style="width:200px;" >
+                                <p:outputLabel value="Tipo de plazo" style="width:100%" />
+                                <p:outputLabel style="color:red;">*</p:outputLabel>
+                            </p:column>
+                            <p:column>
+                                <p:selectOneMenu id="idTipoPlazo" 
+                                                 required="true"
+                                                 requiredMessage="#{msgValidacion.diRequerido}"
+                                                 style="width:300px" 
+                                                 value="#{modificarTipoTramite.tipoPlazo}"
+                                                 >
+                                    <f:selectItem itemLabel="#{msgValidacion.asComboSeleccion}" itemValue=""/>
+                                    <f:selectItems value="#{modificarTipoTramite.listaTipoPlazo}" var="tipoPlazo" itemLabel="#{tipoPlazo.descripcion}" itemValue="#{tipoPlazo.idTipoPlazo}"/>
+                                </p:selectOneMenu>
+                                <p:message for="idTipoPlazo" />
+                            </p:column>
+                      
+                            <p:column >
+                                <p:outputLabel value="N&uacute;mero de d&iacute;as" />
+                                <p:outputLabel style="color:red;">*</p:outputLabel>
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="idNumeroDias" 
+                                             required="true" 
+                                             requiredMessage="#{msgValidacion.diRequerido}" 
+                                             size="50" 
+                                             value="#{modificarTipoTramite.numeroDeDias}" 
+                                             >
+                                    <f:validateLength minimum="1" maximum="3" />
+                                </p:inputText>
+                                <p:message for="idNumeroDias" />
+                            </p:column>
+                    </h:panelGrid>
+                    <h:panelGrid style="width:100%" id="panel4" >
+                        <p:column >
+                            <br />
+                            <p:outputLabel value="Roles" />
+                            <p:outputLabel style="color:red;">*</p:outputLabel>
+                        </p:column>
+                        <p:column >
+                            <p:pickList id="pickList2" converter="rolPickListConverter" required="true" requiredMessage="#{msgValidacion.diRequerido}" value="#{modificarTipoTramite.listaRoles}" var="roles" itemLabel="#{roles.descripcion}" itemValue="#{roles}">
+                                <f:facet name="sourceCaption">Disponibles</f:facet>
+                                <f:facet name="targetCaption">Asignados</f:facet>
+                            </p:pickList>
+                            
+                            <p:message for="pickList2" />
+                        </p:column>
+                        <p:column >
+                            <br />
+                            <p:outputLabel value="Anexos" />
+                        </p:column>
+                        <p:column >
+                            <p:pickList  id="pickList3" converter="anexoPickListConverter" required="false" requiredMessage="#{msgValidacion.diRequerido}" value="#{modificarTipoTramite.listaMatrizAnexos}" var="anexos" itemLabel="#{anexos.nombreAnexo}" itemValue="#{anexos}">
+                                <f:facet name="sourceCaption">Disponibles</f:facet>
+                                <f:facet name="targetCaption">Asignados</f:facet>
+                            </p:pickList>
+                            <p:message for="pickList3" />
+                        </p:column>
+                        <p:column >
+                            <br />
+                            <p:outputLabel value="Informaci&oacute;n a requerir" />
+                        </p:column>
+                        <p:column >
+                            <p:pickList  id="pickList4" converter="infoARequerirPickListConverter" required="false" requiredMessage="#{msgValidacion.diRequerido}" value="#{modificarTipoTramite.listaInfoARequerir}" var="infoARequerir" itemLabel="#{infoARequerir.descripcion}" itemValue="#{infoARequerir}">
+                                <f:facet name="sourceCaption">Disponibles</f:facet>
+                                <f:facet name="targetCaption">Asignados</f:facet>
+                            </p:pickList>
+                            <p:message for="pickList4" />
+                        </p:column>
+                        <p:column >
+                            <br />
+                            <p:outputLabel value="Subtr&aacute;mites" />
+                        </p:column>
+                        <p:column >
+                            <p:pickList  id="pickList5" converter="subtramitePickListConverter" required="false" requiredMessage="#{msgValidacion.diRequerido}" value="#{modificarTipoTramite.listaSubtramites}" var="subtramites" itemLabel="#{subtramites.descripcion}" itemValue="#{subtramites}">
+                                <f:facet name="sourceCaption">Disponibles</f:facet>
+                                <f:facet name="targetCaption">Asignados</f:facet>
+                            </p:pickList>
+                            <p:message for="pickList5" />
+                        </p:column>
+                        <p:column >
+                            <br />
+                            <p:outputLabel value="Suborigen de saldo" />
+                        </p:column>
+                        <p:column >
+                            <p:pickList  id="pickList6" converter="suborigenPickListConverter" required="false" requiredMessage="#{msgValidacion.diRequerido}" value="#{modificarTipoTramite.listaSubOrigenesSaldo}" var="suborigensaldo" itemLabel="#{suborigensaldo.descripcion}" itemValue="#{suborigensaldo}">
+                                <f:facet name="sourceCaption">Disponibles</f:facet>
+                                <f:facet name="targetCaption">Asignados</f:facet>
+                            </p:pickList>
+                            <p:message for="pickList6" />
+                        </p:column>
+                        <p:column >
+                            <br />
+                            <p:outputLabel value="Tipos de periodo" />
+                        </p:column>
+                        <p:column >
+                            <p:pickList  id="pickList7" converter="tipoPeriodoPickListConverter" required="false" requiredMessage="#{msgValidacion.diRequerido}" value="#{modificarTipoTramite.listaTipoPeriodo}" var="tipoPeriodo" itemLabel="#{tipoPeriodo.descripcion}" itemValue="#{tipoPeriodo}" >
+                                <f:facet name="sourceCaption">Disponibles</f:facet>
+                                <f:facet name="targetCaption">Asignados</f:facet>
+                            </p:pickList>
+                            <p:message for="pickList7" />
+                        </p:column>
+                    </h:panelGrid>
+                    <p:panel style="height:43px">
+                        <p:commandButton value="Cancelar" immediate="true" process="@this" action="#{modificarTipoTramite.regresar}" styleClass="gmxNegativo" />
+                        <p:commandButton value="Modificar" update="panelPrincipal" process="@form" actionListener="#{modificarTipoTramite.addTipoTramiteListener}" styleClass="gmxPositivo" />
+                    </p:panel>
+                </p:panel>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" 
+        xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions" >
+    <h:form id="frmBitacoraAjustes">
+        <p:dialog   id="dlgBitacoraAjustes" header="Bitácora de ajustes" draggable="true" resizable="false"
+                widgetVar="wDlgBitacoraAjustes" modal="false" closable="true" width="750px" height="500px" visible="#{mbBitacoraAjustes.mostrarDialog}">
+            <p:panelGrid id="pnlGrid" style="width: 100%; height:98%;" >
+                <p:row>
+                    <p:column>
+                        <p:messages id="msjsDlgBitacoraAjustes" showDetail="true" autoUpdate="false" closable="true" globalOnly="true"/>
+                    </p:column>
+                </p:row>
+                
+                 <p:row>
+                    <p:column>
+                        <h:outputText value="Cadena digital ICEP:"/>
+                        <p:outputLabel value=" #{detalleIcepMB.descripcionIcep}" style="color:blue;"/>
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column>
+                        <p:dataTable    id="tbAcciones" var="accion" value="#{mbBitacoraAjustes.filasIcep}" 
+                                        rowKey="#{accion.idAccionMovSal}" style="width:100%; padding:0; font-size:13.5px;" rowIndexVar="rowIndex"
+                                        rowStyleClass="#{(rowIndex mod 2) eq 0 ?'highlightA':'highlightB'}"
+                                        emptyMessage="#{msgValidacion.tblEmpty}">
+
+                            <p:column headerText="Acción" width="40">
+                                <div title="#{accion.tipoAccion}">
+                                    <h:panelGroup styleClass="#{accion.styleClass}" />
+                                </div>
+                            </p:column>
+                            <p:column headerText="movimiento" sortBy="#{accion.movimiento}" width="70">
+                                <h:outputText value="#{accion.movimiento}"/>
+                            </p:column>
+                            <p:column headerText="Monto" style="text-align: right;" width="120">
+                                <h:outputText value="#{accion.monto}">
+                                    <f:convertNumber pattern="¤#,##0.00" currencySymbol="$" type="currency"
+                                                     locale="es-MX"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="Responsable" width="200">
+                                <h:outputText value="#{accion.responsable}"/>
+                            </p:column>
+                            <p:column headerText="Justificación" width="200">
+                                <h:outputText value="#{accion.justificacion}"/>
+                            </p:column>
+
+                            <p:column headerText="Fecha acción" sortBy="#{accion.fecha}" width="80">
+                                <h:outputText value="#{accion.fecha}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy HH:mm 'hrs'"/>
+                                </h:outputText>
+                            </p:column>
+                        </p:dataTable>                    
+                    </p:column>
+                </p:row>
+
+                <f:facet name="footer">
+                    <p:row>
+                        <p:column>
+                            <div align="center">
+                                <p:commandButton    value="Cerrar" update="frmBitacoraAjustes" actionListener="#{mbBitacoraAjustes.cerrar}"
+                                                    process="@this" icon="ui-icon-close"/>
+
+                                <p:commandButton    id="btnRefrescar" value="Refrescar" update="frmBitacoraAjustes" actionListener="#{mbBitacoraAjustes.mostrarDialog}"
+                                                    process="@this" icon="ui-icon-refresh"/>
+                            </div>
+                        </p:column>
+                    </p:row>
+                </f:facet>
+        </p:panelGrid>
+
+      </p:dialog>
+    </h:form>
+
+</f:view>

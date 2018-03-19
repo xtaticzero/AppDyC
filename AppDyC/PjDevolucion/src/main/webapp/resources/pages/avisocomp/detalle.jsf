@@ -1,0 +1,1030 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui"
+        xmlns:c="http://java.sun.com/jsp/jstl/core"
+        xmlns:pe="http://primefaces.org/ui/extensions" xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <meta http-equiv="pragma" content="no-cache"/>
+            <meta http-equiv="cache-control" content="no-cache"/>
+            <meta http-equiv="expires" content="0"/>
+            <h:outputScript library="js" name="general.js"/>
+            <style type="text/css">
+                .ui-selectonemenu{height:39px!important;}
+                .ui-selectonemenu .ui-state-focus{height:39px!important;}
+                .ui-selectonemenu .ui-state-active{height:39px!important;}
+                 .ui-messages-error, .ui-message-error {
+                    color: #b94a48!important;background-color: #ffffff!important;border-color: #ffffff!important;
+                    margin-left: -10px !important;
+                    margin-top: -20px !important;
+                }
+                #formDetalleCuadro\:datosOrigen {
+                    margin-top: 0px !important;
+                }
+                #formDetalleCuadro\:msgDI_Ejercicio {
+                     margin-top: 0px !important;
+                }
+                #formDetalleCuadro\:msgDI_TipoPeriodo {
+                      margin-top: 0px !important;
+                }
+                #formDetalleCuadro\:msgDI_Periodo {
+                      margin-top: 0px !important;
+                }
+                
+                #formDetalleCuadro\:datosTipoTramite
+                {
+                     margin-left: 105px !important;
+                     margin-top: 0px !important;
+                }
+                .ui-state-error,  .ui-state-error{border: 1px solid #953434 !important;background:#ffffff!important;}
+             
+                .ui-wizard-nav-next:hover
+                {
+                    background:#2276D7 !important;
+                    border:1px solid #2276D7 !important;
+                    color:#fff !important;
+                    box-shadow: 0 2px 0 0 #1b5eab !important;
+                }
+
+                .ui-wizard-nav-next{
+                    display: inline-block !important;
+                    position: relative !important;
+                    padding: 0 !important;
+                    line-height: normal !important;
+                    margin-right: .1em !important;
+                    cursor: pointer !important;
+                    vertical-align: middle !important;
+                    text-align: center !important;
+                    overflow: visible !important; /* removes extra width in IE */
+                    background:#4A90E2 !important;
+                    border:1px solid #4A90E2 !important;
+                    color:#fff !important;
+                    box-shadow: 0 2px 0 0 #1b5eab !important;
+                }
+                .ui-wizard-step-title.ui-state-highlight {
+                    color:#545454 !important;
+                    background:#fff !important;
+                    border-right:solid 1px #d5d5d5 !important;
+                    border-top:solid 2px #d5d5d5 !important;
+                    border-left:solid 1px #d5d5d5 !important;
+                    border-bottom:solid 1px #fff !important;
+                    border-radius: 0 !important;
+                }
+                body {
+                        font-family: 'Open Sans'!important;
+                    }
+                .ui-wizard-step-title {
+                    font-size: 16px!important;
+                    margin: 0 0px 0 0!important;
+                    padding: 0.24!important;
+                    float: left!important;
+                    margin-top: 50px !important;
+                }
+                
+                .ui-button-icon-left
+                {
+                    background-image: none!important;
+                }
+                .tab-conten
+                {
+                    
+                }
+                .tab_D{
+                       width:359px!important;border: 0px solid!important;float:left; }
+                .tab_I{
+                       width:359px!important;border: 0px solid!important;float:left;margin-left: 30px; }
+                .tab_DB{
+                        width:359px!important;border: 0px solid!important;float:left;margin-top: 20px; }
+                .tab_IB{
+                        width:359px!important;border: 0px solid!important;float:left;margin-left: 30px;margin-top: 20px; }
+                .ui-selectonemenu{
+                         margin-top: 0px!important;}
+                .ui-panelgrid {
+                    margin-left: 0px !important;
+                }
+                h1 {
+                    margin-bottom: 0px !important;
+                    font-size: 54px !important;
+                    margin-left: 0px !important;
+                    line-height: 1.1 !important;
+                    margin-top: -20px !important;
+                }
+                
+                h5 {
+                    font-size: 18px!important;
+                    margin-bottom: 20px!important;
+                    margin-left: 0px !important;
+                    margin-top: 0px !important;
+                }
+                .gmxNoborde1 td
+                      {
+                         border-color:#FFFFFF;
+                      }
+                      .ui-message-error-detail{
+                         font-weight: normal; 
+                      }
+                 .ui-selectonemenu{margin-top: 0px!important;}     
+                 hr.red {margin: 0px 0 0px !important;border-top-color: #DCE0E0 !important;position: relative !important;margin-left: 0px !important; } 
+                 hr.red:before { content: " "!important;width: 35px!important;height: 6px!important;background-color: #D0021B!important;display: block!important;position: absolute!important;} 
+                 h2 {font-size: 38px!important;margin-bottom: 0px!important; margin-left: -3px !important; }
+                 #formDetalleCuadro\:msgFechasSaldo{
+                      
+                    display: block;
+                    position: inherit !important;
+                 }
+                 #formDetalleCuadro\:msgFechas{
+
+                    display: block;
+                    position: inherit !important;
+                 }
+                 .ui-messages-error.ui-corner-all{
+                    border-radius: 3px 3px 3px 3px !important;
+                    -moz-border-radius: 3px 3px 3px 3px  !important;
+                    -webkit-border-radius: 3px 3px 3px 3px  !important;
+                    border: 2px solid #D0021B !important;
+                    background-color: #F2DEDE !important;
+                    text-align: center !important;
+                    color: #545454 !important;
+                    margin-top: 10px !important;
+                    padding-top: 30px;
+                    padding-bottom: 30px;    
+                    width: 777px !important;
+                    margin-left: 0px !important;
+                    display: inline-block;
+                    z-index: -1;
+                    position: inherit !important;
+
+                }
+            </style>
+            <script type="text/javascript">
+                $.datepicker._generateMonthYearHeader_original = $.datepicker._generateMonthYearHeader;
+
+                $.datepicker._generateMonthYearHeader = function (inst, dm, dy, mnd, mxd, s, mn, mns) {
+                    var header = $($.datepicker._generateMonthYearHeader_original(inst, dm, dy, mnd, mxd, s, mn, mns)), years = header.find('.ui-datepicker-year');
+
+                    // reverse the years
+                    years.html(Array.prototype.reverse.apply(years.children()));
+
+                    // return our new html
+                    return $('&lt;div />').append(header).html();
+                }
+            </script>
+            
+            <h:outputStylesheet library="css/" name="gob-datocont.css"/>
+        </h:head>
+        <h:body>
+            <p:ajaxStatus onstart="statusDialog.show();" onsuccess="statusDialog.hide();"/> 
+            <p:dialog modal="true" widgetVar="statusDialog" header="#{msgValidacion.ajaxLoading}" draggable="false"
+                      resizable="false" closable="false">
+                <p:graphicImage value="../../images/ajaxloadingbar.gif"/>
+            </p:dialog>             
+            <h:form id="formDetalleCuadro" acceptcharset="UTF-8">
+                <h1>
+                    <p:outputLabel value="#{msgValidacion.aclP3Titulo4} #{fn:length(avisoCompensacionEnLineaMB.listaCuadros) + 1}" />
+                </h1>
+                <style>
+                    #formDetalleCuadro\:wzCuadro_next {
+                        position: relative !important;
+                    }
+                    .ui-button-icon-left.ui-icon.ui-c.ui-icon-arrowthick-1-e{
+                        width: 0px !important;
+                        height: 0px !important;
+                    }
+                    .ui-button .ui-button-text {
+                        padding: .4em 1em .4em 1.1em;
+                        
+                    }
+                    .ui-button-text-icon-left .ui-button-text {
+                        padding: .4em 1em .4em 1.1em;
+                    }
+                </style>
+                <p:wizard id="wzCuadro"
+                          styleClass="gmxfvertical"
+                          flowListener="#{avisoCompensacionEnLineaMB.onFlowProcess}" 
+                          widgetVar="wizarC"
+                          backLabel="#{msgValidacion.tooltop08}"
+                          nextLabel="Siguiente">
+                    <!--Boton Siguiente Origen del importe a favor -->
+                    <p:tab id="datos" title="#{msgValidacion.aclP3Titulo5}">
+                                    
+                                    <script>
+                                            $cbCuadroOrigen=($('#formDetalleCuadro\\:cbCuadroOrigen').hasClass('ui-state-error'));
+                                            $diTipoPeriodo=($('#formDetalleCuadro\\:diTipoPeriodo').hasClass('ui-state-error'));
+                                            $diPeriodo=($('#formDetalleCuadro\\:diPeriodo').hasClass('ui-state-error'));
+                                            $diEjercicio=($('#formDetalleCuadro\\:diEjercicio').hasClass('ui-state-error'));
+
+                                            if($cbCuadroOrigen || $diTipoPeriodo || $diPeriodo || $diEjercicio){
+                                                document.getElementById("error0").innerHTML="Todos los campos marcados con * son requeridos";
+                                                document.getElementById("error0").style.display="inherit";  
+                                            }
+                                   </script>
+                                   
+
+                        <div class="gobmxContenedor8">
+                            <div class="gob-orig-imp-fav">
+                                   <h2>
+                                        <p:outputLabel value="#{msgValidacion.aclP3Titulo5}"/>
+                                    </h2> 
+                                    <hr class="red" />
+                            </div>
+                            <div id="error0"></div>
+                        </div>
+        
+                        <div class="tab-conten">
+                            <p:panelGrid id="pnlDatos" style="margin-top: 16px!important;margin-left: -10px !important;" styleClass="gmxNoborde1">
+                                <p:row>
+                                    <p:column>
+                                            <div class="tab_D">
+                                        <!---->
+                                        <p:outputLabel value="#{msgValidacion.aclP3Campo10}" for="cbCuadroOrigen" style=" font-weight: normal;"/><span style=" font-weight: normal;">:</span>
+                                         <p:selectOneMenu   id="cbCuadroOrigen"
+                                                                               value="#{avisoCompensacionEnLineaMB.dyccOrigenSaldoDTO.idOrigenSaldo}"
+                                                                               required="true"
+                                                                               style="width: 373.33px;"
+                                                                               requiredMessage="#{msgValidacion.mcRequerido}">
+                                                                        <f:selectItem  itemLabel="#{msgValidacion.comboSeleccion}"
+                                                                                       itemValue=""/>
+                                                                        <f:selectItems value="#{avisoCompensacionEnLineaMB.listaOrigenesDeSaldos}"
+                                                                                       var="origenesSaldos"
+                                                                                       itemLabel="#{origenesSaldos.descripcion}"
+                                                                                       itemValue="#{origenesSaldos.idOrigenSaldo}"/>
+                                                                        <p:ajax        update="cbCuadroOrigen, diTipoPeriodo"
+                                                                                       listener="#{avisoCompensacionEnLineaMB.mostrarTramitesPorOrigenSaldo}"/>     
+                                         </p:selectOneMenu>
+                                         <p:message id="datosOrigen" for="cbCuadroOrigen"  display="text"/>
+                                         <!---->
+                                         <p:outputLabel value="#{msgValidacion.aclP3Campo18}" for="diPeriodo" style="margin-top: 20px!important;float:left;font-weight: normal;"/><span style="margin-top: 20px!important;float:left;font-weight: normal;">:</span>
+                                         <p:selectOneMenu   id="diPeriodo"
+                                                                               value="#{avisoCompensacionEnLineaMB.dyccPeriodoOrigenDTO.idPeriodo}"
+                                                                               required="true"
+                                                                               style="width: 373.33px;"
+                                                                               requiredMessage="#{msgValidacion.mcRequerido}">
+                                                                <f:selectItem  itemLabel="#{msgValidacion.comboSeleccion}"
+                                                                               itemValue=""/>
+                                                                <f:selectItems value="#{avisoCompensacionEnLineaMB.listaPeriodosOrigen}"
+                                                                               var="idperiodo"
+                                                                               itemLabel="#{idperiodo.descripcion}"
+                                                                               itemValue="#{idperiodo.idPeriodo}"/>
+                                                                <p:ajax listener="#{avisoCompensacionEnLineaMB.mostrarDescripcionPeriodoOrigen}"/>
+                                        </p:selectOneMenu>
+                                        <p:message id="msgDI_Periodo" for="diPeriodo"  display="text"/>
+                            </div>
+                            <div class="tab_I">
+                                 <!---->
+                                 <p:outputLabel value="#{msgValidacion.aclP3Campo17}" for="diTipoPeriodo" style="margin-left: 15px;font-weight: normal;" /><span style="font-weight: normal;">:</span>
+                                  <p:selectOneMenu   id="diTipoPeriodo"
+                                                                               value="#{avisoCompensacionEnLineaMB.idTipoPeriodoOrigen}"
+                                                                               required="true"
+                                                                               style="width: 373.33px;margin-left: 15px;"
+                                                                               requiredMessage="#{msgValidacion.mcRequerido}">
+                                                                <f:selectItem  itemLabel="#{msgValidacion.comboSeleccion}"
+                                                                               itemValue=""/>
+                                                                <f:selectItems value="#{avisoCompensacionEnLineaMB.listaTiposDePeriodosOrigen}"
+                                                                               var="tipoPeriodo"
+                                                                               itemLabel="#{tipoPeriodo.descripcion}"
+                                                                               itemValue="#{tipoPeriodo.idTipoPeriodo}"/>
+                                                                <p:ajax        update="diTipoPeriodo, diPeriodo"
+                                                                               listener="#{avisoCompensacionEnLineaMB.mostrarPeriodosPorTipoDePeriodoOrigen}"/>
+                                 </p:selectOneMenu>
+                                 <div style="padding-left: 13px">    <p:message id="msgDI_TipoPeriodo" for="diTipoPeriodo" display="text" />  </div>
+                                          <!---->
+                                  <p:outputLabel value="#{msgValidacion.aclP3Campo19}" for="diEjercicio" style="margin-top: 20px!important; margin-left: 15px; float:left;font-weight: normal;"/><span style="margin-top: 20px!important;float:left;font-weight: normal;">:</span>
+                                  <p:selectOneMenu   id="diEjercicio"
+                                                                     value="#{avisoCompensacionEnLineaMB.dyccDiEjercicioDTO.idEjercicio}"
+                                                                     required="true"
+                                                                     style="width: 373.33px; margin-left: 15px;"
+                                                                     requiredMessage="#{msgValidacion.mcRequerido}">
+                                                      <f:selectItem  itemLabel="#{msgValidacion.comboSeleccion}"
+                                                                     itemValue=""/>
+                                                      <f:selectItems value="#{avisoCompensacionEnLineaMB.listaEjercicios}"
+                                                                     var="idejercicio"
+                                                                     itemLabel="#{idejercicio.idEjercicio}"
+                                                                     itemValue="#{idejercicio.idEjercicio}"/>
+                                                  </p:selectOneMenu>
+                                 <div style="padding-left: 13px">     <p:message id="msgDI_Ejercicio" for="diEjercicio" display="text"/> </div>
+                            </div>
+                                    </p:column>
+                                </p:row>
+                        </p:panelGrid>
+                        </div>
+                                   <!--aqui se acaba el f      -->                                  
+                        <!-- ******  DIALOG DE CONFIRMACION 1    ****** -->
+                        <!-- ******************************************************************* -->
+                        <p:dialog id="dlgConfirmar" header="Inconsistencias" modal="true"
+                                  resizable="false" closable="false"
+                                  visible="#{avisoCompensacionEnLineaMB.dialog}">
+                                <p:panelGrid styleClass="gmxNoborde1">
+                                    <p:row>
+                                        <p:column>
+                                            <style>
+                                                .ui-messages-info, .ui-message-info{
+                                                    background: white none repeat scroll 0% 0%;
+                                                    border: 0px none;
+                                                    color: #545454;
+                                                    text-align: inherit;
+                                                    padding: 0px;
+                                                }
+                                                .ui-messages ul{
+                                                    margin: inherit;
+                                                }
+                                                .ui-messages-info-summary, .ui-messages-warn-summary, .ui-messages-error-summary, .ui-messages-fatal-summary, .ui-message-info-summary, .ui-message-warn-summary, .ui-message-error-summary, .ui-message-fatal-summary {
+                                                        margin: inherit !important;
+                                                    }
+                                            </style>
+                                            
+                                            <p:messages id="msgDatosImpuesto300"
+                                                        for="msgDatosImpuesto300" showDetail="true"
+                                                        globalOnly="true" autoUpdate="true"
+                                                        closable="false"/>
+                                            <p:messages id="msgDatosImpuesto301"
+                                                        for="msgDatosImpuesto301" showDetail="true"
+                                                        globalOnly="true" autoUpdate="true"
+                                                        closable="false"/>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column >
+                                             <p:outputLabel value="#{msgValidacion.tooltop07}"/>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column>
+                                            <p:commandButton id="confirm"
+                                                             value="#{msgValidacion.Si}"
+                                                             update="pnlDatos"
+                                                             actionListener="#{avisoCompensacionEnLineaMB.confirmarSeguirAC}"
+                                                             process="@this" styleClass="gmxPositivo"/>
+                                            <p:commandButton id="decline"
+                                                             value="#{msgValidacion.No}"
+                                                             action="#{avisoCompensacionEnLineaMB.terminarCasoDeUso}"
+                                                             process="@this" styleClass="gmxNegativo"/>
+                                        </p:column>
+                                    </p:row>
+                                </p:panelGrid>
+                        </p:dialog>
+                    </p:tab>
+                     <!--Informacion del impuesto-->                                        
+                    <p:tab id="datosImpuesto" title="#{msgValidacion.aclP3Titulo7}">
+                        <script type="text/javascript">
+                            $( ".ui-wizard-nav-next" ).prop( "disabled", false );
+                          </script>
+                        <script>
+                                   $cbCuadroTipoTramite=($('#formDetalleCuadro\\:cbCuadroTipoTramite').hasClass('ui-state-error'));
+                                   if($cbCuadroTipoTramite){
+                                       document.getElementById("error0").innerHTML="Todos los campos marcados con * son requeridos";
+                                       document.getElementById("error0").style.display="inherit";  
+                                   }
+                          </script>
+                         <style type="text/css">
+                                #formDetalleCuadro\:wzCuadro_back {
+                                    position: absolute;
+                                    right: 119px !important;
+                                    z-index: 1;
+                                }
+                        </style>
+                        <div class="gobmxContenedor8 ">
+                            <div class="gob-info-imp">
+                                   <h2>
+                                        <p:outputLabel value="#{msgValidacion.aclP3Titulo7}"/>
+                                    </h2> 
+                                    <hr class="red" />
+                            </div>
+                            <p:messages id="msgFechas" for="msgFechas" showDetail="true" globalOnly="true" autoUpdate="true" closable="true"/>
+                            <div id="error0"></div>
+                        </div>
+                        <div class="tab-conten">
+                            <style>
+                                            #formDetalleCuadro\:datosDiotFechaPresenta_input{
+                                                width: 373.33px !important;
+                                                margin-left: 30px; 
+                                            }
+                                            .ui-messages-info.ui-corner-all{
+                                                border-radius: 3px 3px 3px 3px;
+                                                -moz-border-radius: 3px 3px 3px 3px;
+                                                -webkit-border-radius: 3px 3px 3px 3px;
+                                                border: 2px solid #D0021B;
+                                                background-color: #F2DEDE;
+                                                text-align: center;
+                                                color: #545454;
+                                                margin-top: 30px;
+                                                margin-bottom: 30px;
+                                                padding-top: 30px;
+                                                padding-bottom: 30px;
+                                            }
+                                            
+                                        </style>
+                                                       
+                            <p:panelGrid style="width:777px !important;margin-top: 6px!important;margin-left: -10px !important;" styleClass="gmxNoborde1">
+                                    
+                                <p:row>
+                                    <p:column colspan="2">
+                                        <p:outputLabel value="#{msgValidacion.aclP3Campo20}" for="cbCuadroTipoTramite" style=" font-weight: normal;float: left!important;"/><span style="float: left!important; font-weight: normal">:</span>
+                                        <p:selectOneMenu        id="cbCuadroTipoTramite"
+                                                                value="#{avisoCompensacionEnLineaMB.dyccConceptoOrigen.idConcepto}"
+                                                                style="width: 373.33px;margin-left:30px;"
+                                                                panelStyle="width:500px" required="true"
+                                                                requiredMessage="#{msgValidacion.mcRequerido}">
+                                                 <f:selectItem  itemLabel="#{msgValidacion.comboSeleccion}"
+                                                                itemValue=""/>
+                                                 <f:selectItems value="#{avisoCompensacionEnLineaMB.listaConceptosOrigen}"
+                                                                var="conceptoOrigen"
+                                                                itemLabel="#{conceptoOrigen.descripcion}"
+                                                                itemValue="#{conceptoOrigen.idConcepto}"
+                                                                itemDescription="#{conceptoOrigen.idConcepto}---#{conceptoOrigen.descripcion}"/>
+                                                 <p:ajax        update="wzCuadro"
+                                                                listener="#{avisoCompensacionEnLineaMB.mostrarTramiteDelConceptoOrigen}"/>
+                                             </p:selectOneMenu>
+                                             <p:message id="datosTipoTramite" for="cbCuadroTipoTramite" display="text"/>
+                                    
+                                    </p:column>
+
+                                </p:row>
+                                <p:row>
+                                    <p:column colspan="2">
+                                        <p:outputLabel value="#{msgValidacion.aclP3Campo11}" style=" font-weight: normal;margin-right: 28px !important;"/>
+                                         <p:outputLabel            value="#{avisoCompensacionEnLineaMB.dycaOrigenTramiteOrigen.dyccTipoTramiteDTO.descripcion}"
+                                                                   rendered="#{fn:length(avisoCompensacionEnLineaMB.listaTipoTramite) eq 1}"/>
+                                                <p:selectOneMenu   id="selectTipoTramite"
+                                                                   value="#{avisoCompensacionEnLineaMB.dyccTipoTramiteDTO.idTipoTramite}"
+                                                                   rendered="#{fn:length(avisoCompensacionEnLineaMB.listaTipoTramite) gt 1}"
+                                                                   required="#{fn:length(avisoCompensacionEnLineaMB.listaTipoTramite) gt 1}"
+                                                                   requiredMessage="#{msgValidacion.mcRequerido}">
+                                                    <f:selectItem  itemLabel="#{msgValidacion.comboSeleccion}"
+                                                                   itemValue=""/>
+                                                    <f:selectItems value="#{avisoCompensacionEnLineaMB.listaTipoTramite}"
+                                                                   var="tipoTramite"
+                                                                   itemLabel="#{tipoTramite.descripcion}"
+                                                                   itemValue="#{tipoTramite.idTipoTramite}"/>
+                                                           <p:ajax update="wzCuadro"
+                                                                   listener="#{avisoCompensacionEnLineaMB.tramiteSeleccionado}"/>
+                                                </p:selectOneMenu>
+                                                <p:message id="msgTipoTram" for="selectTipoTramite"  display="text"/>
+                                    </p:column>
+                                    
+                                </p:row>
+                            </p:panelGrid>
+                            <c:if test="#{avisoCompensacionEnLineaMB.preguntaPresentoDIOT}">
+                                <script>
+                                    $( document ).ready(function() {
+                                        $dato2sDiotNumOperacion=($('#formDetalleCuadro\\:dato2sDiotNumOperacion').hasClass('ui-state-error'));
+                                        $datosDiotFechaPresenta_input=($('#formDetalleCuadro\\:datosDiotFechaPresenta_input').hasClass('ui-state-error'));
+                                        
+                                        if($dato2sDiotNumOperacion || $datosDiotFechaPresenta_input){
+                                            document.getElementById("error1").innerHTML="Todos los campos marcados con * son requeridos";
+                                            document.getElementById("error1").style.display="inherit";  
+                                        }
+                                    });
+                                   
+                          </script>
+                                <div class="gob-info-comp">
+                                    <h2>
+                                        <p:outputLabel value="#{msgValidacion.complementa}"/>
+                                    </h2> 
+                                    <hr class="red" />
+                                    <div id="error1"></div>
+                                </div>
+                                <h5 style="margin-top: 14px!important; font-weight: initial;"><p:outputLabel value="#{msgValidacion.presentaDIOT}" /></h5>
+                            </c:if>
+                                <p:messages id="msgDatos" for="msgDatos" showDetail="true" globalOnly="true"
+                                             autoUpdate="true" closable="true"/>
+                                
+                                <style type="text/css">
+                                    #formDetalleCuadro\:dato2sDiotNumOperacion1 {
+                                        margin-left: 185px !important;
+                                        margin-top: 1px !important;
+                                        display: initial;
+                                    }
+                                    #formDetalleCuadro\:datosDiotFechaPresenta1{
+                                         margin-left: 195px !important;
+                                        margin-top: 1px !important;
+                                        display: initial;
+                                    }
+                                </style>
+                            <p:panelGrid   id="pnlDiot" styleClass="gmxNoborde1"
+                                           rendered="#{avisoCompensacionEnLineaMB.preguntaPresentoDIOT}">
+                                    <p:row>
+                                        <p:column style="width: 100%;">
+                                            <p:outputLabel style="margin-left: -10px; font-weight: initial;" for="dato2sDiotNumOperacion" value="#{msgValidacion.aclP3Campo15}" /><span style="font-weight: initial;">:</span>
+                                            <p:inputText id="dato2sDiotNumOperacion"
+                                                             value="#{avisoCompensacionEnLineaMB.strDiotNumOperacion}"
+                                                             style="width: 373.33px; margin-left: 30px;"
+                                                             styleClass="upperCase"
+                                                             required="true"
+                                                             requiredMessage="#{msgValidacion.mcRequerido}"
+                                                             maxlength="10"/>
+                                                <p:watermark for="dato2sDiotNumOperacion" value="Ingresar #{msgValidacion.aclP3Campo15} " />
+                                                 <p:message id="dato2sDiotNumOperacion1" for="dato2sDiotNumOperacion"   display="text"/>
+                                        </p:column>
+                                        
+                                    </p:row>
+                                    <p:row>
+                                        
+                                        <p:column style="width: 100%;">
+                                            <p:outputLabel style="margin-left: -10px; font-weight: initial;" for="datosDiotFechaPresenta" value="#{msgValidacion.aclP3Campo16} " /><span style="font-weight: initial;">:</span>
+                                            <p:calendar id="datosDiotFechaPresenta"
+                                                            value="#{avisoCompensacionEnLineaMB.dyctOrigenAvisoDTO.diotFechaPresenta}"
+                                                            navigator="true"
+                                                            required="true"
+                                                            requiredMessage="#{msgValidacion.mcRequerido}"
+                                                            style="width: 373.33px !important;"
+                                                            pattern="dd/MM/yyyy"
+                                                            yearRange="2000" locale="es"
+                                                            readonlyInput="true"
+                                                            maxdate="#{avisoCompensacionEnLineaMB.fechaActual}"
+                                                            styleClass="myClass"/>
+                                                <p:watermark for="datosDiotFechaPresenta" value="Ingresar #{msgValidacion.aclP3Campo16} " />
+                                                 <p:message id="datosDiotFechaPresenta1" for="datosDiotFechaPresenta"   display="text"/>
+                                        </p:column>
+                                        
+                                    </p:row>
+                            </p:panelGrid>
+                        </div>
+                    </p:tab>
+                    <!-- ******************************************************************* -->
+                    <!-- ******                  DIALOG DE CONFIRMACION 2             ****** -->
+                    <!-- ******************************************************************* -->
+                    <p:dialog id="dlgConfirmar2" header="Aviso" widgetVar="wvConfirmation2"
+                              modal="true" binding="#{avisoCompensacionEnLineaMB.dialog2}"
+                              resizable="false" closable="true">
+                        <p:panelGrid styleClass="gmxNoborde">
+                            <p:row>
+                                <p:column>
+                                    <p:messages id="msgDatosImpuesto304" for="msgDatosImpuesto304"
+                                                showDetail="true" globalOnly="true"
+                                                autoUpdate="true" closable="false"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <p:commandButton value="Aceptar"
+                                                     onclick="wvConfirmation2.hide()"/>
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+                    </p:dialog>
+                    <p:tab id="datosDeclaracion" title="#{msgValidacion.tooltop06} ">
+                        
+                          <script type="text/javascript">
+                             	
+                          
+                            $( ".ui-wizard-nav-next" ).prop( "disabled", true );
+                            
+                            
+                          </script>
+                        <style type="text/css">
+                            
+                            .ui-wizard-nav-next{display: none!important;}
+                            .ui-selectoneradio label{padding-left: 5px!important;padding-right: 1px!important;}
+                            .ui-selectoneradio td{padding: 0px!important;border-color:#FFFFFF;}
+                            .tab_D{width:373px!important;border: 0px solid!important;float:left; }
+                            .tab_I{width:373px!important;border: 0px solid!important;float:left;margin-left: 30px; }
+                            .gmxfvertical .ui-inputfield{margin-bottom: 5px!important; } 
+                            .ddEsRemanete{margin-bottom: 20px!important;}
+                            @-moz-document url-prefix(){.ddEsRemanete{margin-bottom: 10px!important;}}
+                            label {margin-bottom: 0px;display: inline-block;}
+                            .gmxfvertical .ui-inputfield {margin-top: 0px !important;}
+                            #formDetalleCuadro\:ddTipoDeclaracion_label {margin-top: 7px !important;}
+                            #formDetalleCuadro\:msgDDImporteSaldo {margin-top: -30px !important;display: block;margin-left: -8px !important;}
+                            #formDetalleCuadro\:msgDDFechaPresentacion {display: block;margin-top: 0px !important;}
+                            #formDetalleCuadro\:msgDDImporteAutorizado {display: block;margin-top: -10px !important;}
+                            #formDetalleCuadro\:msgDDImporteCompensa {display: block;margin-top: -10px !important;}
+                            #formDetalleCuadro\:ddRemanenteImporteCompensa_input {margin-bottom: -5px !important;width: 393px;padding-right: 0px !important;float: right;}
+                            #formDetalleCuadro\:ddFechaPresentacion_input {margin-bottom: 0px !important;}
+                            #formDetalleCuadro\:msgDDNumDocumento {display: block;margin-top: -10px !important;}
+                            #formDetalleCuadro\:ddImporteAutorizado_input {width: 365px !important;}
+                            #formDetalleCuadro\:j_idt121 {padding-left: 10px;}
+                            #formDetalleCuadro\:options{margin-top: 0px;}
+                                
+                                
+                                .ui-messages-info, .ui-message-info{
+                                    border-radius: 3px 3px 3px 3px;
+                                    -moz-border-radius: 3px 3px 3px 3px;
+                                    -webkit-border-radius: 3px 3px 3px 3px;
+                                    border: 2px solid #bce8f1;
+                                    background-color: #d9edf7;
+                                    color: #3a87ad;
+                                    margin-top: 30px;
+                                    margin-bottom: 30px;
+                                    padding-top: 30px;
+                                    padding-bottom: 30px;
+                                    font-weight: 100!important;
+                                }
+                                .ui-messages-info-summary, .ui-messages-warn-summary, .ui-messages-error-summary, .ui-messages-fatal-summary, .ui-message-info-summary, .ui-message-warn-summary, .ui-message-error-summary, .ui-message-fatal-summary{
+                                    font-weight: normal !important;
+                                }
+                         </style>
+                         <script>
+                                   
+                                  $ddNumOperacion=($('#formDetalleCuadro\\:ddNumOperacion').hasClass('ui-state-error'));
+                                  $ddFechaPresentacion_input=($('#formDetalleCuadro\\:ddFechaPresentacion_input').hasClass('ui-state-error'));
+                                  $ddTipoDeclaracion=($('#formDetalleCuadro\\:ddTipoDeclaracion').hasClass('ui-state-error'));
+                                  $ddImporteSaldo_input=($('#formDetalleCuadro\\:ddImporteSaldo_input').hasClass('ui-state-error'));
+                                  $ddImporteAutorizado_input=($('#formDetalleCuadro\\:ddImporteAutorizado_input').hasClass('ui-state-error'));
+                                  $ddImporteCompensa_input=($('#formDetalleCuadro\\:ddImporteCompensa_input').hasClass('ui-state-error'));
+                                   if($ddNumOperacion || $ddFechaPresentacion_input ||$ddTipoDeclaracion || $ddImporteSaldo_input || $ddImporteAutorizado_input || $ddImporteCompensa_input){
+                                       document.getElementById("error0").innerHTML="Todos los campos marcados con * son requeridos";
+                                       document.getElementById("error0").style.display="inherit";  
+                                   }
+                                   $( document ).ready(function() {
+                                        $ddNumOperacion=($('#formDetalleCuadro\\:ddNumOperacion').hasClass('ui-state-error'));
+                                        $ddFechaPresentacion_input=($('#formDetalleCuadro\\:ddFechaPresentacion_input').hasClass('ui-state-error'));
+                                        $ddTipoDeclaracion=($('#formDetalleCuadro\\:ddTipoDeclaracion').hasClass('ui-state-error'));
+                                        $ddImporteSaldo_input=($('#formDetalleCuadro\\:ddImporteSaldo_input').hasClass('ui-state-error'));
+                                        $ddImporteAutorizado_input=($('#formDetalleCuadro\\:ddImporteAutorizado_input').hasClass('ui-state-error'));
+                                        $ddImporteCompensa_input=($('#formDetalleCuadro\\:ddImporteCompensa_input').hasClass('ui-state-error'));
+                                         if($ddNumOperacion || $ddFechaPresentacion_input ||$ddTipoDeclaracion || $ddImporteSaldo_input || $ddImporteAutorizado_input || $ddImporteCompensa_input){
+                                             document.getElementById("error0").innerHTML="Todos los campos marcados con * son requeridos";
+                                             document.getElementById("error0").style.display="inherit";  
+                                         }
+                                    });
+                          </script>
+                         
+                        <div class="gobmxContenedor8 ">
+                            <div class="gob-info-dec-imp-fav">
+                                   <h2 style="margin-left: -1px !important;">
+                                        <p:outputLabel value="#{msgValidacion.tooltop06}"/>
+                                    </h2> 
+                                    <hr class="red" />
+                            </div>
+                            <div id="error0"></div>
+                            <p:messages id="msgFechasSaldo" for="msgFechasSaldo" showDetail="true" globalOnly="true"  autoUpdate="true" closable="true"/>
+                        </div>
+                        <div class="tab-conten">
+                            <style>
+                                #formDetalleCuadro\:j_idt88{display: block;
+                                margin-top:15px;}
+                            </style>
+                               <p:outputLabel value="#{msgValidacion.aclP3Campo21}"/>
+                                        <p:selectOneRadio id="ddEsRemanete" 
+                                                      styleClass="ddEsRemanete"
+                                                          value="#{avisoCompensacionEnLineaMB.dyctOrigenAvisoDTO.esRemanente}" 
+                                                          rendered="true" requiredMessage="#{msgValidacion.mcRequerido}">
+                                                <f:selectItem itemLabel="Si" itemValue="1"/>
+                                                <f:selectItem itemLabel="No" itemValue="0"/>		
+                                                <p:ajax update="@form"
+                                                                        listener="#{avisoCompensacionEnLineaMB.mostrarDdNumControl}"/>
+                                        </p:selectOneRadio>
+                                <div class="tab_D">
+                                        
+                                        <!--1-->
+                                      <c:if test="#{!avisoCompensacionEnLineaMB.cuadroMostrarNumDocumento}">
+                                        <p:outputLabel  value="#{msgValidacion.aclP3Campo23}" for="ddTipoDeclaracion"/><span>:</span>
+                                        <p:selectOneMenu   id="ddTipoDeclaracion"
+                                                        value="#{avisoCompensacionEnLineaMB.ddIdTipoDeclaracion}"
+                                                        required="true"
+                                                         style="margin-bottom: 18px!important;width: 100%!important;"
+                                                        requiredMessage="#{msgValidacion.mcRequerido}"
+                                                        disabled="#{avisoCompensacionEnLineaMB.remanenteDisable}">
+                                                 <f:selectItem  itemLabel="#{msgValidacion.comboSeleccion}"
+                                                                itemValue=""/>
+                                                 <f:selectItems value="#{avisoCompensacionEnLineaMB.listaTiposDeDeclaraciones}"
+                                                                                var="periodo"
+                                                                                itemLabel="#{periodo.descripcion}"
+                                                                                itemValue="#{periodo.idTipoDeclaracion}"/>
+                                                                <p:ajax update="wzCuadro"
+                                                                                listener="#{avisoCompensacionEnLineaMB.muestraPestanaDatosDeclaracionNormal}"/>
+                                         </p:selectOneMenu>
+                                         <p:message id="msgDDTipoDeclaracion" for="ddTipoDeclaracion" display="text"/>
+                                      </c:if>
+                                         <!--2-->
+                                         <c:if test="#{!avisoCompensacionEnLineaMB.cuadroMostrarNumDocumento}">
+                                                <p:outputLabel value="#{msgValidacion.aclP3Campo25}" for="ddNumOperacion"/><span>:</span>
+                                                <p:inputText id="ddNumOperacion"
+                                                             value="#{avisoCompensacionEnLineaMB.dyctDeclaraTempDTO.numOperacion}"
+                                                             required="true"
+                                                              style="margin-bottom: 18px!important;"
+                                                             requiredMessage="#{msgValidacion.mcRequerido}"
+                                                             disabled="#{avisoCompensacionEnLineaMB.remanenteDisable}"
+                                                             maxlength="18">
+                                                             <pe:keyFilter regEx="/[\d]/" />
+                                                </p:inputText>
+                                                <p:message id="msgDDNumOperacion" for="ddNumOperacion" display="text"/>
+                                                <p:watermark for="ddNumOperacion" value="Ingresar #{msgValidacion.aclP3Campo25}" />
+                                         </c:if>
+  <!--3-->	
+                                        <p:outputLabel value="#{msgValidacion.aclP3Campo27}" for="ddImporteSaldo"/><span>:</span>
+                                        <pe:inputNumber id="ddImporteSaldo"
+                                                        thousandSeparator="," decimalSeparator="."
+                                                        value="#{avisoCompensacionEnLineaMB.dyctDeclaraTempDTO.saldoAFavor}"
+                                                        style="margin-bottom: 25px!important;"
+                                                        symbol="$ " required="true"
+                                                        maxValue="9999999999.99"
+                                                        requiredMessage="#{msgValidacion.mcRequerido}"
+                                                        disabled="#{avisoCompensacionEnLineaMB.remanenteDisable}">
+                                                <p:ajax event="blur" update="ddImporteSaldo"/>
+                                        </pe:inputNumber>
+                                        <p:message id="msgDDImporteSaldo" for="ddImporteSaldo"  display="text"/>
+                                        <p:watermark for="ddImporteSaldo" value="Ingresar #{msgValidacion.aclP3Campo27}" />
+                                        <!--4-->
+                                        <c:if test="#{avisoCompensacionEnLineaMB.isDevueltoCompensado}">
+                                            <p:outputLabel value="#{msgValidacion.aclP3Campo35}" for="ddDevueltoCompensado"/>
+                                            <pe:inputNumber id="ddDevueltoCompensado" 
+                                                        thousandSeparator="," decimalSeparator="."
+                                                        value="#{avisoCompensacionEnLineaMB.dyctDeclaracionDTO.devueltoCompensado}"
+                                                        style="margin-bottom: 18px!important;"
+                                                        symbol="$ " required="true"
+                                                        maxValue="9999999999.99"
+                                                        requiredMessage="#{msgValidacion.mcRequerido}">
+                                                    <p:ajax event="blur" update="ddDevueltoCompensado"/>
+                                            </pe:inputNumber>
+                                            <p:watermark for="ddDevueltoCompensado" value="Ingresar #{msgValidacion.aclP3Campo35}" />
+                                            <p:message id="msgDDDevueltoCompensado" for="ddDevueltoCompensado" display="text"/>
+                                          </c:if>
+                                        <!--5-->
+
+                                </div>
+                                <div class="tab_I">
+                                    <c:if test="#{avisoCompensacionEnLineaMB.dyctOrigenAvisoDTO.esRemanente eq 1}">
+                                       
+                                            <p:outputLabel value="#{msgValidacion.aclP3Campo22}"  for="ddNumControl" style="display: initial!important;"/><span>:</span><p:graphicImage  style="margin-left: 2px!important;" id="ayuda" value="../../images/Ayuda.png"/>
+                                            <p:inputText id="ddNumControl"
+                                                         style="margin-bottom: 18px!important;"
+                                                         value="#{avisoCompensacionEnLineaMB.dyctOrigenAvisoDTO.numControlRem}"
+                                                         required="true"
+                                                         requiredMessage="#{msgValidacion.mcRequerido}"
+                                                         styleClass="upperCase" maxlength="14">
+                                               <p:watermark for="ddNumControl" value="Ingresar #{msgValidacion.deINumCont}" />
+                                               <p:ajax event="blur" update="ddNumControl, wzCuadro"
+                                                       listener="#{avisoCompensacionEnLineaMB.buscarNumControlRemanente}"/>
+                                                  </p:inputText>
+                                                  <p:tooltip for="ayuda">
+                                                          <p:outputLabel value="#{msgValidacion.tooltip012}"/>
+                                                          <p:outputLabel value="#{msgValidacion.tooltip02}"/>
+                                                          <p:outputLabel value="#{msgValidacion.tooltip03}"/>
+                                                          <p:outputLabel value="#{msgValidacion.tooltip04}"/>
+                                                  </p:tooltip>
+                                                  <p:message id="msgDDNumControl" for="ddNumControl"  display="text"/>
+                                    </c:if>
+                                           <!--1-->
+                                       <p:outputLabel value="#{msgValidacion.aclP3Campo24}" for ="ddFechaPresentacion" rendered="#{!avisoCompensacionEnLineaMB.cuadroMostrarNumDocumento}" style="margin-bottom: 0px !important;"/>
+                                       <p:outputLabel value="#{msgValidacion.L0000035}"     for ="ddFechaPresentacion" rendered="#{avisoCompensacionEnLineaMB.cuadroMostrarNumDocumento}" style="margin-bottom: 0px !important;"/><span>:</span>
+                                           <p:calendar id="ddFechaPresentacion"
+                                                       value="#{avisoCompensacionEnLineaMB.dyctDeclaracionDTO.fechaPresentacion}"
+                                                       navigator="true" pattern="dd/MM/yyyy"
+                                                       yearRange="2000" locale="es"
+                                                       readonlyInput="true"
+                                                       maxdate="#{avisoCompensacionEnLineaMB.fechaActual}"
+                                                       required="true"
+                                                       requiredMessage="#{msgValidacion.generalMsgRequerido}"
+                                                       style="margin-bottom:18px!important;"
+                                                       disabled="#{avisoCompensacionEnLineaMB.remanenteDisable}">
+                                                   <p:ajax event="dateSelect"
+                                                                   listener="#{avisoCompensacionEnLineaMB.validaFechaPresDesOri}"
+                                                                   update="msgFechasSaldo"/>
+                                                   <f:param name="opcionFecha" value="fechaOrigen"/>
+                                           </p:calendar>
+                                           <p:message id="msgDDFechaPresentacion" for="ddFechaPresentacion" display="text"/>
+                                           <p:watermark for="ddFechaPresentacion" value="Ingresar Fecha" />
+                                           <!--2-->
+                                           <c:if test="#{avisoCompensacionEnLineaMB.cuadroMostrarNumDocumento}">
+                                            
+                                                 <p:outputLabel value="#{msgValidacion.aclP3Campo26}" for="ddNumDocumento" style="margin-top: 29px!important;"/><span>:</span>
+                                                 <p:inputText id="ddNumDocumento"
+                                                              value="#{avisoCompensacionEnLineaMB.ddNumDocumento}"
+                                                              required="true"
+                                                              requiredMessage="#{msgValidacion.mcRequerido}"
+                                                              maxlength="18">
+                                                 <p:ajax event="blur" update="ddNumDocumento"/>
+                                             </p:inputText>
+                                             <p:message id="msgDDNumDocumento" for="ddNumDocumento" display="text"/>
+                                             <p:watermark for="ddNumDocumento" value="Ingresar #{msgValidacion.aclP3Campo26}" />
+                                           </c:if>
+                                            <!--3-->
+                                           <c:if test="#{avisoCompensacionEnLineaMB.dyctOrigenAvisoDTO.esRemanente eq 1}">
+                                                <p:outputLabel value="#{msgValidacion.aclP2Campo15}"/>
+                                                <p:selectOneRadio id="options"
+                                                                   style="margin-bottom: 18px!important;"
+                                                                  value="#{avisoCompensacionEnLineaMB.datosCorrectosOrigen}">
+                                                         <f:selectItem itemLabel="Si" itemValue="true"/>
+                                                         <f:selectItem itemLabel="No" itemValue="false"/>
+                                                         <p:ajax event="change"
+                                                                         listener="#{avisoCompensacionEnLineaMB.verificaDatosOrigen}"
+                                                                         update="@form"/>
+                                                </p:selectOneRadio>
+                                           </c:if>
+                      
+                                            <!--4-->
+                                            <c:if test="#{avisoCompensacionEnLineaMB.isAcreditamiento}">
+                                                <p:outputLabel value="#{msgValidacion.aclP3Campo36}" for="ddAcreditamiento"/><span>:</span>
+                                                <pe:inputNumber id="ddAcreditamiento" thousandSeparator="," decimalSeparator="."
+                                                                value="#{avisoCompensacionEnLineaMB.dyctDeclaracionDTO.acreditamiento}"
+                                                                symbol="$ " required="true"
+                                                                maxValue="9999999999.99"
+                                                                style="margin-bottom: 18px!important;"
+                                                                requiredMessage="#{msgValidacion.mcRequerido}">
+                                                <p:ajax event="blur" update="ddAcreditamiento"/>
+                                                </pe:inputNumber>
+                                                <p:watermark for="ddAcreditamiento" value="Ingresar #{msgValidacion.aclP3Campo36}" />
+                                                <p:message id="msgDDAcreditamiento"  for="ddAcreditamiento" display="text"/> 
+                                            </c:if>
+                                            <!--5-->
+                                   </div>
+                        </div>
+                            <style>
+                                #formDetalleCuadro\:j_idt163{
+                                    width: 1180px !important;
+                                }
+                                #formDetalleCuadro\:j_idt164{
+                                    width: 1180px !important;
+                                }
+                                .ui-panelgrid td {
+                                    padding: 4px 0px !important;
+                                }
+                                .ui-button.ui-widget.ui-wizard-nav-back{position: absolute;right: -281px;top: -65px;}
+                                #formDetalleCuadro\:ddnFechaPresentacion_input{
+                                    margin-bottom: 14px !important;
+                                }
+                                #formDetalleCuadro\:ddnNumOperacion{
+                                    margin-bottom: 14px !important;
+                                }
+                                #formDetalleCuadro\:ddnImporteSaldo_input{
+                                    margin-bottom: 14px !important;
+                                }
+                                .ui-panelgrid {
+                                        border-collapse: inherit !important;
+                                    }
+                            </style>
+                           <!--ULTIMO--> 
+                            <div class="gmxfvertical" style="clear: both; display: block; width: 1180px!important;margin-top: 18px !important;float: left;">
+                                <div class="gob-cant-compe">
+                                    <h2>
+                                        <p:outputLabel value="#{msgValidacion.aclP3Titulo10}"/>
+                                    </h2> 
+                                    <hr class="red"/>
+                                </div>
+                            <p:messages id="msgImportes" for="msgImportes" showDetail="true" globalOnly="true" autoUpdate="true" closable="true"/>
+                        </div>
+                            <style>
+                                .ui-panelgrid td{width: auto !important;}
+                                #formDetalleCuadro\:j_idt117 {display: initial;}   
+                            </style>
+                            <script>
+                                   $( document ).ready(function() {
+                                          $ddnFechaPresentacion_input=($('#formDetalleCuadro\\:ddnFechaPresentacion_input').hasClass('ui-state-error'));
+                                        $ddnNumOperacion=($('#formDetalleCuadro\\:ddnNumOperacion').hasClass('ui-state-error'));
+                                        $ddnImporteSaldo_input=($('#formDetalleCuadro\\:ddnImporteSaldo_input').hasClass('ui-state-error'));
+
+                                         if($ddnFechaPresentacion_input || $ddnNumOperacion ||$ddnImporteSaldo_input){
+                                             document.getElementById("error2").innerHTML="Todos los campos marcados con * son requeridos";
+                                             document.getElementById("error2").style.display="inherit";  
+                                         }
+                                    });
+                          </script>
+                        <p:panelGrid styleClass="gmxfvertical gmxNoborde1" style="margin-top: 10px !important;width: 1180px!important;">
+                            <p:row>
+                                <p:column style="width: 373px !important;padding: 0px!important;">
+                                    <p:outputLabel value="#{msgValidacion.aclP3Campo32}" for="ddImporteAutorizado" style=" font-weight: normal;"/><span style=" font-weight: normal;">:</span>
+                                    <p:graphicImage id="ayudaImporteActualizado" value="../../images/Ayuda.png" style=" padding-left: 2px!important;"/>
+                                </p:column>
+                                <p:column style="width: 373px !important;">
+                                     <p:outputLabel value="#{msgValidacion.aclP3Campo33}" for="ddImporteAutorizado" style=" font-weight: normal;" /><span style=" font-weight: normal;">:</span>
+                                </p:column>
+                                <p:column style="width: 373px !important;">
+                                     <p:outputLabel value="#{msgValidacion.aclP3Campo34}" for="ddRemanenteImporteCompensa" style=" font-weight: normal;" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="width: 373px !important;padding-left: 0px!important;">
+                                   <pe:inputNumber id="ddImporteAutorizado" thousandSeparator="," decimalSeparator="."
+                                                    value="#{avisoCompensacionEnLineaMB.dyctOrigenAvisoDTO.impActualizado}"
+                                                    symbol="$ " required="true"
+                                                    maxValue="9999999999.99"
+                                                   requiredMessage="#{msgValidacion.msjCampoRequerido}" >
+                                        <p:ajax event="blur"
+                                                update="ddRemanenteImporteCompensa, msgImportes"
+                                                listener="#{avisoCompensacionEnLineaMB.obtenerRemanente}"/>
+                                    </pe:inputNumber>
+                                    <p:tooltip for="ayudaImporteActualizado">
+                                        <p:outputLabel value="#{msgValidacion.tooltop13}"/>                                                                    
+                                    </p:tooltip>
+                                    <p:message id="msgDDImporteAutorizado" for="ddImporteAutorizado" display="text"/>
+                                    <p:watermark for="ddImporteAutorizado" value="Ingresar #{msgValidacion.aclP3Campo32}" />
+                                </p:column>
+                                <p:column style="width: 373px !important;">
+                                    <pe:inputNumber id="ddImporteCompensa" thousandSeparator="," decimalSeparator="."
+                                                        value="#{avisoCompensacionEnLineaMB.dyctOrigenAvisoDTO.importeSolicitado}"
+                                                        symbol="$ " 
+                                                        required="true"
+                                                        maxValue="9999999999.99"
+                                                        requiredMessage="#{msgValidacion.mcRequerido}">
+                                            <p:ajax event="blur"
+                                                    update="ddRemanenteImporteCompensa, msgImportes, btnGuardarCuadro"
+                                                    listener="#{avisoCompensacionEnLineaMB.obtenerRemanente}"/>
+                                        </pe:inputNumber>
+                                        <p:message id="msgDDImporteCompensa" for="ddImporteCompensa" display="text"/>
+                                        <p:watermark for="ddImporteCompensa" value="Ingresar #{msgValidacion.aclP3Campo33}" />
+                                </p:column>
+                                <p:column style="width: 373px !important;padding-right: 0px!important;">
+                                     <pe:inputNumber id="ddRemanenteImporteCompensa"
+                                                        thousandSeparator="," decimalSeparator="."
+                                                        value="#{avisoCompensacionEnLineaMB.dyctOrigenAvisoDTO.impRemanente}"
+                                                        symbol="$ " readonly="true"
+                                                        maxValue="9999999999.99"/>
+                                        <p:watermark for="ddRemanenteImporteCompensa" value="Ingresar #{msgValidacion.aclP3Campo34}" />
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>
+
+                         <p:panelGrid   styleClass="gobmxContenedor8 gmxNoborde1" rendered="#{avisoCompensacionEnLineaMB.pestanaDatosDeclaracionNormal}">
+                             
+                            <p:row>
+                                <p:column colspan="2">
+                                    <h2>
+                                        <p:outputLabel value="#{msgValidacion.aclP3Titulo9}"/>
+                                    </h2>
+                                    <hr class="red" style="top:5px!important;margin-bottom: 21px !important;"/>
+                                    <div id="error2" style="width: 777px; font-weight: normal;"></div>
+                                </p:column>
+                                    
+                            </p:row>
+      
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel value="#{msgValidacion.aclP3Campo28}" style="font-weight:100 !important;"/>
+                                </p:column>
+                                <p:column>
+                                        <p:outputLabel value="Normal" style="font-weight:100 !important;"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="font-weight:100 !important;">
+                                    <p:outputLabel value="#{msgValidacion.aclP3Campo29}" for="ddnFechaPresentacion"/><span>:</span>
+                                </p:column>
+                                <p:column>
+                                    <p:calendar id="ddnFechaPresentacion"
+                                                value="#{avisoCompensacionEnLineaMB.dyctDeclaraTempDTO.normalFechapres}"
+                                                navigator="true" pattern="dd/MM/yyyy"
+                                                yearRange="2000" locale="es"
+                                                readonlyInput="true"
+                                                maxdate="#{avisoCompensacionEnLineaMB.fechaActual}"
+                                                required="true"
+                                                requiredMessage="#{msgValidacion.mcRequerido}"
+                                                disabled="#{avisoCompensacionEnLineaMB.remanenteDisable}"
+                                                styleClass="myClass">
+                                        <p:ajax event="dateSelect"
+                                                listener="#{avisoCompensacionEnLineaMB.validaFechaPresDesOri}"
+                                                update="btnGuardarCuadro"/>
+                                        <f:param name="opcionFecha" value="fechaNormal"/>
+                                    </p:calendar>
+                                    <p:message id="msgDDNFechaPresentacion" for="ddnFechaPresentacion" display="text"/>
+                                    <p:watermark for="ddnFechaPresentacion" value="Ingresar Fecha" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="font-weight:100 !important;">
+                                    <p:outputLabel value="#{msgValidacion.aclP3Campo30}" for="ddnNumOperacion"/><span>:</span>
+                                </p:column>
+                                <p:column>
+                                    <p:inputText id="ddnNumOperacion"
+                                                 value="#{avisoCompensacionEnLineaMB.dyctDeclaraTempDTO.normalNumoperacion}"
+                                                 required="true"
+                                                 requiredMessage="#{msgValidacion.mcRequerido}"
+                                                 disabled="#{avisoCompensacionEnLineaMB.remanenteDisable}">
+                                                 <pe:keyFilter regEx="/[\d]/" />
+                                        <p:ajax event="blur" update="ddnNumOperacion"/>
+                                    </p:inputText>
+                                    <p:message id="msgDDNNumOperacion" for="ddnNumOperacion" display="text"/>
+                                    <p:watermark for="ddnNumOperacion" value="Ingresar #{msgValidacion.aclP3Campo30}" />
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column style="font-weight:100 !important;">
+                                    <p:outputLabel value="#{msgValidacion.aclP3Campo31}" for="ddnImporteSaldo"/><span>:</span>
+                                </p:column>
+                                <p:column>
+                                    <pe:inputNumber id="ddnImporteSaldo"
+                                                    thousandSeparator="," decimalSeparator="."
+                                                    value="#{avisoCompensacionEnLineaMB.dyctDeclaraTempDTO.normalImportesaf}"
+                                                    symbol="$ " required="true"
+                                                    maxValue="9999999999.99"
+                                                    requiredMessage="#{msgValidacion.mcRequerido}"
+                                                    disabled="#{avisoCompensacionEnLineaMB.remanenteDisable}">
+                                        <p:ajax event="blur" update="ddnImporteSaldo"/>
+                                    </pe:inputNumber>
+                                    <p:message id="msgDDNImporteSaldo" for="ddnImporteSaldo"  display="text"/>
+                                    <p:watermark for="ddnImporteSaldo" value="Ingresar #{msgValidacion.aclP3Campo31}" />
+                                </p:column>
+                            </p:row>
+                        </p:panelGrid>                                     
+                         <p:panelGrid styleClass="gmxNoborde">
+                            <f:facet name="footer">
+                                <p:row>
+                                    <p:column style="text-align:center">
+                                        <p:commandButton id="btnGuardarCuadro" style="z-index: 2; left: 0px;float: right !important; margin-right: -252px !important;"
+                                                         value="Siguiente"
+                                                         
+                                                         ajax="false"
+                                                         styleClass="gmxPositivo"
+                                                         action="#{avisoCompensacionEnLineaMB.validarImportes}"/>
+                                    </p:column>
+                                </p:row>
+                            </f:facet>
+                        </p:panelGrid>
+                    </p:tab>
+                </p:wizard>
+                
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

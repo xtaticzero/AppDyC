@@ -1,0 +1,317 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 2/01/2017, 01:01:10 PM
+    Author     : Ing.  Ismael Castillo Justo
+*/
+
+/*
+Iniciales GOB
+*/
+.gmxfhorizontal td:nth-child(odd) {
+                        text-align: right !important;
+                    }
+
+                   .gmxfhorizontal td:nth-child(even) {
+                        text-align: left !important;
+                        padding-left: 15px !important;
+                    }
+                    .gmxfhorizontal .ui-outputlabel
+                    {
+                        font-weight: normal !important;
+                    }
+                    
+                    body {
+                        font-family: 'Open Sans';
+                    }
+                  
+                    .gmxNoborde1 td
+                    {
+                       border-color:#FFFFFF;
+                    }
+                    .ui-outputlabel.ui-state-error span.ui-outputlabel-rfi{
+                    color:#B74B4B!important;
+                    margin-left: 0!important; 
+                    }
+
+                    .ui-outputlabel .ui-outputlabel-rfi{
+                        margin-left: 0!important; 
+                    }
+                    .ui-selectoneradio
+                     {
+                         width: 10px!important;
+                     }
+                     
+                     .ui-selectoneradio label 
+                     {
+                         padding-left: 5px!important;
+                         padding-right: 1px!important;
+                     }
+                     
+
+                    
+                    hr.red:before {
+                        content: " "!important;
+                        width: 35px!important;
+                        height: 6px!important;
+                        background-color: #D0021B!important;
+                        display: block!important;
+                        position: absolute!important;
+                    }
+                    .ui-panelgrid td {
+                        width: 50%;
+                    }
+                    
+                    
+ .gobmxContenedor8{
+     width: 777px !important;
+ }
+
+/*Datos contribuyente*/
+.gob-datos-cont{
+            margin-bottom: 30px;
+        }
+        h2 {
+           font-size: 38px!important;
+           margin-bottom: 0px!important;
+           margin-left: -3px !important;
+       }
+       hr.red {
+           margin: 0px 0 0px !important;
+           border-top-color: #DCE0E0 !important;
+       } 
+       .gob-datos-cont-table{
+           margin-bottom: 40px;
+           margin-top: -5px!important;
+       }
+       .gob-datos-cont-table table{
+           margin-left: 0px !important;
+       }
+        /*Datos fiscales*/
+        .gob-dom-fisc {
+            margin-bottom: 30px;
+        }
+
+        .gob-dom-fisc-table table{
+                   margin-left: 0px !important;
+                   margin-top: -5px!important;
+               }
+        /*Datos de contacto*/
+        .gob-dat-cont{
+            margin-bottom: 25px;
+        }
+        .gob-dat-cont-table table{
+            margin-left: 0px !important;
+        }
+        .gob-next-step{
+            margin-top: 15px;
+            /*padding-bottom: 96px;*/
+        }
+        .gob-separate-btn {
+            margin-right: 5px;
+        }
+        .ui-selectoneradio td
+                     {
+                        padding: 0px!important;
+                         border-color:#FFFFFF !important;
+                     }
+                     
+                     
+/*
+Selects
+*/
+input[type="text"] { border-radius: 3px;}
+.ui-selectonemenu label.ui-selectonemenu-label {
+        margin: 6px;
+    }
+    
+
+ .ui-selectonemenu .ui-selectonemenu-trigger .ui-icon {
+    margin-top: 10px !important;
+    margin-left: 0px !important;
+}
+
+.ui-selectonemenu .ui-selectonemenu-trigger{
+    background-color: #fff !important;
+    border-left: 1px solid #E2E2E2 !important;
+}
+.ui-selectonemenu .ui-selectonemenu-trigger {
+       width: 25px !important;
+       border-right: 0px !important;
+       border-top: 0px !important;
+}
+
+.ui-icon-bullet {
+    background-position: -81px -144px  !important;
+}
+.ui-icon {
+    width: 11px !important;
+    height: 13px !important;
+}
+
+.ui-button{
+    border-radius: 3px;
+}
+label#formRegistrarAviso\:j_idt14{
+    
+}
+/* --------------- R E G I S T R A R  A V I S O ----------------- */
+.gob-regav-title{
+    /*margin-bottom: 52px;*/
+        display: block;
+}
+.gob-regav-subtitle{
+    
+}
+.gob-regav-table{
+    margin-top: 30px;
+}
+
+.gob-info-decl-comp{
+    /*margin-top:56px;*/
+    margin-bottom: 30px;
+}
+.gob-info-decl-comp-table{
+
+}
+label#formRegistrarAviso\:j_idt39{
+              display: inline-block;
+              margin-top: 25px;
+}
+button#formRegistrarAviso\:btnSiguientePnlTipoAviso{
+            left: 12px;
+            top: 15px;
+}
+/*Mensaje de información azul en Registrar aviso*/
+.ui-messages-info, .ui-message-info {
+    border-radius: 3px 3px 3px 3px;
+    -moz-border-radius: 3px 3px 3px 3px;
+    -webkit-border-radius: 3px 3px 3px 3px;
+    border: 2px solid #BCE8F1 ;
+    background-color: #D9EDF7;
+     text-align: center;
+     color:#31708F  ;
+     margin-top:30px;
+    margin-bottom: 30px;
+    padding-top:30px;
+    padding-bottom: 30px;
+    }
+    span.ui-messages-info-icon{
+    display:none;
+    }
+    .ui-growl{
+    width: 100%!important;   
+    }
+    .tab_D{width:373.33px !important;}
+    .tab_I{width:373.33px !important;}
+/* --------------- R E G I S T R A R  A V I S O ----------------- */
+
+
+/*Alertas de error ROJO*/
+
+#error0 {
+                    display: none;
+                    border-radius: 3px 3px 3px 3px;
+                    -moz-border-radius: 3px 3px 3px 3px;
+                    -webkit-border-radius: 3px 3px 3px 3px;
+                    border: 2px solid #D0021B ;
+                    background-color: #F2DEDE;
+                     text-align: center;
+                     color:#545454 ;
+                     margin-top:30px;
+                    margin-bottom: 30px;
+                    padding-top:30px;
+                    padding-bottom: 30px;
+                }
+                #error1 {
+                    display: none;
+                    border-radius: 3px 3px 3px 3px;
+                    -moz-border-radius: 3px 3px 3px 3px;
+                    -webkit-border-radius: 3px 3px 3px 3px;
+                    border: 2px solid #D0021B ;
+                    background-color: #F2DEDE;
+                     text-align: center;
+                     color:#545454 ;
+                     margin-top:30px;
+                    margin-bottom: 30px;
+                    padding-top:30px;
+                    padding-bottom: 30px;
+                    font-weight: normal !important;
+                }
+                #error2 {
+                    display: none;
+                    border-radius: 3px 3px 3px 3px;
+                    -moz-border-radius: 3px 3px 3px 3px;
+                    -webkit-border-radius: 3px 3px 3px 3px;
+                    border: 2px solid #D0021B ;
+                    background-color: #F2DEDE;
+                     text-align: center;
+                     color:#545454 ;
+                     margin-top:30px;
+                    margin-bottom: 30px;
+                    padding-top:30px;
+                    padding-bottom: 30px;
+                    font-weight: normal !important;
+                }
+/*Alertas de error ROJO*/
+
+
+/*Correcciones con respecto a dev*/
+
+.ui-outputlabel.ui-state-error{
+        border: 0px !important;
+}
+
+/*detalle*/
+.gob-orig-imp-fav{
+    margin-bottom: 20px;
+}
+label{
+    margin-bottom: 0px;
+    display: inline-block;
+}
+.ui-wizard-navbar.ui-helper-clearfix{
+    margin-top: 20px;
+    /*margin-bottom: 64px;*/
+   width: 777px;
+   position: relative;
+}
+/*detalle*/
+.gmxfvertical .ui-button {
+    float: right;
+}
+.tab-conten {
+    width: 777px;
+}
+.gob-info-imp{
+    margin-bottom: 25px;
+}
+.gob-info-comp{
+    margin-top: 35px;
+    margin-bottom: 25px;
+}
+.gob-info-dec-imp-fav{
+    margin-bottom:25px;
+}
+.gob-cant-comp{
+    
+}
+#formDetalleCuadro\:j_idt169{
+    width: 777px !important;
+}
+#formDetalleCuadro\:btnGuardarCuadro {
+    margin-left: 55px !important;
+}
+.gob-cant-compe{
+    margin-bottom: 20px;
+}
+#formRegistrarAviso\:j_idt13 {
+    margin-left: -2px;
+}
+
+.ui-icon.ui-icon-close{
+    display: none !important;
+}

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans          http://www.springframework.org/schema/beans/spring-beans-3.2.xsd           http://www.springframework.org/schema/tx                               http://www.springframework.org/schema/tx/spring-tx-3.2.xsd               http://www.springframework.org/schema/context                   http://www.springframework.org/schema/context/spring-context-3.2.xsd           http://www.springframework.org/schema/util                                http://www.springframework.org/schema/util/spring-util-3.2.xsd              http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd">
+    <import resource="classpath*:contexto_wrapper_web.xml"/>
+    <import resource="classpath*:applicationContext-Admin.xml"/>
+    <util:properties id="urlRedirect" location="/WEB-INF/session.properties"/>
+    <util:properties id="prop" location="/WEB-INF/session.properties"/>
+    <util:properties id="propdyc" location="file:/siat/dyc/configuraciondyc/parametrosdyc.properties"/>
+    <bean id="dataSourceDwhOra2" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName" value="jdbc/DyC_dwh_ora1"/>
+    </bean>
+    <bean id="dataSourceSIAT" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName" value="jdbc/DyC_dwh_ora1"/>
+    </bean>
+    <bean id="dataSourceInformix" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName" value="jdbc/DyC_dwh_inf1"/>
+    </bean>
+    <bean id="dataSourceDYCRFC" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName" value="jdbc/DyC_rfc"/>
+    </bean>
+    <bean id="dataSourceInformixDyC" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName" value="jdbc/DyC_dwh_inf2"/>
+    </bean>
+    <bean id="dataSourceADM" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName" value="jdbc/DyC_app"/>
+    </bean>
+    <bean id="dataSourceDYCDB2" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName" value="jdbc/DyC_db2"/>
+    </bean>
+    <bean id="namedParameterJdbcTemplateDwhOra2"
+          class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+        <constructor-arg ref="dataSourceDwhOra2"></constructor-arg>
+    </bean>
+    <bean id="namedParameterJdbcTemplateSIAT"
+          class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+        <constructor-arg ref="dataSourceSIAT"></constructor-arg>
+    </bean>
+    <bean id="jdbcTemplateDwhOra2" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceDwhOra2"></property>
+    </bean>
+    <bean id="jdbcTemplateSIAT" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceSIAT"></property>
+    </bean>
+    <bean id="jdbcTemplateInformix" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceInformix"></property>
+    </bean>
+    <bean id="jdbcTemplateInformixDyC" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceInformixDyC"></property>
+    </bean>
+    <bean id="jdbcTemplateDYCRFC" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceDYCRFC"></property>
+    </bean>
+    <bean id="jdbcTemplateDYCDB2" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceDYCDB2"/>
+    </bean>
+    <bean id="jdbcTemplateADM" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSourceADM"></property>
+    </bean>
+    <bean id="transactionManagerDB2" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSourceDYCDB2"/>
+    </bean>
+    <bean id="transactionManagerDWHORA2" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSourceDwhOra2"/>
+    </bean>
+    <bean id="transactionManagerSIAT" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSourceSIAT"/>
+    </bean>
+    <bean id="transactionManagerINF1" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSourceInformix"/>
+    </bean>
+    <bean id="transactionManagerRFC" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSourceDYCRFC"/>
+    </bean>
+    <bean id="transactionManagerINF2" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSourceInformixDyC"/>
+        <qualifier value="TMdataSourceInformixDYC"/>
+    </bean>
+    <bean id="transactionManagerADM" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSourceADM"/>
+    </bean>
+    <bean id="rutaEnviarTESOFE" class="java.lang.String" factory-method="valueOf">
+        <constructor-arg value="#{propdyc['rutaEnviarTESOFE']}"></constructor-arg>
+    </bean>
+    <import resource="classpath:diaHabilContextWeb.xml"/>
+    <import resource="classpath:applicationContextDAODyC.xml"/>
+    <import resource="classpath:applicationContextActualizadorWEB.xml"/>
+    
+    <!--Inicio configuracion Buzon
+<import resource="classpath:applicationContext-BuzonNotif.xml"/>
+<util:properties id="devolucionProperties" location="file:/siat/dyc/configuraciondyc/automaticasdyc.properties"/>
+    -->
+    <!-- PROPERTIES - Inicio
+   <bean id="placeholderConfig" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+       <property name="ignoreUnresolvablePlaceholders" value="true"/>
+       <property name="location">
+           <value>file:/siat/dyc/configuraciondyc/automaticasdyc.properties</value>
+       </property>
+   </bean>
+   <bean id="applicationContextProvider" class="mx.gob.sat.siat.dyc.generico.util.spring.ApplicationContextProvider"/>
+   <bean id="buzonNotifService" class="mx.gob.sat.mat.buzonnotif.service.impl.BuzonNotifServiceImpl">
+       <property name="wsdl" value="#{devolucionProperties['buzonnotif.service.wsdl']}"/>
+   </bean>
+    -->
+    <context:component-scan base-package="mx.gob.sat.siat.dyc"/>
+    <context:component-scan base-package="mx.gob.sat.mat.dyc"/>
+</beans>

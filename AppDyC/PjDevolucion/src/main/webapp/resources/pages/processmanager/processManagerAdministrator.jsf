@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Job Manager Administrador</title>
+    </h:head>
+    <h:body>
+        <f:metadata>
+            <f:viewParam name="idProceso" value="#{jobManagerAdminMB.idProcesoDetalle}" />
+        </f:metadata>
+        <h:outputStylesheet library="css/" name="estilos.css"/>
+        <ui:include src="/WEB-INF/templates/sessionTimeOut.xhtml"/>
+        <h:form id="formaGeneral" prependId="false">
+            <p:panel
+                style="width:800px;margin-left:auto;margin-right:auto; border: 0" visible="true">
+                <p:messages globalOnly="true" closable="true"/>                  
+            </p:panel>
+            <p:panel id="panelLanzadores" header="#{mensajes['job.manganer.admin.titulo']}"
+                     style="width:800px;margin-left:auto;margin-right:auto;" visible="true">
+                <p:inputText id="idProceso" 
+                             value="#{jobManagerAdminMB.procesoDetalle.proceso.idProceso}" 
+                             rendered="false"/>
+                        <h:panelGrid columns="2" style="margin-top: 10px">
+                            <p:panel id="panelSupIzq" style="border: 0; width: 350px;">
+                                <h:panelGrid>
+                                    <p:row>
+                                        <p:column>
+                                            <h:outputLabel id="nombreLb" value="#{mensajes['job.manganer.admin.nombre']}"/>
+                                            <h:outputText value="*" style="color:red"/> 
+                                        </p:column>
+                                        <p:column>
+                                            <p:spacer width="40" height="5"/>
+                                        </p:column>
+                                        <p:column>
+                                            <p:inputText id="nombre"
+                                                         value="#{jobManagerAdminMB.procesoDetalle.proceso.nombre}" disabled="#{!jobManagerAdminMB.save}"/>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column>
+                                            <p:spacer width="90" height="5"/>
+                                        </p:column>
+                                        <p:column colspan="2" rowspan="2">
+                                            <h:outputText value="#{mensajes['faces.validator.LengthValidator.MINIMUM']}#{jobManagerAdminMB.minimumLength}" 
+                                                          style="color:red" rendered="#{jobManagerAdminMB.msgErrNomLength}"/>
+                                            <h:outputText value="#{mensajes['ui.validacion.required']}" 
+                                                          style="color:red" rendered="#{jobManagerAdminMB.msgErrNomReq}"/>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column>
+                                            <h:outputLabel id="descripcionLb" value="#{mensajes['job.manganer.admin.descripcion']}"/>
+                                            <h:outputText value="*" style="color:red" />
+                                        </p:column>
+                                        <p:column>
+                                            <p:spacer width="20" height="5"/>
+                                        </p:column>
+                                        <p:column>
+                                            <p:inputTextarea id="descripcion" rows="2" cols="33"
+                                                             value="#{jobManagerAdminMB.procesoDetalle.proceso.descripcion}"
+                                                             maxlength="100" counter="counter16" autoResize="false"
+                                                             counterTemplate="{0} caracteres restantes."/>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column>
+                                            <p:spacer width="90" height="5"/>
+                                        </p:column>
+                                        <p:column colspan="2">
+                                            <h:outputText id="counter16"/>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column >
+                                            <p:spacer width="90" height="5"/>
+                                        </p:column>
+                                        <p:column colspan="2">
+                                            <h:outputText value="#{mensajes['faces.validator.LengthValidator.MINIMUM']}#{jobManagerAdminMB.minimumLength}" 
+                                                          style="color:red" rendered="#{jobManagerAdminMB.msgErrDescLength}"/>
+                                            <h:outputText value="#{mensajes['ui.validacion.required']}" 
+                                                          style="color:red" rendered="#{jobManagerAdminMB.msgErrDescReq}"/>
+                                        </p:column>
+                                    </p:row>
+                                </h:panelGrid>
+                            </p:panel>
+
+                            <p:panel id="panelSupDer" style="border: 0; width: 350px;">
+                                <h:panelGrid>
+                                    <p:row>
+                                        <p:column>
+                                            <h:outputLabel id="prioridadLb" value="#{mensajes['job.manganer.admin.prioridad']}"/>
+                                        </p:column>
+                                        <p:column>
+                                            <p:spacer width="78" height="5"/>
+                                        </p:column>
+                                        <p:column>
+                                            <p:selectOneMenu value="#{jobManagerAdminMB.procesoDetalle.proceso.prioridad}" 
+                                                             styleClass="combos" style="width:160px;" required="true"
+                                                             requiredMessage="#{mensajes['ui.validacion.required']}" 
+                                                             id="prioridad" disabled="#{jobManagerAdminMB.tipoProcesamiento}">
+                                                <f:selectItems value="#{jobManagerAdminMB.lstPrioridadJob}" var="cat"
+                                                               itemLabel="#{cat.strPrioridad}" itemValue="#{cat.prioridad}"/>
+                                                <p:message display="text" for="prioridad"/>
+                                            </p:selectOneMenu>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column>
+                                            <h:outputText value="#{jobManagerAdminMB.msgErrorPrioridad}" style="color:red"/>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column>
+                                            <h:outputLabel id="programacionLb" value="#{mensajes['job.manganer.admin.programacion']}" 
+                                                           style="width:155px;"/>
+                                        </p:column>
+                                        <p:column>
+                                            <p:spacer width="53" height="5"/>
+                                        </p:column>
+                                        <p:column>
+                                            <p:inputText id="programacion" requiredMessage="#{mensajes['ui.validacion.required']}" 
+                                                         required="false" style="width:155px;" 
+                                                         value="#{jobManagerAdminMB.procesoDetalle.proceso.programacion}"/>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column>
+                                            <h:outputText value="#{jobManagerAdminMB.msgErrorProgramacion}" style="color:red"/>
+                                            <p:tooltip for="programacion" value="[ejemplo expresión:] 0 0 * * * ?" 
+                                                       showEffect="slide" hideEffect="slide" />
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column>
+                                            <h:outputLabel id="estadoLb" value="#{mensajes['job.manganer.admin.estado']}"/>
+                                        </p:column>
+                                        <p:column>
+                                            <p:spacer width="88" height="5"/>
+                                        </p:column>
+                                        <p:column>
+                                            <p:selectOneMenu value="#{jobManagerAdminMB.estado}" 
+                                                             styleClass="combos" style="width:160px;" required="true" 
+                                                             requiredMessage="#{mensajes['ui.validacion.required']}" id="estado">
+                                                <f:selectItems value="#{jobManagerAdminMB.lstEstadoJob}" var="estado" 
+                                                               itemLabel="#{estado.strEstado}" itemValue="#{estado.estado}" />
+                                            </p:selectOneMenu>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column><p:message for="estado" /> </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column>
+                                            <h:outputLabel id="maximoIntLb" value="#{mensajes['job.manganer.admin.tbl.maxint']}"/>
+                                        </p:column>
+                                        <p:column>
+                                            <p:spacer width="28" height="5"/>
+                                        </p:column>
+                                        <p:column>
+                                            <p:selectOneMenu value="#{jobManagerAdminMB.procesoDetalle.proceso.intentosMax}" 
+                                                             styleClass="combos" style="width:160px;" required="true"
+                                                             requiredMessage="#{mensajes['ui.validacion.required']}" id="maxInt">                                        
+                                                <f:selectItems value="#{jobManagerAdminMB.numIntentos}" var="numInt"
+                                                               itemLabel="#{numInt}" itemValue="#{numInt}" />
+                                            </p:selectOneMenu>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column><p:message for="maxInt" /> </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column>
+                                            <h:outputLabel id="tipoProcesamientoLb" value="#{mensajes['job.manganer.admin.tipo.procesamiento']}" />
+                                        </p:column>
+                                        <p:column>
+                                            <p:spacer width="12" height="5"/>
+                                        </p:column>
+                                        <p:column>
+                                            <p:selectOneMenu value="#{jobManagerAdminMB.procesoDetalle.proceso.tipoCadena}" 
+                                                             styleClass="combos" style="width:160px;" required="false"
+                                                             requiredMessage="#{mensajes['ui.validacion.required']}" 
+                                                             id="tipoProcesamiento" disabled="#{jobManagerAdminMB.tipoProcesamiento}">
+                                                <f:selectItem itemLabel="#{mensajes['ui.catalogos.label.item.def']} "   
+                                                              itemValue="#{null}" />
+                                                <f:selectItems value="#{jobManagerAdminMB.lstTipoProcesamiento}" var="pro"
+                                                               itemLabel="#{pro.procesamiento}" itemValue="#{pro.id}"/>
+                                                <p:message display="text" for="tipoProcesamiento"/>
+                                            </p:selectOneMenu>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column colspan="2">
+                                            <h:outputText value="#{jobManagerAdminMB.msgErrorTipoCadena}" style="color:red"/>
+                                        </p:column>
+                                    </p:row>
+                                </h:panelGrid>
+                            </p:panel>
+                        </h:panelGrid>
+                    </p:panel>
+
+            <p:panel id="panelMedIzq" style="width:800px;margin-left:auto;margin-right:auto;">
+                    <h:panelGrid id="panelGridLanzadores" columns="1" cellpadding="2">
+                        <p:panel id="panelLanzadoresTbl" header="#{mensajes['job.manganer.admin.panel.titulo.lanzadores']}"
+                                 style="width:728px;margin-left:auto;margin-right:auto;" visible="true" >
+                            <p:dataTable id="tblLanzadores" var="i" value="#{jobManagerAdminMB.lanzadores}"
+                                         emptyMessage="#{mensajes['msg.dataTable.vacio']}"
+                                         style="align:right;width:auto;overflow:auto;">
+
+                                <p:column headerText="#{mensajes['job.manganer.admin.tbl.id']}"> 
+                                    <h:outputText value="#{i.idProceso}" />
+                                </p:column>  
+                                <p:column headerText="#{mensajes['job.manganer.admin.tbl.nombre']}">
+                                    <h:outputText value="#{i.nombre}" />
+                                </p:column>
+                                <p:column headerText="#{mensajes['job.manganer.admin.tbl.descripcion']}">
+                                    <h:outputText value="#{i.descripcion}" />
+                                </p:column>
+                                <p:column style="width:6%">
+                                    <p:commandButton process="@this" update=":formaGeneral" action="#{jobManagerAdminMB.removed}"
+                                                     icon="ui-icon-close" >
+                                        <f:setPropertyActionListener value="#{i}" 
+                                                                     target="#{jobManagerAdminMB.procesoSelected}" /> 
+                                    </p:commandButton>
+                                </p:column>  
+                            </p:dataTable>    
+                        </p:panel>
+                        <div align="left">
+                            <h:panelGrid columns="2">
+                                <p:commandButton value="#{mensajes['btnNuevo']}" oncomplete="agregaProceso.show();" 
+                                                 update=":formaGeneral:panelGridLanzadores"/>
+                            </h:panelGrid>
+                        </div>
+                        <p:panel id="panelExcluyentesTbl" header="#{mensajes['job.manganer.admin.panel.titulo.excluyentes']}"
+                                 style="width:728px;margin-left:auto;margin-right:auto;" visible="true">
+                            <p:dataTable id="tblExcluyentes" var="j" value="#{jobManagerAdminMB.excluyentes}"
+                                         emptyMessage="#{mensajes['msg.dataTable.vacio']}"
+                                         style="align:right;width:auto;overflow:auto;">
+                                <p:column headerText="#{mensajes['job.manganer.admin.tbl.id']}">
+                                    <h:outputText value="#{j.idProceso}" /> 
+                                </p:column>
+                                <p:column headerText="#{mensajes['job.manganer.admin.tbl.nombre']}">
+                                    <h:outputText value="#{j.nombre}" />
+                                </p:column>
+                                <p:column headerText="#{mensajes['job.manganer.admin.tbl.descripcion']}">
+                                    <h:outputText value="#{j.descripcion}" />
+                                </p:column>
+                                <p:column style="width:6%">
+                                    <p:commandButton process="@this" update=":formaGeneral" action="#{jobManagerAdminMB.removedExc}"
+                                                     icon="ui-icon-close" >
+                                        <f:setPropertyActionListener value="#{j}" 
+                                                                     target="#{jobManagerAdminMB.procesoSelected}" /> 
+                                    </p:commandButton>
+                                </p:column>    
+                            </p:dataTable>  
+                        </p:panel>
+                        <div align="left">
+                            <h:panelGrid columns="2">
+                                <p:commandButton value="#{mensajes['btnNuevo']}" oncomplete="agregaExcluyentes.show();" 
+                                                 update=":formaGeneral:panelLanzadores"/>
+                            </h:panelGrid>
+                            <h:panelGrid columns="2">
+                                <p:commandButton icon="ui-icon-arrowthichk-s" id="idguardar" 
+                                                 value="#{mensajes['btnGuardar']}" 
+                                                 actionListener="#{jobManagerAdminMB.detalleCadenaLanzadores}"
+                                                 update=":formaGeneral,tblLanzadoresCadena"/>                    
+                                <p:commandButton actionListener="#{jobManagerAdminMB.redirigirJobManager}" 
+                                                 icon="ui-icon-arrowthichk-s"
+                                                 value="#{mensajes['btnRegresar']}" update=":formaGeneral" 
+                                                 rendered="#{jobManagerAdminMB.btnRegresar}">                    
+                                </p:commandButton>
+                            </h:panelGrid>
+                        </div>
+                    </h:panelGrid>
+                </p:panel>
+            <p:panel style="width:800px;margin-left:auto;margin-right:auto; border: 0" 
+                     visible="true">
+                <p:messages globalOnly="true" closable="true"/>                  
+            </p:panel>
+            <!--HABILITA CADENA-->
+            <p:dialog header="#{jobManagerAdminMB.headerActivoDesactivo}" widgetVar="cadenaWV" id="idCadenaWV" 
+                      hideEffect="explode" modal="true" resizable="false" width="600" showEffect="explode">
+                <h:panelGrid columns="1">
+                    <h:outputText value="#{jobManagerAdminMB.dialogActivoDesactivo}"/>
+                    <h:outputText value="#{mensajes['etProcesosSerie']}" />
+                    <p:dataTable id="tblLanzadoresCadena" var="lanzadorCadena" value="#{jobManagerAdminMB.cadenaLanzadores}"
+                                 style="align:right;width:auto;overflow:auto;">
+                        <p:column headerText="#{mensajes['job.manganer.admin.tbl.id']}" style="width:20px">
+                            <h:outputText value="#{lanzadorCadena.idProceso}"/>
+                        </p:column>
+                        <p:column headerText="#{mensajes['job.manganer.admin.tbl.nombre']}" style="width:60px">
+                            <h:outputText value="#{lanzadorCadena.descripcion}"/>
+                        </p:column>  
+                    </p:dataTable>
+                    <h:panelGrid columns="3">
+                        <p:commandButton value="#{jobManagerAdminMB.procesoDetalle.proceso.estado==(1)?'Activar': 'Desactivar'}" 
+                                         actionListener="#{jobManagerAdminMB.validaLanzadores}" icon="ui-icon-arrowthichk-s"
+                                         oncomplete="cadenaWV.hide();"  
+                                         update=":formaGeneral"/>
+                        <p:commandButton value="#{jobManagerAdminMB.procesoDetalle.proceso.estado==(1)?'Activar Todos':'Desactivar Todos'}" 
+                                         actionListener="#{jobManagerAdminMB.guardarCadena}" icon="ui-icon-arrowthichk-s"
+                                         update=":formaGeneral,:formaGeneral:panelLanzadores"/>
+                        <p:commandButton icon="ui-icon-arrowthichk-s" value="#{mensajes['btnCancelar']}" 
+                                         oncomplete="cadenaWV.hide();"/>
+                    </h:panelGrid>  
+                </h:panelGrid>
+            </p:dialog>
+            <p:dialog header="#{jobManagerAdminMB.headerActivoDesactivo}" widgetVar="activacion1" 
+                      rendered="#{jobManagerAdminMB.confirmarDialogo}"
+                      showEffect="explode" hideEffect="explode" modal="true" resizable="false" width="600">
+                <h:panelGrid columns="1">
+                    <h:outputText value="#{jobManagerAdminMB.mensajeInfo}" escape="false"/>
+                    <p:dataTable id="tblLanzadoresCadenaInactivos" var="lanzador" value="#{jobManagerAdminMB.lanzadoresConfirma}"
+                                 emptyMessage="#{mensajes['msg.dataTable.vacio']}"
+                                 rendered="#{jobManagerAdminMB.showLanzadoresConfirma}"
+                                 style="align:right;width:auto;overflow:auto;">
+                        <p:column headerText="#{mensajes['job.manganer.admin.tbl.id']}" style="width:20px">
+                            <h:outputText value="#{lanzador.idProceso}"/>
+                        </p:column>
+                        <p:column headerText="#{mensajes['job.manganer.admin.tbl.nombre']}" style="width:60px">
+                            <h:outputText value="#{lanzador.descripcion}"/>
+                        </p:column>  
+                    </p:dataTable>
+                    <h:outputText value="#{jobManagerAdminMB.mensajeAccion}" escape="false"/>
+                    <h:panelGrid columns="2">
+                        <p:commandButton value="#{jobManagerAdminMB.procesoDetalle.proceso.estado==(1)?'Activar': 'Desactivar'}" 
+                                         icon="ui-icon-arrowthichk-s" rendered="#{jobManagerAdminMB.mostrarBotones}"
+                                         actionListener="#{jobManagerAdminMB.guardado}"
+                                         update=":formaGeneral,:formaGeneral:panelLanzadores"/>
+                        <p:commandButton icon="ui-icon-arrowthichk-s" value="#{mensajes['btnCancelar']}" 
+                                         oncomplete="cadenaWV.hide(); activacion1.hide();"/>
+                    </h:panelGrid>
+                </h:panelGrid>
+            </p:dialog>
+            <!--HABILITA CADENA-->
+            <!--LANZADORES-->
+            <p:dialog header="#{mensajes['job.manganer.admin.panel.titulo.lanzadores']}" 
+                      widgetVar="agregaProceso" id="idAgregaLazadores" showEffect="explode"
+                      hideEffect="explode" modal="true" resizable="false" width="700">
+                <p:panel id="popupIncluyentes">
+                    <p:dataTable id="incluyentesTlb" var="proceso" value="#{jobManagerAdminMB.actuales}"
+                                 emptyMessage="#{mensajes['msg.dataTable.vacio']}" rowKey="#{proceso.nombre}" 
+                                 selection="#{jobManagerAdminMB.selectedAdd}" selectionMode="multiple" 
+
+                                 scrollable="true" scrollWidth="648">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes['job.manganer.admin.tbl.procesos']}"/>
+                        </f:facet>
+                        <p:column headerText="#{mensajes['job.manganer.admin.tbl.id']}" width="3%">
+                            <h:outputText value="#{proceso.idProceso}"/>
+                        </p:column>
+                        <p:column headerText="#{mensajes['job.manganer.admin.tbl.nombre']}" width="30%">
+                            <h:outputText value="#{proceso.nombre}"/>
+                        </p:column>                                
+                        <p:column headerText="#{mensajes['job.manganer.admin.tbl.descripcion']}" width="30%">
+                            <h:outputText value="#{proceso.descripcion}"/>
+                        </p:column>
+                        <f:facet name="footer">  
+                            <p:commandButton actionListener="#{jobManagerAdminMB.addProcesos}" icon="ui-icon-arrowthichk-s"
+                                             value="#{mensajes['job.manganer.admin.btn.agregar.lazadores']}" 
+                                             process="@form" ajax="true" update=":formaGeneral">                    
+                            </p:commandButton>  
+                        </f:facet>  
+                    </p:dataTable>                            
+                </p:panel>
+            </p:dialog>
+            <!--EXCLUYENTES-->
+            <p:dialog header="#{mensajes['job.manganer.admin.panel.titulo.excluyentes']}" 
+                      widgetVar="agregaExcluyentes" id="idAgregaExcluyentes" showEffect="explode"
+                      hideEffect="explode" modal="true" resizable="false" width="700">
+                <p:panel id="popupExcluyentes">
+                    <p:dataTable id="excliyentesTlb" var="proceso" value="#{jobManagerAdminMB.actuales}"
+                                 emptyMessage="#{mensajes['msg.dataTable.vacio']}" rowKey="#{proceso.nombre}" 
+                                 selection="#{jobManagerAdminMB.selectedExcAdd}" selectionMode="multiple" 
+                                 scrollable="true" scrollWidth="648">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes['job.manganer.admin.tbl.procesos']}"/>
+                        </f:facet>
+                        <p:column headerText="#{mensajes['job.manganer.admin.tbl.id']}" width="3%">
+                            <h:outputText value="#{proceso.idProceso}"/>
+                        </p:column>
+                        <p:column headerText="#{mensajes['job.manganer.admin.tbl.nombre']}" width="30%">
+                            <h:outputText value="#{proceso.nombre}"/>
+                        </p:column>                                
+                        <p:column headerText="#{mensajes['job.manganer.admin.tbl.descripcion']}" width="30%">
+                            <h:outputText value="#{proceso.descripcion}"/>
+                        </p:column>
+                        <f:facet name="footer">  
+                            <p:commandButton actionListener="#{jobManagerAdminMB.addExcProcesos}" icon="ui-icon-arrowthichk-s"
+                                             value="#{mensajes['job.manganer.admin.btn.agregar.excluyentes']}" 
+                                             process="@form" ajax="true" update=":formaGeneral"/>                    
+                        </f:facet>  
+                    </p:dataTable>                            
+                </p:panel>
+            </p:dialog>
+        </h:form>
+    </h:body>
+</html>

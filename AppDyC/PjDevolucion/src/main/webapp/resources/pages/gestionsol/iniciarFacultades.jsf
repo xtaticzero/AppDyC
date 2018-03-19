@@ -1,0 +1,336 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view contentType="text/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+    <html xmlns="http://www.w3.org/1999/xhtml" xmlns:p="http://primefaces.org/ui">
+        <h:head>
+            <title>iniciarFacultades</title>
+            <h:outputStylesheet library="css/" name="formato.css"/>
+            <h:outputScript library="js" name="calendar-localization.js"/>
+            <h:outputScript library="js" name="general.js"/>
+            <script type="text/javascript">
+              $.datepicker._generateMonthYearHeader_original = $.datepicker._generateMonthYearHeader;
+
+              $.datepicker._generateMonthYearHeader = function (inst, dm, dy, mnd, mxd, s, mn, mns) {
+                  var header = $($.datepicker._generateMonthYearHeader_original(inst, dm, dy, mnd, mxd, s, mn, mns)), years = header.find('.ui-datepicker-year');
+
+                  // reverse the years
+                  years.html(Array.prototype.reverse.apply(years.children()));
+
+                  // return our new html
+                  return $('&lt;div />').append(header).html();
+              }
+            </script>
+        </h:head>
+        <h:body>
+            <h:form id="iniciarFacultades1">
+                <p:panel header="Resumen documento de una solicitud de devolución" styleClass="gmxAutoAjustable">
+                    <p:messages id="msgGeneral" globalOnly="true" closable="true"/>                    
+                    <p:panelGrid style="width:100%;text-align:left">
+                        <p:row>
+                            <p:column style="width:400px;text-align:left">
+                                <p:outputLabel value="RFC: "/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="#{bandejaInicioFacultadesMB.solicitudAdministrarSolVO.dycpServicioDTO.rfcContribuyente}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:400px;text-align:left">
+                                <p:outputLabel value="Nombre o razón social: "/>
+                            </p:column>
+                            <p:column style="text-align:left; #{iniciarFacultadesMB.personaIdentificacion.tipoPersona == 'M' ? 'display:none' : 'display:disabled;'}">
+                                <p:outputLabel value="#{iniciarFacultadesMB.personaIdentificacion.apPaterno} #{iniciarFacultadesMB.personaIdentificacion.apMaterno} #{iniciarFacultadesMB.personaIdentificacion.nombre}"/>
+                            </p:column>
+                            <p:column style="text-align:left; #{iniciarFacultadesMB.personaIdentificacion.tipoPersona == 'F' ? 'display:none' : 'display:disabled;'}">
+                                <p:outputLabel value="#{iniciarFacultadesMB.personaIdentificacion.razonSocial}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:400px;text-align:left">
+                                <p:outputLabel value="Tipo trámite: "/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="#{bandejaInicioFacultadesMB.solicitudAdministrarSolVO.tipoTramite}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:400px;text-align:left">
+                                <p:outputLabel value="Tipo de requerimiento: "/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="Inicio de facultades"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:400px;text-align:left">
+                                <p:outputLabel value="Tipo de resolución: "/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="NO APLICA"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:400px;text-align:left">
+                                <p:outputLabel value="Importe solicitado: "/>
+                            </p:column>
+                            <p:column style="width:480px;text-align:left">
+                                <h:outputText value="#{bandejaInicioFacultadesMB.solicitudAdministrarSolVO.importeSolicitado}">
+                                    <f:convertNumber currencySymbol="$ " type="currency"/>
+                                </h:outputText>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:400px;text-align:left">
+                                <p:outputLabel value="Importe autorizado: "/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="$0.00"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:400px;text-align:left">
+                                <p:outputLabel value="Importe neto a devolver menos compensación de oficio: "/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="$0.00"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="width:400px;text-align:left">
+                                <p:outputLabel value="Saldo negado: "/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="$0.00"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <br/>
+                    <div align="right" style="height:30px">
+                        <p:commandButton value="Consultar expediente"
+                            action="#{iniciarFacultadesMB.irConsultarExpediente}" ajax="false"/>
+                         
+                        <p:commandButton value="Rechazar" process="@this"
+                            action="#{iniciarFacultadesMB.mostrarOpcionDictaminadoresReasignacion}"
+                            udpate=":formularioRechazarFacultades:dlgOpcionReasignarFacultades" />
+                         
+                        <p:commandButton value="#{iniciarFacultadesMB.etiBoton}"
+                            action="#{iniciarFacultadesMB.validarInicioFacultades}"
+                            oncomplete="dlgFacultades.show();" update=":iniciarFacultades2"/>
+                         
+                        <p:commandButton value="Regresar" ajax="false"
+                            action="#{iniciarFacultadesMB.irDictaminarSolicitud}" />
+                    </div>
+                </p:panel>
+            </h:form>
+
+            <h:form id="formularioRechazarFacultades">
+
+                <p:dialog id="dlgOpcionReasignarFacultades" widgetVar="wvDlgOpcionReasignarFacultades" modal="true" closable="false"
+                    resizable="false" >
+
+                    <h5>Dictaminador asignado</h5>
+
+                    <p:panelGrid columns="2">
+                        <p:outputLabel value="Nombre">:</p:outputLabel>
+                        <h:outputText value="#{iniciarFacultadesMB.nombreDictaminador}" />
+                        <p:outputLabel value="No. empleado">:</p:outputLabel>
+                        <h:outputText value="#{iniciarFacultadesMB.numEmpDictaminador}" />
+                    </p:panelGrid>
+
+                    <h5>¿Desea reasignar el dictaminador?</h5>
+
+                    <h:panelGrid columns="2" style="margin: auto; text-align: center;">
+
+                        <p:commandButton value="Si" process="@this"
+                            action="#{iniciarFacultadesMB.mostrarListaDictaminadoresReasignacion}" 
+                            update=":formularioRechazarFacultades:dlgOpcionReasignarFacultades, :formularioRechazarFacultades:dlgReasignacionFacultades" />
+
+                        <p:commandButton value="No" process="@this"
+                            action="#{iniciarFacultadesMB.omitirReasignarDictaminador}"
+                            update=":formularioRechazarFacultades:dlgOpcionReasignarFacultades" />
+
+                    </h:panelGrid>
+
+                </p:dialog>
+
+                <p:dialog id="dlgReasignacionFacultades" widgetVar="wvDlgReasignacionFacultades" modal="true" 
+                    closable="false" style="max-width: 750px; max-height: 450px;" resizable="false" >
+
+                    <p:messages id="mensajesRechazarFacultades" globalOnly="true" showDetail="true" closable="true" />
+
+                    <h5>Dictaminador asignado</h5>
+
+                    <p:panelGrid columns="2">
+                        <p:outputLabel value="Nombre">:</p:outputLabel>
+                        <h:outputText value="#{iniciarFacultadesMB.nombreDictaminador}" />
+                        <p:outputLabel value="No. empleado">:</p:outputLabel>
+                        <h:outputText value="#{iniciarFacultadesMB.numEmpDictaminador}" />
+                    </p:panelGrid>
+
+                    <h:panelGrid columns="2" style="margin: auto; text-align: center;">
+
+                    <p:commandButton value="Reasignar" process="@this" 
+                        id="botonConfirmacionAprobacion" update="mensajesRechazarFacultades"
+                        action="#{iniciarFacultadesMB.reasignarDictaminador}" 
+                        disabled="#{!iniciarFacultadesMB.confirmacionReasignacion}" />
+
+                    <p:commandButton value="Cancelar" process="@this" 
+                        action="#{iniciarFacultadesMB.cancelarReasignarDictaminador}" 
+                        update=":formularioRechazarFacultades:dlgOpcionReasignarFacultades, :formularioRechazarFacultades:dlgReasignacionFacultades" />
+
+                </h:panelGrid>
+
+                <!-- ************************************ INICIA LISTA DICTAMINADORES ************************************  -->
+                <p:dataTable id="idTblLista" var="vTblLista" value="#{iniciarFacultadesMB.listaDictaminadoresReasignacion}"
+                             rowKey="#{vTblLista.numEmpleado}" scrollWidth="100%"
+                             paginator="#{mDictaminadorMB.frm.paginador}"
+                             paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                             rowsPerPageTemplate="10,15,20" rows="#{mDictaminadorMB.frm.rowsPaginador}"
+                             style="width:100%; max-height: 220px;" resizableColumns="true" liveResize="true" rowIndexVar="rowIndex"
+                             rowStyleClass="#{(rowIndex mod 2) eq 0 ?'highlightA':'highlightB'}"
+                             selection="#{iniciarFacultadesMB.dictaminadorSeleccionado}" selectionMode="single"
+                             emptyMessage="#{msgValidacion.tblEmpty}">
+
+                    <f:facet name="header">Reasignar dictaminador</f:facet>
+
+                    <p:ajax event="rowSelect" update=":formularioRechazarFacultades:botonConfirmacionAprobacion" listener="#{iniciarFacultadesMB.onRowSelect}"/>
+
+                    <p:column sortBy="#{vTblLista.numEmpleado}" headerText="#{msgValidacion.mdNEmpleado}" width="200">
+                        <h:outputText value="#{vTblLista.numEmpleado}"/>
+                    </p:column>
+                    <p:column sortBy="#{vTblLista.nombreCompleto}" headerText="#{msgValidacion.mdTblCol1}">
+                        <h:outputText value="#{vTblLista.nombreCompleto}"/>
+                    </p:column>
+                    <p:column headerText="#{msgValidacion.mdTblCol2}" width="90">
+                        <h:outputText value="#{vTblLista.descComision}"/>
+                    </p:column>
+                    <p:column width="90">
+                        <f:facet name="header">
+                            <h:outputText value="#{msgValidacion.mdTblCol3}"/>
+                        </f:facet>
+                        <h:outputText value="#{vTblLista.activoPortal == 1 ? 'Activo' : 'Inactivo' }"/>
+                    </p:column>
+                    <f:facet name="footer">
+                        <p:outputLabel value="#{mDictaminadorMB.frm.numResultados} Resultados"
+                                       style="text-align:left"/>
+                    </f:facet>
+                </p:dataTable>
+                <!-- ************************************ TERMINA LISTA DICTAMINADORES ************************************  -->
+
+                </p:dialog>
+            </h:form>
+
+            <h:form id="iniciarFacultades2">
+                <p:dialog id="idFac" widgetVar="dlgFacultades" modal="true" closable="false" resizable="false"
+                          width="520" height="380" visible="#{iniciarFacultadesMB.dialogFacultades}">
+                    <p:messages id="messFacultades" globalOnly="true" closable="true" for="msgFacultades"/>                    
+                    <p:panelGrid style="width:100%">
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.diCamposObligatorios}" style="color:red;"/>
+                                <br/>
+                                <p:outputLabel value="Cargar primero el documento en formato .zip" style="color:red;"
+                                               rendered="#{iniciarFacultadesMB.ocultarFechaFinal}"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <p:toolbar style="width:100%;">
+                        <p:toolbarGroup align="left">
+                            <p:outputLabel value="#{msgValidacion.asDialogFacultades} #{iniciarFacultadesMB.numControl}"/>
+                        </p:toolbarGroup>
+                        <p:toolbarGroup align="right">
+                            <p:commandButton icon="ui-icon-folder-open" style="height:30px;" title="Cargar documento"
+                                             disabled="#{iniciarFacultadesMB.btnDocFacultades}" immediate="true"
+                                             actionListener="#{iniciarFacultadesMB.clear}"
+                                             oncomplete="dlgCargar.show();" update=":iniciarFacultades3:documento"/>
+                        </p:toolbarGroup>
+                    </p:toolbar>
+                    <br/>
+                    <p:panelGrid style="width:100%;text-align:left">
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="#{msgValidacion.asFechaOficioInicial}"/>
+                                <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                            </p:column>
+                            <p:column style="text-align:left;">
+                                <p:inputText readonly="true" value="#{iniciarFacultadesMB.fechaStr}"
+                                             rendered="#{iniciarFacultadesMB.validacionFechaInicio1}"/>
+                                <p:calendar id="idFechaInicio" locale="es" pattern="dd/MM/yyyy" yearRange="2000"
+                                            readonlyInput="true" navigator="true"
+                                            value="#{iniciarFacultadesMB.valorFechaInicio}"
+                                            mindate="#{iniciarFacultadesMB.fechaPresentacion}"
+                                            maxdate="#{iniciarFacultadesMB.fechaActualInicio}"
+                                            rendered="#{iniciarFacultadesMB.validacionFechaInicio2}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="#{msgValidacion.asNumeroOrden}"/>
+                                <p:outputLabel value="#{msgValidacion.generalRequerido}" style="color:red;"/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <p:inputText id="idFolio" style="text-align:left"
+                                             readonly="#{iniciarFacultadesMB.validarFolio}"
+                                             value="#{iniciarFacultadesMB.folioFacultades}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row rendered="#{iniciarFacultadesMB.ocultarFechaFinal}">
+                            <p:column style="text-align:left">
+                                <p:outputLabel value="#{msgValidacion.asFechaOficioFinal}"/>
+                                <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                            </p:column>
+                            <p:column style="text-align:left">
+                                <p:calendar id="idFechaFinal" locale="es" pattern="dd/MM/yyyy" yearRange="2000"
+                                            navigator="true" readonlyInput="true"
+                                            value="#{iniciarFacultadesMB.valorFechaFinal}"
+                                            maxdate="#{iniciarFacultadesMB.fechaActualInicio}"
+                                            mindate="#{iniciarFacultadesMB.fechaInicio}"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <br/>
+                    <p:commandButton value="#{msgValidacion.asBtnCancelar}" oncomplete="dlgFacultades.hide();"
+                                     immediate="true" action="#{iniciarFacultadesMB.cancelarFacultades}"/>
+                    <p:commandButton value="#{msgValidacion.asBtnAceptar}" disabled="#{iniciarFacultadesMB.btnAceptar}"
+                                     ajax="false" action="#{iniciarFacultadesMB.accionAprobarInicioFacultades}"
+                                     update="messFacultades"/>
+                </p:dialog>
+            </h:form>
+             
+            <h:form id="iniciarFacultades3" enctype="multipart/form-data">
+                <p:dialog id="carga" widgetVar="dlgCargar" modal="true" resizable="false" draggable="false"
+                          closable="false" header="Cargar documento adjunto" width="670">
+                    <p:panelGrid style="width:100%">
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="#{msgValidacion.diCamposObligatorios}" style="color:red;"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                    <br/>
+                    <p:panelGrid columns="3" style="border-style:hidden;">
+                        <h:outputText value="#{msgValidacion.asEtiRuta}"/>
+                        <p:outputLabel value="#{msgValidacion.asRequerido}" style="color:red"/>
+                        <p:fileUpload value="#{iniciarFacultadesMB.file}" mode="simple" dragDropSupport="true"
+                                      style="width:411px;"/>
+                        <p:outputLabel value="Nombre del documento: "/>
+                        <p:outputLabel value="#{msgValidacion.asRequerido}" style="color:red"/>
+                        <p:inputText id="documento" maxlength="200" style="width:400px; text-transform:uppercase"
+                                     value="#{iniciarFacultadesMB.nombreDocumento}"/>
+                        <p:outputLabel/>
+                    </p:panelGrid>
+                    <p:panelGrid style="width:100%;text-align:center;">
+                        <p:row>
+                            <p:column>
+                                <p:commandButton value="#{msgValidacion.asBtnCancelar}" ajax="false" immediate="true"
+                                                 onclick="dlgCargar.hide();"/>
+                                <p:commandButton id="chartBtn" value="Cargar" action="#{iniciarFacultadesMB.fileUpload}"
+                                                 ajax="false"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:dialog>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

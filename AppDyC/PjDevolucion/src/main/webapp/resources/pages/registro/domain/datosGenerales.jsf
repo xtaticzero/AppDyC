@@ -1,0 +1,641 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+  <div style="width:777px">
+
+    <style type="text/css">
+             .ui-panelgrid td{width: 50%;border: 1px solid #ccc !important;}
+             h2{font-size: 38px !important;margin-bottom: 0px !important;margin-left: 0px !important;z-index: 20;}
+             hr.red{margin: 0px 0 0px !important;border-top-color: #DCE0E0 !important;position: relative !important;margin-left: 0px !important;z-index: 25;}
+            .ui-panelgrid{width: 100%;margin: auto;margin-left: 0px !important;}
+            .ui-dialog-footer.ui-widget-content{border: 0!important;}
+            .ui-panelgrid td {padding-left: 15px !important;}
+            .ui-messages-info, .ui-message-info{border-radius: 3px;border: 2px solid rgb(188, 232, 241);background-color: rgb(217, 237, 247);text-align: center;color: rgb(49, 112, 143);margin-top: 30px;margin-bottom: 30px;padding-top: 30px;padding-bottom: 30px;}
+            .ui-messages-info-icon{display: none;}
+    </style>
+    <p:messages id="messagedoc" closable="true" globalOnly="true"/>
+        
+            
+            <!--Domicilio Fiscal -->
+            <div class="gob-dat-cont"  >
+                <h2 style="margin-left: -4px !important;">
+                    <p:outputLabel value="#{msgValidacion.L0000059}"/>
+                </h2> 
+                <hr class="red" style="margin-bottom: -30px ! important;"/>
+            </div>
+                <p:panelGrid  styleClass="gobmxContenedor8 gmxfhorizontal" style="position:relative; top: 26px;">
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.L0000065}"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel value="#{adicionarSolicitudMB.tramite.persona.domicilio.codigoPostal}"/>
+                        </p:column>
+                    </p:row>
+                     
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.L0000067}"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel value="#{adicionarSolicitudMB.tramite.persona.domicilio.entFed}"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.L0000064}"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel value="#{adicionarSolicitudMB.tramite.persona.domicilio.municipio}"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.L0000063}"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel value="#{adicionarSolicitudMB.tramite.persona.domicilio.colonia}"/>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.L0000060}"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel value="#{adicionarSolicitudMB.tramite.persona.domicilio.calle}"/>
+                        </p:column>
+                    </p:row>
+                     
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.L0000061}"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel value="#{adicionarSolicitudMB.tramite.persona.domicilio.numeroExt}"/>
+                        </p:column>
+                    </p:row>
+                     
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.L0000062}"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel value="#{adicionarSolicitudMB.tramite.persona.domicilio.numeroInt}"/>
+                        </p:column>
+                    </p:row>
+                     
+                    <p:row>
+                        <p:column>
+                            <div  >
+                            #{msgValidacion.L0000068}
+                            </div>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel value="#{adicionarSolicitudMB.tramite.persona.domicilio.claveAdmonLocal}"/>
+                        </p:column>
+                    </p:row>
+                     
+                    <p:row>
+                        <p:column>
+                            <div >
+                            #{msgValidacion.L0000069}
+                            </div>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel value="#{adicionarSolicitudMB.tramite.persona.domicilio.admonLocal}"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            <!--Informacion del Tramite -->
+          <div class="gob-dat-cont"  >
+                <h2 style="margin-left: -3px!important;margin-top: 65px ! important;">
+                    <p:outputLabel value="#{msgValidacion.L0000030}"/>
+                </h2> 
+                <hr class="red" style="margin-bottom: -30px ! important;"/>
+            </div>
+                <p:panelGrid  styleClass="gobmxContenedor8 gmxfhorizontal" style="position:relative; top: 26px;">
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.L0000028}"/>
+                        </p:column>
+                        <p:column style="width:50%;text-transform: uppercase;">
+                            <p:outputLabel value="#{adicionarSolicitudMB.tramite.origenSaldo.descripcion}" style="text-transform: uppercase;" />
+                        </p:column>
+                    </p:row>
+                     
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.L0000029}"/>
+                        </p:column>
+                        <p:column style="width:50%;text-transform: uppercase;">
+                            <p:outputLabel value="#{adicionarSolicitudMB.tramite.tipoTramite.idString}"/>
+                        </p:column>
+                    </p:row>
+                     
+                    <p:row rendered="#{adicionarSolicitudMB.flagsSolicitud.showSubtipoTramite}">
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.L0000070}"/>
+                        </p:column>
+                        <p:column style="width:50%;text-transform: uppercase;">
+                            <p:outputLabel value="#{adicionarSolicitudMB.tramite.subOrigenSaldo.descripcion}"/>
+                        </p:column>
+                    </p:row>
+                     
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.tooltop51}"/>
+                        </p:column>
+                        <p:column style="width:50%;text-transform: uppercase;">
+                            <p:outputLabel value="#{adicionarSolicitudMB.tramite.infoAdicional}"
+                                           style="text-transform: uppercase;"/>
+                        </p:column>
+                    </p:row>
+                     
+                    <p:row rendered="#{adicionarSolicitudMB.flagsSolicitud.verRFC}">
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.L0000032}"/>
+                        </p:column>
+                        <p:column style="width:50%;text-transform: uppercase;">
+                            <p:outputLabel value="#{adicionarSolicitudMB.flagsSolicitud.rfcTerceros}"/>
+                        </p:column>
+                    </p:row>
+                     
+                    <p:row rendered="#{adicionarSolicitudMB.flagsSolicitud.verRFCControlador}">
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.L0000033}"/>
+                        </p:column>
+                        <p:column>
+                            <p:dataList id="listRfcCtrl" value="#{adicionarSolicitudMB.tramite.rfcControladora}"
+                                        var="rfc" itemType="disc" style="width:50px;height:20px;border:0;">
+                                #{rfc}
+                            </p:dataList>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            <!--Datos del ICEP -->
+          <div class="gob-dat-cont"  >
+                  <h2 style="margin-top: 65px ! important; text-align: justify; margin-left: -2px;">
+                       <p:outputLabel value="#{msgValidacion.L0000046}"/>
+                  </h2> 
+                  <hr class="red" style="margin-bottom: -30px ! important;" />
+             </div>
+                <p:panelGrid  styleClass="gobmxContenedor8 gmxfhorizontal" style="position:relative; top: 26px;">
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.L0000071}"/>
+                        </p:column>
+                        <p:column style="width:50%;text-transform: uppercase;">
+                            <p:outputLabel value="#{adicionarSolicitudMB.tramite.impuesto.descripcion}"/>
+                        </p:column>
+                    </p:row>
+                     
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.L0000072}"/>
+                        </p:column>
+                        <p:column style="width:50%;text-transform: uppercase;">
+                            <p:outputLabel value="#{adicionarSolicitudMB.tramite.concepto.descripcion}"/>
+                        </p:column>
+                    </p:row>
+                     
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.tooltop52}"/>
+                        </p:column>
+                        <p:column style="width:50%;text-transform: uppercase;">
+                            <p:outputLabel value="#{adicionarSolicitudMB.tramite.tipoPeriodo.descripcion}"/>
+                        </p:column>
+                    </p:row>
+                     
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.tooltop53}"/>
+                        </p:column>
+                        <p:column style="width:50%;text-transform: uppercase;">
+                            <p:outputLabel value="#{adicionarSolicitudMB.tramite.periodo.descripcion}"/>
+                        </p:column>
+                    </p:row>
+                     
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.L0000075}"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel value="#{adicionarSolicitudMB.tramite.ejercicio.idNum}"/>
+                        </p:column>
+                    </p:row>
+                     
+                    <p:row rendered="#{adicionarSolicitudMB.flagsSolicitud.showSubtipoTramite}">
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.L0000034}"/>
+                        </p:column>
+                        <p:column style="width:50%;text-transform: uppercase;">
+                            <p:outputLabel value="#{adicionarSolicitudMB.tramite.subTramite.descripcion}"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            <!--Informaciin del Saldo a Favor -->
+          <div class="gob-dat-cont"  >
+                    <h2 style="margin-top: 65px ! important;margin-left: -3px !important;">
+                          <p:outputLabel value="#{msgValidacion.L0000011}"/>
+                    </h2> 
+                    <hr class="red" style="margin-bottom: -30px ! important;"/>
+              </div>
+                <p:panelGrid  styleClass="gobmxContenedor8 gmxfhorizontal" style="position:relative; top: 26px;">
+                    <p:row rendered="#{adicionarSolicitudMB.flagsSolicitud.rowTipoDeclaracion}">
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.tooltop54}"/>
+                        </p:column>
+                        <p:column style="width:50%;text-transform: uppercase;">
+                            <p:outputLabel value="#{adicionarSolicitudMB.tramite.saldoFavor.tipoDeclaracion eq '1' ? 'Normal' : 'Complementaria'}"/>
+                        </p:column>
+                    </p:row>
+                     
+                    <p:row rendered="#{adicionarSolicitudMB.flagsSolicitud.rowFechaPresentacion}">
+                        <p:column>                           
+                            <p:outputLabel value="#{msgValidacion.tooltop55}"/>                            
+                        </p:column>
+                        <p:column>                           
+                            <h:outputText value="#{adicionarSolicitudMB.tramite.saldoFavor.fechaPresentacion}">
+                                <f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                        </p:column>
+                    </p:row>
+                     
+                    <p:row rendered="#{adicionarSolicitudMB.flagsSolicitud.rowFechaCaucion}">
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.L0000035}"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel value="#{adicionarSolicitudMB.tramite.saldoFavor.fechaCaucion}">
+                                <f:convertDateTime type="date" pattern="dd/MM/yyyy"/>
+                            </p:outputLabel>
+                        </p:column>
+                    </p:row>
+                     
+                    <p:row rendered="#{adicionarSolicitudMB.flagsSolicitud.rowNumeroOperacion}">
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.tooltop56}"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel value="#{adicionarSolicitudMB.tramite.saldoFavor.numeroOperacion}"/>
+                        </p:column>
+                    </p:row>
+                     
+                    <p:row rendered="#{adicionarSolicitudMB.flagsSolicitud.rowNumeroDocumento}">
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.L0000079}"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel value="#{adicionarSolicitudMB.tramite.saldoFavor.numeroDocumento}"/>
+                        </p:column>
+                    </p:row>
+                     
+                    <p:row rendered="#{adicionarSolicitudMB.flagsSolicitud.rowSaldoFavor}">
+                        <p:column>
+                            <p:outputLabel value="#{adicionarSolicitudMB.tramite.saldoFavor.etiquetaSaldo}:"/>
+                        </p:column>
+                        <p:column>                            
+                            <h:outputText value="#{adicionarSolicitudMB.tramite.saldoFavor.importeSaldoFavor}">
+                                <f:convertNumber pattern="¤#,##0.00" currencySymbol="$" type="currency" locale="us"/>
+                            </h:outputText>
+                        </p:column>
+                    </p:row>
+                     
+                    <p:row rendered="#{adicionarSolicitudMB.flagsSolicitud.rowImporteDevComEfectuadas}">
+                        <p:column>
+                            <div style="padding-right: 30px">
+                                #{msgValidacion.tooltop57}
+                                </div>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel value="#{adicionarSolicitudMB.tramite.saldoFavor.importeAcreditramientoEfectuado}">
+                                <f:convertNumber pattern="¤#,##0.00" currencySymbol="$" type="currency" locale="us"/>
+                            </p:outputLabel>
+                        </p:column>
+                    </p:row>
+                     
+                    <p:row rendered="#{adicionarSolicitudMB.flagsSolicitud.rowImporteAcreditamiento}">
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.L0000037}"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel value="#{adicionarSolicitudMB.tramite.saldoFavor.importeEfectuados}">
+                                <f:convertNumber pattern="¤#,##0.00" currencySymbol="$" type="currency" locale="us"/>
+                            </p:outputLabel>
+                        </p:column>
+                    </p:row>
+                     
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.L0000038}"/>
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{adicionarSolicitudMB.tramite.saldoFavor.importeSolicitadoDevolucion}">
+                                <f:convertNumber pattern="¤#,##0.00" currencySymbol="$" type="currency" locale="us"/>
+                            </h:outputText>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            <!--Datos de la Declaracion Normal -->
+            <div style="#{adicionarSolicitudMB.flagsSolicitud.bloqDeclaracionNormal == 'false' ? 'display:none;' : 'display:disabled;'}">
+               <div class="gob-dat-cont"  >
+                                <h2 style="margin-left: -3px !important;">
+                                      <p:outputLabel value="#{msgValidacion.L0000039}"/>
+                                </h2> 
+                                <hr class="red" style="margin-bottom: -30px ! important;" />
+                </div>
+                <p:panelGrid  styleClass="gobmxContenedor8 gmxfhorizontal" style="position:relative; top: 26px;">
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.L0000076}"></p:outputLabel>
+                        </p:column>
+                        <p:column style="width:50%;text-transform: uppercase;">
+                            <p:outputLabel value="#{msgValidacion.L0000045}"></p:outputLabel>
+                        </p:column>
+                    </p:row>
+                     
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.L0000077}"/>
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{adicionarSolicitudMB.tramite.saldoFavor.normalFechaPresentacion}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                        </p:column>
+                    </p:row>
+                     
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.L0000078}"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel value="#{adicionarSolicitudMB.tramite.saldoFavor.normalNumOperacion}"/>
+                        </p:column>
+                    </p:row>
+                     
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.L0000040}"/>
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{adicionarSolicitudMB.tramite.saldoFavor.normalSaldoFavor}">
+                                <f:convertNumber pattern="¤#,##0.00" currencySymbol="$" type="currency" locale="us"/>
+                            </h:outputText>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </div>
+       
+            <!--Datos del ALTEX -->
+            <div style="#{adicionarSolicitudMB.flagsSolicitud.rowALTEX == 'false' ? 'display:none;' : 'display:disabled;'}">
+                 <div class="gob-dat-cont"  >
+                        <h3>
+                              <p:outputLabel value="#{msgValidacion.L0000081}"/>
+                        </h3> 
+                        <hr class="red" />
+                  </div>
+                <p:panelGrid  styleClass="gobmxContenedor8 gmxfhorizontal" style="position:relative; top: 26px;">
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.L0000042}"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel value="#{adicionarSolicitudMB.tramite.infoDeclarativa.altexNumConstancia}"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </div>
+            <!--Informacion del Banco -->
+         <div class="gob-dat-cont"  >
+                <h2 style="margin-top: 65px ! important; margin-left: -3px !important;">
+                      <p:outputLabel value="#{msgValidacion.L0000013}"/>
+                </h2> 
+                <hr class="red" style="margin-bottom: -30px ! important;" />
+          </div>
+          <p:panelGrid  styleClass="gobmxContenedor8 gmxfhorizontal" style="position:relative; top: 26px;">
+                <p:row>
+                    <p:column>
+                            <p:outputLabel value="#{msgValidacion.L0000043}"/>
+                        </p:column>
+                        <p:column style="width:50%;text-transform: uppercase;">
+                            <p:outputLabel value="#{adicionarSolicitudMB.tramite.institucionFinanciera.dyccInstCreditoDTO.descripcion}"/>
+                        </p:column>
+                    </p:row>
+                     
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.L0000018}"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel value="#{adicionarSolicitudMB.tramite.institucionFinanciera.clabe}"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            <!--Inconcistencias de la Solicitud-->
+        <div class="gob-dat-cont"  >
+                <h2 style="margin-top: 65px ! important; margin-left: -3px !important;">
+                      <p:outputLabel value="#{msgValidacion.L0000044}"/>
+                </h2> 
+                <hr class="red" style="margin-bottom: -30px ! important;" />
+          </div>
+          <br/>
+          <div styleClass="gobmxContenedor8" style="position:relative; left: 0px; width: 777px;">
+                 <p:dataTable var="car" value="#{adicionarSolicitudMB.tramite.inconsistencias}" rows="10"
+                                     style="width: 100%" styleClass="table table-bordered" paginatorPosition="bottom"
+                                     emptyMessage="#{msgValidacion.M0000014}">
+                       <p:column headerText="#{msgValidacion.asColDescripcion}">
+                              <h:outputText  value="#{car.descripcion}"/>
+                       </p:column>
+                 </p:dataTable>
+          </div>
+            <!--Anexos Adjuntos a la Solicitud -->
+         <div class="gob-dat-cont"  >
+                <h2 style="margin-top: 40px ! important; margin-left: 0px !important;">
+                     <p:outputLabel value="#{msgValidacion.L0000082}"/>
+                </h2> 
+                <hr class="red" style="margin-bottom: -30px ! important;" />
+          </div>
+          <br/>
+          <div style="position:relative; left: 0px; width: 777px;">
+            <p:dataTable var="anexos" value="#{adicionarSolicitudMB.dataModelAnexo}" rows="10"
+                         style="width: 100%" styleClass="table table-bordered" emptyMessage="#{msgValidacion.tblEmpty}">
+                <p:column headerText="#{msgValidacion.aclP6Tbl2Col1}">
+                    <h:outputText  value="#{anexos.nombreArchivo}"/>
+                </p:column>
+            </p:dataTable>
+        </div>
+            <!--Documentos Adjuntos a la Solicitud -->
+          <div class="gob-dat-cont"  >
+                <h2 style="margin-top: 40px ! important; margin-left: -3px !important;">
+                      <p:outputLabel value="#{msgValidacion.L0000083}"/>
+                </h2> 
+                <hr class="red" style="margin-bottom: -30px ! important;"/>
+          </div>
+          <br/>
+          <div style="position:relative; left: 00px; width: 777px;">
+            <p:dataTable var="doc" value="#{adicionarSolicitudMB.documentosAdjuntos}"
+                         rows="10" style="width:100%" styleClass="table table-bordered" emptyMessage="#{msgValidacion.tblEmpty}">
+                <p:column headerText="#{msgValidacion.aclP4TblCol2}">
+                    <h:outputText value="#{doc.descripcion}"/>
+                </p:column>
+                <p:column headerText="#{msgValidacion.aclP6Tbl2Col1}">
+                    <h:outputText value="#{doc.nombreArchivo}"/>
+                </p:column>
+            </p:dataTable>
+            </div>
+            <br/>
+            <!--Menssajes-->
+
+          <br/>
+          <div style="position: relative; left: 0px; width: 777px; text-align: justify;">
+              #{adicionarSolicitudMB.flagsSolicitud.messageProtestaEdoCta}
+         </div>
+            <style type="text/css">
+                 .ui-selectoneradio
+                 {
+                     width: 10px!important;
+                 }
+                 .ui-selectoneradio td
+                 {
+                 
+                  padding: 0px!important;
+                    border: 0px solid #fff !important;
+                 }
+                 .ui-selectoneradio label 
+                 {
+                     padding-left: 5px!important;
+                     padding-right: 1px!important;
+                 }
+                 
+                 .gmxNoborde1 td {
+                    border: 0px solid #fff !important;
+                }
+         </style>
+            <p:panelGrid styleClass="gmxNoborde1">         
+                <p:row>
+                        <p:column>
+                                   <div align="center" style="border: 0px solid #fff !important;">
+                            <p:selectOneRadio id="resProtesta" disabled="true" 
+                                              value="#{adicionarSolicitudMB.tramite.institucionFinanciera.cuentaValida}">
+                                <f:selectItem itemLabel="#{msgValidacion.rsSi}" itemValue="1"/>
+                                <f:selectItem itemLabel="#{msgValidacion.rsNo}" itemValue="0"/>
+                            </p:selectOneRadio>
+                                   </div>
+                        </p:column>
+                </p:row>
+            </p:panelGrid>
+            <table border="0" align="center" style="#{adicionarSolicitudMB.flagsSolicitud.flagOperaciones == 'false' ? 'display:none;' : 'display:block;'}">
+                    <tr valign="middle">
+                        <td align="justify" style="text-align: justify;">
+                            #{adicionarSolicitudMB.flagsSolicitud.messageProtestaOperaciones}
+                        </td>
+                    </tr>
+            </table>
+            <p:panelGrid  styleClass="gmxNoborde1" rendered="#{adicionarSolicitudMB.flagsSolicitud.flagOperaciones}" >
+                      
+                    <p:row>
+                        <p:column>
+                            <div align="center">
+                            <p:selectOneRadio id="resProtestaOpera"
+                                              value="#{adicionarSolicitudMB.tramite.tipoTramite.descripcion}"
+                                              disabled="true" styleClass="myRad">
+                                <f:selectItem itemLabel="#{msgValidacion.rsSi}" itemValue="1"/>
+                                <f:selectItem itemLabel="#{msgValidacion.rsNo}" itemValue="0"/>
+                            </p:selectOneRadio>
+                            </div>
+                        </p:column>
+                    </p:row>
+            </p:panelGrid>
+            <p:panelGrid  styleClass="gobmxContenedor8 gmxfhorizontal gmxNoborde1" rendered="#{adicionarSolicitudMB.flagsSolicitud.flagSecAgp}" >
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{adicionarSolicitudMB.flagsSolicitud.messageSecAgp}" />
+                        </p:column>
+                    </p:row>
+                     
+                    <p:row>
+                        <p:column>
+
+                            <p:panelGrid columns="2">
+                                <p:selectOneRadio id="resSecAgp"
+                                                  value="#{adicionarSolicitudMB.flagsSolicitud.resSecAgp}"
+                                                  styleClass="myRad" disabled="true">
+                                    <f:selectItem itemLabel="#{msgValidacion.rsSi}" itemValue="true"/>
+                                    <f:selectItem itemLabel="#{msgValidacion.rsNo}" itemValue="false"/>
+                                </p:selectOneRadio>
+                                <p:outputLabel value="#{adicionarSolicitudMB.tramite.secAgp.idNum eq '1' ? '|Edo. Padrón: Activo' : '|Edo. Padrón: Inactivo'}"/>
+                            </p:panelGrid>
+                        </p:column>
+                    </p:row>
+            </p:panelGrid>
+            <p:panelGrid  styleClass="gobmxContenedor8 gmxfhorizontal gmxNoborde1" >
+                
+                
+                <p:row>
+                        <p:column>
+                            <p:outputLabel value="#{msgValidacion.M0000012}"/>
+                        </p:column>
+                        <p:column>
+                           
+                            <p:selectOneRadio id="optionss" value="#{datosContribuyenteMB.sonDatos}" required="true"
+                                              requiredMessage="#{msgValidacion.msjSelectOneRadio}">
+                                <p:ajax update="confirmSolic enviarSol"
+                                        listener="#{datosSolicitudCtrlMB.confirmarSolicitud}"/>
+                                
+                                <f:selectItem itemLabel="#{msgValidacion.rsSi}" itemValue="1" />
+                                <f:selectItem itemLabel="#{msgValidacion.rsNo}" itemValue="2"/>
+                            </p:selectOneRadio>
+                        </p:column>
+                </p:row>
+            </p:panelGrid>
+        
+       
+          <p:panelGrid id="confirmSolic"  styleClass="gobmxContenedor8 gmxfhorizontal gmxNoborde1" >
+                <p:row>
+                        <p:column rendered="#{datosContribuyenteMB.sonDatos == '2' ? 'true' : 'false'}">
+                            <p:commandButton value="#{msgValidacion.B0000012}" action="solicitud" immediate="true"
+                                             ajax="false" actionListener="#{datosSolicitudCtrlMB.modificarSolicitud}"
+                                             style="width: 190px;height: 40px;left: 64px;top: 50px; margin-bottom: 50px;"/>
+                        </p:column>
+                        <p:column rendered="#{datosContribuyenteMB.sonDatos == '1' ? 'true' : 'false'}">
+                            <p:commandLink id="pruebaPrint" action="#{printSolicitudCtrlMB.downloadSolicitudPDF}"
+                                           target="_blank">
+                            </p:commandLink>
+                             
+                            
+                             
+                            <p:spacer width="50px"/>
+                            <div style="position:relative; left: 20px;"> 
+                            <p:commandButton value="#{msgValidacion.L0000084}" onclick="dlgDocumento.show();"
+                                             type="button" style="width: 190px;height:40px; left: 44px;">
+                            </p:commandButton>
+							</div>
+                        </p:column>
+                    </p:row>
+            </p:panelGrid>
+           <div style="width: 800px; height:10px;">
+           
+           </div>
+          <div id="divEnviarSol" style="position:relative; left: 2px;#{datosContribuyenteMB.sonDatos == '1' ? 'block' : 'none'}">
+            <p:commandButton id="enviarSol" value="#{msgValidacion.B0000016}"
+                             actionListener="#{solicitudDVCtrlMB.createSolicitud}"
+                             style="width: 125px;height:40px; left: 32px;" styleClass="gmxPositivo" immediate="true"
+                             ajax="false" onclick="statusDialog.show();">
+            </p:commandButton>
+            </div>
+           <div style="position:relative; left: 3px;">
+             <p:commandButton id="btnPrint" value="#{msgValidacion.cbBotImp}" type="button"
+                                             style="width: 125px;height:40px; left: 64px;" styleClass="gmxPositivo" onclick="document.getElementById('form:gobPrint').click();">
+                            </p:commandButton>
+             <h:commandLink id="gobPrint"
+                                                                               action="#{printSolicitudCtrlMB.downloadSolicitudPDF}"
+                                                                               target="_blank"></h:commandLink>
+          </div>
+        </div>  
+</ui:composition>
+                                                                               

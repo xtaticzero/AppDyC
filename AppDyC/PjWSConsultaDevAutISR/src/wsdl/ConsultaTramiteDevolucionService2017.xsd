@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is Oracle JAX-WS 2.1.5.--><xs:schema version="1.0" targetNamespace="http://ws.consultaContribuyente.sad.dyc.mat.sat.gob.mx/" xmlns:tns="http://ws.consultaContribuyente.sad.dyc.mat.sat.gob.mx/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="consultarDetalleTramiteDevAut" type="tns:consultarDetalleTramiteDevAut"/>
+    <xs:element name="consultarDetalleTramiteDevAutResponse" type="tns:consultarDetalleTramiteDevAutResponse"/>
+    <xs:element name="responseConsultarDetalleTramiteDevAut" type="tns:responseConsultarDetalleTramiteDevAut"/>
+    <xs:complexType name="consultarDetalleTramiteDevAut">
+        <xs:sequence>
+            <xs:element name="folioDeclaracion" type="xs:long" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="consultarDetalleTramiteDevAutResponse">
+        <xs:sequence>
+            <xs:element name="responseConsultaDetalleTramiteDevAut" type="tns:responseConsultarDetalleTramiteDevAut" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="responseConsultarDetalleTramiteDevAut">
+        <xs:sequence>
+            <xs:element name="tramiteDevolucion" type="tns:tramiteDevolucionDTO" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="tramiteDevolucionDTO">
+        <xs:sequence>
+            <xs:element name="folioDeclaracion" type="xs:long"/>
+            <xs:element name="estatusConsulta" type="xs:string" minOccurs="0"/>
+            <xs:element name="mensajeRespuestaConsulta" type="xs:string" minOccurs="0"/>
+            <xs:element name="folioMatDyC" type="xs:string" minOccurs="0"/>
+            <xs:element name="tipoTramite" type="xs:short"/>
+            <xs:element name="concepto" type="xs:short"/>
+            <xs:element name="impuesto" type="xs:short"/>
+            <xs:element name="saldoPagar" type="xs:long" minOccurs="0"/>
+            <xs:element name="saldoCalculadoXSistema" type="xs:long" minOccurs="0"/>
+            <xs:element name="cuentaClabe" type="xs:string"/>
+            <xs:element name="nombreBanco" type="xs:string"/>
+            <xs:element name="isrAFavorDelEjercicio" type="xs:long"/>
+            <xs:element name="isrAcargoDelEjercicio" type="xs:long"/>
+            <xs:element name="idTipoResolucion" type="xs:long"/>
+            <xs:element name="identificadorResultado" type="xs:string"/>
+            <xs:element name="descripcionResultado" type="xs:string"/>
+            <xs:element name="fechaEstado" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="contribuyente" type="tns:contribuyenteDTO"/>
+            <xs:element name="declaracion" type="tns:declaracionDTO" minOccurs="0"/>
+            <xs:element name="determinacionIsrPrecarga" type="tns:determinacionISRDTO" minOccurs="0"/>
+            <xs:element name="determinacionIsrConstribuyente" type="tns:determinacionISRDTO" minOccurs="0"/>
+            <xs:element name="determinacionIsrResultado" type="tns:determinacionISRDTO" minOccurs="0"/>
+            <xs:element name="deduccionInconsistencia" type="tns:dedInconsistenciaDTO" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="retencionInconsistencia" type="tns:retInconsistenciaDTO" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="retroalimentacionPago" type="tns:retroalimentacionPagoDTO" minOccurs="0"/>
+            <xs:element name="rechazos" type="tns:rechazoDTO" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="inconsistencias" type="tns:inconsistenciaDTO" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="contribuyenteDTO">
+        <xs:sequence>
+            <xs:element name="apellidoPaterno" type="xs:string"/>
+            <xs:element name="apellidoMaterno" type="xs:string"/>
+            <xs:element name="nombre" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="declaracionDTO">
+        <xs:sequence>
+            <xs:element name="tipoDeclaracion" type="xs:short"/>
+            <xs:element name="fechaPresentacion" type="xs:dateTime"/>
+            <xs:element name="ejercicio" type="xs:short"/>
+            <xs:element name="periodo" type="xs:short"/>
+            <xs:element name="descripcionPeriodo" type="xs:string"/>
+            <xs:element name="idFirma" type="xs:short"/>
+            <xs:element name="idTipoProceso" type="xs:short"/>
+            <xs:element name="aceptoPropuestaRecibida" type="xs:short"/>
+            <xs:element name="creditoFiscal" type="xs:short"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="determinacionISRDTO">
+        <xs:sequence>
+            <xs:element name="ingresosAcumulables" type="xs:long"/>
+            <xs:element name="perdida" type="xs:long"/>
+            <xs:element name="totalIngresosAcumulables" type="xs:long"/>
+            <xs:element name="deduccionesPersonales" type="xs:long"/>
+            <xs:element name="baseGravable" type="xs:long"/>
+            <xs:element name="isrConformeTarifaAnual" type="xs:long"/>
+            <xs:element name="subsidioEmpleo" type="xs:long"/>
+            <xs:element name="imptoSobreIngresosAcumulables" type="xs:long"/>
+            <xs:element name="imptoSobreIngresosNoAcumulables" type="xs:long"/>
+            <xs:element name="reduccionesDeISR" type="xs:long"/>
+            <xs:element name="imptoSobreLaRentaCausado" type="xs:long"/>
+            <xs:element name="pagosProvisionales" type="xs:long"/>
+            <xs:element name="imptoRetenidoAlContribuyente" type="xs:long"/>
+            <xs:element name="imptoAcreditablePagadoEnExtranjero" type="xs:long"/>
+            <xs:element name="imptoSobreInteresRealXRetirosParciales" type="xs:long"/>
+            <xs:element name="isrAFavorDelEjercicio" type="xs:long"/>
+            <xs:element name="sectorPrimario" type="xs:long"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="dedInconsistenciaDTO">
+        <xs:sequence>
+            <xs:element name="tipoDeduccion" type="xs:string"/>
+            <xs:element name="rfcEmisorCFDI" type="xs:string"/>
+            <xs:element name="nombreEmisorCFDI" type="xs:string"/>
+            <xs:element name="importeDeclaracionSAT" type="xs:long"/>
+            <xs:element name="importeDeclaracionContribuyente" type="xs:long"/>
+            <xs:element name="numeroInconsistencia" type="xs:short"/>
+            <xs:element name="descripcion" type="xs:string"/>
+            <xs:element name="accionCorrectiva" type="xs:string"/>
+            <xs:element name="ejercicioAccionCorrectiva" type="xs:short"/>
+            <xs:element name="generaDevolucionManual" type="xs:short"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="retInconsistenciaDTO">
+        <xs:sequence>
+            <xs:element name="tipoIngreso" type="xs:string"/>
+            <xs:element name="rfcRetenedor" type="xs:string"/>
+            <xs:element name="razonSocial" type="xs:string"/>
+            <xs:element name="totalIngresoSat" type="xs:long"/>
+            <xs:element name="imptoRetenidoSat" type="xs:long"/>
+            <xs:element name="totalIngresoContribuyente" type="xs:long"/>
+            <xs:element name="imptoRetenidoContribuyente" type="xs:long"/>
+            <xs:element name="numeroInconsistencia" type="xs:short"/>
+            <xs:element name="descripcion" type="xs:string"/>
+            <xs:element name="accionCorrectiva" type="xs:string"/>
+            <xs:element name="ejercicioAccionCorrectiva" type="xs:short"/>
+            <xs:element name="generaDevolucionManual" type="xs:short"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="retroalimentacionPagoDTO">
+        <xs:sequence>
+            <xs:element name="fechaPago" type="xs:dateTime" minOccurs="0"/>
+            <xs:element name="motivoRechazo" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="rechazoDTO">
+        <xs:sequence>
+            <xs:element name="numeroRechazo" type="xs:short"/>
+            <xs:element name="descripcionRechazo" type="xs:string"/>
+            <xs:element name="accionCorrectiva" type="xs:string"/>
+            <xs:element name="ejercicioAccionCorrectiva" type="xs:short"/>
+            <xs:element name="generaDevolucionManual" type="xs:short"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="inconsistenciaDTO">
+        <xs:sequence>
+            <xs:element name="numeroInconsistencia" type="xs:short"/>
+            <xs:element name="descripcion" type="xs:string"/>
+            <xs:element name="accionCorrectiva" type="xs:string"/>
+            <xs:element name="ejercicioAccionCorrectiva" type="xs:short"/>
+            <xs:element name="generaDevolucionManual" type="xs:short"/>
+            <xs:element name="idDeduccion" type="xs:long"/>
+            <xs:element name="idIngreso" type="xs:long"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

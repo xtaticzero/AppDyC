@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" 
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets" 
+        xmlns:p="http://primefaces.org/ui"
+        >
+    <html xmlns="http://www.w3.org/1999/xhtml">
+        <h:head>
+        </h:head>
+        <h:body>
+            <p:messages id="msgGeneral" showDetail="true" globalOnly="true" closable="true"/>
+            <p:tabView dynamic="true" cache="true" >
+                <p:tab title="Firma FIEL" rendered="#{!ejecutaFIELMB.firmaBandera}">
+                    <ui:include src="/resources/pages/gestionsol/firmadoFIEL.jsf" />
+                </p:tab>
+                <p:tab title="e.firma portable" rendered="#{ejecutaFIELMB.banderaOTP}">
+                    <ui:include src="/resources/pages/gestionsol/firmadoOTP.jsf" />
+                </p:tab>
+            </p:tabView>
+        </h:body>
+    </html>
+</f:view>

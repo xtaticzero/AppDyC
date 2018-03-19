@@ -1,0 +1,411 @@
+
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+    <html xmlns="http://www.w3.org/1999/xhtml" xmlns:p="http://primefaces.org/ui"
+          xmlns:c="http://java.sun.com/jsp/jstl/core" xmlns:ui="http://java.sun.com/jsf/facelets">
+        <h:head>
+            <h:outputScript library="js" name="general.js"/>
+            <h:outputStylesheet library="css/" name="formato.css"/>
+        </h:head>
+        <h:body>
+            <!-- h:form id="general">
+                <p:panel id="pnlBuscarRFC" visible="#{consultaRFCMB.capturaRFC}" style="text-align:center;width:810px">
+                    <p:panelGrid style="text-align:center;font-weight:bold;width:800px" columns="1" >
+                        <h:panelGroup style="text-align:center;font-weight:bold;width:810px;colums:3" >
+                            <p:outputLabel id="lblCapturaRFC" value="RFC Contribuyente: "/>
+                            <p:inputText disabled="#{consultaRFCMB.rfcDesactivado}" id="txtCapturaRFC"
+                                         value="#{consultaRFCMB.txtRFC}" required="true"
+                                         requiredMessage="#{msgValidacion.msjCampoRequerido}"/>
+                            <p:outputLabel value=" * "/>
+                        </h:panelGroup>
+                        <h:panelGroup style="text-align:center;font-weight:bold;columns:3">
+                            <p:outputLabel value=""/>
+                            <p:message id="msjCapturaRFC" for="txtCapturaRFC" display="text"/>
+                            <p:outputLabel value=""/>
+                        </h:panelGroup>
+                        <h:commandButton value="Aceptar" action="#{consultaRFCMB.validaRFC}"></h:commandButton>
+                    </p:panelGrid>
+                </p:panel>
+                <p:panel style="width:810px;text-align:center;border:0!important">
+                    <p:panelGrid id="pnlMsjContribuyente" style="width:800px;text-align:center;">
+                        <h:outputFormat value="#{msgRegistro.Mensaje23}" escape="false"/>
+                        <p></p>
+                        <h:commandButton value="Aceptar" action="#{consultaRFCMB.aceptar}"/>
+                    </p:panelGrid>
+                    <p:panelGrid id="pnlMsjReglas" style="width:800px;text-align:center;"
+                                 rendered="#{CconsultaRFCMB.msjReglas}">
+                        <h:outputFormat value="#{msgRegistro.Mensaje24}" escape="false"></h:outputFormat>
+                        <p></p>
+                        <h:commandButton value="Aceptar" action="#{ConsultaRFCMB.salir}"></h:commandButton>
+                    </p:panelGrid>
+                </p:panel>
+                <p:panel id="pnlSolDevReg" header="Solicitudes de devolución de registro" style="width:810px">
+                    <p:dataTable id="dtSolicitudes" emptyMessage="No se han encontrado resultados" var="solicitudes"
+                                 value="#{ConsultaRFCMB.tblSolicitudesList}" style="width:1360px;">
+                        <f:facet name="header">
+                            <p:panelGrid columns="2" style="width:500px;text-align:left;">
+                                <h:commandButton value="Adicionar Solicitud de Devolución"
+                                                 action="#{ConsultaRFCMB.adicionarSolicitud}"/>
+                                <h:commandButton value="Consultar Solicitud de Devolución"
+                                                 action="#{ConsultaRFCMB.consultaSolicitud}"/>
+                            </p:panelGrid>
+                        </f:facet>
+                        <p:columnGroup type="header">
+                            <p:row>
+                                <p:column rowspan="1" headerText="Fecha" width="50"/>
+                                <p:column rowspan="1" headerText="Origen de la devolución" width="100"/>
+                                <p:column rowspan="1" headerText="Tipo de trámite" width="100"/>
+                                <p:column rowspan="1" headerText="Sub origen del saldo" width="100"/>
+                                <p:column rowspan="1" headerText="Impuesto" width="100"/>
+                                <p:column rowspan="1" headerText="Concepto" width="100"/>
+                                <p:column rowspan="1" headerText="Ejercicio" width="100"/>
+                                <p:column rowspan="1" headerText="Per&iacute;odo" width="100"/>
+                            </p:row>
+                        </p:columnGroup>
+                        <p:column>
+                            <h:outputText value="#{solicitudes.campo1}" style="padding:0px 0px;text-align:center;"></h:outputText>
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{solicitudes.campo2}" style="padding:0px 0px;text-align:center;"></h:outputText>
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{solicitudes.campo3}" style="padding:0px 0px;text-align:center;"></h:outputText>
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{solicitudes.campo4}" style="padding:0px 0px;text-align:center;"></h:outputText>
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{solicitudes.campo1}" style="padding:0px 0px;text-align:center;"></h:outputText>
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{solicitudes.campo2}" style="padding:0px 0px;text-align:center;"></h:outputText>
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{solicitudes.campo3}" style="padding:0px 0px;text-align:center;"></h:outputText>
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{solicitudes.campo4}" style="padding:0px 0px;text-align:center;"></h:outputText>
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+                <p:panel id="pnlDatosContribuyente" header="Datos del contribuyente" style="width:810px"
+                         rendered="#{ConsultaRFCMB.datosContribuyente}">
+                    <p:panelGrid style="text-align:center;font-weight:bold;width:810px" columns="2">
+                        <p:outputLabel value="Apellido paterno: "/>
+                        <p:outputLabel value="#{ConsultaRFCMB.txtApPaterno}"/>
+                        <p:outputLabel value="Apellido materno: "/>
+                        <p:outputLabel value="#{ConsultaRFCMB.txtApMaterno}"/>
+                        <p:outputLabel value="Nombre: "/>
+                        <p:outputLabel value="#{ConsultaRFCMB.txtNombre}"/>
+                        <p:outputLabel value="Denominaci&amp;oacuten o raz&amp;óacute;n social: "/>
+                        <p:outputLabel value="#{ConsultaRFCMB.txtDenominacion}"/>
+                        <p:outputLabel value="RFC: "></p:outputLabel>
+                        <p:outputLabel value="#{ConsultaRFCMB.txtRFC}"/>
+                    </p:panelGrid>
+                </p:panel>
+                <p:panel id="pnlDomicilioFiscal" header="Domicilio Fiscal" style="width:810px"
+                         rendered="#{ConsultaRFCMB.datosContribuyente}">
+                    <p:panelGrid style="text-align:center;font-weight:bold;width:800px" columns="2">
+                        <p:outputLabel value="Calle: "/>
+                        <p:outputLabel value="#{ConsultaRFCMB.txtDomicilio}"/>
+                        <p:outputLabel value="No. exterior: "/>
+                        <p:outputLabel value="#{ConsultaRFCMB.txtNumExt}"/>
+                        <p:outputLabel value="No. interior: "/>
+                        <p:outputLabel value="#{ConsultaRFCMB.txtNumInt}"/>
+                        <p:outputLabel value="Colonia: "/>
+                        <p:outputLabel value="#{ConsultaRFCMB.txtColonia}"/>
+                        <p:outputLabel value="Delegación o municipio: "/>
+                        <p:outputLabel value="#{ConsultaRFCMB.txtDelegacion}"/>
+                        <p:outputLabel value="Código postal: "/>
+                        <p:outputLabel value="#{ConsultaRFCMB.txtCp}"/>
+                        <p:outputLabel value="Localidad: "/>
+                        <p:outputLabel value="#{ConsultaRFCMB.txtLocalidad}"/>
+                        <p:outputLabel value="Entidad federativa: "/>
+                        <p:outputLabel value="#{ConsultaRFCMB.txtEntidad}"/>
+                        <p:outputLabel value="N&amp;uacutemero de administraci&amp;oacute;n desconcentrada de auditor&iacute;a fiscal: "/>
+                        <p:outputLabel value="#{ConsultaRFCMB.txtNumAdmon}"/>
+                        <p:outputLabel value="Descripción de la administraci&amp;iacute de la auditor&amp;iacute;a que corresponde: "/>
+                        <p:outputLabel value="#{ConsultaRFCMB.txtDescAdmon}"/>
+                        <p:outputLabel value="&iquest;Todos los datos son correctos?: "/>
+                        <p:selectOneRadio id="options" value="#{ConsultaRFCMB.sorDatosContribuyente}">
+                            <f:selectItem itemLabel="Si" itemValue="1"/>
+                            <f:selectItem itemLabel="No" itemValue="2"/>
+                        </p:selectOneRadio>
+                        <p:commandButton value="Salir"/>
+                        <p:commandButton value="Siguiente" action="#{ConsultaRFCMB.validaDatosContribuyente}"/>
+                    </p:panelGrid>
+                    <p:panelGrid id="pnlGrdDatosContribuyente" style="width:800px"
+                                 rendered="#{ConsultaRFCMB.msjDatosContribuyente}">
+                        <h:outputFormat value="#{msgRegistro.Mensaje5}" escape="false"/>
+                    </p:panelGrid>
+                </p:panel>
+                <p:tabView id="tabView" rendered="#{ConsultaRFCMB.tabDatos}" style="width:800px">
+                    <p:tab id="tab1" title="Tipo trámite">
+                        <p:panelGrid style="text-align:center;font-weight:bold;width:800px" columns="2">
+                            <p:outputLabel value="Origen Devolución: "/>
+                            <p:selectOneMenu value="#{ConsultaRFCMB.selectOrigenDevolucionList}" required="true"
+                                             requiredMessage="Seleccione un valor para el combo Origen de devolucion"
+                                             style="width:136px"/>
+                            <p:outputLabel value="Tipo de Trámite: "/>
+                            <p:selectOneMenu value="#{ConsultaRFCMB.selectTipoTramiteList}" required="true"
+                                             requiredMessage="Seleccione un valor para el combo Tipo de trámite"
+                                             style="width:136px"/>
+                            <p:outputLabel value="Suborigen de Saldo: "/>
+                            <p:selectOneMenu value="#{ConsultaRFCMB.selectSuborigenSaldoList}" required="true"
+                                             requiredMessage="Seleccione un valor para el combo Suborigen de saldo"
+                                             style="width:136px"/>
+                            <p:outputLabel value="Información Adicional: "/>
+                            <p:inputTextarea value="#{ConsultaRFCMB.txtaInfoAd}"/>
+                            <p:outputLabel value="RFC del Retenedor Nacional: "/>
+                            <p:inputText value="#{ConsultaRFCMB.txtRFCRetenedor}" required="true"
+                                         requiredMessage="Seleccione un valor para el campo RFC "/>
+                        </p:panelGrid>
+                    </p:tab>
+                    <p:tab id="tab2" title="Datos ICEP">
+                        <p:panelGrid style="text-align:center;font-weight:bold;width:800px" columns="2">
+                            <p:outputLabel value="Impuesto: "/>
+                            <p:outputLabel value="#{ConsultaRFCMB.txtImpuesto} "/>
+                            <p:outputLabel value="Concepto: "/>
+                            <p:outputLabel value="#{ConsultaRFCMB.Concepto}"/>
+                            <p:outputLabel value="Tipo de Per&iacute;odo: "/>
+                            <p:selectOneMenu value="#{ConsultaRFCMB.selectTipoPeriodoList}" required="true"
+                                             requiredMessage="Seleccione un valor para el combo Tipo periodo"
+                                             style="width:136px"/>
+                            <p:outputLabel value="Per&iacute;odo:"/>
+                            <p:selectOneMenu value="#{ConsultaRFCMB.selectPeriodoList}" required="true"
+                                             requiredMessage="Seleccione un valor para el combo Periodo"
+                                             style="width:136px"/>
+                            <p:outputLabel value="Ejercicio: "/>
+                            <p:selectOneMenu value="#{ConsultaRFCMB.selectEjercicioList}" required="true"
+                                             requiredMessage="Seleccione un valor para el combo Ejercicio"
+                                             style="width:136px"/>
+                            <p:outputLabel value="Subtipo de Trámite: "/>
+                            <p:selectOneMenu value="#{ConsultaRFCMB.selectSubTipoTramiteList}" required="true"
+                                             requiredMessage="Seleccione un valor para el combo Subtipo de trámite"
+                                             style="width:136px"/>
+                            <p:commandButton value="Atrás"></p:commandButton>
+                            <p:commandButton value="Siguiente"></p:commandButton>
+                        </p:panelGrid>
+                    </p:tab>
+                    <p:tab id="tab3" title="Información del saldo a favor">
+                        <p:panelGrid style="text-align:center;font-weight:bold;width:800px" columns="2">
+                            <p:outputLabel value="Tipo de Declaración"/>
+                            <p:selectOneMenu value="#{ConsultaRFCMB.selectTipoDeclaracionList}" required="true"
+                                             requiredMessage="Seleccione un valor para el combo Tipo de declaración"
+                                             style="width:136px"/>
+                            <p:outputLabel value="Fecha de Presentación de la Declaración"/>
+                            <p:calendar id="clFPresentacion" locale="es" navigator="true" effect="slideDown"
+                                        pattern="dd/MM/yyyy" showOn="button" required="true"
+                                        requiredMessage="Seleccione una fecha para el campo Fecha de Presentación"/>
+                            <p:outputLabel value="Fecha de Causación"/>
+                            <p:calendar id="clFCausacion" locale="es" navigator="true" effect="slideDown"
+                                        pattern="dd/MM/yyyy" showOn="button" value="#{ConsultaRFCMB.fechaCausacion}"
+                                        required="true"
+                                        requiredMessage="Seleccione una fecha para el campo Fecha de causación"/>
+                            <p:outputLabel value="N&uacute;mero de Operaci&oacute;n"/>
+                            <p:inputText value="#{ConsultaRFCMB.txtNumOperacion}" required="true"
+                                         requiredMessage="Seleccione un valor para el campo N&uacute;mero de operaci&oacute;n"/>
+                            <p:outputLabel value="N&uacute;mero de Documento"/>
+                            <p:inputText value="#{ConsultaRFCMB.txtNumDocto}" required="true"
+                                         requiredMessage="Seleccione un valor para el campo N&uacute;mero de documento"/>
+                            <p:outputLabel value="Importe Saldo a Favor"/>
+                            <p:inputText value="#{ConsultaRFCMB.txtImpSaldoFavor}" required="true"
+                                         requiredMessage="Seleccione un valor para el campo Importe saldo a favor"/>
+                            <p:outputLabel value="Importe de las Devoluciones y/o Compensaciones Efectuadas"/>
+                            <p:inputText value="#{ConsultaRFCMB.txtImpDevolucion}" required="true"
+                                         requiredMessage="Seleccione un valor para el campo Importe de las devoluciones"/>
+                            <p:outputLabel value="Importe del Acreditamiento Efectuado"/>
+                            <p:inputText value="#{ConsultaRFCMB.txtImpAcreditamiento}" required="true"
+                                         requiredMessage="Seleccione un valor para el campo Importe del acreditamiento efectuado"/>
+                            <p:outputLabel value="Importe Solicitado en Devolución"/>
+                            <p:inputText value="#{ConsultaRFCMB.txtNumOperacion}"/>
+                        </p:panelGrid>
+                        <p:outputLabel value="Datos de la Declaración Normal"/>
+                        <p:panelGrid style="text-align:center;font-weight:bold;width:800px" columns="2">
+                            <p:outputLabel value="Tipo de Declaración"/>
+                            <p:outputLabel value=""/>
+                            <p:outputLabel value="Fecha de Presentación de la Declaración"/>
+                            <p:calendar id="clFPresentacionNormal" locale="es" navigator="true" effect="slideDown"
+                                        value="#{ConsultaRFCMB.fechaPresentacionNormal}" pattern="dd/MM/yyyy"
+                                        showOn="button"/>
+                            <p:outputLabel value="N&uacute;mero de Operaci&oacute;n"/>
+                            <p:inputText value="#{ConsultaRFCMB.txtNumOperacion}" required="true"
+                                         requiredMessage="Seleccione un valor para el campo N&uacute;mero de operaci&oacute;n"/>
+                            <p:outputLabel value="Saldo a Favor Manifestado en la Declaración"/>
+                            <p:inputText value="#{ConsultaRFCMB.txtSaldoFavor}" required="true"
+                                         requiredMessage="Seleccione un valor para el campo Saldo a favor manifestado"/>
+                            <p:outputLabel value="&iquest;Los datos de la &uacute;ltima declaración presentada son correctos?"/>
+                            <p:selectOneRadio id="sorSaldoAFavor" value="">
+                                <f:selectItem itemLabel="Si" itemValue="1"/>
+                                <f:selectItem itemLabel="No" itemValue="2"/>
+                            </p:selectOneRadio>
+                            <p:commandButton value="Atrás"></p:commandButton>
+                            <p:commandButton value="Siguiente"></p:commandButton>
+                        </p:panelGrid>
+                    </p:tab>
+                    <p:tab id="tab4" title="Información DIOT, CPR, ALTEX, CERTIFICADO">
+                        <p:panelGrid style="text-align:center;font-weight:bold;width:800px" columns="2">
+                            <p:outputLabel value="&iquest;Present&oacute; la Declaraci&oacute;n Informativa de Operaciones con Terceros (DIOT)?: "/>
+                            <p:selectOneMenu value="#{ConsultaRFCMB.selectDeclaracionTercerosList}" required="true"
+                                             requiredMessage="Seleccione un valor para el combo Declarion informativa de operaciones"
+                                             style="width:136px"/>
+                        </p:panelGrid>
+                        <p:outputLabel value="Datos de la DIOT"/>
+                        <p:panelGrid style="text-align:center;font-weight:bold;width:800px" columns="2">
+                            <p:outputLabel value="Fecha Presentación Declaración: "/>
+                            <p:calendar id="clFPresentacionDeclaracion" locale="es" navigator="true" effect="slideDown"
+                                        value="#{ConsultaRFCMB.fechaPresentacionDeclaracion}" pattern="dd/MM/yyyy"
+                                        showOn="button"/>
+                        </p:panelGrid>
+                        <p:outputLabel value="Datos del CPR "/>
+                        <p:panelGrid style="text-align:center;font-weight:bold;width:800px" columns="2">
+                            <p:outputLabel value="N&uacute;mero de Registro: "/>
+                            <p:inputText value="#{ConsultaRFCMB.txtNumRegistro}"/>
+                            <p:outputLabel value="RFC: "/>
+                            <p:inputText value="#{ConsultaRFCMB.txtRFC}"/>
+                        </p:panelGrid>
+                        <p:outputLabel value="Datos ALTEX"/>
+                        <p:panelGrid style="text-align:center;font-weight:bold;width:800px" columns="2">
+                            <p:outputLabel value="N&uacute;mero de Constancia: "/>
+                            <p:inputText value="#{ConsultaRFCMB.txtNumConstancia}"/>
+                        </p:panelGrid>
+                        <p:outputLabel value="Datos Contribuyente Certificado"/>
+                        <p:panelGrid style="text-align:center;font-weight:bold;width:800px" columns="2">
+                            <p:outputLabel value="&iquest;Es Usted Contribuyente Certificado?: "/>
+                            <p:selectOneRadio id="optDatosCont" value="">
+                                <f:selectItem itemLabel="Si" itemValue="1"/>
+                                <f:selectItem itemLabel="No" itemValue="2"/>
+                            </p:selectOneRadio>
+                        </p:panelGrid>
+                        <p:panelGrid style="text-align:center;font-weight:bold;width:800px" columns="2">
+                            <p:commandButton value="Atrás"></p:commandButton>
+                            <p:commandButton value="Siguiente"></p:commandButton>
+                        </p:panelGrid>
+                    </p:tab>
+                    <p:tab id="tab5" title="Información del banco">
+                        <p:panelGrid style="text-align:center;font-weight:bold;width:800px" columns="2">
+                            <p:dataTable id="dtBanco" emptyMessage="No se han encontrado resultados" var="mercancia"
+                                         style="width:1360px;">
+                                <p:columnGroup type="header">
+                                    <p:row>
+                                        <p:column rowspan="1" headerText="Nombre del Banco" width="50"/>
+                                        <p:column rowspan="1" headerText="N&uacute;mero de Cuenta &#8220;CLABE&#8221;" width="100"/>
+                                    </p:row>
+                                </p:columnGroup>
+                                <p:column>
+                                    <h:outputText value="prueba" style="padding:0px 0px;text-align:center;"></h:outputText>
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="prueba" style="padding:0px 0px;text-align:center;"></h:outputText>
+                                </p:column>
+                            </p:dataTable>
+                            <p:outputLabel value=""/>
+                            <p:commandButton value="Adicionar Nueva Cuenta &#8220;CLABE&#8221;"></p:commandButton>
+                            <p:commandButton value="Atrás"></p:commandButton>
+                            <p:commandButton value="Siguiente"></p:commandButton>
+                        </p:panelGrid>
+                    </p:tab>
+                    <p:tab id="tab6" title="Anexos de la solicitud de devolución">
+                        <p:panelGrid style="text-align:center;font-weight:bold;width:800px" columns="2">
+                            <p:dataTable id="dtAnexos" emptyMessage="No se han encontrado resultados" var="mercancia"
+                                         style="width:1360px;">
+                                <p:columnGroup type="header">
+                                    <p:row>
+                                        <p:column rowspan="1" headerText="Nombre del Anexo" width="50"/>
+                                        <p:column rowspan="1" headerText="Descripción del Anexo" width="100"/>
+                                        <p:column rowspan="1" headerText="Archivo de Anexo Lleno Guardado" width="100"/>
+                                    </p:row>
+                                </p:columnGroup>
+                                <p:column>
+                                    <h:outputText value="prueba" style="padding:0px 0px;text-align:center;"></h:outputText>
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="prueba" style="padding:0px 0px;text-align:center;"></h:outputText>
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="prueba" style="padding:0px 0px;text-align:center;"></h:outputText>
+                                </p:column>
+                            </p:dataTable>
+                            <p:outputLabel value=""/>
+                            <p:commandButton value="Adicionar Nueva Cuenta &#8220;CLABE&#8221;"></p:commandButton>
+                            <p:commandButton value="Atrás"></p:commandButton>
+                            <p:commandButton value="Siguiente"></p:commandButton>
+                        </p:panelGrid>
+                    </p:tab>
+                    <p:tab id="tab7" title="Documentos Adjuntos de la Solicitud de Devolución">
+                        <p:panelGrid style="text-align:center;font-weight:bold;width:800px" columns="2">
+                            <p:dataTable id="dtDocAdjuntos" emptyMessage="No se han encontrado resultados"
+                                         var="mercancia" style="width:1360px;">
+                                <f:facet name="header">
+                                    <p:panelGrid style="text-align:left;font-weight:bold;width:800px" columns="3">
+                                        <p:commandButton value="Subir"></p:commandButton>
+                                        <p:commandButton value="Descargar"></p:commandButton>
+                                        <p:commandButton value="Eliminar"></p:commandButton>
+                                    </p:panelGrid>
+                                </f:facet>
+                                <p:columnGroup type="header">
+                                    <p:row>
+                                        <p:column rowspan="1" headerText="Nombre del Archivo" width="50"/>
+                                        <p:column rowspan="1" headerText="Nombre del Documento" width="100"/>
+                                        <p:column rowspan="1" headerText="Descripción del Documento" width="100"/>
+                                    </p:row>
+                                </p:columnGroup>
+                                <p:column>
+                                    <h:outputText value="prueba" style="padding:0px 0px;text-align:center;"></h:outputText>
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="prueba" style="padding:0px 0px;text-align:center;"></h:outputText>
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="prueba" style="padding:0px 0px;text-align:center;"></h:outputText>
+                                </p:column>
+                            </p:dataTable>
+                            <p:outputLabel value=""/>
+                            <p:commandButton value="Atrás"></p:commandButton>
+                            <p:commandButton value="Siguiente"></p:commandButton>
+                        </p:panelGrid>
+                    </p:tab>
+                </p:tabView>
+                <!--<p:panelGrid width="810" style="text-align:center;font-weight:bold;" columns="2">
+                    <p:outputLabel value="Registro federal de contribuyentes: "/>
+                    <p:outputLabel value=""/>
+                    <p:outputLabel value="Apellido paterno: "/>
+                    <p:outputLabel value=""/>
+                    <p:outputLabel value="Apellido materno: "/>
+                    <p:outputLabel value=""/>
+                    <p:outputLabel value="Nombre (s): "/>
+                    <p:outputLabel value=""/>
+                </p:panelGrid>- ->
+                <p:panel id="pnlAdiNuevaCuenta" header="Adicionar nueva cuenta" style="width:810px">
+                    <p:panelGrid style="text-align:center;font-weight:bold;width:800px" columns="2">
+                        <p:outputLabel value="Nombre del Banco"/>
+                        <p:selectOneMenu value="#{ConsultaRFCMB.selectBancoList}" required="true"
+                                         requiredMessage="Seleccione un valor para el combo Nombre del banco"
+                                         style="width:136px"/>
+                        <p:outputLabel value="N&uacute;mero de Cuenta &#8220;CLABE&#8221;"/>
+                        <p:outputLabel value=""/>
+                        <p:commandButton value="Aceptar"></p:commandButton>
+                        <p:commandButton value="Cancelar"></p:commandButton>
+                    </p:panelGrid>
+                </p:panel>
+                <p:panel id="pnlGuardaArchivo" header="Guarda archivo de anexo lleno" style="width:810px"
+                         rendered="#{ConsultaRFCMB.guardaArchivo}">
+                    <p:panelGrid style="text-aligln:center;font-weight:bold;width:810px" columns="3">
+                        <p:fileUpload  mode="advanced"
+                                      update="messages" sizeLimit="100000"
+                                      allowTypes="/(\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\.|\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\/)(gif|jpe?g|png)$/"/>
+                        <p:growl id="messages" showDetail="true"/>
+                        <!--
+                    <p:outputLabel value="Ruta del Archivo"/>
+                    <p:inputText value=""/>
+                    <p:commandButton value="Browse"></p:commandButton>
+                    <p:commandButton value="Guardar Archivo"></p:commandButton>
+                    <p:commandButton value="Cancelar"></p:commandButton>
+                    - ->
+                    </p:panelGrid>
+                </p:panel>
+            </h:form-->
+        </h:body>
+    </html>
+</f:view>

@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core" xmlns:p="http://primefaces.org/ui"
+        >
+    <html>
+        <h:head>
+            <title>Bandeja de Revisor</title>
+            <h:outputStylesheet library="css/" name="formato.css"/>
+            <style type="text/css">
+                .ui-datatable tbody td {
+                    white-space: normal;
+                }
+
+                .ui-datatable thead th {
+                    white-space: normal;
+                }
+                
+                .ui-paginator {
+                    font-size: 12px !important;
+                }
+            </style>
+        </h:head>
+        <h:body>
+            <h:form id="bandejaDocumentos">                
+                <h:outputText value="#{bandejaRevisorCentralMB.documento.numControl}" />
+                <p:panel header="#{msgValidacion.asPanelDocumentos}" styleClass="gmxAutoAjustable" style="text-align:center; ">
+                    <p:messages showSummary="false" id="mensajeResultado" showDetail="true"  autoUpdate="true" 
+                            globalOnly="true"/>
+                    <p:scrollPanel style="width:100%" mode="native">
+                        <p:dataTable emptyMessage="#{msgValidacion.tblEmpty}" 
+                                     id="documentos"
+                                     paginator="true"
+                                     rows="5"
+                                     rowsPerPageTemplate="5,10,15"
+                                     selection="#{bandejaRevisorCentralMB.documento}" 
+                                     selectionMode="single"
+                                     style="font-size:13.5px;"
+                                     value="#{bandejaRevisorCentralMB.dataModel}"
+                                     var="doc" 
+                                     >
+                            <p:ajax event="rowSelect" update="btnConsultar"/>
+                            <f:facet name="header">
+                                <input type="hidden" name="date" value="23092014"/>
+                                <div style="height:45px;">
+                                    <p:commandButton id="btnConsultar" 
+                                                     icon="ui-icon-search"
+                                                     action="#{bandejaRevisorCentralMB.goToResumen}" 
+                                                     ajax="false"
+                                                     style="background: #4A90E2"/>
+                                </div>
+                            </f:facet>
+                            <p:column headerText="#{msgValidacion.asNumControl}">
+                                <h:outputText value="#{doc.numControl}"/>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asRFC}">
+                                <h:outputText value="#{doc.rfcContribuyente}"/>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asDictaminado}">
+                                <h:outputText value="#{doc.dictaminado}"/>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asTipTramite}">
+                                <h:outputText value="#{doc.tipoTramite}"/>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asFechaRecepcionTramite}">
+                                <h:outputText value="#{doc.fechaRegistro}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+                            </p:column>
+                            <p:column headerText="#{msgValidacion.asNomDocumento}">
+                                <h:outputText value="#{doc.nombreDocumento}"/>
+                            </p:column>
+                            <p:column headerText="Fecha de vencimiento">
+                                <div align="left">
+                                    <h:outputText value="#{doc.fechaVencimiento}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                    </h:outputText>
+                                </div>
+                            </p:column>
+                            <p:column headerText="Dictaminador">
+                                <div align="left">
+                                    <h:outputText value="#{doc.dictaminador}"/>
+                                </div>
+                            </p:column>
+                            <p:column headerText="Monto Solicitado">
+                                <h:outputText value="#{doc.importeSolicitado}">
+                                    <f:convertNumber currencySymbol="$" type="currency" locale="es_MX"/>
+                                </h:outputText>
+                            </p:column>
+                        </p:dataTable>
+                    </p:scrollPanel>
+                </p:panel>
+            </h:form>
+        </h:body>
+    </html>
+</f:view>

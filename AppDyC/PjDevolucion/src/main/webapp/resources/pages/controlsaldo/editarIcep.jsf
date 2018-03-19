@@ -1,0 +1,206 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html" xmlns:p="http://primefaces.org/ui" xmlns:pe="http://primefaces.org/ui/extensions" xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+<h:form id="formIcep">
+    <p:dialog id="dlgDetalleIcep" widgetVar="wdlgDetalleIcep" header="Detalle ICEP" draggable="true"
+              resizable="false" modal="true" closable="true" width="650px" visible="#{mbDlgDetalleIcep.mostrarse}">
+        
+            <p:messages id="mgsDetalleIcep" showDetail="true" autoUpdate="true" closable="true" globalOnly="true"/>
+
+            <p style="color: Red;">Los datos con * son obligatorios</p>
+
+            <p:panelGrid id="pngIcep">
+                <p:row>
+                    <p:column style="width:30%;">
+                        <p:outputLabel value="RFC:"/>
+                        <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                    </p:column>
+                    <p:column style="width:70%;">
+                        <p:inputText    id="itxRfcAI" value="#{mbDlgDetalleIcep.rfc}"
+                                        style="text-transform: uppercase; width:80px; !important"
+                                        maxlength="13" required="true" 
+                                        requiredMessage="El RFC es requerido"
+                                        validator="RfcValidator"
+                                        disabled="#{mbDlgDetalleIcep.estado == 'rfcValidado'}"
+                                        onkeypress="if (event.keyCode == 13) { validarRfc(); return false; }">
+                            <!--pe:keyFilter regEx="/[A-Za-z0-9ñÑ]/i" /-->
+                            <!--p:ajax event="change" process="@this" listener="#{mbDlgDetalleIcep.obtenerNombreRazonSocial}" update="itxNombreRazonsocial"/-->
+                        </p:inputText>
+                        &nbsp;&nbsp;
+                        <p:remoteCommand name="validarRfc" action="#{mbDlgDetalleIcep.obtenerNombreRazonSocial}" update="pngIcep" process="itxRfcAI @this"/>
+                        
+                        <p:graphicImage id="gimRfcOk" name="images/ok2.png" title="RFC válidado" rendered="#{mbDlgDetalleIcep.estado == 'rfcValidado'}"/>
+                        
+                        <p:commandButton   id="btnValidarRFC" icon="ui-icon-search" 
+                                            title="Válidar RFC"
+                                            action="#{mbDlgDetalleIcep.obtenerNombreRazonSocial}"
+                                            update="pngIcep"
+                                            process="itxRfcAI @this"
+                                            rendered="#{mbDlgDetalleIcep.estado != 'rfcValidado'}"/>
+                                            
+                         <p:commandButton   id="btnCambiarRFC" icon="ui-icon-pencil" rendered="#{mbDlgDetalleIcep.estado == 'rfcValidado'}"
+                                            title="Cambiar RFC" action="#{mbDlgDetalleIcep.manejarBtnCambiarRfc}" update="pngIcep"
+                                            process="@this"/>
+                                                            
+                        <p:message for="itxRfcAI" display="text"/>
+                    </p:column>
+                    
+                </p:row>
+                
+                <p:row id="rowNombreRazonSocial" rendered="#{mbDlgDetalleIcep.estado == 'rfcValidado'}">
+                    <p:column >
+                        <p:outputLabel value="#{mbDlgDetalleIcep.etiquetaNomRazonsoc}"/>
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel    id="itxNombreRazonsocial" value="#{mbDlgDetalleIcep.nombreRazonSocial}"
+                                      style="width:350px;"/>
+                        <p:message for="itxNombreRazonsocial" display="text"/>
+                    </p:column>
+                </p:row>
+
+                <p:row>
+                    <p:column style="width:105px;">
+                        <p:outputLabel value="Origen del saldo:"/>
+                        <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                    </p:column>
+                    <p:column style="width:200px;">
+                        <p:selectOneMenu id="cmbOrigenSaldo" value="#{mbDlgDetalleIcep.tipoSaldo}"
+                                         requiredMessage="El origen del saldo es requerido"
+                                         style="width:208px" required="true" disabled="#{mbDlgDetalleIcep.estado != 'rfcValidado'}">
+                            <f:selectItem itemLabel="#{msgValidacion.comboSeleccion}" itemValue=""/>
+                            <f:selectItems value="#{mbCatalogosEstaticos.origenesSaldo}" var="origenSaldoAux"
+                                           itemLabel="#{origenSaldoAux.descripcion}"
+                                           itemValue="#{origenSaldoAux.id}"/>
+                        </p:selectOneMenu>
+                        <p:message for="cmbOrigenSaldo" display="text" />
+                    </p:column>
+                </p:row>
+
+                <p:row> 
+                    <p:column style="width:105px;">
+                        <p:outputLabel value="#{msgValidacion.cbImp}"/>
+                        <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                    </p:column>
+                    <p:column>
+                        <p:selectOneMenu id="cmbImpuesto" value="#{mbDlgDetalleIcep.idImpuesto}"
+                                         requiredMessage="El impuesto es requerido"
+                                         style="width:340px" required="true" disabled="#{mbDlgDetalleIcep.estado != 'rfcValidado'}">
+                            <f:selectItem itemLabel="#{msgValidacion.comboSeleccion}" itemValue=""/>
+                            <f:selectItems value="#{mbCatalogosEstaticos.impuestos}" var="impuesto"
+                                           itemLabel="#{impuesto.descripcion}"
+                                           itemValue="#{impuesto.id}"/>
+                            <p:ajax process="@this" update="cmbConcepto" event="change" listener="#{mbDlgDetalleIcep.actualizarConceptos}"/>
+                        </p:selectOneMenu>
+                        <p:message for="cmbImpuesto" display="text" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel value="#{msgValidacion.cbConc}"/>
+                        <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                    </p:column>
+                    <p:column>
+                        <p:selectOneMenu id="cmbConcepto" value="#{mbDlgDetalleIcep.idConcepto}"
+                                         requiredMessage="El concepto es requerido" required="true"
+                                         style="width:340px" panelStyle="width:400px" disabled="#{mbDlgDetalleIcep.estado != 'rfcValidado'}">
+                            <f:selectItem itemLabel="#{msgValidacion.comboSeleccion}" itemValue=""/>
+                            <f:selectItems value="#{mbDlgDetalleIcep.conceptos}" var="itConcepto"
+                                           itemLabel="#{itConcepto.id} - #{itConcepto.descripcion}"
+                                           itemValue="#{itConcepto.id}"/>
+                        </p:selectOneMenu>
+                        <p:message for="cmbConcepto" display="text" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column style="width:105px;">
+                        <p:outputLabel value="Tipo de periodo:"/>
+                        <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                    </p:column>
+                    <p:column style="width:200px;">
+                        <p:selectOneMenu id="cmbTipoPeriodo" value="#{mbDlgDetalleIcep.idTipoPeriodo}"
+                                         requiredMessage="El tipo de periodo es requerido"
+                                         style="width:208px" required="true" disabled="#{mbDlgDetalleIcep.estado != 'rfcValidado'}">
+                            <f:selectItem itemLabel="#{msgValidacion.comboSeleccion}" itemValue=""/>
+                            <f:selectItems value="#{mbCatalogosEstaticos.tiposPeriodo}"
+                                           itemLabel="#{tipoPeriodo.descripcion}" var="tipoPeriodo"
+                                           itemValue="#{tipoPeriodo.idStr}"/>
+                            <p:ajax update="cmbPeriodo"
+                                    listener="#{mbDlgDetalleIcep.actualizarPeriodos}"/>
+                        </p:selectOneMenu>
+                        <p:message for="cmbTipoPeriodo" display="text" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column style="width:105px;">
+                        <p:outputLabel value="#{msgValidacion.cbPer}"/>
+                        <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                    </p:column>
+                    <p:column style="width:200px;">
+                        <p:selectOneMenu id="cmbPeriodo" value="#{mbDlgDetalleIcep.idPeriodo}"
+                                         requiredMessage="#{msgValidacion.msjPerRequerido}"
+                                         style="width:208px" required="true"
+                                         disabled="${fn:length(mbDlgDetalleIcep.periodos) == 1 || mbDlgDetalleIcep.estado != 'rfcValidado'}">
+                            <f:selectItem itemLabel="#{msgValidacion.comboSeleccion}" itemValue=""/>
+                            <f:selectItems value="#{mbDlgDetalleIcep.periodos}" var="periodo"
+                                           itemLabel="#{periodo.descripcion}"
+                                           itemValue="#{periodo.id}"/>
+                        </p:selectOneMenu>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column style="width:105px;">
+                        <p:outputLabel value="#{msgValidacion.cbEjer}"/>
+                        <p:outputLabel value=" #{msgValidacion.generalRequerido}" style="color:red;"/>
+                    </p:column>
+                    <p:column style="width:200px;">
+                        <p:selectOneMenu id="cmbEjercicio" value="#{mbDlgDetalleIcep.ejercicio}"
+                                         requiredMessage="#{msgValidacion.msjEjeRequerido}"
+                                         style="width:208px" required="true" disabled="#{mbDlgDetalleIcep.estado != 'rfcValidado'}">
+                            <f:selectItem itemLabel="#{msgValidacion.comboSeleccion}" itemValue=""/>
+                            <f:selectItems value="#{mbCatalogosEstaticos.ejercicios}"
+                                           var="ejercicio" itemLabel="#{ejercicio.id}"
+                                           itemValue="#{ejercicio.id}"/>
+                        </p:selectOneMenu>
+                        <p:message for="cmbEjercicio" display="text" />
+                    </p:column>
+                </p:row>
+             
+                <f:facet name="footer">
+                    <p:row>
+                        <p:column colspan="3">
+                            <div align="center">
+                                <p:commandButton value="Aceptar" action="#{mbDlgDetalleIcep.registrarIcep}" update="pngIcep dlgMensajeSuccess"
+                                                    disabled="#{mbDlgDetalleIcep.estado != 'rfcValidado'}"/>
+                                 
+                                <p:commandButton value="Cancelar" action="#{mbDlgDetalleIcep.cancelar}" process="@this"
+                                      update="dlgDetalleIcep pngIcep"/>
+                            </div>
+                        </p:column>
+                </p:row>
+                </f:facet>
+            </p:panelGrid>   
+    </p:dialog>
+
+    <p:dialog   id="dlgMensajeSuccess" header="Devoluciones y Compensaciones" widgetVar="dlgMensaje" modal="true"
+                width="450" height="95" resizable="false" closable="false" visible="#{mbDlgDetalleIcep.mostrarDlgMensaje}">
+            <table border="0" width="100%">
+                <tr>
+                    <td>
+                        <p:outputLabel id="olbMensaje" value="#{mbDlgDetalleIcep.mensajeSuccess}"/>
+                    </td>
+                </tr>
+                <tr height="50px">
+                    <td align="center">
+                        <p:commandButton value="Ir al detalle" action="#{mbDlgDetalleIcep.irADetalle}"/>
+                    </td>
+                    <td>
+                        <p:commandButton id="btnAceptarDMS" value="Aceptar" action="#{mbDlgDetalleIcep.cerrarDialogs}"
+                            update="dlgMensajeSuccess dlgDetalleIcep" process="@this"/>
+                    </td>
+                </tr>
+            </table>
+    </p:dialog>
+    
+     </h:form>
+</f:view>              
+      
